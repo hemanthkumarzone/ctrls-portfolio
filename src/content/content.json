@@ -1,0 +1,269 @@
+{
+  "navbar": {
+    "menu": ["Home", "Resource", "Platform", "Services", "Company","Get Started" ],
+
+
+    "buttons": {
+      "contact": "Contact Us",
+      "getdemo": "Get Demo"
+    },
+
+    "resourcesDropdown": [
+      {
+        "title": "Blog",
+        "desc": "Latest Tech Insights",
+        "path": "/blog"
+      },
+      {
+        "title": "E-Books",
+        "desc": "Download for FinOps eBooks",
+        "path": "/ebooks"
+      },
+      {
+        "title": "Release Notes",
+        "desc": "Releases at KoreValue",
+        "path": "/releases"
+      }
+    ] ,
+
+    "companyDropdown": [
+  {
+    "title": "About Us",
+    "path": "/about"
+  },
+  {
+    "title": "Customers",
+    "path": "/customers"
+  },
+  {
+    "title": "Governance",
+    "path": "/governance"
+  },
+  {
+    "title": "Privacy Policy",
+    "path": "/privacy"
+  },
+  {
+    "title": "Terms of Use",
+    "path": "/terms"
+  },
+  {
+    "title": "Security",
+    "path": "/security"
+  }
+]
+  },
+
+  "hero": {
+    "title": "A Single Solution to Manage AI and Hybrid Infrastructure costs",
+    "description": "Get end-to-end visibility, chargeback, and forecasting across AI, Cloud, SaaS, and on-prem infrastructure to control costs before they grow."
+  },
+
+  "infrastructure": {
+    "cards": [
+      {
+        "title": "FinOps Autopilot",
+        "description": "AI Agents that simplify cloud cost management across stake holders",
+        "cardTop": 100,
+        "titleTop": 200,
+        "descTop": 300,
+        "width": "auto",
+        "descWidth": "684px"
+      },
+      {
+        "title": "Brings clarity and Control to AI Spend",
+        "description": "AI cost can be unpredictable and complex, our AI financial management will be predictable",
+        "cardTop": 600,
+        "titleTop": 650,
+        "descTop": 850,
+        "width": "581px",
+        "descWidth": "653px"
+      },
+      {
+        "title": "Autonomous K8s and GPU Resource Optimization",
+        "description": "The most powerful Agentic Platform for automated resource optimization",
+        "cardTop": 1100,
+        "titleTop": 1150,
+        "descTop": 1350,
+        "width": "827px",
+        "descWidth": "766px"
+      }
+    ]
+  },
+
+  "visibility": {
+    "title": "One Platform, End-to-End Visibility",
+    "description": "Track and manage the true cost of workloads across every environment with clarity.",
+    "cards": [
+      {
+        "icon": "/workload.png",
+        "title": "Track AI Workloads End-to-End",
+        "description": "Monitor the cost of every model call, agent interaction, and GPU hour while enabling detailed visibility for precise chargeback allocation."
+      },
+      {
+        "icon": "/shared-icon.png",
+        "title": "Handle Complex Shared Resources",
+        "description": "Allocate costs across Kubernetes clusters, shared databases, and multi-tenant infrastructure effortlessly with CtrlS intelligent allocation engine."
+      },
+      {
+        "icon": "/cloud.png",
+        "title": "Unify Multi-Cloud Cost Data",
+        "description": "Move beyond scattered reports from AWS, Azure, GCP and on-prem with a unified platform that standardizes cost data across environments."
+      },
+      {
+        "icon": "/pie-chart.svg",
+        "title": "Govern Before you Spend",
+        "description": "Implement budget protections to stop unapproved resource creation before it impacts your billing."
+      },
+      {
+        "icon": "/settings.svg",
+        "title": "Integrate into Existing Workflows",
+        "description": "Built on an API-first model, it integrates with ERP, ITSM, and BI platforms."
+      },
+      {
+        "icon": "/graph.svg",
+        "title": "Deploy in Days, not Months",
+        "description": "Integrated discovery automation and virtual tagging start working right away."
+      }
+    ]
+  },
+
+  "demo": {
+    "heading": "NO RISK PROOF OF VALUE",
+    "title": "Start controlling your AI and Hybrid Environment Costs.",
+    "description": "Monitor every expense across cloud, on-premise systems, AI and SaaS through a single platform. Avoid unexpected costs with real-time cost distribution, anomaly monitoring and predictive forecasting. Streamline cost management using chargebacks, spending guardrails, and AI-powered insights.",
+    "form": {
+      "title": "Request a Demo",
+      "name": "Name",
+      "email": "E-Mail",
+      "organization": "Organization Name",
+      "source": "How you Know about us?",
+      "submit": "Submit"
+    }
+  },
+
+  "footer": {
+    "tagline": "A cost optimization platform designed for managing AI and Hybrid Infrastructure expenses.",
+    "description": "CtrlS is an AI-powered FinOps platform designed to help organizations monitor, analyze, and optimize their cloud spending. With real-time cost intelligence, anomaly detection, and multi-cloud insights, we enable teams to make smarter financial decisions and maximize the value of their cloud infrastructure.",
+    "copyright": "© 2026 CtrlS AI-Powered Cloud Intelligence Platform"
+  },
+
+  "services": [
+    {
+      "iconType": "text",
+      "icon": "₹",
+      "title": "Cost Analyzer",
+      "description": "See exactly where every cost is being spent across clouds"
+    },
+    {
+      "iconType": "image",
+      "icon": "/group-icon.svg",
+      "title": "Category Views",
+      "description": "Slice spend by teams, projects, and business categories"
+    },
+    {
+      "iconType": "image",
+      "icon": "/k8s-icon.svg",
+      "title": "K8s Cost Observability",
+      "description": "Track Kubernetes spend by namespace, pod, and workload"
+    },
+    {
+      "iconType": "image",
+      "icon": "/recommendation-icon.svg",
+      "title": "Recommendations",
+      "description": "Get actionable suggestions to reduce waste and optimize resources"
+    },
+    {
+      "iconType": "image",
+      "icon": "/anomaly-icon.svg",
+      "title": "Anomaly Detection",
+      "description": "Spot unusual spend patterns before they become budget surprises"
+    },
+    {
+      "iconType": "image",
+      "icon": "/reporting-icon.svg",
+      "title": "Reporting",
+      "description": "Build and schedule cost reports for stakeholders"
+    },
+    {
+      "iconType": "image",
+      "icon": "/virtual-tags-icon.svg",
+      "title": "Virtual Tags",
+      "description": "Tag resources dynamically without changing cloud metadata"
+    },
+    {
+      "iconType": "image",
+      "icon": "/cost-allocation-icon.svg",
+      "title": "Cost Allocation",
+      "description": "Allocate spend to teams, products, and business units"
+    },
+    {
+      "iconType": "image",
+      "icon": "/unit-economics-icon.svg",
+      "title": "Unit Economics",
+      "description": "Understand cost per user, request, and feature usage"
+    },
+    {
+      "iconType": "image",
+      "icon": "/forecasting-icon.svg",
+      "title": "Forecasting",
+      "description": "Predict future spend with historical trends"
+    },
+    {
+      "iconType": "image",
+      "icon": "/budgeting-icon.svg",
+      "title": "Budgeting",
+      "description": "Set spending limits and get alerts when close to thresholds"
+    }
+  ],
+
+  "koreValue": {
+    "services": {
+      "title": "Services",
+      "left": [
+        "Cost Analyzer",
+        "Category Views",
+        "K8s Cost Observability",
+        "Recommendations",
+        "Anomaly Detection",
+        "Budgeting"
+      ],
+      "right": [
+        "Reporting",
+        "Virtual Tags",
+        "Cost Allocation",
+        "Unit Economics",
+        "Forecasting"
+      ]
+    },
+    "resource": {
+      "title": "Resource",
+      "items": ["Blogs", "E-Books", "Release Notes"]
+    },
+    "company": {
+      "title": "Company",
+      "items": [
+        "About Us",
+        "Customers",
+        "Governance",
+        "Privacy Policy",
+        "Terms of Use",
+        "Security"
+      ]
+    },
+    "platform": {
+      "title": "Platform",
+      "items": [
+        "AI Cost Management",
+        "Cost-to-Save",
+        "Cost-to-Outcomes",
+        "Hybrid Cloud Cost Management",
+        "GPU Chargeback",
+        "Kubernetes Cost Management",
+        "Tier 2 Azure"
+      ]
+    },
+    "followText": "Follow us on",
+    "copyright": "© 2026 CtrlS AI-Powered Cloud Intelligence Platform"
+  }
+}
