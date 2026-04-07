@@ -1,7 +1,63 @@
-import content from "../../content/content.json";
+import { useEffect, useState } from "react";
+import { getFooter } from "../../services/footerApi";
+import { Link } from "react-router-dom";
+
 
 export default function KoreValueSection() {
-  const data = content.koreValue;
+
+  // ✅ STATE
+  const [data, setData] = useState<any>(null);
+
+  // ✅ API CALL
+  useEffect(() => {
+    const fetchFooter = async () => {
+      try {
+        const res = await getFooter();
+        console.log("FOOTER DATA:", res);
+
+        setData(res[0] || {});
+      } catch (error) {
+        console.error("Footer API error:", error);
+      }
+    };
+
+    fetchFooter();
+  }, []);
+
+  // ✅ PREVENT CRASH
+  if (!data) return null;
+
+  // ✅ BACKEND → FRONTEND MAPPING
+  const sections = data.sections || [];
+
+  const getSection = (name: string) => {
+    return (
+      sections.find(
+        (s: any) => s.title?.toLowerCase() === name.toLowerCase()
+      ) || { title: "", items: [] }
+    );
+  };
+
+  const servicesSection = getSection("Services");
+  const resourceSection = getSection("Resource");
+  const companySection = getSection("Company");
+  const platformSection = getSection("Platform");
+
+  // ✅ FIX: EVEN SPLIT (NO MISSING ITEMS)
+  const mid = Math.ceil((servicesSection.items?.length || 0) / 2);
+
+  const safeData = {
+    services: {
+      title: servicesSection.title,
+      left: servicesSection.items?.slice(0, mid) || [],
+      right: servicesSection.items?.slice(mid) || []
+    },
+    resource: resourceSection,
+    company: companySection,
+    platform: platformSection,
+    followText: "Follow us on", // ✅ FIXED
+    copyright: data.copyright || ""
+  };
 
   return (
     <section className="w-full flex justify-center">
@@ -9,33 +65,30 @@ export default function KoreValueSection() {
       {/* 🔴 MOBILE VIEW */}
       <div className="w-full px-4 py-10 lg:hidden">
 
-        {/* LOGO */}
         <img
           src="/Footerctrls.png"
           alt="logo"
           className="w-[147px] h-[64px] mb-8"
         />
 
-        {/* GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
 
           {/* SERVICES */}
           <div>
             <h3 className="text-[#77B900] text-[18px] font-medium mb-2">
-              {data.services.title}
+              {safeData.services.title}
             </h3>
 
             <div className="flex gap-6 text-[#7E7E7E] text-[14px] leading-[24px]">
               <div>
-                {data.services.left.map((item: string, i: number) => (
-                  <div key={i}>{item}</div>
+                {safeData.services.left.map((item: any, i: number) => (
+                  <div key={i}>{item.name}</div>
                 ))}
               </div>
 
-              {/* keep words in single line */}
               <div className="whitespace-nowrap">
-                {data.services.right.map((item: string, i: number) => (
-                  <div key={i}>{item}</div>
+                {safeData.services.right.map((item: any, i: number) => (
+                  <div key={i}>{item.name}</div>
                 ))}
               </div>
             </div>
@@ -44,12 +97,12 @@ export default function KoreValueSection() {
           {/* RESOURCE */}
           <div>
             <h3 className="text-[#77B900] text-[18px] font-medium mb-2">
-              {data.resource.title}
+              {safeData.resource.title}
             </h3>
 
             <div className="text-[#7E7E7E] text-[14px] leading-[24px]">
-              {data.resource.items.map((item: string, i: number) => (
-                <div key={i}>{item}</div>
+              {safeData.resource.items?.map((item: any, i: number) => (
+                <div key={i}>{item.name}</div>
               ))}
             </div>
           </div>
@@ -57,12 +110,12 @@ export default function KoreValueSection() {
           {/* COMPANY */}
           <div>
             <h3 className="text-[#77B900] text-[18px] font-medium mb-2">
-              {data.company.title}
+              {safeData.company.title}
             </h3>
 
             <div className="text-[#7E7E7E] text-[14px] leading-[24px]">
-              {data.company.items.map((item: string, i: number) => (
-                <div key={i}>{item}</div>
+              {safeData.company.items?.map((item: any, i: number) => (
+                <div key={i}>{item.name}</div>
               ))}
             </div>
           </div>
@@ -70,25 +123,23 @@ export default function KoreValueSection() {
           {/* PLATFORM */}
           <div>
             <h3 className="text-[#77B900] text-[18px] font-medium mb-2">
-              {data.platform.title}
+              {safeData.platform.title}
             </h3>
 
             <div className="text-[#7E7E7E] text-[14px] leading-[24px]">
-              {data.platform.items.map((item: string, i: number) => (
-                <div key={i}>{item}</div>
+              {safeData.platform.items?.map((item: any, i: number) => (
+                <div key={i}>{item.name}</div>
               ))}
             </div>
           </div>
 
         </div>
 
-        {/* DIVIDER */}
         <div className="w-full h-[1px] bg-[#77B900] my-8" />
 
-        {/* FOLLOW */}
         <div className="flex items-center gap-4 mb-4">
           <span className="text-[#77B900] text-[16px]">
-            {data.followText}
+            {safeData.followText}
           </span>
 
           <img src="/Insta.svg" className="w-4" />
@@ -96,31 +147,31 @@ export default function KoreValueSection() {
           <img src="/twitter.svg" className="w-5" />
         </div>
 
-        {/* COPYRIGHT */}
         <div className="text-[#7E7E7E] text-[12px] text-center">
-          {data.copyright}
+          {safeData.copyright}
         </div>
 
       </div>
 
-      {/* 🟢 DESKTOP VIEW (UNCHANGED) */}
+      {/* 🟢 DESKTOP VIEW */}
       <div className="hidden lg:flex w-full justify-center overflow-visible">
 
         <div className="w-full flex justify-center">
 
           <div
             style={{
-              transform: `scale(${
+              transform: `${
                 typeof window !== "undefined"
-                  ? Math.min(window.innerWidth / 1728, 1)
-                  : 1
-              })`,
+                  ? `scale(${Math.min(window.innerWidth / 1728, 1)})`
+                  : "scale(1)"
+              }`,
               transformOrigin: "top center",
               width: "1728px"
             }}
           >
 
-            <div className="relative w-[1728px] h-[650px]">
+            {/* ✅ FIXED HEIGHT */}
+            <div className="relative w-[1728px] min-h-[600px]">
 
               {/* LOGO */}
               <img
@@ -138,22 +189,29 @@ export default function KoreValueSection() {
               {/* SERVICES */}
               <div className="absolute" style={{ top: "133px", left: "74px" }}>
                 <h3 className="text-[#77B900] text-[32px] font-medium">
-                  {data.services.title}
+                  {safeData.services.title}
                 </h3>
 
                 <div className="text-[#7E7E7E] text-[18px] mt-4 leading-[32px]">
-                  {data.services.left.map((item: string, i: number) => (
-                    <div key={i}>{item}</div>
+                  {safeData.services.left.map((item: any, i: number) => (
+                    <Link key={i} to={item.path || "/"}>
+  <div className="hover:text-[#9fdc00] cursor-pointer transition">
+    {item.name}
+  </div>
+</Link>
                   ))}
                 </div>
 
-                {/* FIX: prevent breaking */}
                 <div
                   className="absolute text-[#7E7E7E] text-[18px] leading-[32px] w-[320px] whitespace-nowrap"
                   style={{ top: "48px", left: "240px" }}
                 >
-                  {data.services.right.map((item: string, i: number) => (
-                    <div key={i}>{item}</div>
+                  {safeData.services.right.map((item: any, i: number) => (
+                    <Link key={i} to={item.path || "/"}>
+  <div className="hover:text-[#9fdc00] cursor-pointer transition">
+    {item.name}
+  </div>
+</Link>
                   ))}
                 </div>
               </div>
@@ -161,12 +219,16 @@ export default function KoreValueSection() {
               {/* RESOURCE */}
               <div className="absolute" style={{ top: "133px", left: "577px" }}>
                 <h3 className="text-[#77B900] text-[32px] font-medium">
-                  {data.resource.title}
+                  {safeData.resource.title}
                 </h3>
 
                 <div className="text-[#7E7E7E] text-[18px] mt-4 leading-[32px]">
-                  {data.resource.items.map((item: string, i: number) => (
-                    <div key={i}>{item}</div>
+                  {safeData.resource.items?.map((item: any, i: number) => (
+                    <Link key={i} to={item.path || "/"}>
+  <div className="hover:text-[#9fdc00] cursor-pointer transition">
+    {item.name}
+  </div>
+</Link>
                   ))}
                 </div>
               </div>
@@ -174,12 +236,16 @@ export default function KoreValueSection() {
               {/* COMPANY */}
               <div className="absolute" style={{ top: "125px", left: "791px" }}>
                 <h3 className="text-[#77B900] text-[32px] font-medium">
-                  {data.company.title}
+                  {safeData.company.title}
                 </h3>
 
                 <div className="text-[#7E7E7E] text-[18px] mt-4 leading-[32px]">
-                  {data.company.items.map((item: string, i: number) => (
-                    <div key={i}>{item}</div>
+                  {safeData.company.items?.map((item: any, i: number) => (
+                    <Link key={i} to={item.path || "/"}>
+  <div className="hover:text-[#9fdc00] cursor-pointer transition">
+    {item.name}
+  </div>
+</Link>
                   ))}
                 </div>
               </div>
@@ -187,12 +253,16 @@ export default function KoreValueSection() {
               {/* PLATFORM */}
               <div className="absolute" style={{ top: "125px", left: "1016px" }}>
                 <h3 className="text-[#77B900] text-[32px] font-medium">
-                  {data.platform.title}
+                  {safeData.platform.title}
                 </h3>
 
                 <div className="text-[#7E7E7E] text-[18px] mt-4 leading-[32px]">
-                  {data.platform.items.map((item: string, i: number) => (
-                    <div key={i}>{item}</div>
+                  {safeData.platform.items?.map((item: any, i: number) => (
+                    <Link key={i} to={item.path || "/"}>
+  <div className="hover:text-[#9fdc00] cursor-pointer transition">
+    {item.name}
+  </div>
+</Link>
                   ))}
                 </div>
               </div>
@@ -208,7 +278,7 @@ export default function KoreValueSection() {
                 className="absolute text-[#77B900] text-[22px]"
                 style={{ top: "680px", left: "74px" }}
               >
-                {data.followText}
+                {safeData.followText}
               </div>
 
               {/* ICONS */}
@@ -221,7 +291,7 @@ export default function KoreValueSection() {
                 className="absolute text-center w-full text-[#7E7E7E] text-[14px]"
                 style={{ top: "730px" }}
               >
-                {data.copyright}
+                {safeData.copyright}
               </div>
 
             </div>

@@ -1,34 +1,63 @@
 import { useState, useEffect, useRef } from "react";
-import content from "../../content/content.json";
 import { Link, useLocation } from "react-router-dom";
+import { getNavbar } from "../../services/navbarApi";
+import LoginForm from "../requirements/LoginForm";
+import SignupForm from "../requirements/SignupForm";
+import ContactForm from "../requirements/ContactForm";
 
 
 const Navbar = () => {
+
+  // ✅ API STATE
+  const [navbar, setNavbar] = useState<any>(null);
+
+  // ✅ UI STATES (UNCHANGED)
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showResources, setShowResources] = useState(false);
   const [showPlatform, setShowPlatform] = useState(false);
   const [showCompany, setShowCompany] = useState(false);
   const [showGetStarted, setShowGetStarted] = useState(false);
+
   const timeoutRef = useRef<number | null>(null);
   const resourcesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const platformTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const companyTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-
   const [mobileResourcesOpen, setMobileResourcesOpen] = useState(false);
   const [mobilePlatformOpen, setMobilePlatformOpen] = useState(false);
   const [mobileCompanyOpen, setMobileCompanyOpen] = useState(false);
   const [mobileGetStartedOpen, setMobileGetStartedOpen] = useState(false);
+  const [activeForm, setActiveForm] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const location = useLocation();
-  const navbar = content.navbar;
+  
+   const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    window.location.href = "/";
+  };
 
-  const resources = navbar.resourcesDropdown || [];
-  const platformItems = content.koreValue?.platform?.items || [];
-  const companyItems = navbar.companyDropdown || [];
-
+  // ✅ FETCH NAVBAR DATA FROM API
   useEffect(() => {
+    const fetchNavbar = async () => {
+      try {
+        const data = await getNavbar();
+        console.log("NAVBAR DATA:", data);
+
+        if (data.length > 0) {
+          setNavbar(data[0]);
+        }
+      } catch (error) {
+        console.error("Navbar API error:", error);
+      }
+    };
+
+    fetchNavbar();
+  }, []);
+
+   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
@@ -37,6 +66,39 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+  setIsLoggedIn(!!token);
+}, []);
+
+  useEffect(() => {
+  const openContactPopup = () => {
+    console.log("Contact event received ✅");
+    setActiveForm("contact");
+  };
+
+  window.addEventListener("openContact", openContactPopup);
+
+  return () => {
+    window.removeEventListener("openContact", openContactPopup);
+  };
+}, []);
+
+
+  
+
+  // ✅ USE API DATA INSTEAD OF JSON
+const resources =
+  navbar?.dropdowns?.filter((item: any) => item.type === "resources") || [];
+
+const platformItems =
+  navbar?.dropdowns?.filter((item: any) => item.type === "platform") || [];
+
+const companyItems =
+  navbar?.dropdowns?.filter((item: any) => item.type === "company") || [];
+
+  // ✅ SCROLL EFFECT (UNCHANGED)
+ 
   const getPath = (item: string) => {
     switch (item.toLowerCase()) {
       case "home":
@@ -61,11 +123,18 @@ const Navbar = () => {
   const menuOrder = ["Home", "Services", "Resources", "Platform", "Company","Pricing"];
 
   return (
-    <nav
-      className={`px-4 transition-all duration-500 relative z-[9999] isolate ${
-        scrolled ? "sticky top-0" : ""
-      }`}
-    >
+  <>
+    {!navbar ? (
+      <div className="text-white text-center mt-10">
+        Loading Navbar...
+      </div>
+    ) : (
+      <nav
+        className={`px-4 transition-all duration-500 relative z-[9999] isolate ${
+          scrolled ? "sticky top-0" : ""
+        }`}
+      >
+    
       <div
         className={`w-full max-w-[1600px] 2xl:max-w-[1800px] mx-auto border border-[#436900] rounded-[20px] shadow-[0_4px_23px_rgba(119,185,0,0.24)] transition-all duration-300 ${
           scrolled
@@ -75,7 +144,7 @@ const Navbar = () => {
       >
         <div className="px-4 md:px-6 lg:px-8 xl:px-6 2xl:px-10 relative">
 
-          <div className="flex items-center justfy-between h-[70px] md:h-[85px] lg:h-[95px] x1:h-[105px]">
+          <div className="flex items-center justify-between h-[70px] md:h-[85px] lg:h-[95px] x1:h-[105px]">
 
             {/* LEFT */}
             <div className="flex justify-start">
@@ -150,7 +219,7 @@ const Navbar = () => {
             <div className="w-[90vw] max-w-[550px] lg:max-w-[600px] min-h-[270px] bg-[#0F1800]/95 backdrop-blur-xl rounded-[20px] px-8 py-7">
               
               <div className="grid grid-cols-2 gap-y-10 gap-x-16">
-                {resources.map((res, i) => (
+                {resources.map((res: any, i: number) => (
                   <Link key={i} to={res.path}>
                     <div className="group cursor-pointer p-3 rounded-xl transition-all duration-300 hover:bg-gradient-to-br hover:from-[#77B900]/10 hover:shadow-[0_0_20px_rgba(119,185,0,0.15)]">
                       
@@ -159,7 +228,7 @@ const Navbar = () => {
                       </p>
 
                       <p className="text-[14px] text-white/60 mt-1 group-hover:text-white/80">
-                        {res.desc}
+                        {res.description} 
                       </p>
 
                     </div>
@@ -225,20 +294,21 @@ const Navbar = () => {
             >
               
               <div className="flex flex-col gap-3 lg:gap-4">
-                {platformItems.map((p, i) => (
-                  <div
-                    key={i}
-                    className="
-                      px-4 py-2 rounded-lg cursor-pointer
-                      text-white/80
-                      whitespace-nowrap
-                      transition-all duration-300
-                      hover:bg-[#77B900]/15
-                    "
-                  >
-                    {p}
-                  </div>
-                ))}
+                {platformItems.map((p: any, i: number) => (
+  <Link key={i} to={p.path}>
+    <div
+      className="
+        px-4 py-2 rounded-lg cursor-pointer
+        text-white/80
+        whitespace-nowrap
+        transition-all duration-300
+        hover:bg-[#77B900]/15
+      "
+    >
+      {p.title}
+    </div>
+  </Link>
+))}
               </div>
 
             </div>
@@ -283,7 +353,7 @@ const Navbar = () => {
             <div className="w-[200px] md:w-[230px] lg:w-[260px] bg-[#0F1800]/95 backdrop-blur-xl rounded-[20px] p-4">
               
               <div className="flex flex-col gap-2">
-                {companyItems.map((c, i) => (
+                {companyItems.map((c: any, i: number) => (
                   <Link key={i} to={c.path}>
                     <div
                       className="
@@ -376,30 +446,47 @@ const Navbar = () => {
           {/* INNER BOX */}
           <div className="bg-[#0F1800] rounded-[14px] py-3 flex flex-col gap-3 w-[170px]">
 
-            <Link to="/signin">
-              <div className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition">
-                Sign in
-              </div>
-            </Link>
+           {isLoggedIn ? (
+  <div
+    onClick={handleLogout}
+    className="mx-3 border border-red-500 text-red-400 text-center py-2 rounded-[10px] hover:bg-red-500/10 transition cursor-pointer"
+  >
+    Logout
+  </div>
+) : (
+  <>
+    <div
+      onClick={() => setActiveForm("login")}
+      className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition cursor-pointer"
+    >
+      Sign in
+    </div>
 
-            <Link to="/signup">
-              <div className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition">
-                Sign up
-              </div>
-            </Link>
+    <div
+      onClick={() => setActiveForm("signup")}
+      className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition cursor-pointer"
+    >
+      Sign up
+    </div>
+  </>
+)}
 
-            <Link to="/demo">
-              <div className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition">
-                Get Demo
-              </div>
-            </Link>
+            <div
+  onClick={() => {
+  const section = document.getElementById("demo");
+  section?.scrollIntoView({ behavior: "smooth" });
+}}
+  className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition cursor-pointer"
+>
+  Get Demo
+</div>
 
-            <Link to="/contact">
-              <div className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition">
-                Contact us
-              </div>
-            </Link>
-
+            <div
+  onClick={() => setActiveForm("contact")}
+  className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition cursor-pointer"
+>
+  Contact us
+</div>
           </div>
         </div>
 
@@ -441,14 +528,14 @@ const Navbar = () => {
 
                     {mobileResourcesOpen && (
                       <div className="mt-3 ml-3 border-l border-[#436900] pl-3 flex flex-col gap-3">
-                        {resources.map((res, i) => (
-                          <Link key={i} to={res.path}>
+                        {resources.map((res: any, i: number) => (
+                          <Link key={i} to={res?.path || "/"}>
                             <div className="group cursor-pointer p-2 rounded-lg transition-all duration-300 hover:bg-gradient-to-br hover:from-[#77B900]/10">
                               <p className="text-[#9fdc00] text-sm group-hover:text-[#baff2a]">
                                 {res.title}
                               </p>
                               <p className="text-white/60 text-xs">
-                                {res.desc}
+                                {res.description}
                               </p>
                             </div>
                           </Link>
@@ -472,9 +559,9 @@ const Navbar = () => {
 
                     {mobilePlatformOpen && (
                       <div className="mt-3 ml-3 border-l border-[#436900] pl-3 flex flex-col gap-2">
-                        {platformItems.map((p, i) => (
+                        {platformItems.map((p: any, i: number) => (
                           <div key={i} className="px-3 py-2 text-white/80">
-                            {p}
+                            {p.title}
                           </div>
                         ))}
                       </div>
@@ -496,8 +583,8 @@ const Navbar = () => {
 
                     {mobileCompanyOpen && (
                       <div className="mt-3 ml-3 border-l border-[#436900] pl-3 flex flex-col gap-2">
-                        {companyItems.map((c, i) => (
-                          <Link key={i} to={c.path}>
+                        {companyItems.map((c: any, i: number) => (
+                          <Link key={i} to={c?.path || "/"}>
                             <div className="px-3 py-2 text-white/80">
                               {c.title}
                             </div>
@@ -567,29 +654,61 @@ const Navbar = () => {
         {/* INNER BOX */}
         <div className="bg-[#0F1800] rounded-[14px] px-4 py-3 flex flex-col gap-3">
 
-          <Link to="/signin">
-            <div className="border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition">
-              Sign in
-            </div>
-          </Link>
+          
+            {isLoggedIn ? (
+  <div
+    onClick={() => {
+      handleLogout();
+      setMenuOpen(false);
+    }}
+    className="border border-red-500 text-red-400 text-center py-2 rounded-[10px] cursor-pointer"
+  >
+    Logout
+  </div>
+) : (
+  <>
+    <div
+      onClick={() => {
+        setActiveForm("login");
+        setMenuOpen(false);
+      }}
+      className="border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] cursor-pointer"
+    >
+      Sign in
+    </div>
 
-          <Link to="/signup">
-            <div className="border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition">
-              Sign up
-            </div>
-          </Link>
+    <div
+      onClick={() => {
+        setActiveForm("signup");
+        setMenuOpen(false);
+      }}
+      className="border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] cursor-pointer"
+    >
+      Sign up
+    </div>
+  </>
+)}
 
-          <Link to="/demo">
-            <div className="border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition">
-              Get Demo
-            </div>
-          </Link>
+         <div
+  onClick={() => {
+  const section = document.getElementById("demo");
+  section?.scrollIntoView({ behavior: "smooth" });
+  setMenuOpen(false);
+}}
+  className="border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition cursor-pointer"
+>
+  Get Demo
+</div>
 
-          <Link to="/contact">
-            <div className="border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition">
-              Contact us
-            </div>
-          </Link>
+          <div
+  onClick={() => {
+    setActiveForm("contact");
+    setMenuOpen(false);
+  }}
+  className="border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px]"
+>
+  Contact us
+</div>
 
         </div>
       </div>
@@ -603,9 +722,29 @@ const Navbar = () => {
 
           
         )}
+
       </div>
+      
+
     </nav>
-  );
+
+  )}
+
+   {activeForm === "login" && (
+      <LoginForm setActiveForm={setActiveForm} />
+    )}
+   {activeForm === "signup" && (
+  <SignupForm setActiveForm={setActiveForm} />
+   )}
+   {activeForm === "contact" && (
+  <ContactForm setActiveForm={setActiveForm} />
+    )}
+  
+
+</>
+
+);
+
 };
 
 export default Navbar;

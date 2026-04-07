@@ -10,10 +10,14 @@ import DemoSection from "./components/sections/DemoSection";
 import KoreValueSection from "./components/sections/KoreValueSection";
 import ServicesSection from "./components/sections/ServicesSection";
 
+import ResourcesPage from "./pages/resources/ResourcesPage";
+import PlatformPage from "./pages/platform/PlatformPage";
+import CompanyPage from "./pages/company/CompanyPage";
+import ServicesPage from "./pages/services/ServicesPage"; // ✅ ONLY IMPORT
+
 function App() {
   return (
     <BrowserRouter>
-
       <div className="relative min-h-screen">
 
         {/* BACKGROUND */}
@@ -27,6 +31,7 @@ function App() {
           <main>
             <Routes>
 
+              {/* HOME */}
               <Route
                 path="/"
                 element={
@@ -45,6 +50,7 @@ function App() {
                 }
               />
 
+              {/* SERVICES MAIN PAGE */}
               <Route
                 path="/services"
                 element={
@@ -60,14 +66,23 @@ function App() {
                 }
               />
 
+              {/* ✅ SERVICES DYNAMIC */}
+              <Route path="/services/:type" element={<ServicesPage />} />
+
+              {/* RESOURCES */}
+              <Route path="/resources/:type" element={<ResourcesPage />} />
+
+              {/* PLATFORM */}
+              <Route path="/platform/:type" element={<PlatformPage />} />
+
+              {/* COMPANY */}
+              <Route path="/company/:type" element={<CompanyPage />} />
 
             </Routes>
           </main>
 
         </div>
-
       </div>
-
     </BrowserRouter>
   );
 }

@@ -1,19 +1,50 @@
-import content from "../../content/content.json";
+import { useEffect, useState } from "react";
+import { getInfrastructure } from "../../services/infrastructureApi";
+
 import Graph from "./Graph";
 import FinOpsChart from "./FinOpsChart";
 import SpendChart from "./SpendChart";
 
+type InfrastructureCard = {
+  id: number;
+  title: string;
+  description: string;
+};
+
 export default function Infrastructure() {
-  const cards = content.infrastructure.cards;
+  const [cards, setCards] = useState<InfrastructureCard[]>([]);
+
+  // ✅ API CALL
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getInfrastructure();
+        console.log("INFRA DATA:", data);
+        setCards(data);
+      } catch (error) {
+        console.error("Infra API error:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // ✅ LOADING STATE
+  if (cards.length === 0) {
+    return (
+      <div className="text-white text-center mt-10">
+        Loading Infrastructure...
+      </div>
+    );
+  }
 
   return (
     <section className="w-full flex justify-center px-4 sm:px-6 lg:px-10 pt-0 pb-12 sm:pb-16 lg:pb-24 -mt-[140px] sm:-mt-[180px] lg:-mt-[220px]">
-
       <div className="w-full max-w-[1400px]">
 
         {cards.map((card, index) => (
           <div
-            key={index}
+            key={card.id}
             className="
               grid grid-cols-1 lg:grid-cols-2
               items-center
@@ -41,9 +72,7 @@ export default function Infrastructure() {
               <div className="
                 w-full
                 max-w-[100%] sm:max-w-[500px] lg:max-w-[700px]
-
                 min-h-[220px] sm:min-h-[260px] md:min-h-[300px] lg:min-h-[340px]
-
                 rounded-[30px] sm:rounded-[40px] lg:rounded-[63px]
                 p-[2px]
                 bg-[linear-gradient(135deg,#0F1800,#77B900)]
@@ -58,7 +87,7 @@ export default function Infrastructure() {
                   overflow-visible
                 ">
 
-                  {/* CHART */}
+                  {/* CHART LOGIC (UNCHANGED) */}
                   <div className="w-full h-auto">
                     {index === 0 ? (
                       <FinOpsChart />
@@ -79,7 +108,6 @@ export default function Infrastructure() {
         ))}
 
       </div>
-
     </section>
   );
 }
