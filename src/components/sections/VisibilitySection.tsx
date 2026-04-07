@@ -18,6 +18,7 @@ type VisibilityData = {
 export default function VisibilitySection() {
 
   const [visibility, setVisibility] = useState<VisibilityData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   // ✅ UPDATED CONTACT BUTTON (POPUP TRIGGER)
   const handleContactClick = () => {
@@ -37,11 +38,13 @@ export default function VisibilitySection() {
         const data = await getVisibility();
         console.log("VISIBILITY DATA:", data);
 
-        if (data.length > 0) {
-          setVisibility(data[0]);
+        if (data) {
+          setVisibility(data);
         }
       } catch (error) {
         console.error("Visibility API error:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -49,10 +52,18 @@ export default function VisibilitySection() {
   }, []);
 
   // ✅ LOADING STATE
-  if (!visibility) {
+  if (loading) {
     return (
       <div className="text-white text-center mt-10">
         Loading Visibility...
+      </div>
+    );
+  }
+
+  if (!visibility) {
+    return (
+      <div className="text-white text-center mt-10">
+        No visibility data available.
       </div>
     );
   }

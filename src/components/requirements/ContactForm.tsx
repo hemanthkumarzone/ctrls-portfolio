@@ -34,8 +34,9 @@ export default function ContactForm({ setActiveForm }: any) {
 
     try {
       setLoading(true);
+      const url = `${import.meta.env.VITE_BASE_URL || "http://127.0.0.1:8000/api"}/contact`;
 
-      await axios.post("http://127.0.0.1:8000/api/contact/", form);
+      await axios.post(url, form);
 
       setMsg("Message sent successfully ✅");
 

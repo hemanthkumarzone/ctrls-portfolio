@@ -12,7 +12,7 @@ type InfrastructureCard = {
 };
 
 export default function Infrastructure() {
-  const [cards, setCards] = useState<InfrastructureCard[]>([]);
+  const [cards, setCards] = useState<InfrastructureCard[] | null>(null);
 
   // ✅ API CALL
   useEffect(() => {
@@ -23,6 +23,7 @@ export default function Infrastructure() {
         setCards(data);
       } catch (error) {
         console.error("Infra API error:", error);
+        setCards([]);
       }
     };
 
@@ -30,10 +31,18 @@ export default function Infrastructure() {
   }, []);
 
   // ✅ LOADING STATE
-  if (cards.length === 0) {
+  if (cards === null) {
     return (
       <div className="text-white text-center mt-10">
         Loading Infrastructure...
+      </div>
+    );
+  }
+
+  if (cards.length === 0) {
+    return (
+      <div className="text-white text-center mt-10">
+        No infrastructure data available.
       </div>
     );
   }
