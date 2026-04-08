@@ -1,40 +1,97 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 import ResourceCard from "../../components/ui/ResourceCard";
-import { companyData } from "../../content/companyData";
+
+const BASE_URL =
+  import.meta.env.VITE_BASE_URL || "http://127.0.0.1:8000/api";
 
 const CompanyPage = () => {
   const { type } = useParams();
 
-  const data = companyData[type as keyof typeof companyData];
+  const [sections, setSections] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  if (!data) {
-    return (
-      <div className="text-white p-10">
-        <h1>Company page not found</h1>
-      </div>
-    );
+  // ✅ MATCH THIS WITH YOUR DJANGO DROPDOWN IDs
+  const dropdownMap: Record<string, number> = {
+   "about": 11,
+  "customers": 12,
+  "governance": 13,
+  "privacy-policy": 14,
+  "terms-of-use": 15,   
+  "security": 16, 
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const dropdownId = dropdownMap[type || ""];
+
+        console.log("TYPE:", type);
+        console.log("DROPDOWN ID:", dropdownId);
+
+        if (!dropdownId) {
+          console.error("Invalid company type:", type);
+          setSections([]);
+          return;
+        }
+
+        const res = await axios.get(
+          `${BASE_URL}/sections/?dropdown_id=${dropdownId}`
+        );
+
+        console.log("COMPANY API:", res.data);
+
+        setSections(res.data);
+      } catch (error) {
+        console.error("Error fetching company data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [type]);
+
+  if (loading) {
+    return <div className="text-white p-10">Loading...</div>;
+  }
+
+  if (!sections.length) {
+    return <div className="text-white p-10">No data found</div>;
   }
 
   return (
     <div className="w-full min-h-screen bg-[#0B1200] text-white">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 py-16">
+      <div className="max-w-[1400px] mx-auto px-6 py-16">
 
-        {/* TITLE */}
-        <h1 className="text-4xl md:text-5xl font-bold text-[#9fdc00]">
-          {data.title}
-        </h1>
+        {sections.map((section, index) => (
+          <div key={index} className="mb-20">
 
-        {/* DESCRIPTION */}
-        <p className="text-white/70 mt-5 text-lg max-w-3xl">
-          {data.description}
-        </p>
+            <h1 className="text-4xl md:text-5xl font-bold text-[#9fdc00]">
+              {section.title}
+            </h1>
 
-        {/* CONTENT CARDS */}
-        <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {data.items.map((item: string, index: number) => (
-            <ResourceCard key={index} title={item} />
-          ))}
-        </div>
+            <p className="text-white/70 mt-5 text-lg max-w-3xl">
+              {section.description}
+            </p>
+
+            <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {section.cards?.length > 0 ? (
+                section.cards.map((card: any, i: number) => (
+                  <ResourceCard
+                    key={i}
+                    title={card.title}
+                    description={card.description}
+                  />
+                ))
+              ) : (
+                <p>No cards available</p>
+              )}
+            </div>
+
+          </div>
+        ))}
 
       </div>
     </div>
