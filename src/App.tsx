@@ -13,7 +13,9 @@ import ServicesSection from "./components/sections/ServicesSection";
 import ResourcesPage from "./pages/resources/ResourcesPage";
 import PlatformPage from "./pages/platform/PlatformPage";
 import CompanyPage from "./pages/company/CompanyPage";
-import ServicesPage from "./pages/services/ServicesPage"; // ✅ ONLY IMPORT
+
+// 🔥 IMPORTANT IMPORT (DETAIL PAGE)
+import ServiceDetailsPage from "./pages/service/ServiceDetailsPage";
 
 function App() {
   return (
@@ -50,7 +52,7 @@ function App() {
                 }
               />
 
-              {/* SERVICES MAIN PAGE */}
+              {/* SERVICES MAIN PAGE (LIST OF 11 CARDS) */}
               <Route
                 path="/services"
                 element={
@@ -66,8 +68,8 @@ function App() {
                 }
               />
 
-              {/* ✅ SERVICES DYNAMIC */}
-              <Route path="/services/:type" element={<ServicesPage />} />
+              {/* 🔥 SERVICE DETAIL PAGE (DYNAMIC) */}
+              <Route path="/services/:type" element={<ServiceDetailsPage />} />
 
               {/* RESOURCES */}
               <Route path="/resources/:type" element={<ResourcesPage />} />

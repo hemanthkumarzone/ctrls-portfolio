@@ -197,7 +197,7 @@ const companyItems =
       onMouseLeave={() => {
         resourcesTimeout.current = setTimeout(() => {
           setShowResources(false);
-        }, 300);
+        }, 50);
       }}
     >
       {MenuItem}
@@ -257,7 +257,7 @@ const companyItems =
       onMouseLeave={() => {
         platformTimeout.current = setTimeout(() => {
           setShowPlatform(false);
-        }, 300);
+        }, 50);
       }}
     >
       {MenuItem}
@@ -271,7 +271,7 @@ const companyItems =
           onMouseLeave={() => {
             platformTimeout.current = setTimeout(() => {
               setShowPlatform(false);
-            }, 300);
+            }, 50);
           }}
         >
           {/* OUTER GLOW */}
@@ -331,7 +331,7 @@ const companyItems =
       onMouseLeave={() => {
         companyTimeout.current = setTimeout(() => {
           setShowCompany(false);
-        }, 300);
+        }, 50);
       }}
     >
       {MenuItem}
@@ -345,7 +345,7 @@ const companyItems =
           onMouseLeave={() => {
             companyTimeout.current = setTimeout(() => {
               setShowCompany(false);
-            }, 300);
+            }, 50);
           }}
         >
           <div className="p-[2px] rounded-[22px] bg-gradient-to-br from-[#0F1800] to-[#77B900] shadow-[0_0_30px_rgba(119,185,0,0.25)]">
@@ -402,7 +402,7 @@ const companyItems =
   onMouseLeave={() => {
     timeoutRef.current = setTimeout(() => {
       setShowGetStarted(false);
-    }, 300); //
+    }, 50); //
   }}
 >
 
