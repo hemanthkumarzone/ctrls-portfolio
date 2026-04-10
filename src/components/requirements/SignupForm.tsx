@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signupUser } from "../../services/signupApi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -14,6 +14,16 @@ export default function SignupForm({ setActiveForm }: any) {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  // 🔥 RESET FORM WHEN POPUP OPENS
+  useEffect(() => {
+    setForm({
+      name: "",
+      email: "",
+      password: "",
+    });
+    setMessage("");
+  }, []);
+
   // HANDLE INPUT
   const handleChange = (e: any) => {
     setForm({
@@ -25,25 +35,31 @@ export default function SignupForm({ setActiveForm }: any) {
   // HANDLE SUBMIT
   const handleSubmit = async () => {
 
-    // ✅ VALIDATION
     if (!form.name || !form.email || !form.password) {
       setMessage("Please fill all fields ⚠️");
       return;
     }
 
     if (!form.email.includes("@")) {
-      setMessage("Enter valid email ❌");
+      setMessage("Enter valid email ");
       return;
     }
 
     try {
       setLoading(true);
 
-      const res = await signupUser(form);
+      await signupUser(form);
 
-      setMessage("Account created successfully ✅");
+      setMessage("Account created successfully ");
 
-      // 👉 Auto switch to login
+      // 🔥 RESET FORM AFTER SUCCESS
+      setForm({
+        name: "",
+        email: "",
+        password: "",
+      });
+
+      // 👉 OPEN LOGIN
       setTimeout(() => {
         setActiveForm("login");
       }, 1200);
@@ -52,7 +68,7 @@ export default function SignupForm({ setActiveForm }: any) {
       console.log(error.response);
 
       setMessage(
-        error.response?.data?.message || "Signup failed ❌"
+        error.response?.data?.message || "Signup failed "
       );
     } finally {
       setLoading(false);
@@ -64,7 +80,7 @@ export default function SignupForm({ setActiveForm }: any) {
 
       <div className="relative bg-[#0F180F] p-6 rounded-2xl w-[320px] shadow-lg border border-[#436900]">
 
-        {/* ❌ CLOSE BUTTON */}
+        {/* CLOSE */}
         <button
           onClick={() => setActiveForm(null)}
           className="absolute top-3 right-3 text-white text-xl"
@@ -77,26 +93,32 @@ export default function SignupForm({ setActiveForm }: any) {
         {/* NAME */}
         <input
           name="name"
-          placeholder="Name"
+          value={form.name}
           onChange={handleChange}
+          autoComplete="off"
+          placeholder="Name"
           className="w-full mb-3 p-2 rounded bg-black text-white border border-gray-600"
         />
 
         {/* EMAIL */}
         <input
           name="email"
-          placeholder="Email"
+          value={form.email}
           onChange={handleChange}
+          autoComplete="off"
+          placeholder="Email"
           className="w-full mb-3 p-2 rounded bg-black text-white border border-gray-600"
         />
 
-        {/* PASSWORD WITH EYE ICON */}
+        {/* PASSWORD */}
         <div className="relative">
           <input
             name="password"
+            value={form.password}
             type={showPassword ? "text" : "password"}
-            placeholder="Password"
             onChange={handleChange}
+            autoComplete="new-password"
+            placeholder="Password"
             className="w-full mb-3 p-2 rounded bg-black text-white border border-gray-600"
           />
 
@@ -112,7 +134,7 @@ export default function SignupForm({ setActiveForm }: any) {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-[#77B900] text-black py-2 rounded font-medium flex justify-center items-center"
+          className="w-full bg-[#77B900] text-black py-2 rounded font-medium"
         >
           {loading ? "Creating..." : "Sign Up"}
         </button>
