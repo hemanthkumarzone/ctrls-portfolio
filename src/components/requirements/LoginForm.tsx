@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { loginUser } from "../../services/loginApi";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -15,6 +15,15 @@ export default function LoginForm({ setActiveForm }: any) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  // 🔥 RESET FORM WHEN COMPONENT LOADS
+  useEffect(() => {
+    setForm({
+      email: "",
+      password: "",
+    });
+    setMessage("");
+  }, []);
 
   // HANDLE INPUT
   const handleChange = (e: any) => {
@@ -34,7 +43,7 @@ export default function LoginForm({ setActiveForm }: any) {
     }
 
     if (!form.email.includes("@")) {
-      setMessage("Enter valid email ❌");
+      setMessage("Enter valid email ");
       return;
     }
 
@@ -46,16 +55,19 @@ export default function LoginForm({ setActiveForm }: any) {
       // ✅ STORE TOKEN
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
-        window.location.reload();
       }
 
-      setMessage("Login successful ✅");
+      setMessage("Login successful ");
+
+      // ✅ RESET FORM AFTER LOGIN
+      setForm({
+        email: "",
+        password: "",
+      });
 
       // ✅ CLOSE POPUP
-      setActiveForm(null);
-
-      // ✅ REDIRECT TO DASHBOARD (FIXED)
       setTimeout(() => {
+        setActiveForm(null);
         navigate("/");
       }, 1000);
 
@@ -63,7 +75,7 @@ export default function LoginForm({ setActiveForm }: any) {
       console.log(error.response);
 
       setMessage(
-        error.response?.data?.message || "Invalid credentials ❌"
+        error.response?.data?.message || "Invalid credentials "
       );
     } finally {
       setLoading(false);
@@ -89,7 +101,9 @@ export default function LoginForm({ setActiveForm }: any) {
         <input
           name="email"
           placeholder="Email"
+          value={form.email}
           onChange={handleChange}
+          autoComplete="off"   // 🔥 disable autofill
           className="w-full mb-3 p-2 bg-black border border-gray-500 rounded"
         />
 
@@ -99,7 +113,9 @@ export default function LoginForm({ setActiveForm }: any) {
             name="password"
             type={showPassword ? "text" : "password"}
             placeholder="Password"
+            value={form.password}
             onChange={handleChange}
+            autoComplete="new-password"  // 🔥 disable autofill
             className="w-full mb-3 p-2 bg-black border border-gray-500 rounded"
           />
 

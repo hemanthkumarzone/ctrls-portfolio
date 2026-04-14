@@ -9,7 +9,18 @@ export default {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
       },
+
+      // ✅ FLOAT ANIMATION
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+      },
+      animation: {
+        float: 'float 5s ease-in-out infinite',
+      },
     },
   },
   plugins: [],
-}
+};

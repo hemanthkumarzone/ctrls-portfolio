@@ -12,6 +12,7 @@ export default function ContactForm({ setActiveForm }: any) {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
 
+  // HANDLE INPUT
   const handleChange = (e: any) => {
     setForm({
       ...form,
@@ -19,39 +20,67 @@ export default function ContactForm({ setActiveForm }: any) {
     });
   };
 
+  // SUBMIT
   const handleSubmit = async () => {
 
-    // ✅ Validation
+    // ✅ VALIDATION
     if (!form.name || !form.email || !form.message) {
       setMsg("Please fill all fields ⚠️");
       return;
     }
 
     if (!form.email.includes("@")) {
-      setMsg("Enter valid email ❌");
+      setMsg("Enter valid email ");
       return;
     }
 
     try {
       setLoading(true);
-      const url = `${import.meta.env.VITE_BASE_URL || "http://127.0.0.1:8000/api"}/contact`;
 
-      await axios.post(url, form);
+      // 🔥 FIXED URL (IMPORTANT)
+      const BASE_URL = import.meta.env.VITE_BASE_URL || "http://127.0.0.1:8000/api";
+      const url = `${BASE_URL}/contact/`; // ✅ FIXED
 
-      setMsg("Message sent successfully ✅");
+      const response = await axios.post(
+        url,
+        {
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
+      console.log("SUCCESS:", response.data);
+
+      setMsg("Message sent successfully ");
+
+      // RESET FORM
       setForm({
         name: "",
         email: "",
         message: "",
       });
 
+      // CLOSE POPUP AFTER 1.5s
       setTimeout(() => {
         setActiveForm(null);
       }, 1500);
 
     } catch (error: any) {
-      setMsg("Failed to send ❌");
+      console.error("ERROR:", error.response?.data || error.message);
+
+      // 🔥 BETTER ERROR MESSAGE
+      if (error.response) {
+        setMsg("Error: " + JSON.stringify(error.response.data));
+      } else {
+        setMsg("Failed to send ");
+      }
+
     } finally {
       setLoading(false);
     }
@@ -72,6 +101,7 @@ export default function ContactForm({ setActiveForm }: any) {
 
         <h2 className="text-xl mb-4 text-center">Contact Us</h2>
 
+        {/* NAME */}
         <input
           name="name"
           placeholder="Your Name"
@@ -80,6 +110,7 @@ export default function ContactForm({ setActiveForm }: any) {
           className="w-full mb-3 p-2 bg-black border border-gray-500 rounded"
         />
 
+        {/* EMAIL */}
         <input
           name="email"
           placeholder="Email"
@@ -88,6 +119,7 @@ export default function ContactForm({ setActiveForm }: any) {
           className="w-full mb-3 p-2 bg-black border border-gray-500 rounded"
         />
 
+        {/* MESSAGE */}
         <textarea
           name="message"
           placeholder="Your Message"
@@ -96,6 +128,7 @@ export default function ContactForm({ setActiveForm }: any) {
           className="w-full mb-3 p-2 bg-black border border-gray-500 rounded"
         />
 
+        {/* BUTTON */}
         <button
           onClick={handleSubmit}
           disabled={loading}
@@ -104,6 +137,7 @@ export default function ContactForm({ setActiveForm }: any) {
           {loading ? "Sending..." : "Send"}
         </button>
 
+        {/* MESSAGE */}
         {msg && (
           <p className={`mt-3 text-center ${
             msg.includes("success") ? "text-green-400" : "text-red-400"

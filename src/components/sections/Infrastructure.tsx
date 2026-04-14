@@ -14,12 +14,10 @@ type InfrastructureCard = {
 export default function Infrastructure() {
   const [cards, setCards] = useState<InfrastructureCard[] | null>(null);
 
-  // ✅ API CALL
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getInfrastructure();
-        console.log("INFRA DATA:", data);
         setCards(data);
       } catch (error) {
         console.error("Infra API error:", error);
@@ -30,7 +28,6 @@ export default function Infrastructure() {
     fetchData();
   }, []);
 
-  // ✅ LOADING STATE
   if (cards === null) {
     return (
       <div className="text-white text-center mt-10">
@@ -48,7 +45,10 @@ export default function Infrastructure() {
   }
 
   return (
-    <section className="w-full flex justify-center px-4 sm:px-6 lg:px-10 pt-0 pb-12 sm:pb-16 lg:pb-24 -mt-[140px] sm:-mt-[180px] lg:-mt-[220px]">
+    <section className="w-full flex justify-center px-4 sm:px-6 lg:px-10 
+      pt-6 sm:pt-10 lg:pt-14 
+      pb-12 sm:pb-16 lg:pb-24">
+
       <div className="w-full max-w-[1400px]">
 
         {cards.map((card, index) => (
@@ -58,7 +58,7 @@ export default function Infrastructure() {
               grid grid-cols-1 lg:grid-cols-2
               items-center
               gap-8 sm:gap-10 lg:gap-20
-              mb-16 sm:mb-20 lg:mb-32
+              mb-16 sm:mb-20 lg:mb-32 last:mb-0
             "
           >
 
@@ -96,7 +96,6 @@ export default function Infrastructure() {
                   overflow-visible
                 ">
 
-                  {/* CHART LOGIC (UNCHANGED) */}
                   <div className="w-full h-auto">
                     {index === 0 ? (
                       <FinOpsChart />
