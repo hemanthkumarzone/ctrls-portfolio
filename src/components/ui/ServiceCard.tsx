@@ -24,13 +24,15 @@ const ServiceCard = ({ icon, emoji, title, description }: Props) => {
           </div>
         )}
 
-        <h3 className="text-white text-[20px] font-semibold mb-[8px]">
-          {title}
-        </h3>
+        <h3
+  className="text-white text-[20px] font-semibold mb-[8px]"
+  dangerouslySetInnerHTML={{ __html: title as string }}
+/>
 
-        <p className="text-[#929292] text-[13px] leading-[28px] px-6">
-          {description}
-        </p>
+        <div
+  className="text-[#929292] text-[13px] leading-[28px] px-6"
+  dangerouslySetInnerHTML={{ __html: description as string }}
+/>
 
       </div>
     </Link>

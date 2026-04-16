@@ -45,11 +45,14 @@ export default function Infrastructure() {
   }
 
   return (
-    <section className="w-full flex justify-center px-4 sm:px-6 lg:px-10 
-      pt-6 sm:pt-10 lg:pt-14 
-      pb-12 sm:pb-16 lg:pb-24">
-
-      <div className="w-full max-w-[1400px]">
+    <section
+      className="w-full flex items-center justify-center 
+      px-4 sm:px-6 lg:px-10 
+      min-h-[90vh] 
+      pt-6 sm:pt-8 
+      pb-8 sm:pb-10"
+    >
+      <div className="w-full max-w-[1200px]">
 
         {cards.map((card, index) => (
           <div
@@ -57,44 +60,56 @@ export default function Infrastructure() {
             className="
               grid grid-cols-1 lg:grid-cols-2
               items-center
-              gap-8 sm:gap-10 lg:gap-20
-              mb-16 sm:mb-20 lg:mb-32 last:mb-0
+              gap-6 sm:gap-8 lg:gap-12
+              mb-10 sm:mb-12 lg:mb-16 last:mb-0
             "
           >
 
             {/* LEFT */}
-            <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 text-center lg:text-left">
+            <div className="flex flex-col gap-4 sm:gap-5 lg:gap-6 text-center lg:text-left">
 
-              <h3 className="text-white text-[22px] sm:text-[28px] md:text-[40px] lg:text-[56px] font-semibold leading-tight">
-                {card.title}
-              </h3>
+              <h3
+                className="text-white 
+                text-[20px] sm:text-[26px] md:text-[34px] lg:text-[42px] 
+                font-semibold leading-tight"
+                dangerouslySetInnerHTML={{ __html: card.title as string }}
+              />
 
-              <p className="text-[#7E7E7E] text-[14px] sm:text-[16px] md:text-[22px] lg:text-[28px] leading-relaxed max-w-full lg:max-w-[600px] mx-auto lg:mx-0">
-                {card.description}
-              </p>
+              <div
+                className="text-[#7E7E7E] 
+                text-[13px] sm:text-[15px] md:text-[18px] lg:text-[20px] 
+                leading-relaxed 
+                max-w-full lg:max-w-[500px] 
+                mx-auto lg:mx-0"
+                dangerouslySetInnerHTML={{ __html: card.description as string }}
+              />
 
             </div>
 
             {/* RIGHT CARD */}
             <div className="flex justify-center lg:justify-end">
 
-              <div className="
-                w-full
-                max-w-[100%] sm:max-w-[500px] lg:max-w-[700px]
-                min-h-[220px] sm:min-h-[260px] md:min-h-[300px] lg:min-h-[340px]
-                rounded-[30px] sm:rounded-[40px] lg:rounded-[63px]
-                p-[2px]
-                bg-[linear-gradient(135deg,#0F1800,#77B900)]
-              ">
+              <div
+                className="
+                  w-full
+                  max-w-[100%] sm:max-w-[450px] lg:max-w-[600px]
+                  min-h-[180px] sm:min-h-[220px] md:min-h-[250px] lg:min-h-[280px]
+                  rounded-[30px] lg:rounded-[50px]
+                  p-[2px]
+                  bg-[linear-gradient(135deg,#0F1800,#77B900)]
+                "
+              >
 
-                <div className="
-                  w-full h-auto
-                  rounded-[25px] sm:rounded-[30px] lg:rounded-[63px]
-                  bg-[#131814]
-                  p-3 sm:p-4 md:p-6
-                  flex flex-col justify-start
-                  overflow-visible
-                ">
+                <div
+                  className="
+                    w-full h-auto
+                    rounded-[25px] lg:rounded-[50px]
+                    bg-[#131814]
+                    p-3 sm:p-4 md:p-5
+                    flex flex-col justify-start
+                    overflow-visible
+                  "
+                >
 
                   <div className="w-full h-auto">
                     {index === 0 ? (

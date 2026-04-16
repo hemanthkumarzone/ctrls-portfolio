@@ -66,15 +66,15 @@ const ServiceDetailsPage = () => {
         </p>
 
         {/* 🟢 TITLE */}
-        <h1 className="text-4xl md:text-5xl font-bold text-[#9fdc00]">
-          {data.title}
-        </h1>
+       <h1
+  className="text-4xl md:text-5xl font-bold text-[#9fdc00]"
+  dangerouslySetInnerHTML={{ __html: data.title as string }}
+/>
 
-        {/* 🟢 DESCRIPTION */}
-        <p className="text-white/70 mt-5 text-lg max-w-3xl">
-          {data.description}
-        </p>
-
+        <div
+  className="text-white/70 mt-5 text-lg max-w-3xl"
+  dangerouslySetInnerHTML={{ __html: data.description as string }}
+/>
         {/* 🟢 CARDS */}
         <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {data.cards.map((card: any) => (

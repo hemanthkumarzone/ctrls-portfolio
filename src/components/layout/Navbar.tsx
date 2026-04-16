@@ -4,6 +4,8 @@ import { getNavbar } from "../../services/navbarApi";
 import LoginForm from "../requirements/LoginForm";
 import SignupForm from "../requirements/SignupForm";
 import ContactForm from "../requirements/ContactForm";
+import ForgotPassword from "../requirements/ForgotPassword";
+import VerificationForm from "../requirements/VerificationForm";
 
 
 const Navbar = () => {
@@ -735,9 +737,15 @@ const companyItems =
     )}
    {activeForm === "signup" && (
   <SignupForm setActiveForm={setActiveForm} />
-   )}
+    )}
    {activeForm === "contact" && (
   <ContactForm setActiveForm={setActiveForm} />
+    )}
+    {activeForm === "forgot" && (
+  <ForgotPassword setActiveForm={setActiveForm} />
+    )}
+    {activeForm === "verify" && (
+  <VerificationForm setActiveForm={setActiveForm} />
     )}
   
 

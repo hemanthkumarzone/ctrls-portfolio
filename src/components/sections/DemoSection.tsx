@@ -125,21 +125,24 @@ export default function DemoSection() {
       >
 
         <div className="absolute left-[77px] top-[150px]">
-          <p className="text-white text-[36px] font-semibold">
-            {demo.heading}
-          </p>
+          <p
+          className="text-white text-[36px] font-semibold"
+          dangerouslySetInnerHTML={{ __html: demo.heading as string }}
+          />
         </div>
 
         <div className="absolute left-[74px] top-[250px] w-[695px]">
-          <h1 className="text-[#77B900] text-[72px] font-semibold leading-[100px]">
-            {demo.title}
-          </h1>
+          <h1
+  className="text-[#77B900] text-[72px] font-semibold leading-[100px]"
+  dangerouslySetInnerHTML={{ __html: demo.title as string }}
+/>
         </div>
 
         <div className="absolute left-[77px] top-[740px] w-[704px]">
-          <p className="text-white text-[16px] leading-[44px]">
-            {demo.description}
-          </p>
+          <div
+  className="text-white text-[16px] leading-[44px]"
+  dangerouslySetInnerHTML={{ __html: demo.description as string }}
+/>
         </div>
 
         {/* FORM */}
@@ -199,17 +202,20 @@ export default function DemoSection() {
       {/* MOBILE */}
       <div className="lg:hidden w-full px-6 py-16">
 
-        <p className="text-white text-[20px] mb-4">
-          {demo.heading}
-        </p>
+        <p
+  className="text-white text-[20px] mb-4"
+  dangerouslySetInnerHTML={{ __html: demo.heading as string }}
+/>
 
-        <h1 className="text-[#77B900] text-[36px] mb-6">
-          {demo.title}
-        </h1>
+<h1
+  className="text-[#77B900] text-[36px] mb-6"
+  dangerouslySetInnerHTML={{ __html: demo.title as string }}
+/>
 
-        <p className="text-white text-[14px] mb-10">
-          {demo.description}
-        </p>
+<div
+  className="text-white text-[14px] mb-10"
+  dangerouslySetInnerHTML={{ __html: demo.description as string }}
+/>
 
         <div className="max-w-[420px] mx-auto border-2 border-[#283E00] rounded-[30px] p-[30px]">
 
