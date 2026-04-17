@@ -38,14 +38,15 @@ export default function VisibilityCard({
       />
 
       {/* 🔹 TITLE */}
-      <h3 className="text-white text-[18px] sm:text-[20px] lg:text-[22px] font-semibold mb-3 lg:mb-4">
-        {title}
-      </h3>
+     <h3
+  className="text-white text-[18px] sm:text-[20px] lg:text-[22px] font-semibold mb-3 lg:mb-4"
+  dangerouslySetInnerHTML={{ __html: title as string }}
+/>
 
-      {/* 🔹 DESCRIPTION */}
-      <p className="text-[#929292] text-[13px] sm:text-[14px] lg:text-[15px] leading-[22px] sm:leading-[26px] lg:leading-[32px]">
-        {description}
-      </p>
+      <div
+  className="text-[#929292] text-[13px] sm:text-[14px] lg:text-[15px] leading-[22px] sm:leading-[26px] lg:leading-[32px]"
+  dangerouslySetInnerHTML={{ __html: description as string }}
+/>
 
     </div>
   )

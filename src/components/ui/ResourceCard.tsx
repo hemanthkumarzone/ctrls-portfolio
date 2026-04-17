@@ -16,13 +16,15 @@ const ResourceCard = ({ title, description, type }: Props) => {
       hover:-translate-y-1
     "
     >
-      <h3 className="text-xl font-semibold text-[#9fdc00]">
-        {title}
-      </h3>
+      <h3
+  className="text-xl font-semibold text-[#9fdc00]"
+  dangerouslySetInnerHTML={{ __html: title as string }}
+/>
 
-      <p className="text-sm text-white/60 mt-3 leading-relaxed">
-        {description}
-      </p>
+      <div
+  className="text-sm text-white/60 mt-3 leading-relaxed"
+  dangerouslySetInnerHTML={{ __html: description as string }}
+/>
 
       {/* ✅ DOWNLOAD BUTTON FIXED */}
       {type === "ebooks" && (

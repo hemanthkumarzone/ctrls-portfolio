@@ -109,13 +109,15 @@ export default function VisibilitySection() {
         {/* TITLE */}
         <div className="text-center mb-16 lg:mb-24">
 
-          <h2 className="text-[#77B900] text-[32px] md:text-[42px] lg:text-[56px] font-semibold mb-6 lg:mb-8">
-            {visibility.title}
-          </h2>
+          <h2
+  className="text-[#77B900] text-[32px] md:text-[42px] lg:text-[56px] font-semibold mb-6 lg:mb-8"
+  dangerouslySetInnerHTML={{ __html: visibility.title as string }}
+/>
 
-          <p className="text-[#7E7E7E] text-[18px] md:text-[22px] lg:text-[28px] max-w-[1200px] mx-auto">
-            {visibility.description}
-          </p>
+          <div
+  className="text-[#7E7E7E] text-[18px] md:text-[22px] lg:text-[28px] max-w-[1200px] mx-auto"
+  dangerouslySetInnerHTML={{ __html: visibility.description as string }}
+/>
 
         </div>
 

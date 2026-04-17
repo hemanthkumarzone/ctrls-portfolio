@@ -68,13 +68,15 @@ const CompanyPage = () => {
         {sections.map((section, index) => (
           <div key={index} className="mb-20">
 
-            <h1 className="text-4xl md:text-5xl font-bold text-[#9fdc00]">
-              {section.title}
-            </h1>
+            <h1
+  className="text-4xl md:text-5xl font-bold text-[#9fdc00]"
+  dangerouslySetInnerHTML={{ __html: section.title as string }}
+/>
 
-            <p className="text-white/70 mt-5 text-lg max-w-3xl">
-              {section.description}
-            </p>
+           <div
+  className="text-white/70 mt-5 text-lg max-w-3xl"
+  dangerouslySetInnerHTML={{ __html: section.description as string }}
+/>
 
             <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {section.cards?.length > 0 ? (
