@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getNavbar } from "../../services/navbarApi";
-import LoginForm from "../requirements/LoginForm";
-import SignupForm from "../requirements/SignupForm";
 import ContactForm from "../requirements/ContactForm";
 import ForgotPassword from "../requirements/ForgotPassword";
 import VerificationForm from "../requirements/VerificationForm";
@@ -95,6 +93,8 @@ const resources =
 
 const platformItems =
   navbar?.dropdowns?.filter((item: any) => item.type === "platform") || [];
+  const businessItems = platformItems.slice(0, 7);
+  const platformList = platformItems.slice(7);
 
 const companyItems =
   navbar?.dropdowns?.filter((item: any) => item.type === "company") || [];
@@ -247,7 +247,7 @@ const companyItems =
   );
 }
 
-                 if (item === "Platform") {
+                if (item === "Platform") {
   return (
     <div
       key={index}
@@ -259,65 +259,82 @@ const companyItems =
       onMouseLeave={() => {
         platformTimeout.current = setTimeout(() => {
           setShowPlatform(false);
-        }, 50);
+        }, 100);
       }}
     >
       {MenuItem}
 
       {showPlatform && (
-        <div
-          className="absolute top-full mt-3 left-1/2 -translate-x-1/2 z-50"
-          onMouseEnter={() => {
-            if (platformTimeout.current) clearTimeout(platformTimeout.current);
-          }}
-          onMouseLeave={() => {
-            platformTimeout.current = setTimeout(() => {
-              setShowPlatform(false);
-            }, 50);
-          }}
-        >
-          {/* OUTER GLOW */}
-          <div className="p-[2px] rounded-[24px] bg-gradient-to-br from-[#0F1800] to-[#77B900] shadow-[0_0_40px_rgba(119,185,0,0.25)]">
-            
-            {/* RESPONSIVE BOX */}
-            <div
-              className="
-                min-w-[320px]
-                max-w-[90vw]
-                lg:min-w-[360px]
-                xl:min-w-[400px]
-                2xl:min-w-[440px]
-                bg-[#0F1800]/95
-                backdrop-blur-xl
-                rounded-[22px]
-                px-5 lg:px-6
-                py-5 lg:py-6
-              "
-            >
-              
-              <div className="flex flex-col gap-3 lg:gap-4">
-                {platformItems.map((p: any, i: number) => (
-  <Link key={i} to={p.path}>
-    <div
-      className="
-        px-4 py-2 rounded-lg cursor-pointer
-        text-white/80
-        whitespace-nowrap
-        transition-all duration-300
-        hover:bg-[#77B900]/15
-      "
-    >
-      {p.title}
-    </div>
-  </Link>
-))}
-              </div>
+  <div className="absolute top-full mt-4 left-1/2 -translate-x-1/2 z-50">
+    
+    <div className="p-[2px] rounded-[26px] bg-gradient-to-br from-[#0F1800] to-[#77B900] shadow-[0_0_50px_rgba(119,185,0,0.3)]">
 
+      <div className="bg-[#0F1800]/95 backdrop-blur-xl rounded-[24px] px-12 py-10 w-[820px]">
+
+        <div className="grid grid-cols-2 gap-20">
+
+          {/* ================= LEFT ================= */}
+          <div>
+            
+            {/* TITLE */}
+            <div className="mb-6">
+              <h3 className="text-white text-[24px] font-semibold">
+                Business Requirement
+              </h3>
+
+              <div className="relative mt-2 h-[2px] w-[220px]">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#77B900] to-transparent rounded-full" />
+                <div className="absolute inset-0 blur-sm bg-[#77B900]/60 rounded-full" />
+              </div>
+            </div>
+
+            {/* ITEMS */}
+            <div className="flex flex-col gap-4">
+              {businessItems.map((item: any, i: number) => (
+                <Link key={i} to={item.path}>
+                  <div className="text-white/70 hover:text-[#9fdc00] transition duration-300 cursor-pointer">
+                    {item.title}
+                  </div>
+                </Link>
+              ))}
             </div>
 
           </div>
+
+          {/* ================= RIGHT ================= */}
+          <div>
+
+            {/* TITLE */}
+            <div className="mb-6">
+              <h3 className="text-white text-[24px] font-semibold">
+                Supported Platforms
+              </h3>
+
+              <div className="relative mt-2 h-[2px] w-[240px]">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#77B900] to-transparent rounded-full" />
+                <div className="absolute inset-0 blur-sm bg-[#77B900]/60 rounded-full" />
+              </div>
+            </div>
+
+            {/* ITEMS */}
+            <div className="flex flex-col gap-4">
+              {platformList.map((item: any, i: number) => (
+                <Link key={i} to={item.path}>
+                  <div className="text-white/70 hover:text-[#9fdc00] transition duration-300 cursor-pointer">
+                    {item.title}
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+          </div>
+
         </div>
-      )}
+
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }
@@ -458,18 +475,15 @@ const companyItems =
 ) : (
   <>
     <div
-      onClick={() => setActiveForm("login")}
+      onClick={() => {
+  window.location.href = "http://business.ctrls.co/";
+}}
       className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition cursor-pointer"
     >
       Sign in
     </div>
 
-    <div
-      onClick={() => setActiveForm("signup")}
-      className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition cursor-pointer"
-    >
-      Sign up
-    </div>
+    
   </>
 )}
 
@@ -671,23 +685,15 @@ const companyItems =
   <>
     <div
       onClick={() => {
-        setActiveForm("login");
-        setMenuOpen(false);
-      }}
+  window.location.href = "http://business.ctrls.co/";
+  setMenuOpen(false);
+}}
       className="border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] cursor-pointer"
     >
       Sign in
     </div>
 
-    <div
-      onClick={() => {
-        setActiveForm("signup");
-        setMenuOpen(false);
-      }}
-      className="border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] cursor-pointer"
-    >
-      Sign up
-    </div>
+   
   </>
 )}
 
@@ -732,12 +738,7 @@ const companyItems =
 
   )}
 
-   {activeForm === "login" && (
-      <LoginForm setActiveForm={setActiveForm} />
-    )}
-   {activeForm === "signup" && (
-  <SignupForm setActiveForm={setActiveForm} />
-    )}
+   
    {activeForm === "contact" && (
   <ContactForm setActiveForm={setActiveForm} />
     )}

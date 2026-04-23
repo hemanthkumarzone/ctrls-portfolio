@@ -155,3 +155,17 @@ html{
 .laptop-float{
   animation:laptopFloat 6s ease-in-out infinite;
 }
+/* Hide scrollbar but allow scrolling */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+body {
+  font-family: 'Inter', sans-serif;
+}

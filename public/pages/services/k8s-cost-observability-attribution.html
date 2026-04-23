@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>K8s Cost Observability & Attribution — AI FinOps Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #f2f1ed;
+      --white:    #ffffff;
+      --surf:     #e8e6e0;
+      --surf2:    #dddbd4;
+      --ink:      #141312;
+      --ink2:     #2f2d2a;
+      --ink3:     #5a5750;
+      --ink4:     #8a877e;
+      --ink5:     #b8b5ac;
+      --rule:     rgba(20,19,18,.08);
+      --rule2:    rgba(20,19,18,.15);
+      --teal:     #0d6e6e;
+      --teal-lt:  #d4f0f0;
+      --teal-mid: #1a9999;
+      --orange:   #c45c00;
+      --orange-lt:#fde8d4;
+      --violet:   #4c1d95;
+      --violet-lt:#ede9fe;
+      --lime:     #3a5c1a;
+      --lime-lt:  #dcf0c8;
+      --red:      #b91c1c;
+      --red-lt:   #fee2e2;
+      --mono:     'IBM Plex Mono', monospace;
+      --cab:      'Cabinet Grotesk', system-ui, sans-serif;
+      --r:        6px;
+      --r-lg:     12px;
+      --r-xl:     20px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--cab); background: var(--bg); color: var(--ink); line-height: 1.7; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(242,241,237,.95); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--rule2);
+      height: 54px; padding: 0 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { font-family: var(--cab); font-size: 17px; font-weight: 800; color: var(--ink); text-decoration: none; letter-spacing: -.02em; }
+    .nav-brand em { font-style: normal; color: var(--teal); }
+    .nav-center { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; color: var(--ink4); }
+    .nav-center .sep { color: var(--ink5); }
+    .nav-center span { color: var(--ink2); }
+    .nav-cta { font-family: var(--cab); font-size: 13px; font-weight: 700; color: var(--white); background: var(--teal); padding: 7px 20px; border-radius: var(--r); text-decoration: none; letter-spacing: -.01em; transition: background .15s; }
+    .nav-cta:hover { background: var(--teal-mid); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--ink);
+      padding: 5.5rem 2.5rem 0;
+      overflow: hidden;
+      position: relative;
+    }
+    /* Hatched diagonal texture */
+    .hero-hatch {
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent, transparent 8px,
+        rgba(255,255,255,.018) 8px, rgba(255,255,255,.018) 9px
+      );
+    }
+    .hero-inner {
+      max-width: 1040px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 460px;
+      gap: 4rem; align-items: end;
+      position: relative; z-index: 1;
+    }
+    @media (max-width: 880px) { .hero-inner { grid-template-columns: 1fr; } }
+
+    .hero-tag {
+      font-family: var(--mono); font-size: 10px; font-weight: 400;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--teal-mid); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-tag::before {
+      content: '◆'; font-size: 7px; color: var(--teal);
+    }
+    .hero h1 {
+      font-size: clamp(34px, 5.5vw, 56px); font-weight: 800;
+      color: var(--white); line-height: 1.05; letter-spacing: -.03em;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 .hi { color: var(--teal-mid); }
+    .hero-lead { font-size: 15px; color: var(--ink4); line-height: 1.8; max-width: 460px; margin-bottom: 2rem; }
+    .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 3rem; }
+    .btn-teal { font-family: var(--cab); font-size: 13px; font-weight: 700; color: var(--ink); background: var(--teal-lt); padding: 10px 22px; border-radius: var(--r); text-decoration: none; transition: background .15s; letter-spacing: -.01em; }
+    .btn-teal:hover { background: #c0e8e8; }
+    .btn-ghost { font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--ink4); background: transparent; padding: 10px 22px; border-radius: var(--r); border: 1px solid rgba(255,255,255,.12); text-decoration: none; transition: all .15s; }
+    .btn-ghost:hover { color: var(--white); border-color: rgba(255,255,255,.28); }
+
+    /* ── HERO VISUAL — Attribution flow diagram ── */
+    .attr-visual {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-bottom: none;
+      border-radius: var(--r-xl) var(--r-xl) 0 0;
+      padding: 1.5rem 1.5rem 2rem;
+      font-family: var(--mono);
+    }
+    .av-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .av-title { font-size: 10px; color: var(--ink4); letter-spacing: .1em; text-transform: uppercase; }
+    .av-live { font-size: 10px; color: var(--teal-mid); display: flex; align-items: center; gap: 5px; }
+    .av-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal-mid); animation: blink 2s infinite; }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+
+    /* attribution layers */
+    .av-layers { display: flex; flex-direction: column; gap: 6px; }
+    .av-layer {
+      border-radius: var(--r);
+      padding: .7rem 1rem;
+      display: flex; align-items: center; gap: 12px;
+      border: 1px solid transparent;
+    }
+    .av-layer.cluster { background: rgba(13,110,110,.2); border-color: rgba(13,110,110,.3); }
+    .av-layer.ns      { background: rgba(76,29,149,.15); border-color: rgba(76,29,149,.25); margin-left: 16px; }
+    .av-layer.pod     { background: rgba(58,92,26,.15);  border-color: rgba(58,92,26,.25);  margin-left: 32px; }
+    .av-layer.wasted  { background: rgba(185,28,28,.12); border-color: rgba(185,28,28,.2);  margin-left: 32px; }
+    .av-layer-icon { font-size: 14px; flex-shrink: 0; }
+    .av-layer-name { font-size: 11px; color: var(--white); flex: 1; }
+    .av-layer-cost { font-size: 12px; font-weight: 500; }
+    .cluster .av-layer-cost { color: #5eead4; }
+    .ns      .av-layer-cost { color: #c4b5fd; }
+    .pod     .av-layer-cost { color: #bbf7d0; }
+    .wasted  .av-layer-cost { color: #fca5a5; }
+    .av-arrow { font-size: 10px; color: var(--ink4); margin-left: 8px; }
+
+    .av-footer {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 8px; margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .av-stat { text-align: center; }
+    .av-stat-val { font-size: 18px; font-weight: 500; color: var(--white); line-height: 1; margin-bottom: 3px; }
+    .av-stat-lbl { font-size: 9px; color: var(--ink4); text-transform: uppercase; letter-spacing: .07em; }
+
+    /* ── METRICS BAND ── */
+    .metrics { background: var(--white); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .metrics-inner {
+      max-width: 1040px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+    .mc { padding: 1.75rem 1.25rem; text-align: center; border-right: 1px solid var(--rule); }
+    .mc:last-child { border-right: none; }
+    .mc-val { font-family: var(--cab); font-size: 30px; font-weight: 800; color: var(--teal); line-height: 1; margin-bottom: 5px; letter-spacing: -.02em; }
+    .mc-lbl { font-size: 12px; color: var(--ink3); line-height: 1.4; }
+
+    /* ── SECTION ── */
+    .section { max-width: 1040px; margin: 0 auto; padding: 5rem 2.5rem; }
+    .ey { font-family: var(--mono); font-size: 10px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); display: flex; align-items: center; gap: 8px; margin-bottom: .75rem; }
+    .ey::before { content: '◆'; font-size: 6px; }
+    .sh { font-size: clamp(22px, 3.5vw, 34px); font-weight: 800; color: var(--ink); letter-spacing: -.03em; line-height: 1.15; margin-bottom: .75rem; }
+    .sl { font-size: 15px; color: var(--ink3); line-height: 1.8; max-width: 560px; margin-bottom: 2.5rem; }
+    hr.div { border: none; border-top: 1px solid var(--rule); max-width: 1040px; margin: 0 auto; }
+
+    /* ── ATTRIBUTION EXPLAINER — two-col ── */
+    .explain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    @media (max-width: 680px) { .explain-grid { grid-template-columns: 1fr; } }
+    .explain-text p { font-size: 14px; color: var(--ink2); line-height: 1.8; margin-bottom: 1rem; }
+    .explain-text p:last-child { margin-bottom: 0; }
+
+    /* attribution model cards */
+    .model-cards { display: flex; flex-direction: column; gap: 10px; }
+    .model-card {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-lg); padding: 1.125rem;
+      display: grid; grid-template-columns: 36px 1fr auto;
+      gap: 12px; align-items: center;
+      transition: border-color .15s;
+    }
+    .model-card:hover { border-color: var(--rule2); }
+    .model-card-num {
+      width: 36px; height: 36px; border-radius: var(--r);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 12px; font-weight: 500;
+      flex-shrink: 0;
+    }
+    .model-card h5 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+    .model-card p { font-size: 11px; color: var(--ink3); line-height: 1.45; }
+    .model-card-badge { font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: var(--r); white-space: nowrap; }
+
+    /* ── CAPABILITY GRID ── */
+    .cap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(225px, 1fr)); gap: 14px; }
+    .cap {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); padding: 1.5rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .cap:hover { border-color: var(--rule2); transform: translateY(-2px); }
+    .cap-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .cap-icon {
+      width: 38px; height: 38px; border-radius: var(--r);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .cap h4 { font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+    .cap p { font-size: 12px; color: var(--ink3); line-height: 1.65; margin-bottom: 12px; }
+    .cap-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: 400; }
+    .tag-t { background: var(--teal-lt); color: var(--teal); }
+    .tag-o { background: var(--orange-lt); color: var(--orange); }
+    .tag-v { background: var(--violet-lt); color: var(--violet); }
+    .tag-l { background: var(--lime-lt); color: var(--lime); }
+    .tag-r { background: var(--red-lt); color: var(--red); }
+
+    /* ── ATTRIBUTION LEVELS (tabbed visual) ── */
+    .levels-section { background: var(--ink); padding: 5rem 2.5rem; }
+    .levels-inner { max-width: 1040px; margin: 0 auto; }
+    .levels-ey { font-family: var(--mono); font-size: 10px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: var(--teal-mid); display: flex; align-items: center; gap: 8px; margin-bottom: .75rem; }
+    .levels-ey::before { content: '◆'; font-size: 6px; }
+    .levels-sh { font-size: clamp(22px, 3.5vw, 34px); font-weight: 800; color: var(--white); letter-spacing: -.03em; line-height: 1.15; margin-bottom: .75rem; }
+    .levels-sl { font-size: 15px; color: var(--ink4); line-height: 1.8; max-width: 560px; margin-bottom: 2.5rem; }
+
+    .levels-tabs { display: flex; gap: 4px; margin-bottom: 2rem; flex-wrap: wrap; }
+    .ltab {
+      font-family: var(--mono); font-size: 11px; font-weight: 400;
+      padding: 7px 16px; border-radius: var(--r);
+      border: 1px solid rgba(255,255,255,.1);
+      background: transparent; color: var(--ink4);
+      cursor: pointer; transition: all .15s;
+    }
+    .ltab:hover { color: var(--white); border-color: rgba(255,255,255,.2); }
+    .ltab.active { background: var(--teal); border-color: var(--teal); color: var(--ink); }
+
+    .level-panel { display: none; }
+    .level-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start; }
+    @media (max-width: 680px) { .level-panel.active { grid-template-columns: 1fr; } }
+    .lp-text h3 { font-size: 22px; font-weight: 800; color: var(--white); letter-spacing: -.02em; margin-bottom: .75rem; }
+    .lp-text p { font-size: 14px; color: var(--ink4); line-height: 1.8; margin-bottom: 1rem; }
+    .lp-checks { display: flex; flex-direction: column; gap: 8px; }
+    .lp-check { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--ink3); line-height: 1.5; }
+    .lp-check::before { content: '→'; color: var(--teal-mid); flex-shrink: 0; font-family: var(--mono); margin-top: 1px; }
+
+    /* cost attribution breakdown panel */
+    .lp-visual { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: var(--r-lg); padding: 1.25rem; font-family: var(--mono); }
+    .lpv-title { font-size: 10px; color: var(--ink4); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1rem; }
+    .lpv-rows { display: flex; flex-direction: column; gap: 8px; }
+    .lpv-row { display: flex; align-items: center; gap: 10px; }
+    .lpv-label { font-size: 10px; color: var(--ink3); width: 110px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .lpv-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,.06); border-radius: 3px; }
+    .lpv-bar { height: 100%; border-radius: 3px; }
+    .lpv-val { font-size: 10px; color: var(--ink4); width: 50px; text-align: right; }
+    .lpv-note { font-size: 10px; color: var(--ink4); margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,.06); }
+
+    /* ── PILLAR TABLE ── */
+    .ptable { width: 100%; border-collapse: collapse; }
+    .ptable thead th { padding: 10px 14px; text-align: left; font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink4); border-bottom: 2px solid var(--rule); background: var(--surf); }
+    .ptable thead th:first-child { border-radius: var(--r) 0 0 0; }
+    .ptable thead th:last-child  { border-radius: 0 var(--r) 0 0; }
+    .ptable tbody tr { border-bottom: 1px solid var(--rule); transition: background .1s; }
+    .ptable tbody tr:hover { background: var(--surf); }
+    .ptable tbody td { padding: 13px 14px; font-size: 13px; color: var(--ink2); vertical-align: top; }
+    .ptable tbody td:first-child { color: var(--ink); font-weight: 600; }
+    .p-pill { font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 4px; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+
+    /* ── ALLOCATION POLICIES ── */
+    .policy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .policy-card { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-lg); padding: 1.25rem; position: relative; overflow: hidden; }
+    .policy-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .policy-card.p1::before { background: var(--teal); }
+    .policy-card.p2::before { background: var(--orange); }
+    .policy-card.p3::before { background: var(--violet); }
+    .policy-card.p4::before { background: var(--lime); }
+    .pc-badge { font-family: var(--mono); font-size: 9px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+    .p1 .pc-badge { background: var(--teal-lt); color: var(--teal); }
+    .p2 .pc-badge { background: var(--orange-lt); color: var(--orange); }
+    .p3 .pc-badge { background: var(--violet-lt); color: var(--violet); }
+    .p4 .pc-badge { background: var(--lime-lt); color: var(--lime); }
+    .policy-card h4 { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 6px; letter-spacing: -.01em; }
+    .policy-card p { font-size: 12px; color: var(--ink3); line-height: 1.65; margin-bottom: 10px; }
+    .policy-example { font-family: var(--mono); font-size: 10px; color: var(--ink4); background: var(--bg); padding: 6px 10px; border-radius: var(--r); border: 1px solid var(--rule); }
+
+    /* ── DEPLOY STEPS ── */
+    .deploy-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0; border: 1px solid var(--rule); border-radius: var(--r-lg); overflow: hidden; }
+    .ds { padding: 1.75rem; border-right: 1px solid var(--rule); background: var(--white); position: relative; transition: background .15s; }
+    .ds:hover { background: var(--surf); }
+    .ds:last-child { border-right: none; }
+    .ds-num { font-family: var(--mono); font-size: 32px; font-weight: 300; color: var(--surf2); line-height: 1; margin-bottom: 12px; }
+    .ds h4 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 6px; letter-spacing: -.01em; }
+    .ds p { font-size: 11px; color: var(--ink3); line-height: 1.6; }
+    .ds-cmd { font-family: var(--mono); font-size: 9px; color: var(--teal); background: var(--teal-lt); padding: 4px 8px; border-radius: 4px; margin-top: 10px; display: inline-block; }
+    @media (max-width: 640px) { .deploy-steps { grid-template-columns: 1fr; } .ds { border-right: none; border-bottom: 1px solid var(--rule); } .ds:last-child { border-bottom: none; } }
+
+    /* ── INTEGRATIONS ── */
+    .integ-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
+    .integ { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-lg); padding: .875rem; text-align: center; transition: border-color .15s, transform .15s; }
+    .integ:hover { border-color: var(--teal); transform: translateY(-2px); }
+    .integ-ico { font-size: 20px; margin-bottom: 6px; }
+    .integ-name { font-family: var(--mono); font-size: 10px; color: var(--ink2); font-weight: 500; }
+    .integ-cat { font-size: 9px; color: var(--ink4); margin-top: 2px; }
+
+    /* ── CHARGEBACK VISUAL ── */
+    .cb-section { background: var(--surf); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 5rem 2.5rem; }
+    .cb-inner { max-width: 1040px; margin: 0 auto; display: grid; grid-template-columns: 1fr 420px; gap: 4rem; align-items: center; }
+    @media (max-width: 780px) { .cb-inner { grid-template-columns: 1fr; } }
+    .cb-text .ey { color: var(--orange); }
+    .cb-text .ey::before { color: var(--orange); }
+    .cb-text .sh { margin-bottom: .75rem; }
+    .cb-text p { font-size: 14px; color: var(--ink2); line-height: 1.8; margin-bottom: 1rem; }
+    .cb-feat-list { display: flex; flex-direction: column; gap: 10px; margin-top: 1.5rem; }
+    .cb-feat { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--ink2); line-height: 1.5; }
+    .cb-feat::before { content: '◆'; font-size: 6px; color: var(--orange); flex-shrink: 0; margin-top: 7px; }
+
+    /* chargeback table visual */
+    .cb-table-vis { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-xl); overflow: hidden; }
+    .cbv-head { background: var(--ink); padding: .875rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+    .cbv-head-title { font-family: var(--mono); font-size: 10px; color: var(--ink4); letter-spacing: .1em; text-transform: uppercase; }
+    .cbv-head-badge { font-family: var(--mono); font-size: 9px; color: var(--teal-mid); background: rgba(13,110,110,.2); padding: 2px 8px; border-radius: 4px; }
+    .cbv-rows { }
+    .cbv-row { display: grid; grid-template-columns: 28px 1fr auto auto; gap: 12px; align-items: center; padding: .75rem 1.25rem; border-bottom: 1px solid var(--rule); transition: background .1s; }
+    .cbv-row:hover { background: var(--bg); }
+    .cbv-row:last-child { border-bottom: none; }
+    .cbv-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 9px; font-weight: 500; flex-shrink: 0; }
+    .cbv-team { font-size: 13px; font-weight: 600; color: var(--ink); }
+    .cbv-ns { font-family: var(--mono); font-size: 10px; color: var(--ink4); margin-top: 1px; }
+    .cbv-cost { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--ink); }
+    .cbv-delta { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 4px; }
+    .cbv-delta.up { background: var(--red-lt); color: var(--red); }
+    .cbv-delta.dn { background: var(--lime-lt); color: var(--lime); }
+    .cbv-foot { padding: .875rem 1.25rem; background: var(--bg); display: flex; justify-content: space-between; align-items: center; }
+    .cbv-foot-lbl { font-family: var(--mono); font-size: 10px; color: var(--ink4); }
+    .cbv-foot-val { font-family: var(--mono); font-size: 14px; font-weight: 500; color: var(--ink); }
+
+    /* ── TESTI ── */
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+    .testi { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-xl); padding: 1.5rem; }
+    .testi-q { font-size: 13px; color: var(--ink); line-height: 1.75; margin-bottom: 1.25rem; font-style: italic; }
+    .testi-q::before { content: '\201C'; color: var(--teal); font-size: 20px; line-height: 0; vertical-align: -4px; margin-right: 2px; font-style: normal; }
+    .testi-meta { display: flex; align-items: center; gap: 10px; }
+    .testi-av { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; font-weight: 500; flex-shrink: 0; }
+    .testi-name { font-size: 13px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+    .testi-role { font-size: 11px; color: var(--ink4); }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; max-width: 700px; }
+    .fq { border-bottom: 1px solid var(--rule); }
+    .fq:first-child { border-top: 1px solid var(--rule); }
+    .fq-q { width: 100%; text-align: left; background: transparent; border: none; padding: 1.1rem 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem; cursor: pointer; font-family: var(--cab); font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.4; letter-spacing: -.01em; }
+    .fq-q:hover { color: var(--teal); }
+    .fq-ico { width: 22px; height: 22px; border-radius: 50%; background: var(--surf); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 15px; color: var(--ink3); transition: transform .2s, background .2s; }
+    .fq.open .fq-ico { transform: rotate(45deg); background: var(--teal-lt); color: var(--teal); }
+    .fq-a { display: none; padding: 0 0 1.1rem; font-size: 13px; color: var(--ink3); line-height: 1.8; }
+    .fq.open .fq-a { display: block; }
+
+    /* ── CALLOUT ── */
+    .callout { border-left: 3px solid var(--teal); background: var(--teal-lt); border-radius: 0 var(--r) var(--r) 0; padding: .875rem 1rem; margin: 1.25rem 0; }
+    .callout p { font-size: 13px; color: var(--teal); line-height: 1.65; margin: 0; }
+    .callout.orange { border-left-color: var(--orange); background: var(--orange-lt); }
+    .callout.orange p { color: var(--orange); }
+
+    /* ── CTA ── */
+    .cta { background: var(--ink); padding: 5.5rem 2.5rem; text-align: center; position: relative; overflow: hidden; }
+    .cta-hatch { position: absolute; inset: 0; background-image: repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,.012) 10px, rgba(255,255,255,.012) 11px); }
+    .cta-glow { position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 700px; height: 400px; background: radial-gradient(ellipse, rgba(13,110,110,.1) 0%, transparent 70%); }
+    .cta-inner { position: relative; z-index: 1; max-width: 580px; margin: 0 auto; }
+    .cta h2 { font-size: clamp(28px, 4.5vw, 46px); font-weight: 800; color: var(--white); letter-spacing: -.03em; line-height: 1.1; margin-bottom: 1rem; }
+    .cta h2 .hi { color: var(--teal-mid); }
+    .cta p { font-size: 15px; color: var(--ink4); line-height: 1.75; margin-bottom: 2.5rem; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#111210; --white:#1c1d1a; --surf:#181917; --surf2:#202220; --ink:#f0efe9; --ink2:#c8c7be; --ink3:#888780; --ink4:#5f5e5a; --ink5:#3a3b38; --rule:rgba(240,239,233,.08); --rule2:rgba(240,239,233,.14); }
+      .nav { background: rgba(17,18,16,.92); }
+      .metrics { background: var(--white); }
+      .cap { background: var(--white); }
+      .ptable thead th { background: var(--white); }
+      .ptable tbody tr:hover { background: var(--surf); }
+      .policy-card { background: var(--white); }
+      .ds { background: var(--white); }
+      .ds:hover { background: var(--surf); }
+      .integ { background: var(--white); }
+      .cb-section { background: var(--surf); }
+      .cb-table-vis { background: var(--white); }
+      .cbv-row:hover { background: var(--bg); }
+      .cbv-foot { background: var(--bg); }
+      .testi { background: var(--white); }
+      .callout { background: rgba(13,110,110,.15); }
+      .callout.orange { background: rgba(196,92,0,.12); }
+      .policy-example { background: var(--surf); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="#" class="nav-brand">AI<em>FinOps</em></a>
+  <div class="nav-center">
+    <span>Services</span>
+    <span class="sep">/</span>
+    <span>K8s Cost Observability &amp; Attribution</span>
+  </div>
+  <a href="#" class="nav-cta">Get started free</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-hatch"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">Service — K8s Cost Observability &amp; Attribution</div>
+      <h1>See <span class="hi">every rupee</span><br>inside every cluster.<br>Know exactly who owns it.</h1>
+      <p class="hero-lead">
+        Kubernetes cost attribution is the hardest unsolved problem in cloud FinOps.
+        Shared nodes, dynamic scheduling, multi-tenant namespaces, and opaque GPU billing
+        make standard tools useless. We built the attribution layer that actually works
+        — from cluster to pod, from team to cost centre, from GPU hour to dollar.
+      </p>
+      <div class="hero-btns">
+        <a href="#" class="btn-teal">Deploy free in 10 minutes</a>
+        <a href="#" class="btn-ghost">$ helm install aifinops →</a>
+      </div>
+    </div>
+
+    <!-- Attribution hierarchy visual -->
+    <div class="attr-visual">
+      <div class="av-header">
+        <span class="av-title">Attribution hierarchy · prod-cluster</span>
+        <span class="av-live">Live</span>
+      </div>
+      <div class="av-layers">
+        <div class="av-layer cluster">
+          <span class="av-layer-icon">☸️</span>
+          <span class="av-layer-name">prod-ai-cluster-east</span>
+          <span class="av-layer-cost">$42,180/mo</span>
+        </div>
+        <div class="av-arrow" style="margin-left:24px; font-family:var(--mono); font-size:10px; color:#4d6478;">↳</div>
+        <div class="av-layer ns">
+          <span class="av-layer-icon">📁</span>
+          <span class="av-layer-name">ns/team-inference</span>
+          <span class="av-layer-cost">$18,340</span>
+        </div>
+        <div class="av-layer ns" style="margin-top:-2px">
+          <span class="av-layer-icon">📁</span>
+          <span class="av-layer-name">ns/team-training</span>
+          <span class="av-layer-cost">$14,210</span>
+        </div>
+        <div class="av-arrow" style="margin-left:40px; font-family:var(--mono); font-size:10px; color:#4d6478;">↳</div>
+        <div class="av-layer pod">
+          <span class="av-layer-icon">🟢</span>
+          <span class="av-layer-name">llm-serve-7b-gpu-x4</span>
+          <span class="av-layer-cost">$6,840</span>
+        </div>
+        <div class="av-layer pod" style="margin-top:-2px">
+          <span class="av-layer-icon">🟢</span>
+          <span class="av-layer-name">embed-svc-v3-2cpu</span>
+          <span class="av-layer-cost">$2,110</span>
+        </div>
+        <div class="av-layer wasted" style="margin-top:4px">
+          <span class="av-layer-icon">⚠️</span>
+          <span class="av-layer-name">fine-tune-bert-2022 · idle</span>
+          <span class="av-layer-cost">$1,240 waste</span>
+        </div>
+      </div>
+      <div class="av-footer">
+        <div class="av-stat"><div class="av-stat-val">98%</div><div class="av-stat-lbl">Attributed</div></div>
+        <div class="av-stat"><div class="av-stat-val" style="color:#fca5a5">$4,820</div><div class="av-stat-lbl">Unowned</div></div>
+        <div class="av-stat"><div class="av-stat-val" style="color:#fcd34d">12</div><div class="av-stat-lbl">Action items</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── METRICS ── -->
+<div class="metrics">
+  <div class="metrics-inner">
+    <div class="mc"><div class="mc-val">100%</div><div class="mc-lbl">Pod-level cost attribution</div></div>
+    <div class="mc"><div class="mc-val">35%</div><div class="mc-lbl">Avg K8s cost reduction</div></div>
+    <div class="mc"><div class="mc-val">15 min</div><div class="mc-lbl">Data freshness</div></div>
+    <div class="mc"><div class="mc-val">&lt; 10 min</div><div class="mc-lbl">Helm deploy time</div></div>
+    <div class="mc"><div class="mc-val">0</div><div class="mc-lbl">Workload changes needed</div></div>
+    <div class="mc"><div class="mc-val">50+</div><div class="mc-lbl">K8s distributions supported</div></div>
+  </div>
+</div>
+
+<!-- ── WHY ATTRIBUTION IS HARD ── -->
+<div class="section">
+  <div class="ey">Why it's hard</div>
+  <h2 class="sh">Kubernetes was designed for scheduling,<br>not cost accounting</h2>
+  <div class="explain-grid">
+    <div class="explain-text">
+      <p>
+        In a virtual machine world, cost attribution is simple: one VM, one team, one bill.
+        Kubernetes destroys that model. Pods are ephemeral, nodes are shared, GPUs are
+        time-sliced, storage is dynamic, and namespaces are the only organisational boundary
+        — but they were designed for access control, not financial ownership.
+      </p>
+      <p>
+        Standard cloud billing tools see a node. They cannot see which pods ran on it,
+        which team owns those pods, how much of the node's GPU was used by which workload,
+        or how much of the node cost should be allocated as shared overhead versus
+        directly attributed to a specific team.
+      </p>
+      <p>
+        Our attribution engine solves all of this. It operates at the metrics API level —
+        reading real resource consumption per pod, per container, per GPU process — and
+        maps that to real billing data from your cloud provider to produce accurate,
+        auditable cost attribution down to the individual pod and team.
+      </p>
+      <div class="callout">
+        <p>Attribution accuracy matters: organisations that cannot attribute Kubernetes costs cannot hold teams accountable, cannot forecast accurately, and cannot identify waste. Estimation-based tools produce numbers no finance team will trust.</p>
+      </div>
+    </div>
+    <div class="model-cards">
+      <div class="model-card">
+        <div class="model-card-num" style="background:var(--teal-lt);color:var(--teal)">01</div>
+        <div>
+          <h5>Request-based allocation</h5>
+          <p>Allocates node cost by the ratio of a pod's resource requests to total node capacity. Fast to compute, but systematically overcharges teams that over-provision and undercharges those that right-size.</p>
+        </div>
+        <span class="model-card-badge" style="background:var(--orange-lt);color:var(--orange)">Imprecise</span>
+      </div>
+      <div class="model-card">
+        <div class="model-card-num" style="background:var(--violet-lt);color:var(--violet)">02</div>
+        <div>
+          <h5>Usage-based allocation</h5>
+          <p>Allocates based on actual CPU, memory, and GPU consumed per pod per time interval. More accurate, requires continuous telemetry collection from cAdvisor and DCGM.</p>
+        </div>
+        <span class="model-card-badge" style="background:var(--lime-lt);color:var(--lime)">Recommended</span>
+      </div>
+      <div class="model-card">
+        <div class="model-card-num" style="background:var(--teal-lt);color:var(--teal)">03</div>
+        <div>
+          <h5>Blended allocation</h5>
+          <p>Combines usage-based attribution for compute-intensive workloads with request-based for storage and network — producing the most accurate multi-resource cost breakdown.</p>
+        </div>
+        <span class="model-card-badge" style="background:var(--lime-lt);color:var(--lime)">Our default</span>
+      </div>
+      <div class="model-card">
+        <div class="model-card-num" style="background:var(--orange-lt);color:var(--orange)">04</div>
+        <div>
+          <h5>Shared cost allocation</h5>
+          <p>Handles cluster-level overhead — ingress, DNS, monitoring, logging — and distributes it proportionally across tenants using configurable sharing policies.</p>
+        </div>
+        <span class="model-card-badge" style="background:var(--teal-lt);color:var(--teal)">Configurable</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── CAPABILITIES ── -->
+<div class="section">
+  <div class="ey">Core capabilities</div>
+  <h2 class="sh">The complete K8s cost observability<br>and attribution stack</h2>
+  <p class="sl">Every layer of Kubernetes cost visibility — from node billing to pod attribution to team chargeback — in a single integrated service.</p>
+  <div class="cap-grid">
+
+    <div class="cap">
+      <div class="cap-top">
+        <div class="cap-icon" style="background:var(--teal-lt)">📡</div>
+        <h4>Real-time pod cost monitoring</h4>
+      </div>
+      <p>Live cost per pod, deployment, StatefulSet, Job, and CronJob — updated every 15 minutes. Filter by namespace, label, node pool, or GPU type. No daily lag.</p>
+      <div class="cap-tags"><span class="tag tag-t">15-min refresh</span><span class="tag tag-t">Pod-granular</span></div>
+    </div>
+
+    <div class="cap">
+      <div class="cap-top">
+        <div class="cap-icon" style="background:var(--violet-lt)">🏷️</div>
+        <h4>Namespace-to-team mapping</h4>
+      </div>
+      <p>Map every namespace to a team, product, and cost centre with configurable ownership rules. Auto-detect unowned namespaces and surface them for assignment before costs accumulate.</p>
+      <div class="cap-tags"><span class="tag tag-v">Auto-detect</span><span class="tag tag-v">Ownership rules</span></div>
+    </div>
+
+    <div class="cap">
+      <div class="cap-top">
+        <div class="cap-icon" style="background:var(--orange-lt)">🔲</div>
+        <h4>GPU cost attribution per pod</h4>
+      </div>
+      <p>Attribute GPU costs by real utilisation using DCGM metrics — not just which pod was scheduled on a GPU node. Know cost-per-inference and cost-per-training-epoch for every workload.</p>
+      <div class="cap-tags"><span class="tag tag-o">DCGM-native</span><span class="tag tag-o">Per-inference</span></div>
+    </div>
+
+    <div class="cap">
+      <div class="cap-top">
+        <div class="cap-icon" style="background:var(--lime-lt)">📊</div>
+        <h4>Shared cost allocation engine</h4>
+      </div>
+      <p>Distribute cluster overhead (ingress, CoreDNS, Prometheus, logging stacks) across tenants with proportional, equal, or weighted allocation policies — fully configurable per component.</p>
+      <div class="cap-tags"><span class="tag tag-l">4 policies</span><span class="tag tag-l">Per-component</span></div>
+    </div>
+
+    <div class="cap">
+      <div class="cap-top">
+        <div class="cap-icon" style="background:var(--red-lt)">⚖️</div>
+        <h4>Request vs actual efficiency score</h4>
+      </div>
+      <p>Score every deployment by its resource efficiency ratio — CPU requested vs used, memory requested vs consumed, GPU allocated vs utilised. Surface ranked right-sizing candidates.</p>
+      <div class="cap-tags"><span class="tag tag-r">Efficiency score</span><span class="tag tag-r">Right-sizing</span></div>
+    </div>
+
+    <div class="cap">
+      <div class="cap-top">
+        <div class="cap-icon" style="background:var(--teal-lt)">🚨</div>
+        <h4>Cost anomaly detection</h4>
+      </div>
+      <p>ML-powered detection of namespace-level, deployment-level, and node-pool-level spend anomalies — with Slack and PagerDuty alerts within 15 minutes of a spend spike.</p>
+      <div class="cap-tags"><span class="tag tag-t">ML-powered</span><span class="tag tag-t">15-min SLA</span></div>
+    </div>
+
+    <div class="cap">
+      <div class="cap-top">
+        <div class="cap-icon" style="background:var(--violet-lt)">💸</div>
+        <h4>Chargeback and showback reports</h4>
+      </div>
+      <p>Auto-generated monthly chargeback reports per team and cost centre with full attribution lineage — from pod to namespace to node to billing account. Finance-ready CSV and PDF export.</p>
+      <div class="cap-tags"><span class="tag tag-v">Auto-generated</span><span class="tag tag-v">Finance-ready</span></div>
+    </div>
+
+    <div class="cap">
+      <div class="cap-top">
+        <div class="cap-icon" style="background:var(--orange-lt)">📈</div>
+        <h4>Cost forecasting per namespace</h4>
+      </div>
+      <p>30 and 90-day cost forecasts per namespace and workload type — built on actual usage patterns, not request-based estimates. Flag over-budget trajectories before month-end.</p>
+      <div class="cap-tags"><span class="tag tag-o">30/90-day</span><span class="tag tag-o">Per-namespace</span></div>
+    </div>
+
+    <div class="cap">
+      <div class="cap-top">
+        <div class="cap-icon" style="background:var(--lime-lt)">🗑️</div>
+        <h4>Idle workload detection</h4>
+      </div>
+      <p>Detect zombie jobs, idle deployments with zero traffic, completed training jobs that failed to clean up, and over-provisioned node pools — with automated or approval-gated cleanup.</p>
+      <div class="cap-tags"><span class="tag tag-l">Auto-cleanup</span><span class="tag tag-l">Approval gates</span></div>
+    </div>
+
+    <div class="cap">
+      <div class="cap-top">
+        <div class="cap-icon" style="background:var(--teal-lt)">🏗️</div>
+        <h4>Multi-cluster unified view</h4>
+      </div>
+      <p>Aggregate cost data from all your clusters — across AWS EKS, Azure AKS, GCP GKE, and on-prem — into a single dashboard with cross-cluster cost comparison and normalised attribution.</p>
+      <div class="cap-tags"><span class="tag tag-t">Cross-cluster</span><span class="tag tag-t">Normalised</span></div>
+    </div>
+
+    <div class="cap">
+      <div class="cap-top">
+        <div class="cap-icon" style="background:var(--red-lt)">📉</div>
+        <h4>Node pool cost optimisation</h4>
+      </div>
+      <p>Analyse cost efficiency per node pool and instance type. Identify underutilised node pools, recommend reserved instance purchases, and flag spot pool opportunities for AI batch workloads.</p>
+      <div class="cap-tags"><span class="tag tag-r">Reserved guidance</span><span class="tag tag-r">Spot routing</span></div>
+    </div>
+
+    <div class="cap">
+      <div class="cap-top">
+        <div class="cap-icon" style="background:var(--violet-lt)">🔌</div>
+        <h4>Label-based attribution</h4>
+      </div>
+      <p>Use your existing Kubernetes labels and annotations as attribution dimensions — no re-labelling required. Define custom attribution hierarchies that map to your organisational structure.</p>
+      <div class="cap-tags"><span class="tag tag-v">Existing labels</span><span class="tag tag-v">Custom hierarchy</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── ATTRIBUTION LEVELS ── -->
+<div class="levels-section">
+  <div class="levels-inner">
+    <div class="levels-ey">Attribution depth</div>
+    <h2 class="levels-sh">Attribution at every level of your cluster</h2>
+    <p class="levels-sl">Drill from cluster-wide spend all the way to individual pod cost in four taps — with every intermediate layer attributed and auditable.</p>
+
+    <div class="levels-tabs" role="tablist">
+      <button class="ltab active" onclick="switchTab('cluster',this)">Cluster level</button>
+      <button class="ltab" onclick="switchTab('namespace',this)">Namespace level</button>
+      <button class="ltab" onclick="switchTab('pod',this)">Pod level</button>
+      <button class="ltab" onclick="switchTab('gpu',this)">GPU level</button>
+    </div>
+
+    <!-- CLUSTER -->
+    <div class="level-panel active" id="tab-cluster">
+      <div class="lp-text">
+        <h3>Cluster-level cost overview</h3>
+        <p>The highest level view — total cost per cluster per month, broken down by compute, GPU, storage, network, and shared overhead. Compare efficiency across clusters and identify which environments are driving spend growth.</p>
+        <div class="lp-checks">
+          <div class="lp-check">Total cluster cost from real cloud billing — not estimated</div>
+          <div class="lp-check">Cost trend over 12 months with anomaly highlights</div>
+          <div class="lp-check">Node pool breakdown by instance type and utilisation rate</div>
+          <div class="lp-check">Shared overhead identification (monitoring, ingress, DNS)</div>
+          <div class="lp-check">Cross-cluster cost comparison and efficiency ranking</div>
+        </div>
+      </div>
+      <div class="lp-visual">
+        <div class="lpv-title">Cluster cost breakdown · April 2026</div>
+        <div class="lpv-rows">
+          <div class="lpv-row"><span class="lpv-label">Compute (GPU)</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:65%;background:#0d6e6e"></div></div><span class="lpv-val">$27,410</span></div>
+          <div class="lpv-row"><span class="lpv-label">Compute (CPU)</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:28%;background:#1a9999"></div></div><span class="lpv-val">$11,820</span></div>
+          <div class="lpv-row"><span class="lpv-label">Persistent storage</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:18%;background:#4c1d95"></div></div><span class="lpv-val">$7,590</span></div>
+          <div class="lpv-row"><span class="lpv-label">Network egress</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:10%;background:#3a5c1a"></div></div><span class="lpv-val">$4,220</span></div>
+          <div class="lpv-row"><span class="lpv-label">Shared overhead</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:8%;background:#888780"></div></div><span class="lpv-val">$3,380</span></div>
+        </div>
+        <div class="lpv-note">Total: $54,420 / mo · 8 namespaces · 142 pods · 3 GPU node pools</div>
+      </div>
+    </div>
+
+    <!-- NAMESPACE -->
+    <div class="level-panel" id="tab-namespace">
+      <div class="lp-text">
+        <h3>Namespace-level attribution</h3>
+        <p>Every namespace attributed to its owning team, with full compute, storage, and GPU cost breakdown. Unowned namespaces are flagged automatically. Shared costs allocated using your configured policy.</p>
+        <div class="lp-checks">
+          <div class="lp-check">Per-namespace monthly cost with MoM trend</div>
+          <div class="lp-check">Team ownership mapping with gap detection</div>
+          <div class="lp-check">Resource efficiency score per namespace</div>
+          <div class="lp-check">Shared cost allocation using proportional policy</div>
+          <div class="lp-check">Budget vs actual with forecast for the month-end</div>
+        </div>
+      </div>
+      <div class="lp-visual">
+        <div class="lpv-title">Namespace attribution · prod-cluster</div>
+        <div class="lpv-rows">
+          <div class="lpv-row"><span class="lpv-label">team-inference</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:72%;background:#0d6e6e"></div></div><span class="lpv-val">$18,340</span></div>
+          <div class="lpv-row"><span class="lpv-label">team-training</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:55%;background:#0d6e6e"></div></div><span class="lpv-val">$14,210</span></div>
+          <div class="lpv-row"><span class="lpv-label">team-platform</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:34%;background:#4c1d95"></div></div><span class="lpv-val">$8,760</span></div>
+          <div class="lpv-row"><span class="lpv-label">team-data</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:26%;background:#3a5c1a"></div></div><span class="lpv-val">$6,690</span></div>
+          <div class="lpv-row"><span class="lpv-label">⚠ unowned-exp</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:10%;background:#b91c1c"></div></div><span class="lpv-val" style="color:#f87171">$2,640</span></div>
+        </div>
+        <div class="lpv-note">1 unowned namespace · $2,640/mo · Shared overhead: $3,380 distributed proportionally</div>
+      </div>
+    </div>
+
+    <!-- POD -->
+    <div class="level-panel" id="tab-pod">
+      <div class="lp-text">
+        <h3>Pod-level cost attribution</h3>
+        <p>The most granular layer — individual pod cost, broken down by CPU, memory, GPU, and storage consumed. Sorted by cost, efficiency score, and waste ratio. Right-sizing recommendations shown inline.</p>
+        <div class="lp-checks">
+          <div class="lp-check">Actual resource consumption per container within each pod</div>
+          <div class="lp-check">CPU request vs actual gap in dollars and percentage</div>
+          <div class="lp-check">Memory over-provisioning ranked by monthly cost waste</div>
+          <div class="lp-check">Per-pod efficiency score and right-sizing recommendation</div>
+          <div class="lp-check">Idle pods with zero traffic surfaced for immediate action</div>
+        </div>
+      </div>
+      <div class="lp-visual">
+        <div class="lpv-title">Pod cost breakdown · ns/team-inference</div>
+        <div class="lpv-rows">
+          <div class="lpv-row"><span class="lpv-label">llm-serve-7b-gpu-x4</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:80%;background:#0d6e6e"></div></div><span class="lpv-val">$6,840</span></div>
+          <div class="lpv-row"><span class="lpv-label">llm-serve-3b-gpu-x2</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:48%;background:#1a9999"></div></div><span class="lpv-val">$4,120</span></div>
+          <div class="lpv-row"><span class="lpv-label">embed-svc-v3-2cpu</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:25%;background:#4c1d95"></div></div><span class="lpv-val">$2,110</span></div>
+          <div class="lpv-row"><span class="lpv-label">rerank-svc-4cpu</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:18%;background:#3a5c1a"></div></div><span class="lpv-val">$1,540</span></div>
+          <div class="lpv-row"><span class="lpv-label">⚠ classif-bert-old</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:12%;background:#b91c1c"></div></div><span class="lpv-val" style="color:#f87171">$1,240</span></div>
+        </div>
+        <div class="lpv-note">1 idle pod · $1,240/mo waste · 3 right-sizing candidates identified</div>
+      </div>
+    </div>
+
+    <!-- GPU -->
+    <div class="level-panel" id="tab-gpu">
+      <div class="lp-text">
+        <h3>GPU cost attribution per workload</h3>
+        <p>The layer no other K8s cost tool provides. Real GPU utilisation per pod using DCGM metrics — not just which pod was scheduled on a GPU node. Cost-per-inference and cost-per-epoch calculated in real time.</p>
+        <div class="lp-checks">
+          <div class="lp-check">GPU memory used vs allocated per pod per GPU</div>
+          <div class="lp-check">GPU SM utilisation over time — identify idle GPU-scheduled pods</div>
+          <div class="lp-check">Cost-per-inference for production serving workloads</div>
+          <div class="lp-check">Cost-per-training-epoch for batch training jobs</div>
+          <div class="lp-check">Multi-GPU pod cost split by actual per-device utilisation</div>
+        </div>
+      </div>
+      <div class="lp-visual">
+        <div class="lpv-title">GPU cost attribution · A100 pool · 8 GPUs</div>
+        <div class="lpv-rows">
+          <div class="lpv-row"><span class="lpv-label">llm-serve-7b (4×GPU)</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:84%;background:#0d6e6e"></div></div><span class="lpv-val">$5,210</span></div>
+          <div class="lpv-row"><span class="lpv-label">finetune-job-q4 (2×GPU)</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:56%;background:#1a9999"></div></div><span class="lpv-val">$3,480</span></div>
+          <div class="lpv-row"><span class="lpv-label">eval-pipeline (1×GPU)</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:22%;background:#4c1d95"></div></div><span class="lpv-val">$1,370</span></div>
+          <div class="lpv-row"><span class="lpv-label">⚠ idle-dev-nb (1×GPU)</span><div class="lpv-bar-wrap"><div class="lpv-bar" style="width:14%;background:#b91c1c"></div></div><span class="lpv-val" style="color:#f87171">$870</span></div>
+        </div>
+        <div class="lpv-note">llm-serve-7b: $0.0042/inference · finetune-job: $2.14/epoch · 1 idle GPU pod</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ALLOCATION POLICIES ── -->
+<div class="section">
+  <div class="ey">Allocation policies</div>
+  <h2 class="sh">Four ways to split shared costs.<br>You choose.</h2>
+  <p class="sl">Shared cluster infrastructure — ingress controllers, monitoring stacks, DNS, logging — needs to be allocated fairly. We support four policies, configurable per component.</p>
+  <div class="policy-grid">
+    <div class="policy-card p1">
+      <span class="pc-badge">Proportional</span>
+      <h4>Resource-proportional</h4>
+      <p>Distribute shared cost proportionally by each tenant's share of total resource consumption (CPU + memory + GPU). Most accurate for heterogeneous workloads.</p>
+      <div class="policy-example">shared_cost × (team_resource / total_resource)</div>
+    </div>
+    <div class="policy-card p2">
+      <span class="pc-badge">Equal split</span>
+      <h4>Even distribution</h4>
+      <p>Split shared costs equally across all active namespaces. Simplest model for teams at similar scale — avoids penalising heavy users of cluster-level services.</p>
+      <div class="policy-example">shared_cost / active_namespace_count</div>
+    </div>
+    <div class="policy-card p3">
+      <span class="pc-badge">Weighted</span>
+      <h4>Custom weight allocation</h4>
+      <p>Assign explicit percentage weights to each namespace or team for shared cost distribution — useful when business agreements or SLAs define cost responsibility.</p>
+      <div class="policy-example">shared_cost × team_weight_pct</div>
+    </div>
+    <div class="policy-card p4">
+      <span class="pc-badge">Direct</span>
+      <h4>Direct overhead exclusion</h4>
+      <p>Exclude shared costs from team attribution entirely and report them as a separate platform overhead line — common for internal platform teams who don't chargeback shared infra.</p>
+      <div class="policy-example">platform_overhead_pool (not allocated)</div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── PILLAR TABLE ── -->
+<div class="section">
+  <div class="ey">Platform integration</div>
+  <h2 class="sh">K8s attribution feeds every pillar</h2>
+  <p class="sl">Cost data from your Kubernetes clusters flows directly into all four platform capabilities — turning raw telemetry into actionable intelligence.</p>
+  <table class="ptable">
+    <thead>
+      <tr><th>Pillar</th><th>How K8s attribution data flows in</th><th>Outcome</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="p-pill" style="background:var(--teal-lt);color:var(--teal)">📡 Monitoring</span></td>
+        <td>Pod-level cost attribution feeds the unified AI cost dashboard alongside cloud API and model costs. Every Kubernetes workload appears with full namespace, team, and cost centre context — alongside your LLM API spend.</td>
+        <td>One view of your entire AI cost footprint — not just cloud bills, but the infrastructure running under every AI workload.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--orange-lt);color:var(--orange)">⚙️ Optimization</span></td>
+        <td>Request/limit efficiency scores per pod feed the optimization engine directly. Right-sizing recommendations are generated with projected savings shown before any change — and automated with configurable approval gates.</td>
+        <td>Systematic right-sizing across every team's deployments — with one-click or fully automated execution and rollback capability.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--violet-lt);color:var(--violet)">🔀 Orchestration</span></td>
+        <td>Real-time node pool utilisation and pod scheduling costs inform the orchestration engine. AI training and batch workloads are routed to the most cost-efficient available compute — including spot node pools — based on live cost signals from attribution data.</td>
+        <td>Cost-aware scheduling decisions based on real cost data — not static pricing tables — reducing cluster spend without degrading SLAs.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--lime-lt);color:var(--lime)">🗑️ Waste elimination</span></td>
+        <td>Idle pod detection, zombie job identification, oversized namespace discovery, and unowned resource surfacing feed directly into the waste elimination automation engine — with full audit trails and configurable approval workflows.</td>
+        <td>Measurable cluster waste eliminated daily — surfaced, approved, and executed in a single workflow with finance-ready savings reporting.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="div" />
+
+<!-- ── CHARGEBACK SECTION ── -->
+<div class="cb-section">
+  <div class="cb-inner">
+    <div class="cb-text">
+      <div class="ey" style="color:var(--orange)">Chargeback and showback</div>
+      <h2 class="sh">Give every team their own<br>K8s cost statement</h2>
+      <p>Platform teams managing shared Kubernetes infrastructure need a way to make the cost visible — either as showback (awareness only) or chargeback (internal billing). Our attribution engine generates both automatically, with the lineage to defend every number.</p>
+      <div class="cb-feat-list">
+        <div class="cb-feat">Monthly chargeback report per team — automatically generated, no manual reconciliation</div>
+        <div class="cb-feat">Full attribution lineage — from cost centre to namespace to pod to node to billing account</div>
+        <div class="cb-feat">Finance-ready CSV and PDF export with cost breakdown by resource type</div>
+        <div class="cb-feat">Dispute resolution trail — every allocation decision logged with method and inputs</div>
+        <div class="cb-feat">Budget vs actual with over-budget team alerts before month-end</div>
+        <div class="cb-feat">Scheduled delivery to finance and engineering leadership via email</div>
+      </div>
+    </div>
+
+    <!-- Chargeback table visual -->
+    <div class="cb-table-vis">
+      <div class="cbv-head">
+        <span class="cbv-head-title">Chargeback report · April 2026</span>
+        <span class="cbv-head-badge">Auto-generated</span>
+      </div>
+      <div class="cbv-rows">
+        <div class="cbv-row">
+          <div class="cbv-avatar" style="background:rgba(13,110,110,.15);color:#5eead4">IN</div>
+          <div><div class="cbv-team">team-inference</div><div class="cbv-ns">ns/inference · 6 pods</div></div>
+          <div class="cbv-cost">$18,340</div>
+          <span class="cbv-delta up">+12%</span>
+        </div>
+        <div class="cbv-row">
+          <div class="cbv-avatar" style="background:rgba(76,29,149,.15);color:#c4b5fd">TR</div>
+          <div><div class="cbv-team">team-training</div><div class="cbv-ns">ns/training · 4 jobs</div></div>
+          <div class="cbv-cost">$14,210</div>
+          <span class="cbv-delta dn">−8%</span>
+        </div>
+        <div class="cbv-row">
+          <div class="cbv-avatar" style="background:rgba(58,92,26,.15);color:#bbf7d0">PL</div>
+          <div><div class="cbv-team">team-platform</div><div class="cbv-ns">ns/platform · 12 svc</div></div>
+          <div class="cbv-cost">$8,760</div>
+          <span class="cbv-delta dn">−3%</span>
+        </div>
+        <div class="cbv-row">
+          <div class="cbv-avatar" style="background:rgba(180,83,9,.15);color:#fcd34d">DA</div>
+          <div><div class="cbv-team">team-data</div><div class="cbv-ns">ns/data · 8 pods</div></div>
+          <div class="cbv-cost">$6,690</div>
+          <span class="cbv-delta up">+5%</span>
+        </div>
+        <div class="cbv-row">
+          <div class="cbv-avatar" style="background:rgba(20,19,18,.08);color:#888780">SH</div>
+          <div><div class="cbv-team">shared overhead</div><div class="cbv-ns">ingress · dns · monitoring</div></div>
+          <div class="cbv-cost">$3,380</div>
+          <span class="cbv-delta" style="background:var(--teal-lt);color:var(--teal)">Allocated</span>
+        </div>
+      </div>
+      <div class="cbv-foot">
+        <span class="cbv-foot-lbl">Total cluster cost</span>
+        <span class="cbv-foot-val">$51,380</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── DEPLOY ── -->
+<div class="section">
+  <div class="ey">Deployment</div>
+  <h2 class="sh">Zero code changes. Live in 10 minutes.</h2>
+  <p class="sl">A single Helm chart deploys everything. No sidecars, no mutating webhooks, no workload changes. The collector operates read-only against the Kubernetes metrics API.</p>
+  <div class="deploy-steps">
+    <div class="ds">
+      <div class="ds-num">01</div>
+      <h4>Add Helm repo</h4>
+      <p>Add the AIFinOps Helm repository to your local chart sources and update.</p>
+      <span class="ds-cmd">helm repo add aifinops</span>
+    </div>
+    <div class="ds">
+      <div class="ds-num">02</div>
+      <h4>Configure values</h4>
+      <p>Set your cluster name, cloud provider, billing account ID, and team-to-namespace mapping in a single values.yaml file.</p>
+      <span class="ds-cmd">values.yaml</span>
+    </div>
+    <div class="ds">
+      <div class="ds-num">03</div>
+      <h4>Install collector</h4>
+      <p>One command deploys the DaemonSet collector, aggregator, and attribution engine to the aifinops namespace.</p>
+      <span class="ds-cmd">helm install aifinops .</span>
+    </div>
+    <div class="ds">
+      <div class="ds-num">04</div>
+      <h4>Connect billing</h4>
+      <p>Link your AWS CUR, Azure Cost Export, or GCP Billing Export. We match K8s resource usage to real billed amounts — not estimates.</p>
+      <span class="ds-cmd">OAuth / IAM role</span>
+    </div>
+    <div class="ds">
+      <div class="ds-num">05</div>
+      <h4>View attribution</h4>
+      <p>Full pod-level cost breakdown visible in your dashboard within 15 minutes. Anomaly detection and chargeback reports active from day one.</p>
+      <span class="ds-cmd">dashboard.aifinops.com</span>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:2rem">
+    <p>Read-only by default — the collector never modifies any Kubernetes resource. Optimization automation requires explicit permission configuration in your account settings.</p>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── INTEGRATIONS ── -->
+<div class="section">
+  <div class="ey">Integrations</div>
+  <h2 class="sh">Works with your entire K8s and observability stack</h2>
+  <p class="sl">Native support across every major Kubernetes distribution, cloud provider, and observability tool your team already uses.</p>
+  <div class="integ-grid">
+    <div class="integ"><div class="integ-ico">☸️</div><div class="integ-name">Vanilla K8s</div><div class="integ-cat">Any version 1.18+</div></div>
+    <div class="integ"><div class="integ-ico">🟠</div><div class="integ-name">AWS EKS</div><div class="integ-cat">Cloud K8s</div></div>
+    <div class="integ"><div class="integ-ico">🔵</div><div class="integ-name">Azure AKS</div><div class="integ-cat">Cloud K8s</div></div>
+    <div class="integ"><div class="integ-ico">🟢</div><div class="integ-name">GCP GKE</div><div class="integ-cat">Cloud K8s</div></div>
+    <div class="integ"><div class="integ-ico">🔴</div><div class="integ-name">OpenShift</div><div class="integ-cat">Enterprise K8s</div></div>
+    <div class="integ"><div class="integ-ico">🐋</div><div class="integ-name">Rancher</div><div class="integ-cat">Multi-cluster</div></div>
+    <div class="integ"><div class="integ-ico">⚡</div><div class="integ-name">k3s</div><div class="integ-cat">Lightweight K8s</div></div>
+    <div class="integ"><div class="integ-ico">🏗️</div><div class="integ-name">Talos</div><div class="integ-cat">Immutable K8s</div></div>
+    <div class="integ"><div class="integ-ico">📊</div><div class="integ-name">Prometheus</div><div class="integ-cat">Metrics</div></div>
+    <div class="integ"><div class="integ-ico">📈</div><div class="integ-name">Grafana</div><div class="integ-cat">Dashboards</div></div>
+    <div class="integ"><div class="integ-ico">🐕</div><div class="integ-name">Datadog</div><div class="integ-cat">Observability</div></div>
+    <div class="integ"><div class="integ-ico">🔭</div><div class="integ-name">New Relic</div><div class="integ-cat">Observability</div></div>
+    <div class="integ"><div class="integ-ico">💬</div><div class="integ-name">Slack</div><div class="integ-cat">Alerts</div></div>
+    <div class="integ"><div class="integ-ico">📟</div><div class="integ-name">PagerDuty</div><div class="integ-cat">Incidents</div></div>
+    <div class="integ"><div class="integ-ico">🔷</div><div class="integ-name">MS Teams</div><div class="integ-cat">Alerts</div></div>
+    <div class="integ"><div class="integ-ico">🏗️</div><div class="integ-name">Terraform</div><div class="integ-cat">IaC</div></div>
+    <div class="integ"><div class="integ-ico">🔁</div><div class="integ-name">ArgoCD</div><div class="integ-cat">GitOps</div></div>
+    <div class="integ"><div class="integ-ico">🔌</div><div class="integ-name">Flux</div><div class="integ-cat">GitOps</div></div>
+    <div class="integ"><div class="integ-ico">📉</div><div class="integ-name">Looker</div><div class="integ-cat">BI</div></div>
+    <div class="integ"><div class="integ-ico">📊</div><div class="integ-name">Power BI</div><div class="integ-cat">BI</div></div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── TESTIMONIALS ── -->
+<div class="section">
+  <div class="ey">Customer stories</div>
+  <h2 class="sh">What K8s platform teams say</h2>
+  <div class="testi-grid">
+    <div class="testi">
+      <p class="testi-q">We'd tried three K8s cost tools before this one. All of them showed us estimates based on resource requests. This is the first tool that showed us what our teams actually spent — using real GPU utilisation from DCGM. The numbers were 30% different from every estimate we'd been giving to finance.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--teal-lt);color:var(--teal)">SK</div>
+        <div><div class="testi-name">Suresh Krishnan</div><div class="testi-role">Principal SRE, AI Infrastructure · Fintech Unicorn</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">The shared cost allocation policies saved us weeks of arguments with team leads about the chargeback model. We configured proportional allocation in 20 minutes and every team accepted it because they could see exactly how their costs were derived.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--violet-lt);color:var(--violet)">PA</div>
+        <div><div class="testi-name">Priya Anand</div><div class="testi-role">Platform Engineering Manager · Global Media Corp</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">Multi-cluster attribution was the feature that sold us. We run EKS in three regions and a self-managed cluster on-prem. Seeing normalised cost per workload across all four in a single view — with real attribution, not guesses — changed how we plan capacity.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--orange-lt);color:var(--orange)">VR</div>
+        <div><div class="testi-name">Varun Rao</div><div class="testi-role">Head of DevOps · Healthcare AI Platform</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── FAQ ── -->
+<div class="section">
+  <div class="ey">FAQ</div>
+  <h2 class="sh">Common questions</h2>
+  <div class="faq-list">
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Does the collector affect cluster or workload performance?<span class="fq-ico">+</span></button>
+      <div class="fq-a">No. The collector is a lightweight DaemonSet that reads from the Kubernetes metrics API, cAdvisor, and DCGM (for GPU) using read-only access. It does not inject sidecars, modify any resources, or intercept network traffic. Typical resource footprint is under 50m CPU and 64Mi memory per node — invisible in any meaningful workload context.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How accurate is the cost attribution compared to my actual cloud bill?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Our blended allocation model matches actual cloud billing to within 1–3% for compute and GPU workloads, and within 5% for storage and network — because we ingest your actual billing data (AWS CUR, Azure Cost Export, GCP Billing) and reconcile it against resource consumption metrics. Tools that use only request-based estimation can be 15–40% inaccurate, particularly for GPU workloads where request vs actual utilisation diverges significantly.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">What happens if our teams don't use consistent Kubernetes labels?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Label consistency is the most common challenge we encounter. Our attribution engine has three layers of fallback: first, it applies any existing labels it finds that match your configured ownership hierarchy; second, it applies inferred attribution based on namespace naming conventions and deployment name patterns; third, it flags any resources it cannot attribute as "unowned" in your dashboard with the cost highlighted for assignment. Most customers reach 90%+ attribution coverage within two weeks without re-labelling anything.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">We run multi-tenant clusters with strict isolation. Does the collector create any cross-tenant data exposure?<span class="fq-ico">+</span></button>
+      <div class="fq-a">No. The collector aggregates metrics at the namespace level before sending to our platform. No pod-level payload data, application logs, or inter-pod traffic is ever collected. Each tenant's cost data is stored in logically isolated partitions. Enterprise customers can opt for physical data isolation using BYOK encryption and dedicated storage buckets. The collector also supports cluster-side aggregation mode where raw metrics never leave your cluster — only aggregated cost summaries are transmitted.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How does GPU attribution work for time-sliced or MIG GPU configurations?<span class="fq-ico">+</span></button>
+      <div class="fq-a">For MIG (Multi-Instance GPU) configurations, we attribute cost per MIG instance based on the proportion of total GPU memory and compute capacity allocated to each instance. For time-sliced GPU sharing, we use DCGM SM utilisation metrics collected at 1-second granularity to determine actual compute consumption per process per time window, and attribute cost proportionally. Both configurations produce significantly more accurate attribution than request-based tools that simply charge the full GPU node cost to the first pod scheduled on it.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA ── -->
+<section class="cta">
+  <div class="cta-hatch"></div>
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <h2>Know exactly what your<br><span class="hi">clusters cost</span> and who owns it</h2>
+    <p>Deploy with a single Helm command. Full pod-level attribution and GPU cost breakdown visible within 15 minutes. Free for clusters up to $10K monthly spend.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-teal">Deploy free via Helm</a>
+      <a href="#" class="btn-ghost">Read the docs →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  function switchTab(id, btn) {
+    document.querySelectorAll('.level-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.ltab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+  function tfq(btn) {
+    const item = btn.closest('.fq');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.fq.open').forEach(i => i.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  }
+</script>
+</body>
+</html>

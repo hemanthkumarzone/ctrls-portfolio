@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reporting — AI FinOps Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --parchment: #f5f2ec;
+      --white:     #ffffff;
+      --ivory:     #edeae2;
+      --stone:     #dedad0;
+      --stone2:    #cdc9bc;
+      --slate:     #1e2230;
+      --slate2:    #2d3347;
+      --slate3:    #3e4560;
+      --ink:       #14161e;
+      --ink2:      #2c3048;
+      --ink3:      #5a607a;
+      --ink4:      #8d93ad;
+      --ink5:      #b8bccf;
+      --rule:      rgba(30,34,48,.07);
+      --rule2:     rgba(30,34,48,.14);
+      --gold:      #b8841a;
+      --gold-lt:   #fdf3dc;
+      --gold-mid:  #c99520;
+      --teal:      #0e7c6a;
+      --teal-lt:   #d4f0eb;
+      --rose:      #9e2d4a;
+      --rose-lt:   #fce8ee;
+      --blue:      #1b4abf;
+      --blue-lt:   #dde8ff;
+      --green:     #2a6e3c;
+      --green-lt:  #dcf5e4;
+      --r:         6px;
+      --r-lg:      12px;
+      --r-xl:      20px;
+      --coro:      'Cormorant Garamond', Georgia, serif;
+      --dm:        'DM Sans', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--dm); background: var(--parchment); color: var(--ink); line-height: 1.7; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(245,242,236,.94); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--rule2);
+      height: 56px; padding: 0 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { font-family: var(--coro); font-size: 20px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: .01em; }
+    .nav-brand em { font-style: italic; color: var(--gold); }
+    .nav-bc { font-size: 12px; color: var(--ink3); display: flex; align-items: center; gap: 7px; }
+    .nav-bc strong { color: var(--ink2); font-weight: 500; }
+    .nav-bc .sep { color: var(--ink5); }
+    .nav-cta { font-size: 13px; font-weight: 500; color: var(--white); background: var(--slate); padding: 8px 22px; border-radius: var(--r); text-decoration: none; transition: background .15s; }
+    .nav-cta:hover { background: var(--slate2); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--slate);
+      position: relative; overflow: hidden;
+    }
+    /* Hatching */
+    .hero-hatch {
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+        60deg, transparent, transparent 14px,
+        rgba(255,255,255,.018) 14px, rgba(255,255,255,.018) 15px
+      );
+    }
+    /* Gold accent circle */
+    .hero-orb {
+      position: absolute; top: -140px; right: -100px;
+      width: 560px; height: 560px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(184,132,26,.12) 0%, transparent 68%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1060px; margin: 0 auto;
+      padding: 5.5rem 2.5rem 0;
+      display: grid; grid-template-columns: 1fr 440px;
+      gap: 4rem; align-items: end;
+      position: relative; z-index: 1;
+    }
+    @media (max-width: 880px) { .hero-inner { grid-template-columns: 1fr; padding-bottom: 3rem; } }
+
+    .hero-text { padding-bottom: 4.5rem; }
+    .hero-kicker {
+      font-family: var(--dm); font-size: 11px; font-weight: 500;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--gold-mid); margin-bottom: 1.5rem; display: block;
+    }
+    .hero h1 {
+      font-family: var(--coro);
+      font-size: clamp(42px, 7vw, 76px);
+      font-weight: 500; font-style: normal;
+      color: var(--parchment); line-height: 1.0;
+      letter-spacing: -.01em; margin-bottom: 1.5rem;
+    }
+    .hero h1 em { font-style: italic; color: #d4a94a; font-weight: 400; }
+    .hero-lead { font-size: 16px; color: var(--ink4); line-height: 1.82; max-width: 460px; margin-bottom: 2.5rem; }
+    .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 3rem; }
+    .btn-gold { font-size: 13px; font-weight: 500; color: var(--slate); background: var(--gold-lt); padding: 11px 24px; border-radius: var(--r); text-decoration: none; transition: background .15s; }
+    .btn-gold:hover { background: #f7e9b8; }
+    .btn-outline-lt { font-size: 13px; font-weight: 400; color: var(--ink4); background: transparent; padding: 11px 24px; border-radius: var(--r); border: 1px solid rgba(245,242,236,.15); text-decoration: none; transition: all .15s; }
+    .btn-outline-lt:hover { color: var(--parchment); border-color: rgba(245,242,236,.3); }
+
+    /* hero stat row */
+    .hero-kpi-row { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .hkpi { border-left: 2px solid rgba(184,132,26,.4); padding-left: 1rem; }
+    .hkpi-val { font-family: var(--coro); font-size: 26px; font-weight: 600; color: var(--parchment); line-height: 1; margin-bottom: 3px; }
+    .hkpi-val em { font-style: italic; color: #d4a94a; }
+    .hkpi-lbl { font-size: 11px; color: var(--ink3); }
+
+    /* ── HERO REPORT PREVIEW ── */
+    .hero-report {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(245,242,236,.1);
+      border-bottom: none;
+      border-radius: var(--r-xl) var(--r-xl) 0 0;
+      padding: 1.5rem;
+      font-family: var(--dm);
+    }
+    .rp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .rp-title { font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--ink4); }
+    .rp-schedule { font-size: 10px; color: var(--gold-mid); background: rgba(184,132,26,.15); padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(184,132,26,.2); }
+
+    /* mini chart area */
+    .rp-chart { height: 72px; display: flex; align-items: flex-end; gap: 4px; margin-bottom: 1.25rem; }
+    .rp-bar { flex: 1; border-radius: 3px 3px 0 0; opacity: .85; transition: opacity .2s; }
+    .rp-bar:hover { opacity: 1; }
+
+    /* kpi row */
+    .rp-kpis { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 1.25rem; }
+    .rp-kpi { background: rgba(255,255,255,.06); border-radius: var(--r); padding: .625rem .75rem; }
+    .rp-kpi-val { font-size: 16px; font-weight: 500; color: var(--parchment); line-height: 1; margin-bottom: 3px; }
+    .rp-kpi-lbl { font-size: 9px; color: var(--ink3); text-transform: uppercase; letter-spacing: .06em; }
+
+    /* report table rows */
+    .rp-rows { display: flex; flex-direction: column; gap: 6px; }
+    .rp-row { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.05); border-radius: var(--r); padding: .5rem .75rem; }
+    .rp-row-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .rp-row-name { font-size: 11px; color: var(--parchment); flex: 1; }
+    .rp-row-trend { font-size: 10px; padding: 2px 8px; border-radius: 4px; }
+    .rp-row-val { font-size: 12px; font-weight: 500; color: var(--parchment); }
+
+    .rp-footer { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,.07); display: flex; justify-content: space-between; align-items: center; }
+    .rp-foot-label { font-size: 10px; color: var(--ink4); }
+    .rp-foot-action { font-size: 11px; font-weight: 500; color: var(--gold-mid); cursor: pointer; }
+
+    /* ── METRICS STRIP ── */
+    .metrics { background: var(--white); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .metrics-inner { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+    .mc { padding: 1.75rem 1.25rem; text-align: center; border-right: 1px solid var(--rule); }
+    .mc:last-child { border-right: none; }
+    .mc-val { font-family: var(--coro); font-size: 32px; font-weight: 600; line-height: 1; margin-bottom: 5px; }
+    .mc-lbl { font-size: 12px; color: var(--ink3); line-height: 1.4; }
+
+    /* ── SECTION ── */
+    .section { max-width: 1060px; margin: 0 auto; padding: 5rem 2.5rem; }
+    .ey { font-size: 11px; font-weight: 500; letter-spacing: .13em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 8px; margin-bottom: .65rem; }
+    .ey::before { content: '✦'; font-size: 8px; }
+    .sh { font-family: var(--coro); font-size: clamp(26px, 4vw, 44px); font-weight: 500; color: var(--ink); line-height: 1.18; margin-bottom: .75rem; letter-spacing: -.01em; }
+    .sh em { font-style: italic; font-weight: 400; }
+    .sl { font-size: 15px; color: var(--ink3); line-height: 1.8; max-width: 580px; margin-bottom: 2.5rem; }
+    hr.div { border: none; border-top: 1px solid var(--rule); max-width: 1060px; margin: 0 auto; }
+
+    /* ── REPORT TYPES GRID ── */
+    .report-types { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .rtype {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      border-radius: var(--r-xl);
+      padding: 1.75rem;
+      position: relative; overflow: hidden;
+      transition: border-color .2s, transform .2s;
+    }
+    .rtype:hover { border-color: var(--rule2); transform: translateY(-3px); }
+    /* Subtle corner accent */
+    .rtype::after {
+      content: ''; position: absolute;
+      bottom: 0; right: 0; width: 60px; height: 60px;
+      border-radius: var(--r-xl) 0 var(--r-xl) 0;
+      opacity: .06;
+    }
+    .rtype.rt-gold::after  { background: var(--gold); }
+    .rtype.rt-teal::after  { background: var(--teal); }
+    .rtype.rt-blue::after  { background: var(--blue); }
+    .rtype.rt-rose::after  { background: var(--rose); }
+    .rtype.rt-green::after { background: var(--green); }
+    .rtype.rt-slate::after { background: var(--slate); }
+
+    .rtype-tag { font-size: 10px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: .875rem; }
+    .rtype h4 { font-family: var(--coro); font-size: 20px; font-weight: 500; color: var(--ink); margin-bottom: 6px; line-height: 1.2; }
+    .rtype-sub { font-size: 12px; font-weight: 500; color: var(--ink3); margin-bottom: 8px; }
+    .rtype p { font-size: 13px; color: var(--ink3); line-height: 1.65; margin-bottom: 14px; }
+    .rtype-meta { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .rtype-meta-item { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; color: var(--ink3); }
+    .rtype-meta-item::before { content: '—'; color: var(--ink5); flex-shrink: 0; }
+    .rtype-formats { display: flex; gap: 5px; flex-wrap: wrap; }
+    .fmt-badge { font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 4px; background: var(--ivory); color: var(--ink3); border: 1px solid var(--rule); }
+
+    /* ── REPORT BUILDER VISUAL ── */
+    .builder-section { background: var(--ivory); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 5rem 2.5rem; }
+    .builder-inner { max-width: 1060px; margin: 0 auto; }
+    .builder-grid { display: grid; grid-template-columns: 1fr 420px; gap: 4rem; align-items: start; }
+    @media (max-width: 780px) { .builder-grid { grid-template-columns: 1fr; } }
+
+    /* builder steps */
+    .builder-steps { display: flex; flex-direction: column; gap: 0; }
+    .bstep { display: grid; grid-template-columns: 44px 1fr; gap: 16px; padding: 1.5rem 0; border-bottom: 1px solid var(--rule); }
+    .bstep:last-child { border-bottom: none; }
+    .bstep-num { width: 32px; height: 32px; border-radius: 50%; background: var(--slate); color: var(--parchment); font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .bstep-body h4 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+    .bstep-body p { font-size: 13px; color: var(--ink3); line-height: 1.7; }
+
+    /* sample report preview card */
+    .report-preview {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); overflow: hidden;
+      box-shadow: 0 4px 24px rgba(30,34,48,.06);
+    }
+    .rpv-head { background: var(--slate); padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; }
+    .rpv-head-title { font-family: var(--coro); font-size: 14px; font-weight: 500; color: var(--parchment); letter-spacing: .01em; }
+    .rpv-head-badge { font-size: 10px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: rgba(184,132,26,.25); color: #d4a94a; }
+    .rpv-body { padding: 1.25rem; }
+    .rpv-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 1.25rem; }
+    .rpv-kpi { background: var(--parchment); border-radius: var(--r-lg); padding: .875rem; }
+    .rpv-kpi-val { font-family: var(--coro); font-size: 22px; font-weight: 600; line-height: 1; margin-bottom: 3px; }
+    .rpv-kpi-lbl { font-size: 10px; color: var(--ink3); line-height: 1.4; }
+    .rpv-section-title { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink4); margin-bottom: .75rem; }
+    .rpv-bars { display: flex; flex-direction: column; gap: 7px; margin-bottom: 1.25rem; }
+    .rpv-bar-row { display: flex; align-items: center; gap: 10px; }
+    .rpv-bar-label { font-size: 11px; color: var(--ink2); width: 90px; flex-shrink: 0; }
+    .rpv-bar-track { flex: 1; height: 6px; background: var(--ivory); border-radius: 3px; overflow: hidden; }
+    .rpv-bar-fill { height: 100%; border-radius: 3px; }
+    .rpv-bar-val { font-size: 11px; font-weight: 500; color: var(--ink); width: 52px; text-align: right; }
+    .rpv-insights { display: flex; flex-direction: column; gap: 6px; }
+    .rpv-insight { font-size: 12px; color: var(--ink2); display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; padding: .5rem .75rem; background: var(--parchment); border-radius: var(--r); }
+    .rpv-insight::before { content: '→'; color: var(--gold); flex-shrink: 0; font-weight: 600; margin-top: 1px; }
+    .rpv-footer { padding: .875rem 1.25rem; background: var(--parchment); border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; }
+    .rpv-footer-lbl { font-size: 11px; color: var(--ink4); }
+    .rpv-footer-exports { display: flex; gap: 6px; }
+    .rpv-export { font-size: 10px; font-weight: 500; padding: 4px 10px; border-radius: var(--r); background: var(--white); border: 1px solid var(--rule2); color: var(--ink3); cursor: pointer; transition: all .15s; }
+    .rpv-export:hover { border-color: var(--slate); color: var(--slate); }
+
+    /* ── DELIVERY SECTION ── */
+    .delivery-section { background: var(--slate); padding: 5rem 2.5rem; }
+    .delivery-inner { max-width: 1060px; margin: 0 auto; }
+    .d-ey { font-size: 11px; font-weight: 500; letter-spacing: .13em; text-transform: uppercase; color: var(--gold-mid); display: flex; align-items: center; gap: 8px; margin-bottom: .65rem; }
+    .d-ey::before { content: '✦'; font-size: 8px; }
+    .d-sh { font-family: var(--coro); font-size: clamp(26px, 4vw, 42px); font-weight: 500; color: var(--parchment); line-height: 1.18; margin-bottom: .75rem; }
+    .d-sh em { font-style: italic; color: #d4a94a; font-weight: 400; }
+    .d-sl { font-size: 15px; color: var(--ink4); line-height: 1.8; max-width: 580px; margin-bottom: 3rem; }
+    .delivery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .d-card {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(245,242,236,.09);
+      border-radius: var(--r-xl); padding: 1.5rem;
+      transition: background .15s;
+    }
+    .d-card:hover { background: rgba(255,255,255,.08); }
+    .d-card-icon { font-size: 24px; margin-bottom: 10px; }
+    .d-card h4 { font-size: 14px; font-weight: 600; color: var(--parchment); letter-spacing: -.01em; margin-bottom: 6px; }
+    .d-card p { font-size: 12px; color: var(--ink4); line-height: 1.65; margin-bottom: 10px; }
+    .d-card-detail { font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: var(--r); display: inline-block; }
+
+    /* ── PERSONAS ── */
+    .persona-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
+    .persona {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); padding: 1.75rem;
+      display: flex; flex-direction: column; gap: 1.25rem;
+      transition: border-color .15s, transform .15s;
+    }
+    .persona:hover { border-color: var(--rule2); transform: translateY(-2px); }
+    .persona-top { display: flex; gap: 14px; align-items: flex-start; }
+    .persona-avatar { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .persona-role { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 3px; }
+    .persona-name { font-family: var(--coro); font-size: 18px; font-weight: 500; color: var(--ink); }
+    .persona-q { font-size: 13px; font-style: italic; color: var(--ink3); line-height: 1.65; padding-left: .875rem; border-left: 2px solid var(--stone); }
+    .persona-reports { display: flex; flex-direction: column; gap: 6px; }
+    .pr-item { display: flex; gap: 10px; align-items: flex-start; font-size: 12px; color: var(--ink2); line-height: 1.5; }
+    .pr-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; margin-top: 4px; }
+    .persona-schedule { font-size: 11px; color: var(--ink4); padding: 4px 0; border-top: 1px solid var(--rule); }
+
+    /* ── PILLAR TABLE ── */
+    .ptable { width: 100%; border-collapse: collapse; }
+    .ptable thead th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--ink4); border-bottom: 2px solid var(--rule2); background: var(--ivory); }
+    .ptable thead th:first-child { border-radius: var(--r) 0 0 0; }
+    .ptable thead th:last-child  { border-radius: 0 var(--r) 0 0; }
+    .ptable tbody tr { border-bottom: 1px solid var(--rule); transition: background .1s; }
+    .ptable tbody tr:hover { background: var(--ivory); }
+    .ptable tbody td { padding: 13px 14px; font-size: 13px; color: var(--ink2); vertical-align: top; }
+    .ptable tbody td:first-child { color: var(--ink); font-weight: 600; }
+    .p-pill { font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; }
+
+    /* ── SCHEDULED REPORTS VISUAL ── */
+    .schedule-section { background: var(--ivory); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 5rem 2.5rem; }
+    .schedule-inner { max-width: 1060px; margin: 0 auto; }
+    .schedule-grid { display: grid; grid-template-columns: 1fr 400px; gap: 4rem; align-items: start; }
+    @media (max-width: 780px) { .schedule-grid { grid-template-columns: 1fr; } }
+    .schedule-list { display: flex; flex-direction: column; gap: 0; }
+    .sched-item { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: start; padding: 1.25rem 0; border-bottom: 1px solid var(--rule); }
+    .sched-item:last-child { border-bottom: none; }
+    .sched-freq { width: 64px; text-align: center; }
+    .sched-freq-val { font-family: var(--coro); font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1; }
+    .sched-freq-unit { font-size: 9px; color: var(--ink4); text-transform: uppercase; letter-spacing: .07em; }
+    .sched-body h5 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+    .sched-body p { font-size: 12px; color: var(--ink3); line-height: 1.55; }
+    .sched-recipients { font-size: 11px; color: var(--ink4); margin-top: 5px; }
+    .sched-status { align-self: center; }
+    .sched-badge { font-size: 10px; font-weight: 500; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+
+    /* report calendar widget */
+    .cal-widget { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-xl); overflow: hidden; }
+    .cal-head { padding: .875rem 1.25rem; background: var(--slate); display: flex; justify-content: space-between; align-items: center; }
+    .cal-head-title { font-family: var(--coro); font-size: 14px; font-weight: 500; color: var(--parchment); }
+    .cal-head-sub { font-size: 11px; color: var(--ink4); }
+    .cal-body { padding: 1.25rem; }
+    .cal-week-labels { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; margin-bottom: 6px; }
+    .cal-wl { font-size: 9px; font-weight: 500; text-align: center; color: var(--ink4); letter-spacing: .06em; text-transform: uppercase; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+    .cal-day { height: 32px; border-radius: var(--r); display: flex; align-items: center; justify-content: center; font-size: 11px; position: relative; transition: background .15s; cursor: default; }
+    .cal-day.empty { }
+    .cal-day.normal { color: var(--ink3); }
+    .cal-day.normal:hover { background: var(--ivory); }
+    .cal-day.has-report { font-weight: 600; color: var(--ink); }
+    .cal-day.has-report::after { content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; }
+    .cal-day.r-daily::after { background: var(--gold); }
+    .cal-day.r-weekly::after { background: var(--teal); }
+    .cal-day.r-monthly { background: var(--gold-lt); color: var(--gold); border: 1px solid rgba(184,132,26,.2); }
+    .cal-day.r-monthly::after { display: none; }
+    .cal-legend { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--rule); }
+    .cal-leg-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--ink3); }
+    .cal-leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ── TESTI ── */
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .testi { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-xl); padding: 1.75rem; }
+    .testi-q { font-family: var(--coro); font-size: 16px; font-style: italic; color: var(--ink); line-height: 1.68; margin-bottom: 1.25rem; }
+    .testi-q::before { content: '\201C'; color: var(--gold); font-size: 26px; line-height: 0; vertical-align: -6px; margin-right: 2px; font-style: normal; }
+    .testi-meta { display: flex; align-items: center; gap: 12px; }
+    .testi-av { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; }
+    .testi-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+    .testi-role { font-size: 11px; color: var(--ink4); }
+
+    /* ── CALLOUT ── */
+    .callout { border-left: 3px solid var(--gold); background: var(--gold-lt); border-radius: 0 var(--r) var(--r) 0; padding: .875rem 1.1rem; margin: 1.25rem 0; }
+    .callout p { font-size: 13px; color: var(--gold); line-height: 1.65; margin: 0; }
+    .callout.teal { border-left-color: var(--teal); background: var(--teal-lt); }
+    .callout.teal p { color: var(--teal); }
+    .callout.slate { border-left-color: var(--slate3); background: rgba(62,69,96,.07); }
+    .callout.slate p { color: var(--slate2); }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; max-width: 700px; }
+    .fq { border-bottom: 1px solid var(--rule); }
+    .fq:first-child { border-top: 1px solid var(--rule); }
+    .fq-q { width: 100%; text-align: left; background: transparent; border: none; padding: 1.1rem 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem; cursor: pointer; font-family: var(--coro); font-size: 17px; font-weight: 500; color: var(--ink); line-height: 1.4; }
+    .fq-q:hover { color: var(--gold); }
+    .fq-ico { width: 22px; height: 22px; border-radius: 50%; background: var(--ivory); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 15px; color: var(--ink3); transition: transform .2s, background .2s; }
+    .fq.open .fq-ico { transform: rotate(45deg); background: var(--gold-lt); color: var(--gold); }
+    .fq-a { display: none; padding: 0 0 1.1rem; font-size: 13px; color: var(--ink3); line-height: 1.8; }
+    .fq.open .fq-a { display: block; }
+
+    /* ── CTA ── */
+    .cta {
+      background: var(--slate);
+      padding: 6rem 2.5rem; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-texture { position: absolute; inset: 0; background-image: repeating-linear-gradient(60deg, transparent, transparent 14px, rgba(255,255,255,.015) 14px, rgba(255,255,255,.015) 15px); }
+    .cta-orb { position: absolute; bottom: -120px; left: 50%; transform: translateX(-50%); width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(184,132,26,.1) 0%, transparent 65%); pointer-events: none; }
+    .cta-inner { position: relative; z-index: 1; max-width: 580px; margin: 0 auto; }
+    .cta h2 { font-family: var(--coro); font-size: clamp(30px, 5vw, 52px); font-weight: 500; color: var(--parchment); line-height: 1.15; margin-bottom: 1rem; letter-spacing: -.01em; }
+    .cta h2 em { font-style: italic; color: #d4a94a; font-weight: 400; }
+    .cta p { font-size: 15px; color: var(--ink4); line-height: 1.75; margin-bottom: 2.5rem; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-parchment { font-size: 14px; font-weight: 500; color: var(--slate); background: var(--parchment); padding: 12px 30px; border-radius: var(--r); text-decoration: none; transition: background .15s; }
+    .btn-parchment:hover { background: var(--white); }
+    .btn-ghost-lt { font-size: 14px; font-weight: 400; color: var(--ink4); background: transparent; padding: 12px 30px; border-radius: var(--r); border: 1px solid rgba(245,242,236,.15); text-decoration: none; transition: all .15s; }
+    .btn-ghost-lt:hover { color: var(--parchment); border-color: rgba(245,242,236,.35); }
+
+    /* scroll animation */
+    .fade-up { opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="#" class="nav-brand">AI<em>FinOps</em></a>
+  <div class="nav-bc">
+    <span>Services</span><span class="sep">/</span>
+    <strong>Reporting</strong>
+  </div>
+  <a href="#" class="nav-cta">Set up your first report</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-hatch"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <span class="hero-kicker">Service — Reporting</span>
+      <h1>Every stakeholder.<br>Every metric.<br><em>One report.</em></h1>
+      <p class="hero-lead">
+        AI FinOps generates more data than any team can manually synthesise.
+        Our Reporting service turns that data into the right reports,
+        for the right people, at the right time — automatically. From
+        engineering team dashboards to board-level AI ROI briefs,
+        every format, every cadence, every audience served.
+      </p>
+      <div class="hero-btns">
+        <a href="#" class="btn-gold">Set up your first report</a>
+        <a href="#" class="btn-outline-lt">Browse report templates →</a>
+      </div>
+      <div class="hero-kpi-row">
+        <div class="hkpi">
+          <div class="hkpi-val"><em>40+</em></div>
+          <div class="hkpi-lbl">Pre-built report templates</div>
+        </div>
+        <div class="hkpi">
+          <div class="hkpi-val"><em>5</em></div>
+          <div class="hkpi-lbl">Stakeholder personas served</div>
+        </div>
+        <div class="hkpi">
+          <div class="hkpi-val"><em>Zero</em></div>
+          <div class="hkpi-lbl">Manual steps after initial setup</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Miniature report preview -->
+    <div class="hero-report">
+      <div class="rp-header">
+        <span class="rp-title">Monthly AI Cost Report</span>
+        <span class="rp-schedule">Auto · 1st of month</span>
+      </div>
+      <!-- Mini bar chart -->
+      <div class="rp-chart">
+        <div class="rp-bar" style="height:35%;background:#3e4560"></div>
+        <div class="rp-bar" style="height:45%;background:#3e4560"></div>
+        <div class="rp-bar" style="height:52%;background:#3e4560"></div>
+        <div class="rp-bar" style="height:48%;background:#3e4560"></div>
+        <div class="rp-bar" style="height:58%;background:#3e4560"></div>
+        <div class="rp-bar" style="height:62%;background:#3e4560"></div>
+        <div class="rp-bar" style="height:55%;background:#3e4560"></div>
+        <div class="rp-bar" style="height:70%;background:#3e4560"></div>
+        <div class="rp-bar" style="height:74%;background:#b8841a"></div>
+        <div class="rp-bar" style="height:68%;background:#0e7c6a"></div>
+        <div class="rp-bar" style="height:76%;background:#0e7c6a"></div>
+        <div class="rp-bar" style="height:80%;background:#d4a94a;border:1px solid rgba(212,169,74,.4)"></div>
+      </div>
+      <div class="rp-kpis">
+        <div class="rp-kpi">
+          <div class="rp-kpi-val" style="color:#d4a94a">$128K</div>
+          <div class="rp-kpi-lbl">Total spend</div>
+        </div>
+        <div class="rp-kpi">
+          <div class="rp-kpi-val" style="color:#6adfc0">−$18K</div>
+          <div class="rp-kpi-lbl">Waste removed</div>
+        </div>
+        <div class="rp-kpi">
+          <div class="rp-kpi-val" style="color:#a0c4ff">94%</div>
+          <div class="rp-kpi-lbl">Budget used</div>
+        </div>
+      </div>
+      <div class="rp-rows">
+        <div class="rp-row">
+          <div class="rp-row-dot" style="background:#1b4abf"></div>
+          <span class="rp-row-name">AI Models &amp; APIs</span>
+          <span class="rp-row-trend" style="background:rgba(27,74,191,.2);color:#a0c4ff">+18%</span>
+          <span class="rp-row-val">$42,800</span>
+        </div>
+        <div class="rp-row">
+          <div class="rp-row-dot" style="background:#0e7c6a"></div>
+          <span class="rp-row-name">Compute Infrastructure</span>
+          <span class="rp-row-trend" style="background:rgba(14,124,106,.2);color:#6adfc0">−4%</span>
+          <span class="rp-row-val">$35,200</span>
+        </div>
+        <div class="rp-row">
+          <div class="rp-row-dot" style="background:#b8841a"></div>
+          <span class="rp-row-name">GPU &amp; Accelerators</span>
+          <span class="rp-row-trend" style="background:rgba(184,132,26,.2);color:#d4a94a">+6%</span>
+          <span class="rp-row-val">$22,600</span>
+        </div>
+      </div>
+      <div class="rp-footer">
+        <span class="rp-foot-label">Sent to: CFO, VP Eng, FinOps team</span>
+        <span class="rp-foot-action">View full report →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── METRICS ── -->
+<div class="metrics">
+  <div class="metrics-inner">
+    <div class="mc"><div class="mc-val" style="color:var(--gold)">40+</div><div class="mc-lbl">Pre-built report templates</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--teal)">5</div><div class="mc-lbl">Stakeholder persona templates</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--blue)">Daily</div><div class="mc-lbl">Minimum report cadence available</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--gold)">8</div><div class="mc-lbl">Delivery channels supported</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--teal)">PDF·CSV<br>·Excel·JSON</div><div class="mc-lbl" style="font-size:10px">Export formats</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--blue)">Zero</div><div class="mc-lbl">Manual steps after initial setup</div></div>
+  </div>
+</div>
+
+<!-- ── REPORT TYPES ── -->
+<div class="section fade-up">
+  <div class="ey">Report library</div>
+  <h2 class="sh">40+ pre-built reports. <em>Every dimension</em><br>of AI FinOps covered.</h2>
+  <p class="sl">Every major reporting need is pre-built and ready to schedule. No configuration required beyond selecting recipients and cadence.</p>
+  <div class="report-types">
+
+    <div class="rtype rt-gold">
+      <span class="rtype-tag" style="background:var(--gold-lt);color:var(--gold)">Executive</span>
+      <h4>AI Cost & ROI Brief</h4>
+      <div class="rtype-sub">Monthly · Board &amp; C-Suite</div>
+      <p>One-page AI investment summary for board decks and executive briefings — total spend, waste eliminated, savings achieved, AI cost as % of revenue, and forecast vs actual.</p>
+      <div class="rtype-meta">
+        <div class="rtype-meta-item">Total AI spend with MoM and YoY comparison</div>
+        <div class="rtype-meta-item">Cost as % of revenue with trend line</div>
+        <div class="rtype-meta-item">Top 3 cost drivers and top 3 savings actions</div>
+        <div class="rtype-meta-item">Forecast vs budget with variance analysis</div>
+      </div>
+      <div class="rtype-formats">
+        <span class="fmt-badge">PDF</span><span class="fmt-badge">Slides export</span><span class="fmt-badge">Email</span>
+      </div>
+    </div>
+
+    <div class="rtype rt-teal">
+      <span class="rtype-tag" style="background:var(--teal-lt);color:var(--teal)">Finance</span>
+      <h4>Monthly AI Cost Statement</h4>
+      <div class="rtype-sub">Monthly · Finance teams</div>
+      <p>Finance-ready cost breakdown across all categories, teams, and cost centres — with full attribution lineage, budget vs actual by line, and chargeback allocation detail.</p>
+      <div class="rtype-meta">
+        <div class="rtype-meta-item">Cost by category with prior month comparison</div>
+        <div class="rtype-meta-item">Team and cost centre chargeback table</div>
+        <div class="rtype-meta-item">Unattributed spend and resolution status</div>
+        <div class="rtype-meta-item">Accrual-ready cost figures with currency conversion</div>
+      </div>
+      <div class="rtype-formats">
+        <span class="fmt-badge">PDF</span><span class="fmt-badge">Excel</span><span class="fmt-badge">CSV</span>
+      </div>
+    </div>
+
+    <div class="rtype rt-blue">
+      <span class="rtype-tag" style="background:var(--blue-lt);color:var(--blue)">Engineering</span>
+      <h4>Weekly Team Cost Digest</h4>
+      <div class="rtype-sub">Weekly · Engineering leads</div>
+      <p>Per-team cost summary surfaced every Monday — namespace spend, top anomalies from the week, right-sizing opportunities identified, and waste eliminated vs open actions.</p>
+      <div class="rtype-meta">
+        <div class="rtype-meta-item">Cost by namespace and workload type</div>
+        <div class="rtype-meta-item">Anomaly events and circuit breaker actions</div>
+        <div class="rtype-meta-item">Right-sizing recommendations pending approval</div>
+        <div class="rtype-meta-item">WoW efficiency score change</div>
+      </div>
+      <div class="rtype-formats">
+        <span class="fmt-badge">Email digest</span><span class="fmt-badge">Slack post</span>
+      </div>
+    </div>
+
+    <div class="rtype rt-rose">
+      <span class="rtype-tag" style="background:var(--rose-lt);color:var(--rose)">FinOps</span>
+      <h4>Waste Elimination Tracker</h4>
+      <div class="rtype-sub">Weekly · FinOps practitioners</div>
+      <p>Running scorecard of all identified waste — newly found, currently actioning, and resolved — with category breakdown, team attribution, and monthly savings realised vs projected.</p>
+      <div class="rtype-meta">
+        <div class="rtype-meta-item">New waste identified this week by category</div>
+        <div class="rtype-meta-item">Actions in progress with ETA and owner</div>
+        <div class="rtype-meta-item">Savings realised (verified) vs projected</div>
+        <div class="rtype-meta-item">Waste backlog trend — growing or shrinking?</div>
+      </div>
+      <div class="rtype-formats">
+        <span class="fmt-badge">PDF</span><span class="fmt-badge">CSV</span><span class="fmt-badge">Dashboard link</span>
+      </div>
+    </div>
+
+    <div class="rtype rt-green">
+      <span class="rtype-tag" style="background:var(--green-lt);color:var(--green)">Optimisation</span>
+      <h4>Optimisation Impact Report</h4>
+      <div class="rtype-sub">Monthly · VP Engineering &amp; FinOps</div>
+      <p>Tracks the cumulative savings impact of all optimisation actions — right-sizing applied, model routing changes, spot instance migrations, and reserved capacity purchases — against their projected values.</p>
+      <div class="rtype-meta">
+        <div class="rtype-meta-item">Actions applied this month with before/after cost</div>
+        <div class="rtype-meta-item">Cumulative savings since programme start</div>
+        <div class="rtype-meta-item">Realised vs projected savings per action type</div>
+        <div class="rtype-meta-item">Top 10 open recommendations by savings value</div>
+      </div>
+      <div class="rtype-formats">
+        <span class="fmt-badge">PDF</span><span class="fmt-badge">Excel</span>
+      </div>
+    </div>
+
+    <div class="rtype rt-slate">
+      <span class="rtype-tag" style="background:var(--ivory);color:var(--ink3)">Compliance</span>
+      <h4>Audit &amp; Governance Report</h4>
+      <div class="rtype-sub">Quarterly · Compliance &amp; Legal</div>
+      <p>Immutable audit log export covering all platform actions — circuit breaker events, automated resource changes, cost policy enforcement, and access events — for compliance documentation.</p>
+      <div class="rtype-meta">
+        <div class="rtype-meta-item">All automated actions with trigger conditions</div>
+        <div class="rtype-meta-item">Policy changes with approver trail</div>
+        <div class="rtype-meta-item">Data residency enforcement log</div>
+        <div class="rtype-meta-item">SOC 2 and GDPR-aligned event categories</div>
+      </div>
+      <div class="rtype-formats">
+        <span class="fmt-badge">PDF</span><span class="fmt-badge">JSON</span><span class="fmt-badge">CSV</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── CUSTOM REPORT BUILDER ── -->
+<div class="builder-section">
+  <div class="builder-inner">
+    <div class="builder-grid">
+      <div>
+        <div class="ey">Custom report builder</div>
+        <h2 class="sh">Pre-built templates get you 80%<br>of the way. The builder gets<br>you the <em>other 20%.</em></h2>
+        <p class="sl">When your reporting need is specific to your organisation's structure, the custom builder lets you compose exactly the report you need — without writing a line of SQL.</p>
+        <div class="builder-steps">
+          <div class="bstep">
+            <div class="bstep-num">1</div>
+            <div class="bstep-body">
+              <h4>Choose your data sources</h4>
+              <p>Select which cost dimensions to include — categories, teams, workload types, time periods, and any custom dimensions you've defined. Mix and match freely.</p>
+            </div>
+          </div>
+          <div class="bstep">
+            <div class="bstep-num">2</div>
+            <div class="bstep-body">
+              <h4>Add metrics and calculations</h4>
+              <p>Pick from 80+ pre-built metrics — total spend, efficiency scores, waste ratios, budget variance, forecast accuracy, savings realised — or define custom formulas using our metric builder.</p>
+            </div>
+          </div>
+          <div class="bstep">
+            <div class="bstep-num">3</div>
+            <div class="bstep-body">
+              <h4>Set layout and visualisations</h4>
+              <p>Choose from pre-designed layouts (executive brief, detailed analysis, operational digest) and configure which visualisations — trend charts, comparison tables, category breakdowns — appear where.</p>
+            </div>
+          </div>
+          <div class="bstep">
+            <div class="bstep-num">4</div>
+            <div class="bstep-body">
+              <h4>Configure recipients and schedule</h4>
+              <p>Define who receives the report, by what channel (email, Slack, webhook, BI tool), on what cadence — daily, weekly, monthly, quarterly — and at what local time.</p>
+            </div>
+          </div>
+          <div class="bstep">
+            <div class="bstep-num">5</div>
+            <div class="bstep-body">
+              <h4>Preview, approve, and activate</h4>
+              <p>See a live preview populated with your real data before activating the schedule. Adjust any element and preview again. Once approved, the report runs on autopilot.</p>
+            </div>
+          </div>
+        </div>
+        <div class="callout" style="margin-top:2rem">
+          <p>Custom reports are versioned — every change creates a new version, and recipients can always view the previous version for comparison. No report is ever accidentally overwritten.</p>
+        </div>
+      </div>
+
+      <!-- Report preview card -->
+      <div>
+        <div class="report-preview">
+          <div class="rpv-head">
+            <span class="rpv-head-title">Monthly AI Cost &amp; ROI Brief</span>
+            <span class="rpv-head-badge">Executive · April 2026</span>
+          </div>
+          <div class="rpv-body">
+            <div class="rpv-summary">
+              <div class="rpv-kpi">
+                <div class="rpv-kpi-val" style="color:var(--gold)">$128K</div>
+                <div class="rpv-kpi-lbl">Total AI spend<br>+11% MoM</div>
+              </div>
+              <div class="rpv-kpi">
+                <div class="rpv-kpi-val" style="color:var(--green)">$18K</div>
+                <div class="rpv-kpi-lbl">Waste eliminated<br>this month</div>
+              </div>
+              <div class="rpv-kpi">
+                <div class="rpv-kpi-val" style="color:var(--teal)">0.38%</div>
+                <div class="rpv-kpi-lbl">AI cost as<br>% of revenue</div>
+              </div>
+            </div>
+            <div class="rpv-section-title">Spend by category</div>
+            <div class="rpv-bars">
+              <div class="rpv-bar-row">
+                <span class="rpv-bar-label">AI Models</span>
+                <div class="rpv-bar-track"><div class="rpv-bar-fill" style="width:72%;background:var(--blue)"></div></div>
+                <span class="rpv-bar-val">$42,800</span>
+              </div>
+              <div class="rpv-bar-row">
+                <span class="rpv-bar-label">Compute</span>
+                <div class="rpv-bar-track"><div class="rpv-bar-fill" style="width:58%;background:var(--teal)"></div></div>
+                <span class="rpv-bar-val">$35,200</span>
+              </div>
+              <div class="rpv-bar-row">
+                <span class="rpv-bar-label">GPU</span>
+                <div class="rpv-bar-track"><div class="rpv-bar-fill" style="width:42%;background:var(--gold)"></div></div>
+                <span class="rpv-bar-val">$22,600</span>
+              </div>
+              <div class="rpv-bar-row">
+                <span class="rpv-bar-label">Other</span>
+                <div class="rpv-bar-track"><div class="rpv-bar-fill" style="width:22%;background:var(--ink5)"></div></div>
+                <span class="rpv-bar-val">$27,650</span>
+              </div>
+            </div>
+            <div class="rpv-section-title">Key insights</div>
+            <div class="rpv-insights">
+              <div class="rpv-insight">AI Models cost grew 18% — driven by 34% increase in GPT-4 Turbo usage by team-product.</div>
+              <div class="rpv-insight">Right-sizing actions saved $9,200 this month. 14 recommendations pending approval.</div>
+              <div class="rpv-insight">Forecast: $134K for May if current trajectory continues — $6K above budget.</div>
+            </div>
+          </div>
+          <div class="rpv-footer">
+            <span class="rpv-footer-lbl">Generated: May 1 · 08:00 IST</span>
+            <div class="rpv-footer-exports">
+              <div class="rpv-export">PDF</div>
+              <div class="rpv-export">Excel</div>
+              <div class="rpv-export">CSV</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── DELIVERY CHANNELS ── -->
+<div class="delivery-section">
+  <div class="delivery-inner">
+    <div class="d-ey">Report delivery</div>
+    <h2 class="d-sh">Delivered to wherever<br>your team <em>actually reads</em></h2>
+    <p class="d-sl">Reports are only valuable if they reach people where they work. We deliver to every channel your organisation uses — automatically, on schedule, every time.</p>
+    <div class="delivery-grid">
+      <div class="d-card">
+        <div class="d-card-icon">📧</div>
+        <h4>Email delivery</h4>
+        <p>HTML-formatted reports delivered directly to recipients' inboxes. Includes inline charts, summary KPIs, and one-click links to the live dashboard.</p>
+        <span class="d-card-detail" style="background:rgba(184,132,26,.2);color:var(--gold-mid)">HTML email · PDF attachment optional</span>
+      </div>
+      <div class="d-card">
+        <div class="d-card-icon">💬</div>
+        <h4>Slack</h4>
+        <p>Rich Slack messages with key metrics, trend indicators, and action items — formatted for quick scanning in a channel or DM. Block kit formatting supported.</p>
+        <span class="d-card-detail" style="background:rgba(184,132,26,.2);color:var(--gold-mid)">Block kit · Channel or DM</span>
+      </div>
+      <div class="d-card">
+        <div class="d-card-icon">🔷</div>
+        <h4>Microsoft Teams</h4>
+        <p>Adaptive card reports posted to Teams channels or personal chats, with inline approval actions for pending optimisation recommendations surfaced in the report.</p>
+        <span class="d-card-detail" style="background:rgba(184,132,26,.2);color:var(--gold-mid)">Adaptive cards · Inline actions</span>
+      </div>
+      <div class="d-card">
+        <div class="d-card-icon">📊</div>
+        <h4>BI tools</h4>
+        <p>Automated data pushes to Looker, Tableau, Power BI, and Metabase on report cadence — populating your existing dashboards with fresh AI cost data without manual exports.</p>
+        <span class="d-card-detail" style="background:rgba(184,132,26,.2);color:var(--gold-mid)">Looker · Tableau · Power BI · Metabase</span>
+      </div>
+      <div class="d-card">
+        <div class="d-card-icon">☁️</div>
+        <h4>Cloud storage</h4>
+        <p>Automatically deposit reports in S3, Azure Blob, or GCS — useful for compliance archiving, internal data lake ingestion, and integrating with existing finance workflows.</p>
+        <span class="d-card-detail" style="background:rgba(184,132,26,.2);color:var(--gold-mid)">S3 · Azure Blob · GCS</span>
+      </div>
+      <div class="d-card">
+        <div class="d-card-icon">🔗</div>
+        <h4>Webhook / API</h4>
+        <p>POST report data as structured JSON to any endpoint on schedule — integrate with your ITSM, ERP, or custom internal tools for fully automated financial workflows.</p>
+        <span class="d-card-detail" style="background:rgba(184,132,26,.2);color:var(--gold-mid)">JSON payload · Any endpoint</span>
+      </div>
+      <div class="d-card">
+        <div class="d-card-icon">📄</div>
+        <h4>PDF download portal</h4>
+        <p>All reports are archived in a self-service PDF portal — stakeholders without platform accounts can access their relevant reports via a secure, time-limited link.</p>
+        <span class="d-card-detail" style="background:rgba(184,132,26,.2);color:var(--gold-mid)">No login required · Expiry configurable</span>
+      </div>
+      <div class="d-card">
+        <div class="d-card-icon">📱</div>
+        <h4>Mobile push</h4>
+        <p>Critical reports and anomaly-triggered reports can be delivered as mobile push notifications with summary KPIs — for executives who need to be informed immediately.</p>
+        <span class="d-card-detail" style="background:rgba(184,132,26,.2);color:var(--gold-mid)">iOS · Android · Configurable urgency</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCHEDULED REPORTS ── -->
+<div class="schedule-section">
+  <div class="schedule-inner">
+    <div class="ey">Report schedules</div>
+    <h2 class="sh">Every report. <em>Always on time.</em><br>No one chasing data.</h2>
+    <p class="sl">Once configured, reports run automatically on schedule — no manual exports, no spreadsheet updates, no reminders to send the monthly report.</p>
+    <div class="schedule-grid">
+      <div class="schedule-list">
+        <div class="sched-item">
+          <div class="sched-freq"><div class="sched-freq-val">Daily</div><div class="sched-freq-unit">08:00</div></div>
+          <div class="sched-body">
+            <h5>AI Cost Anomaly Digest</h5>
+            <p>Summary of all anomaly events, circuit breaker actions, and spend deviations from the previous 24 hours.</p>
+            <div class="sched-recipients">→ On-call engineer, FinOps team (Slack)</div>
+          </div>
+          <div class="sched-status"><span class="sched-badge" style="background:var(--green-lt);color:var(--green)">Active</span></div>
+        </div>
+        <div class="sched-item">
+          <div class="sched-freq"><div class="sched-freq-val">Weekly</div><div class="sched-freq-unit">Mon 09:00</div></div>
+          <div class="sched-body">
+            <h5>Team Cost &amp; Waste Digest</h5>
+            <p>Per-team cost breakdown, top waste items, and open optimisation recommendations — tailored per engineering team lead.</p>
+            <div class="sched-recipients">→ All engineering leads (Email + Slack)</div>
+          </div>
+          <div class="sched-status"><span class="sched-badge" style="background:var(--green-lt);color:var(--green)">Active</span></div>
+        </div>
+        <div class="sched-item">
+          <div class="sched-freq"><div class="sched-freq-val">Monthly</div><div class="sched-freq-unit">1st 08:00</div></div>
+          <div class="sched-body">
+            <h5>AI Cost Statement</h5>
+            <p>Finance-ready cost statement with chargeback tables, budget vs actual by category, and attribution lineage for all cost centres.</p>
+            <div class="sched-recipients">→ CFO, Finance team (Email PDF + Excel)</div>
+          </div>
+          <div class="sched-status"><span class="sched-badge" style="background:var(--green-lt);color:var(--green)">Active</span></div>
+        </div>
+        <div class="sched-item">
+          <div class="sched-freq"><div class="sched-freq-val">Monthly</div><div class="sched-freq-unit">1st 09:00</div></div>
+          <div class="sched-body">
+            <h5>Executive AI ROI Brief</h5>
+            <p>Board-ready one-pager: total spend, savings achieved, AI cost as % of revenue, and strategic forecast for the quarter ahead.</p>
+            <div class="sched-recipients">→ CEO, CTO, CFO (Email PDF)</div>
+          </div>
+          <div class="sched-status"><span class="sched-badge" style="background:var(--green-lt);color:var(--green)">Active</span></div>
+        </div>
+        <div class="sched-item">
+          <div class="sched-freq"><div class="sched-freq-val">Qtrly</div><div class="sched-freq-unit">Last day</div></div>
+          <div class="sched-body">
+            <h5>Audit &amp; Governance Report</h5>
+            <p>Immutable audit export of all platform actions, policy changes, and data residency events for compliance teams.</p>
+            <div class="sched-recipients">→ Compliance, Legal (Encrypted PDF + JSON)</div>
+          </div>
+          <div class="sched-status"><span class="sched-badge" style="background:var(--gold-lt);color:var(--gold)">Pending</span></div>
+        </div>
+        <div class="sched-item">
+          <div class="sched-freq"><div class="sched-freq-val">Event</div><div class="sched-freq-unit">Triggered</div></div>
+          <div class="sched-body">
+            <h5>Budget Threshold Alert Report</h5>
+            <p>Triggered automatically when any team or category spend crosses 80% or 100% of its monthly budget — sent immediately when the threshold is reached.</p>
+            <div class="sched-recipients">→ Budget owner, FinOps (Slack + Email)</div>
+          </div>
+          <div class="sched-status"><span class="sched-badge" style="background:var(--green-lt);color:var(--green)">Active</span></div>
+        </div>
+      </div>
+
+      <!-- Calendar widget -->
+      <div>
+        <div class="cal-widget">
+          <div class="cal-head">
+            <span class="cal-head-title">Report calendar · May 2026</span>
+            <span class="cal-head-sub">6 scheduled reports</span>
+          </div>
+          <div class="cal-body">
+            <div class="cal-week-labels">
+              <div class="cal-wl">M</div><div class="cal-wl">T</div><div class="cal-wl">W</div>
+              <div class="cal-wl">T</div><div class="cal-wl">F</div><div class="cal-wl">S</div><div class="cal-wl">S</div>
+            </div>
+            <div class="cal-grid">
+              <!-- Week 1 — May 1 starts Thu -->
+              <div class="cal-day empty"></div><div class="cal-day empty"></div><div class="cal-day empty"></div>
+              <div class="cal-day r-monthly has-report">1</div>
+              <div class="cal-day has-report r-daily">2</div>
+              <div class="cal-day normal">3</div><div class="cal-day normal">4</div>
+              <!-- Week 2 -->
+              <div class="cal-day has-report r-weekly">5</div>
+              <div class="cal-day has-report r-daily">6</div>
+              <div class="cal-day has-report r-daily">7</div>
+              <div class="cal-day has-report r-daily">8</div>
+              <div class="cal-day has-report r-daily">9</div>
+              <div class="cal-day normal">10</div><div class="cal-day normal">11</div>
+              <!-- Week 3 -->
+              <div class="cal-day has-report r-weekly">12</div>
+              <div class="cal-day has-report r-daily">13</div>
+              <div class="cal-day has-report r-daily">14</div>
+              <div class="cal-day has-report r-daily">15</div>
+              <div class="cal-day has-report r-daily">16</div>
+              <div class="cal-day normal">17</div><div class="cal-day normal">18</div>
+              <!-- Week 4 -->
+              <div class="cal-day has-report r-weekly">19</div>
+              <div class="cal-day has-report r-daily">20</div>
+              <div class="cal-day has-report r-daily">21</div>
+              <div class="cal-day has-report r-daily">22</div>
+              <div class="cal-day has-report r-daily">23</div>
+              <div class="cal-day normal">24</div><div class="cal-day normal">25</div>
+              <!-- Week 5 -->
+              <div class="cal-day has-report r-weekly">26</div>
+              <div class="cal-day has-report r-daily">27</div>
+              <div class="cal-day has-report r-daily">28</div>
+              <div class="cal-day has-report r-daily">29</div>
+              <div class="cal-day has-report r-daily">30</div>
+              <div class="cal-day r-monthly has-report">31</div>
+              <div class="cal-day empty"></div>
+            </div>
+            <div class="cal-legend">
+              <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--gold)"></div>Monthly / Quarterly</div>
+              <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--teal)"></div>Weekly</div>
+              <div class="cal-leg-item"><div class="cal-leg-dot" style="background:var(--blue)"></div>Daily</div>
+            </div>
+          </div>
+        </div>
+        <div class="callout teal" style="margin-top:1.25rem">
+          <p>All scheduled reports are versioned and archived. Every report ever generated is available in your reporting history for up to 3 years — searchable and re-downloadable at any time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PERSONAS ── -->
+<div class="section fade-up">
+  <div class="ey">Reports by persona</div>
+  <h2 class="sh">Five personas. Five report sets.<br><em>One platform.</em></h2>
+  <p class="sl">Every stakeholder gets a curated set of reports pre-configured for their role, questions, and preferred format. No customisation required to get started.</p>
+  <div class="persona-grid">
+    <div class="persona">
+      <div class="persona-top">
+        <div class="persona-avatar" style="background:var(--gold-lt)">👔</div>
+        <div>
+          <div class="persona-role" style="color:var(--gold)">Executive</div>
+          <div class="persona-name">CEO / CTO / CFO</div>
+        </div>
+      </div>
+      <div class="persona-q">"What is our total AI investment, what is it delivering, and are we on budget?"</div>
+      <div class="persona-reports">
+        <div class="pr-item"><div class="pr-dot" style="background:var(--gold)"></div>Monthly AI ROI Brief — 1-page board-ready summary</div>
+        <div class="pr-item"><div class="pr-dot" style="background:var(--gold)"></div>Quarterly AI Investment Review — strategic trend analysis</div>
+        <div class="pr-item"><div class="pr-dot" style="background:var(--gold)"></div>Budget Exception Alerts — triggered when overspend risk detected</div>
+      </div>
+      <div class="persona-schedule">Delivered: 1st of month · PDF to email · Slides on request</div>
+    </div>
+
+    <div class="persona">
+      <div class="persona-top">
+        <div class="persona-avatar" style="background:var(--teal-lt)">💼</div>
+        <div>
+          <div class="persona-role" style="color:var(--teal)">Finance</div>
+          <div class="persona-name">Finance &amp; Accounting</div>
+        </div>
+      </div>
+      <div class="persona-q">"What did we spend on AI last month by category and cost centre, and how does it compare to budget?"</div>
+      <div class="persona-reports">
+        <div class="pr-item"><div class="pr-dot" style="background:var(--teal)"></div>Monthly AI Cost Statement — full chargeback breakdown</div>
+        <div class="pr-item"><div class="pr-dot" style="background:var(--teal)"></div>Budget vs Actual by Category — variance analysis</div>
+        <div class="pr-item"><div class="pr-dot" style="background:var(--teal)"></div>Year-to-date AI Spend Report — accrual-ready</div>
+      </div>
+      <div class="persona-schedule">Delivered: 1st of month · Excel + PDF to email</div>
+    </div>
+
+    <div class="persona">
+      <div class="persona-top">
+        <div class="persona-avatar" style="background:var(--blue-lt)">👨‍💻</div>
+        <div>
+          <div class="persona-role" style="color:var(--blue)">Engineering</div>
+          <div class="persona-name">Engineering Leads</div>
+        </div>
+      </div>
+      <div class="persona-q">"What did my team spend this week, where are we wasting, and what should we fix?"</div>
+      <div class="persona-reports">
+        <div class="pr-item"><div class="pr-dot" style="background:var(--blue)"></div>Weekly Team Cost Digest — per-namespace breakdown</div>
+        <div class="pr-item"><div class="pr-dot" style="background:var(--blue)"></div>Right-sizing Recommendations Report — pending approvals</div>
+        <div class="pr-item"><div class="pr-dot" style="background:var(--blue)"></div>Daily Anomaly Summary — overnight events digest</div>
+      </div>
+      <div class="persona-schedule">Delivered: Weekly Mon + Daily 08:00 · Slack + email</div>
+    </div>
+
+    <div class="persona">
+      <div class="persona-top">
+        <div class="persona-avatar" style="background:var(--rose-lt)">📊</div>
+        <div>
+          <div class="persona-role" style="color:var(--rose)">FinOps</div>
+          <div class="persona-name">AI FinOps Practitioners</div>
+        </div>
+      </div>
+      <div class="persona-q">"What is the current waste backlog, what are we actioning, and what savings have we proved this month?"</div>
+      <div class="persona-reports">
+        <div class="pr-item"><div class="pr-dot" style="background:var(--rose)"></div>Waste Elimination Tracker — weekly running scorecard</div>
+        <div class="pr-item"><div class="pr-dot" style="background:var(--rose)"></div>Optimisation Impact Report — monthly savings proof</div>
+        <div class="pr-item"><div class="pr-dot" style="background:var(--rose)"></div>Category View Export — full category breakdown for analysis</div>
+      </div>
+      <div class="persona-schedule">Delivered: Weekly + Monthly · PDF + CSV</div>
+    </div>
+
+    <div class="persona">
+      <div class="persona-top">
+        <div class="persona-avatar" style="background:var(--ivory)">🏛️</div>
+        <div>
+          <div class="persona-role" style="color:var(--ink3)">Compliance</div>
+          <div class="persona-name">Compliance &amp; Legal</div>
+        </div>
+      </div>
+      <div class="persona-q">"What automated actions did the platform take, and do we have a compliant audit trail for every change?"</div>
+      <div class="persona-reports">
+        <div class="pr-item"><div class="pr-dot" style="background:var(--slate3)"></div>Quarterly Audit Report — all platform actions logged</div>
+        <div class="pr-item"><div class="pr-dot" style="background:var(--slate3)"></div>Data Residency Compliance Export — jurisdiction-specific</div>
+        <div class="pr-item"><div class="pr-dot" style="background:var(--slate3)"></div>Policy Change Log — all governance changes with approvers</div>
+      </div>
+      <div class="persona-schedule">Delivered: Quarterly · Encrypted PDF + JSON</div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── PILLAR TABLE ── -->
+<div class="section fade-up">
+  <div class="ey">Platform integration</div>
+  <h2 class="sh">Reports that close the loop<br>on every platform pillar</h2>
+  <p class="sl">Reporting is the accountability layer — it turns every platform capability's output into a documented record of what happened, what was saved, and what remains to be done.</p>
+  <table class="ptable">
+    <thead>
+      <tr><th>Pillar</th><th>What reporting delivers for this capability</th><th>Stakeholder outcome</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="p-pill" style="background:var(--blue-lt);color:var(--blue)">📡 Monitoring</span></td>
+        <td>Monitoring data is the primary input to all reports — every report draws on the cost, usage, and anomaly telemetry collected by the monitoring layer. Reports make monitoring data accessible to stakeholders who don't live in the platform — translating signals into business language.</td>
+        <td>Executives and finance teams receive monitoring insights in their preferred format without needing platform access. Engineers receive their team's monitoring data distilled into actionable weekly digests.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--teal-lt);color:var(--teal)">⚙️ Optimization</span></td>
+        <td>The Optimisation Impact Report documents every action taken — right-sizing applied, model routing changes, reserved capacity purchased — with before/after cost comparison and verified savings. This report provides the ROI evidence that justifies continued investment in the FinOps programme.</td>
+        <td>Finance teams can reconcile optimisation savings in their books. Leadership can see FinOps ROI clearly. Engineering teams see which of their pending recommendations have the highest savings potential.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--gold-lt);color:var(--gold)">🔀 Orchestration</span></td>
+        <td>Orchestration actions — workload routing decisions, spot instance migrations, scheduling policy changes — are reported in the engineering and compliance reports with full audit trails. Cost savings from orchestration are attributed and tracked separately from right-sizing savings.</td>
+        <td>Platform teams have documented evidence of every orchestration decision for compliance audits. FinOps teams can attribute savings to specific orchestration actions and prove programme value.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--green-lt);color:var(--green)">🗑️ Waste elimination</span></td>
+        <td>The Waste Elimination Tracker report is the central accountability document for the waste elimination programme — showing newly found waste, actioning status, verified savings, and backlog trend. It transforms waste elimination from an invisible background activity into a measurable, communicable business outcome.</td>
+        <td>FinOps teams have a running scorecard they can present to leadership. Finance can incorporate verified waste savings into cost reduction reporting. Engineering teams see which of their workloads contributed to waste found and waste eliminated.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="div" />
+
+<!-- ── TESTIMONIALS ── -->
+<div class="section fade-up">
+  <div class="ey">Customer stories</div>
+  <h2 class="sh">What teams say about<br><em>automated reporting</em></h2>
+  <div class="testi-grid">
+    <div class="testi">
+      <p class="testi-q">Our monthly finance reconciliation for AI costs used to take our FinOps team 3 days and a lot of Slack messages asking engineering teams for explanations. The Monthly AI Cost Statement is now in the CFO's inbox on the 1st of every month, fully reconciled, with a chargeback table that our finance team accepts without a single question.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--teal-lt);color:var(--teal)">MN</div>
+        <div><div class="testi-name">Meena Nair</div><div class="testi-role">Head of FinOps · Global B2B SaaS (Chennai)</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">The executive AI ROI Brief changed how our board relates to our AI investment. Before, AI cost was an opaque line in the cloud bill. Now the CEO gets a one-page brief on the 1st that shows exactly what we spent, what we saved, and what we got for it. AI became a strategic conversation, not a cost concern.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--gold-lt);color:var(--gold)">VK</div>
+        <div><div class="testi-name">Vikram Khanna</div><div class="testi-role">CTO · Series C AI Platform (Mumbai)</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">The weekly team digest changed the culture around AI costs in our engineering org. Every Monday morning, each lead gets their team's cost breakdown, waste items, and pending recommendations. Within six weeks, cost awareness was just part of how engineering teams talked about their work — no mandates, no training.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--blue-lt);color:var(--blue)">AS</div>
+        <div><div class="testi-name">Arjun Sethi</div><div class="testi-role">VP Engineering · Enterprise AI Infrastructure</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── FAQ ── -->
+<div class="section fade-up">
+  <div class="ey">FAQ</div>
+  <h2 class="sh">Common questions</h2>
+  <div class="faq-list">
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can I send different reports to different people within the same organisation?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes. Each report has independent recipient configuration — you define a specific recipient list per report, not a global setting. You can send the engineering team digest only to engineering leads, the finance cost statement only to the CFO and accounting team, and the executive brief to C-suite. Each report can also be configured with conditional routing — for example, the budget threshold alert can escalate to the CFO if the overspend exceeds a defined percentage, or route to just the team lead for minor variances.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can reports be customised for different business units with different data scopes?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes. Each report instance can be scoped to a specific set of teams, namespaces, cost centres, or categories. You can create a version of the Weekly Team Digest that shows only data for the "payments" business unit and send it only to payments engineering leads — completely separate from the same report scoped to the "search" business unit. This means stakeholders only see the data relevant to their scope, without any risk of cross-team data leakage.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">What happens if a report fails to generate or deliver?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Failed report generations are retried automatically up to 3 times with exponential backoff. If all retries fail, an alert is sent to your platform administrator and the report owner. Failed deliveries (e.g. a Slack webhook returning an error) are retried separately from generation failures — a report that generated successfully but failed to deliver is retried without regenerating. All failures and retries are logged in the report audit trail. You can also manually trigger a report regeneration at any time from the reporting dashboard.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can stakeholders who don't have platform accounts access their reports?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes. Reports delivered by email include a PDF attachment and an optional secure web link. The web link provides a read-only view of the report — no platform account or login required. Links have configurable expiry (default 30 days) and can be revoked at any time. For compliance-sensitive reports, the link can be restricted to specific IP ranges. There is also a self-service report portal where stakeholders can log in with just an email OTP to access all reports they've been granted access to, without a full platform account.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can we white-label or brand reports with our own company identity?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes on Enterprise and above. Reports can be configured with your company logo, colour scheme, and header/footer branding — replacing the AIFinOps logo and styling with your own identity. This is commonly used by: internal platform teams presenting AI cost reports to their own business units; consulting firms building FinOps practices on top of our platform; and enterprises whose compliance requirements specify branded documentation for audit purposes. White-labelling is configured once per organisation and applies to all reports automatically.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA ── -->
+<section class="cta">
+  <div class="cta-texture"></div>
+  <div class="cta-orb"></div>
+  <div class="cta-inner">
+    <h2>Stop building reports.<br>Start <em>receiving</em> them.</h2>
+    <p>Connect your accounts, select your templates, and your first scheduled reports will be delivered automatically — without writing a line of SQL or a single manual export.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-parchment">Browse report templates</a>
+      <a href="#" class="btn-ghost-lt">Book a reporting setup call →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  function tfq(btn) {
+    const item = btn.closest('.fq');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.fq.open').forEach(i => i.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

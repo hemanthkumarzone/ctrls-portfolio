@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Category Views — AI FinOps Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Clash+Grotesk:wght@300;400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <!-- Fallback for Clash Grotesk -->
+  <style>
+    @import url('https://api.fontshare.com/v2/css?f[]=clash-grotesk@300,400,500,600,700&display=swap');
+  </style>
+  <style>
+    :root {
+      --bg:         #f0eeea;
+      --white:      #ffffff;
+      --surf:       #e6e3dd;
+      --surf2:      #dad6ce;
+      --ink:        #16140f;
+      --ink2:       #3a3729;
+      --ink3:       #6a6759;
+      --ink4:       #9a9789;
+      --ink5:       #c8c5bb;
+      --rule:       rgba(22,20,15,.08);
+      --rule2:      rgba(22,20,15,.16);
+
+      /* category palette — each category gets its own accent */
+      --c-model:    #1b4dcc;   --c-model-lt:  #dce8ff;
+      --c-infra:    #0a7a5e;   --c-infra-lt:  #ccf0e8;
+      --c-data:     #8b3a00;   --c-data-lt:   #ffe8d0;
+      --c-network:  #5c1a8c;   --c-network-lt:#eeddff;
+      --c-storage:  #9a6000;   --c-storage-lt:#fff0cc;
+      --c-ops:      #b01c1c;   --c-ops-lt:    #ffe0e0;
+      --c-gpu:      #006e7a;   --c-gpu-lt:    #ccf4f8;
+      --c-waste:    #3d6b00;   --c-waste-lt:  #e4f5cc;
+
+      --r:     6px;
+      --r-lg:  14px;
+      --r-xl:  22px;
+      --clash: 'Clash Grotesk', 'Cabinet Grotesk', system-ui, sans-serif;
+      --libre: 'Libre Baskerville', Georgia, serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--clash); background: var(--bg); color: var(--ink); line-height: 1.65; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(240,238,234,.94); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--rule2);
+      height: 56px; padding: 0 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { font-size: 17px; font-weight: 600; color: var(--ink); text-decoration: none; letter-spacing: -.02em; }
+    .nav-brand em { font-style: normal; color: var(--c-model); }
+    .nav-bc { font-size: 12px; color: var(--ink3); display: flex; align-items: center; gap: 7px; }
+    .nav-bc strong { color: var(--ink); font-weight: 600; }
+    .nav-bc .sep { color: var(--ink5); }
+    .nav-cta { font-size: 13px; font-weight: 600; color: var(--white); background: var(--ink); padding: 8px 22px; border-radius: var(--r); text-decoration: none; transition: background .15s; }
+    .nav-cta:hover { background: var(--ink2); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--ink);
+      overflow: hidden;
+      position: relative;
+    }
+    /* Large typographic "X" decoration */
+    .hero-deco {
+      position: absolute; right: -60px; top: -40px;
+      font-family: var(--libre); font-style: italic;
+      font-size: 520px; line-height: 1; color: rgba(240,238,234,.03);
+      pointer-events: none; user-select: none;
+      letter-spacing: -.04em;
+    }
+    .hero-inner {
+      max-width: 1060px; margin: 0 auto;
+      padding: 5.5rem 2.5rem 0;
+      display: grid; grid-template-columns: 1fr 480px;
+      gap: 4rem; align-items: end;
+      position: relative; z-index: 1;
+    }
+    @media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; padding-bottom: 3rem; } }
+
+    .hero-text { padding-bottom: 4rem; }
+    .hero-kicker {
+      font-size: 11px; font-weight: 600; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--c-model);
+      background: rgba(27,77,204,.15); border: 1px solid rgba(27,77,204,.2);
+      padding: 4px 14px; border-radius: 20px; display: inline-block; margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: var(--libre); font-size: clamp(40px, 6.5vw, 72px);
+      font-weight: 700; font-style: normal;
+      color: var(--bg); line-height: 1.0; letter-spacing: -.02em; margin-bottom: 1.5rem;
+    }
+    .hero h1 em { font-style: italic; color: #7daaff; font-weight: 400; }
+    .hero-lead { font-size: 16px; color: var(--ink4); line-height: 1.8; max-width: 460px; margin-bottom: 2.5rem; }
+    .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn-primary { font-size: 13px; font-weight: 600; color: var(--ink); background: var(--bg); padding: 11px 24px; border-radius: var(--r); text-decoration: none; transition: background .15s; }
+    .btn-primary:hover { background: var(--white); }
+    .btn-outline-lt { font-size: 13px; font-weight: 500; color: var(--ink4); background: transparent; padding: 11px 24px; border-radius: var(--r); border: 1px solid rgba(240,238,234,.15); text-decoration: none; transition: all .15s; }
+    .btn-outline-lt:hover { color: var(--bg); border-color: rgba(240,238,234,.35); }
+
+    /* stat chips */
+    .hero-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+    .chip {
+      font-size: 12px; font-weight: 500; padding: 6px 14px; border-radius: 20px;
+      border: 1px solid rgba(240,238,234,.12); color: var(--ink4);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .chip::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+    .chip-b { color: #7daaff; } .chip-b::before { background: var(--c-model); }
+    .chip-g { color: #6adfc0; } .chip-g::before { background: var(--c-infra); }
+    .chip-o { color: #ffa96b; } .chip-o::before { background: var(--c-data); }
+
+    /* ── HERO VISUAL — Category pie + bars ── */
+    .hero-vis {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(240,238,234,.08);
+      border-bottom: none;
+      border-radius: var(--r-xl) var(--r-xl) 0 0;
+      padding: 1.5rem 1.5rem 2rem;
+      position: relative;
+    }
+    .hv-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .hv-title { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); }
+    .hv-period { font-size: 10px; color: var(--ink4); background: rgba(255,255,255,.07); padding: 3px 10px; border-radius: 20px; }
+
+    /* donut-style category bars */
+    .hv-cats { display: flex; flex-direction: column; gap: 7px; }
+    .hv-cat { display: flex; align-items: center; gap: 10px; cursor: pointer; border-radius: var(--r); padding: 5px 6px; transition: background .15s; }
+    .hv-cat:hover { background: rgba(255,255,255,.05); }
+    .hv-cat-swatch { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+    .hv-cat-name { font-size: 12px; font-weight: 500; color: var(--bg); flex: 1; }
+    .hv-cat-bar-wrap { width: 120px; height: 5px; background: rgba(255,255,255,.08); border-radius: 3px; flex-shrink: 0; }
+    .hv-cat-bar { height: 100%; border-radius: 3px; }
+    .hv-cat-pct { font-size: 11px; font-weight: 600; width: 32px; text-align: right; flex-shrink: 0; }
+    .hv-cat-val { font-size: 11px; color: var(--ink3); width: 54px; text-align: right; flex-shrink: 0; }
+
+    .hv-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 1.25rem; padding-top: 1.25rem;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .hv-total { font-family: var(--libre); font-size: 24px; color: var(--bg); }
+    .hv-total-lbl { font-size: 10px; color: var(--ink3); }
+    .hv-action { font-size: 11px; font-weight: 600; padding: 6px 14px; border-radius: var(--r); background: rgba(27,77,204,.25); color: #7daaff; cursor: pointer; }
+
+    /* ── METRICS ── */
+    .metrics { background: var(--white); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .metrics-inner { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+    .mc { padding: 1.75rem 1.25rem; text-align: center; border-right: 1px solid var(--rule); }
+    .mc:last-child { border-right: none; }
+    .mc-val { font-family: var(--libre); font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+    .mc-lbl { font-size: 12px; color: var(--ink3); line-height: 1.4; }
+
+    /* ── SECTION ── */
+    .section { max-width: 1060px; margin: 0 auto; padding: 5rem 2.5rem; }
+    .ey { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--c-model); margin-bottom: .6rem; display: flex; align-items: center; gap: 8px; }
+    .ey::before { content: '◈'; font-size: 10px; }
+    .sh { font-family: var(--libre); font-size: clamp(24px, 4vw, 40px); font-weight: 700; color: var(--ink); line-height: 1.18; margin-bottom: .75rem; letter-spacing: -.01em; }
+    .sh em { font-style: italic; font-weight: 400; color: var(--c-model); }
+    .sl { font-size: 15px; color: var(--ink3); line-height: 1.8; max-width: 580px; margin-bottom: 2.5rem; }
+    hr.div { border: none; border-top: 1px solid var(--rule); max-width: 1060px; margin: 0 auto; }
+
+    /* ── WHAT ARE CATEGORY VIEWS ── */
+    .what-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    @media (max-width: 680px) { .what-grid { grid-template-columns: 1fr; } }
+    .what-text p { font-size: 14px; color: var(--ink2); line-height: 1.85; margin-bottom: 1.1rem; }
+    .what-cards { display: flex; flex-direction: column; gap: 10px; }
+    .what-card {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); padding: 1.125rem;
+      display: flex; gap: 14px; align-items: flex-start;
+      transition: border-color .15s, transform .15s;
+    }
+    .what-card:hover { border-color: var(--rule2); transform: translateX(4px); }
+    .what-card-ico { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+    .what-card h5 { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+    .what-card p { font-size: 12px; color: var(--ink3); line-height: 1.55; }
+
+    /* ── INTERACTIVE CATEGORY EXPLORER ── */
+    .explorer-section { background: var(--surf); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 5rem 2.5rem; }
+    .explorer-inner { max-width: 1060px; margin: 0 auto; }
+
+    .cat-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2rem; }
+    .ctab {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 600; padding: 8px 18px; border-radius: 24px;
+      border: 1.5px solid var(--rule2); background: var(--white);
+      color: var(--ink3); cursor: pointer; transition: all .15s;
+    }
+    .ctab:hover { border-color: var(--rule2); color: var(--ink); }
+    .ctab.active { color: var(--white); border-color: transparent; }
+    .ctab-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    .cat-panel { display: none; }
+    .cat-panel.active { display: grid; grid-template-columns: 1fr 380px; gap: 3rem; align-items: start; }
+    @media (max-width: 780px) { .cat-panel.active { grid-template-columns: 1fr; } }
+
+    /* panel left */
+    .cp-header { margin-bottom: 1.5rem; }
+    .cp-badge { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: .75rem; }
+    .cp-name { font-family: var(--libre); font-size: 26px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; margin-bottom: .5rem; }
+    .cp-desc { font-size: 14px; color: var(--ink2); line-height: 1.8; margin-bottom: 1.5rem; }
+    .cp-signals { display: flex; flex-direction: column; gap: 7px; margin-bottom: 1.5rem; }
+    .cp-signal { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--ink2); line-height: 1.5; }
+    .cp-signal::before { content: '→'; flex-shrink: 0; margin-top: 1px; font-weight: 600; }
+    .cp-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .cp-action { font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: var(--r); text-decoration: none; transition: all .15s; display: inline-block; }
+
+    /* panel right — live cost breakdown */
+    .cp-visual {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); overflow: hidden;
+    }
+    .cpv-head { padding: .875rem 1.25rem; border-bottom: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; }
+    .cpv-head-title { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); }
+    .cpv-head-val { font-family: var(--libre); font-size: 18px; color: var(--ink); }
+    .cpv-rows { }
+    .cpv-row { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: .75rem 1.25rem; border-bottom: 1px solid var(--rule); transition: background .1s; }
+    .cpv-row:hover { background: var(--bg); }
+    .cpv-row:last-child { border-bottom: none; }
+    .cpv-row-info {}
+    .cpv-row-name { font-size: 13px; font-weight: 600; color: var(--ink); }
+    .cpv-row-sub  { font-size: 10px; color: var(--ink4); }
+    .cpv-row-bar-wrap { width: 70px; height: 4px; background: var(--surf); border-radius: 2px; }
+    .cpv-row-bar { height: 100%; border-radius: 2px; }
+    .cpv-row-cost { font-size: 13px; font-weight: 600; color: var(--ink); text-align: right; white-space: nowrap; }
+    .cpv-footer { padding: .875rem 1.25rem; background: var(--bg); display: flex; justify-content: space-between; align-items: center; }
+    .cpv-footer-lbl { font-size: 11px; color: var(--ink4); }
+    .cpv-footer-insight { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--r); }
+
+    /* ── ALL EIGHT CATEGORIES ── */
+    .cat8-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+    .cat8 {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); padding: 1.5rem;
+      position: relative; overflow: hidden;
+      transition: border-color .2s, transform .2s;
+    }
+    .cat8:hover { transform: translateY(-2px); }
+    .cat8::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; border-radius: var(--r-xl) 0 0 var(--r-xl); }
+    .cat8-num { font-family: var(--libre); font-size: 36px; font-weight: 700; line-height: 1; margin-bottom: 6px; opacity: .15; }
+    .cat8-name { font-size: 15px; font-weight: 700; color: var(--ink); letter-spacing: -.02em; margin-bottom: 6px; }
+    .cat8-desc { font-size: 12px; color: var(--ink3); line-height: 1.65; margin-bottom: 12px; }
+    .cat8-subs { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+    .cat8-sub { font-size: 11px; color: var(--ink3); display: flex; gap: 7px; align-items: flex-start; line-height: 1.4; }
+    .cat8-sub::before { content: '—'; flex-shrink: 0; }
+    .cat8-badge { font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 20px; display: inline-block; }
+
+    /* ── CROSS-CATEGORY ANALYSIS ── */
+    .cross-section { background: var(--ink); padding: 5rem 2.5rem; }
+    .cross-inner { max-width: 1060px; margin: 0 auto; }
+    .cross-ey { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #7daaff; display: flex; align-items: center; gap: 8px; margin-bottom: .75rem; }
+    .cross-ey::before { content: '◈'; font-size: 10px; }
+    .cross-sh { font-family: var(--libre); font-size: clamp(24px, 4vw, 38px); font-weight: 700; color: var(--bg); line-height: 1.2; margin-bottom: .75rem; }
+    .cross-sh em { font-style: italic; font-weight: 400; color: #7daaff; }
+    .cross-sl { font-size: 15px; color: var(--ink4); line-height: 1.8; max-width: 560px; margin-bottom: 3rem; }
+    .cross-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .cross-card {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(240,238,234,.08);
+      border-radius: var(--r-xl); padding: 1.5rem;
+      transition: background .15s;
+    }
+    .cross-card:hover { background: rgba(255,255,255,.08); }
+    .cross-icon { font-size: 22px; margin-bottom: 10px; }
+    .cross-card h4 { font-size: 14px; font-weight: 700; color: var(--bg); letter-spacing: -.02em; margin-bottom: 6px; }
+    .cross-card p { font-size: 12px; color: var(--ink4); line-height: 1.65; }
+    .cross-example { font-size: 11px; font-weight: 600; margin-top: 10px; padding: 5px 10px; border-radius: var(--r); display: inline-flex; align-items: center; gap: 5px; }
+
+    /* ── VIEWS BY PERSONA ── */
+    .persona-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 640px) { .persona-grid { grid-template-columns: 1fr; } }
+    .persona {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); padding: 1.75rem;
+      transition: border-color .15s;
+    }
+    .persona:hover { border-color: var(--rule2); }
+    .persona-avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 1rem; }
+    .persona-role { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .5rem; }
+    .persona-name { font-family: var(--libre); font-size: 18px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; margin-bottom: .75rem; }
+    .persona-q { font-size: 13px; font-style: italic; color: var(--ink3); line-height: 1.65; margin-bottom: 1.25rem; border-left: 2px solid var(--rule2); padding-left: .875rem; }
+    .persona-views { display: flex; flex-direction: column; gap: 6px; }
+    .persona-view { display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--ink2); }
+    .persona-view-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ── PILLAR TABLE ── */
+    .ptable { width: 100%; border-collapse: collapse; }
+    .ptable thead th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--ink4); border-bottom: 2px solid var(--rule2); background: var(--surf); }
+    .ptable thead th:first-child { border-radius: var(--r) 0 0 0; }
+    .ptable thead th:last-child  { border-radius: 0 var(--r) 0 0; }
+    .ptable tbody tr { border-bottom: 1px solid var(--rule); transition: background .1s; }
+    .ptable tbody tr:hover { background: var(--surf); }
+    .ptable tbody td { padding: 13px 14px; font-size: 13px; color: var(--ink2); vertical-align: top; }
+    .ptable tbody td:first-child { color: var(--ink); font-weight: 600; }
+    .p-pill { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; }
+
+    /* ── TESTI ── */
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+    .testi { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-xl); padding: 1.5rem; }
+    .testi-q { font-family: var(--libre); font-size: 14px; font-style: italic; color: var(--ink); line-height: 1.7; margin-bottom: 1.25rem; }
+    .testi-q::before { content: '\201C'; color: var(--c-model); font-size: 22px; line-height: 0; vertical-align: -5px; margin-right: 2px; font-style: normal; }
+    .testi-meta { display: flex; align-items: center; gap: 10px; }
+    .testi-av { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .testi-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .testi-role { font-size: 11px; color: var(--ink4); }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; max-width: 700px; }
+    .fq { border-bottom: 1px solid var(--rule); }
+    .fq:first-child { border-top: 1px solid var(--rule); }
+    .fq-q { width: 100%; text-align: left; background: transparent; border: none; padding: 1.1rem 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem; cursor: pointer; font-family: var(--libre); font-size: 15px; font-weight: 400; color: var(--ink); line-height: 1.45; }
+    .fq-q:hover { color: var(--c-model); }
+    .fq-ico { width: 22px; height: 22px; border-radius: 50%; background: var(--surf); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 15px; color: var(--ink3); transition: transform .2s, background .2s; }
+    .fq.open .fq-ico { transform: rotate(45deg); background: var(--c-model-lt); color: var(--c-model); }
+    .fq-a { display: none; padding: 0 0 1.1rem; font-size: 13px; color: var(--ink3); line-height: 1.8; }
+    .fq.open .fq-a { display: block; }
+
+    /* callouts */
+    .callout { border-left: 3px solid var(--c-model); background: var(--c-model-lt); border-radius: 0 var(--r) var(--r) 0; padding: .875rem 1.1rem; margin: 1.25rem 0; }
+    .callout p { font-size: 13px; color: var(--c-model); margin: 0; line-height: 1.65; }
+    .callout.infra { border-left-color: var(--c-infra); background: var(--c-infra-lt); }
+    .callout.infra p { color: var(--c-infra); }
+
+    /* ── CTA ── */
+    .cta { background: var(--bg); border-top: 2px solid var(--rule2); padding: 6rem 2.5rem; text-align: center; position: relative; overflow: hidden; }
+    .cta-deco { position: absolute; left: -40px; bottom: -80px; font-family: var(--libre); font-style: italic; font-size: 320px; line-height: 1; color: rgba(22,20,15,.03); pointer-events: none; }
+    .cta-inner { position: relative; z-index: 1; max-width: 580px; margin: 0 auto; }
+    .cta h2 { font-family: var(--libre); font-size: clamp(28px, 4.5vw, 48px); font-weight: 700; color: var(--ink); letter-spacing: -.02em; line-height: 1.15; margin-bottom: 1rem; }
+    .cta h2 em { font-style: italic; font-weight: 400; color: var(--c-model); }
+    .cta p { font-size: 15px; color: var(--ink3); line-height: 1.75; margin-bottom: 2.5rem; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-ink { font-size: 14px; font-weight: 600; color: var(--white); background: var(--ink); padding: 12px 30px; border-radius: var(--r); text-decoration: none; transition: background .15s; }
+    .btn-ink:hover { background: var(--ink2); }
+    .btn-outline-dk { font-size: 14px; font-weight: 500; color: var(--ink3); background: transparent; padding: 12px 30px; border-radius: var(--r); border: 1px solid var(--rule2); text-decoration: none; transition: all .15s; }
+    .btn-outline-dk:hover { color: var(--ink); border-color: var(--ink); }
+
+    /* scroll animation */
+    .fade-up { opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="#" class="nav-brand">AI<em>FinOps</em></a>
+  <div class="nav-bc">
+    <span>Services</span><span class="sep">/</span>
+    <strong>Category Views</strong>
+  </div>
+  <a href="#" class="nav-cta">Explore your categories</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-deco">⋈</div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-kicker">Service — Category Views</div>
+      <h1>See AI costs<br>the way your<br><em>business thinks.</em></h1>
+      <p class="hero-lead">
+        Raw cloud billing data is organised by accounts, services, and SKUs —
+        not by how your business actually works. Category Views reorganise
+        every dollar of AI spend into the dimensions that matter: by model,
+        by infrastructure layer, by team, by use case, and by waste type.
+        So every stakeholder sees exactly the slice of cost that's relevant to them.
+      </p>
+      <div class="hero-btns">
+        <a href="#" class="btn-primary">Explore your cost categories</a>
+        <a href="#" class="btn-outline-lt">See a live demo →</a>
+      </div>
+      <div class="hero-chips">
+        <span class="chip chip-b">8 built-in categories</span>
+        <span class="chip chip-g">Fully customisable</span>
+        <span class="chip chip-o">Every persona served</span>
+      </div>
+    </div>
+
+    <!-- Category breakdown visual -->
+    <div class="hero-vis">
+      <div class="hv-topbar">
+        <span class="hv-title">Cost by category · April 2026</span>
+        <span class="hv-period">MTD</span>
+      </div>
+      <div class="hv-cats">
+        <div class="hv-cat">
+          <div class="hv-cat-swatch" style="background:var(--c-model)"></div>
+          <span class="hv-cat-name">AI Models &amp; APIs</span>
+          <div class="hv-cat-bar-wrap"><div class="hv-cat-bar" style="width:82%;background:var(--c-model)"></div></div>
+          <span class="hv-cat-pct" style="color:#7daaff">34%</span>
+          <span class="hv-cat-val">$42,800</span>
+        </div>
+        <div class="hv-cat">
+          <div class="hv-cat-swatch" style="background:var(--c-infra)"></div>
+          <span class="hv-cat-name">Compute Infrastructure</span>
+          <div class="hv-cat-bar-wrap"><div class="hv-cat-bar" style="width:68%;background:var(--c-infra)"></div></div>
+          <span class="hv-cat-pct" style="color:#6adfc0">28%</span>
+          <span class="hv-cat-val">$35,200</span>
+        </div>
+        <div class="hv-cat">
+          <div class="hv-cat-swatch" style="background:var(--c-gpu)"></div>
+          <span class="hv-cat-name">GPU &amp; Accelerators</span>
+          <div class="hv-cat-bar-wrap"><div class="hv-cat-bar" style="width:52%;background:var(--c-gpu)"></div></div>
+          <span class="hv-cat-pct" style="color:#6adfc0">18%</span>
+          <span class="hv-cat-val">$22,600</span>
+        </div>
+        <div class="hv-cat">
+          <div class="hv-cat-swatch" style="background:var(--c-data)"></div>
+          <span class="hv-cat-name">Data &amp; Pipelines</span>
+          <div class="hv-cat-bar-wrap"><div class="hv-cat-bar" style="width:34%;background:var(--c-data)"></div></div>
+          <span class="hv-cat-pct" style="color:#ffa96b">10%</span>
+          <span class="hv-cat-val">$12,540</span>
+        </div>
+        <div class="hv-cat">
+          <div class="hv-cat-swatch" style="background:var(--c-storage)"></div>
+          <span class="hv-cat-name">Storage &amp; Artefacts</span>
+          <div class="hv-cat-bar-wrap"><div class="hv-cat-bar" style="width:22%;background:var(--c-storage)"></div></div>
+          <span class="hv-cat-pct" style="color:#ffd080">5%</span>
+          <span class="hv-cat-val">$6,290</span>
+        </div>
+        <div class="hv-cat">
+          <div class="hv-cat-swatch" style="background:var(--c-waste)"></div>
+          <span class="hv-cat-name">Identified Waste</span>
+          <div class="hv-cat-bar-wrap"><div class="hv-cat-bar" style="width:17%;background:var(--c-waste)"></div></div>
+          <span class="hv-cat-pct" style="color:#a8e060">4%</span>
+          <span class="hv-cat-val" style="color:#a8e060">$5,040</span>
+        </div>
+        <div class="hv-cat">
+          <div class="hv-cat-swatch" style="background:var(--c-network)"></div>
+          <span class="hv-cat-name">Networking &amp; Egress</span>
+          <div class="hv-cat-bar-wrap"><div class="hv-cat-bar" style="width:12%;background:var(--c-network)"></div></div>
+          <span class="hv-cat-pct" style="color:#c8a0ff">3%</span>
+          <span class="hv-cat-val">$3,780</span>
+        </div>
+      </div>
+      <div class="hv-footer">
+        <div>
+          <div class="hv-total">$128,250</div>
+          <div class="hv-total-lbl">Total AI spend · April MTD</div>
+        </div>
+        <div class="hv-action">Drill into any category →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── METRICS ── -->
+<div class="metrics">
+  <div class="metrics-inner">
+    <div class="mc"><div class="mc-val" style="color:var(--c-model)">8</div><div class="mc-lbl">Built-in category views ready on day one</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--c-infra)">∞</div><div class="mc-lbl">Custom categories — no limit on dimensions</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--c-gpu)">100%</div><div class="mc-lbl">Of AI spend assigned to at least one category</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--c-data)">5</div><div class="mc-lbl">Personas with pre-built view templates</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--c-storage)">Real-time</div><div class="mc-lbl">Category data updated every 15 minutes</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--c-waste)">1-click</div><div class="mc-lbl">Export any category view to PDF or CSV</div></div>
+  </div>
+</div>
+
+<!-- ── WHAT ARE CATEGORY VIEWS ── -->
+<div class="section fade-up">
+  <div class="ey">What are category views</div>
+  <h2 class="sh">One cost dataset. <em>Every lens</em><br>your organisation needs.</h2>
+  <div class="what-grid">
+    <div class="what-text">
+      <p>
+        Your cloud bill is a list of line items. Your AI cost reality is a set of
+        business questions: Which models are driving spend growth? Which teams
+        are over budget? How much are we spending on waste versus productive work?
+        What does our GPU fleet cost per inference?
+      </p>
+      <p>
+        Category Views is the layer that bridges these two worlds. It maps every
+        billing line item — every API call, every node-hour, every GB of storage —
+        to one or more business-meaningful categories. Then it lets every
+        stakeholder filter, slice, and drill into exactly the view they need,
+        without requiring a data engineer to build a custom report.
+      </p>
+      <p>
+        Finance sees cost by category over time. Engineering sees cost by workload
+        and namespace. FinOps sees waste by category and team. The CEO sees
+        cost-as-percentage-of-revenue by AI product. All from the same underlying
+        category model.
+      </p>
+      <div class="callout">
+        <p>Category Views don't replace your billing dashboard — they sit on top of it, translating raw cloud costs into the language your organisation actually uses.</p>
+      </div>
+    </div>
+    <div class="what-cards">
+      <div class="what-card">
+        <div class="what-card-ico">🗂️</div>
+        <div>
+          <h5>Pre-built categories for AI FinOps</h5>
+          <p>8 built-in categories covering every major AI cost dimension — models, compute, GPU, data, storage, networking, ops, and waste — active from day one of deployment.</p>
+        </div>
+      </div>
+      <div class="what-card">
+        <div class="what-card-ico">🎯</div>
+        <div>
+          <h5>Custom category builder</h5>
+          <p>Define your own categories using any combination of tags, labels, account IDs, service names, team names, or workload types. No SQL, no data engineering required.</p>
+        </div>
+      </div>
+      <div class="what-card">
+        <div class="what-card-ico">🔀</div>
+        <div>
+          <h5>Multi-dimensional assignment</h5>
+          <p>Every cost item can belong to multiple categories simultaneously — a GPU pod can appear in both the "Compute Infrastructure" category and the "Model Training" category, without double-counting total spend.</p>
+        </div>
+      </div>
+      <div class="what-card">
+        <div class="what-card-ico">👤</div>
+        <div>
+          <h5>Persona-filtered views</h5>
+          <p>Each stakeholder persona — Engineering, Finance, FinOps, Product, Executive — has a pre-configured view showing only the categories and dimensions relevant to their role and decisions.</p>
+        </div>
+      </div>
+      <div class="what-card">
+        <div class="what-card-ico">📊</div>
+        <div>
+          <h5>Trend and comparison views</h5>
+          <p>Every category view includes MoM and YoY trend analysis, budget vs actual comparison, anomaly flags, and forecasted month-end spend — not just a current snapshot.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CATEGORY EXPLORER ── -->
+<div class="explorer-section">
+  <div class="explorer-inner">
+    <div class="ey" style="color:var(--c-model)">Category explorer</div>
+    <h2 class="sh" style="margin-bottom:2rem">Explore each category<br><em>in depth</em></h2>
+
+    <div class="cat-tabs" role="tablist">
+      <button class="ctab active" onclick="switchCat('model',this)" style="--tc:var(--c-model)">
+        <span class="ctab-dot" style="background:var(--c-model)"></span>AI Models &amp; APIs
+      </button>
+      <button class="ctab" onclick="switchCat('infra',this)">
+        <span class="ctab-dot" style="background:var(--c-infra)"></span>Compute
+      </button>
+      <button class="ctab" onclick="switchCat('gpu',this)">
+        <span class="ctab-dot" style="background:var(--c-gpu)"></span>GPU &amp; Accelerators
+      </button>
+      <button class="ctab" onclick="switchCat('data',this)">
+        <span class="ctab-dot" style="background:var(--c-data)"></span>Data &amp; Pipelines
+      </button>
+      <button class="ctab" onclick="switchCat('storage',this)">
+        <span class="ctab-dot" style="background:var(--c-storage)"></span>Storage
+      </button>
+      <button class="ctab" onclick="switchCat('network',this)">
+        <span class="ctab-dot" style="background:var(--c-network)"></span>Networking
+      </button>
+      <button class="ctab" onclick="switchCat('ops',this)">
+        <span class="ctab-dot" style="background:var(--c-ops)"></span>MLOps
+      </button>
+      <button class="ctab" onclick="switchCat('waste',this)">
+        <span class="ctab-dot" style="background:var(--c-waste)"></span>Identified Waste
+      </button>
+    </div>
+
+    <!-- MODEL -->
+    <div class="cat-panel active" id="cp-model">
+      <div>
+        <div class="cp-header">
+          <span class="cp-badge" style="background:var(--c-model-lt);color:var(--c-model)">Category 01 — AI Models &amp; APIs</span>
+          <div class="cp-name">AI Models &amp; APIs</div>
+          <div class="cp-desc">Every cost generated by calling, hosting, or licensing AI models — from third-party API tokens to self-hosted model serving infrastructure. Typically the largest and fastest-growing category for AI teams.</div>
+        </div>
+        <div class="cp-signals">
+          <div class="cp-signal" style="--a:var(--c-model)">Token-level API costs — input tokens, output tokens, and cached tokens per model and per endpoint, attributed to team and product feature.</div>
+          <div class="cp-signal">Model hosting costs — inference server compute, GPU allocation, and serving framework overhead for self-hosted or fine-tuned models.</div>
+          <div class="cp-signal">Licensing and subscription fees — per-model SaaS subscriptions, enterprise API agreements, and usage-based licensing charges.</div>
+          <div class="cp-signal">Fine-tuning API costs — the cost of customising foundation models, separated from standard inference costs for clear ROI visibility.</div>
+          <div class="cp-signal">Model evaluation and testing — costs incurred by LLM evaluation pipelines, A/B testing infrastructure, and quality benchmarking runs.</div>
+        </div>
+        <div class="cp-actions">
+          <a href="#" class="cp-action" style="background:var(--c-model-lt);color:var(--c-model)">View model cost breakdown →</a>
+          <a href="#" class="cp-action" style="background:var(--surf);color:var(--ink3);border:1px solid var(--rule2)">Set model budget alert</a>
+        </div>
+      </div>
+      <div class="cp-visual">
+        <div class="cpv-head">
+          <span class="cpv-head-title">AI Models &amp; APIs · Top spend</span>
+          <span class="cpv-head-val" style="color:var(--c-model)">$42,800</span>
+        </div>
+        <div class="cpv-rows">
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">GPT-4 Turbo</div><div class="cpv-row-sub">team-inference · 18M tokens/day</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:78%;background:var(--c-model)"></div></div>
+            <div class="cpv-row-cost">$18,420</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Claude 3.5 Sonnet</div><div class="cpv-row-sub">team-product · 9M tokens/day</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:52%;background:var(--c-model)"></div></div>
+            <div class="cpv-row-cost">$11,200</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Bedrock Titan Embed</div><div class="cpv-row-sub">team-data · 120M embeds/day</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:35%;background:var(--c-model)"></div></div>
+            <div class="cpv-row-cost">$7,480</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Fine-tuned GPT-3.5</div><div class="cpv-row-sub">team-support · 4M tokens/day</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:22%;background:var(--c-model)"></div></div>
+            <div class="cpv-row-cost">$3,960</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Cohere Command</div><div class="cpv-row-sub">team-search · 2M tokens/day</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:12%;background:var(--c-model)"></div></div>
+            <div class="cpv-row-cost">$1,740</div>
+          </div>
+        </div>
+        <div class="cpv-footer">
+          <span class="cpv-footer-lbl">MoM change</span>
+          <span class="cpv-footer-insight" style="background:var(--c-model-lt);color:var(--c-model)">+18% vs March</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- INFRA -->
+    <div class="cat-panel" id="cp-infra">
+      <div>
+        <div class="cp-header">
+          <span class="cp-badge" style="background:var(--c-infra-lt);color:var(--c-infra)">Category 02 — Compute Infrastructure</span>
+          <div class="cp-name">Compute Infrastructure</div>
+          <div class="cp-desc">The underlying compute layer running AI workloads — Kubernetes pods, EC2 instances, cloud-managed node pools, and serverless functions. Separated from GPU costs to give a clear CPU/memory cost baseline.</div>
+        </div>
+        <div class="cp-signals">
+          <div class="cp-signal">Kubernetes pod and namespace costs — attributed to owning team and product using namespace-to-team mapping.</div>
+          <div class="cp-signal">Node pool and auto-scaling group costs — including reserved instance coverage and on-demand vs spot split.</div>
+          <div class="cp-signal">Serverless function costs — AI inference via Lambda or Cloud Functions, attributed per function and invocation pattern.</div>
+          <div class="cp-signal">Container registry and image storage costs — often overlooked but can be significant for organisations with many model versions.</div>
+          <div class="cp-signal">Over-provisioning waste within this category — highlighted separately to show how much compute cost is idle capacity.</div>
+        </div>
+        <div class="cp-actions">
+          <a href="#" class="cp-action" style="background:var(--c-infra-lt);color:var(--c-infra)">View compute breakdown →</a>
+          <a href="#" class="cp-action" style="background:var(--surf);color:var(--ink3);border:1px solid var(--rule2)">Right-sizing recommendations</a>
+        </div>
+      </div>
+      <div class="cp-visual">
+        <div class="cpv-head">
+          <span class="cpv-head-title">Compute · Namespace breakdown</span>
+          <span class="cpv-head-val" style="color:var(--c-infra)">$35,200</span>
+        </div>
+        <div class="cpv-rows">
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">ns/team-inference</div><div class="cpv-row-sub">14 pods · 42 vCPU · 128 GiB</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:75%;background:var(--c-infra)"></div></div>
+            <div class="cpv-row-cost">$14,820</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">ns/team-training</div><div class="cpv-row-sub">8 pods · 32 vCPU · 256 GiB</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:54%;background:var(--c-infra)"></div></div>
+            <div class="cpv-row-cost">$10,680</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">ns/team-platform</div><div class="cpv-row-sub">22 pods · 18 vCPU · 64 GiB</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:30%;background:var(--c-infra)"></div></div>
+            <div class="cpv-row-cost">$5,940</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">ns/team-data</div><div class="cpv-row-sub">11 pods · 12 vCPU · 48 GiB</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:20%;background:var(--c-infra)"></div></div>
+            <div class="cpv-row-cost">$3,760</div>
+          </div>
+        </div>
+        <div class="cpv-footer">
+          <span class="cpv-footer-lbl">Right-sizing potential</span>
+          <span class="cpv-footer-insight" style="background:var(--c-infra-lt);color:var(--c-infra)">$9,800/mo identified</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- GPU -->
+    <div class="cat-panel" id="cp-gpu">
+      <div>
+        <div class="cp-header">
+          <span class="cp-badge" style="background:var(--c-gpu-lt);color:var(--c-gpu)">Category 03 — GPU &amp; Accelerators</span>
+          <div class="cp-name">GPU &amp; Accelerators</div>
+          <div class="cp-desc">Isolated GPU cost visibility — separated from general compute because GPU economics are fundamentally different. High unit cost, low utilisation tolerance, and complex multi-device workloads require their own cost lens.</div>
+        </div>
+        <div class="cp-signals">
+          <div class="cp-signal">GPU node and pod costs attributed per device type (A100, H100, V100, T4) — with actual utilisation percentage shown alongside billed cost.</div>
+          <div class="cp-signal">Cost-per-inference and cost-per-training-epoch calculated from DCGM utilisation data for every GPU workload.</div>
+          <div class="cp-signal">GPU waste — idle GPU allocation, under-utilised multi-GPU pods, and time-sliced GPU inefficiency — highlighted as an action item.</div>
+          <div class="cp-signal">Reserved GPU vs on-demand split — showing coverage rate and estimated savings available from additional reservations.</div>
+        </div>
+        <div class="cp-actions">
+          <a href="#" class="cp-action" style="background:var(--c-gpu-lt);color:var(--c-gpu)">View GPU cost breakdown →</a>
+          <a href="#" class="cp-action" style="background:var(--surf);color:var(--ink3);border:1px solid var(--rule2)">GPU waste report</a>
+        </div>
+      </div>
+      <div class="cp-visual">
+        <div class="cpv-head">
+          <span class="cpv-head-title">GPU &amp; Accelerators · By device</span>
+          <span class="cpv-head-val" style="color:var(--c-gpu)">$22,600</span>
+        </div>
+        <div class="cpv-rows">
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">A100 80GB (8 devices)</div><div class="cpv-row-sub">72% avg util · inference + training</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:80%;background:var(--c-gpu)"></div></div>
+            <div class="cpv-row-cost">$14,200</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">V100 32GB (4 devices)</div><div class="cpv-row-sub">48% avg util · fine-tuning</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:44%;background:var(--c-gpu)"></div></div>
+            <div class="cpv-row-cost">$5,840</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">T4 16GB (6 devices)</div><div class="cpv-row-sub">61% avg util · light inference</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:24%;background:var(--c-gpu)"></div></div>
+            <div class="cpv-row-cost">$2,560</div>
+          </div>
+        </div>
+        <div class="cpv-footer">
+          <span class="cpv-footer-lbl">GPU waste identified</span>
+          <span class="cpv-footer-insight" style="background:var(--c-gpu-lt);color:var(--c-gpu)">$3,840/mo · 17% idle</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATA -->
+    <div class="cat-panel" id="cp-data">
+      <div>
+        <div class="cp-header">
+          <span class="cp-badge" style="background:var(--c-data-lt);color:var(--c-data)">Category 04 — Data &amp; Pipelines</span>
+          <div class="cp-name">Data &amp; Pipelines</div>
+          <div class="cp-desc">The cost of moving, transforming, and preparing data for AI — ETL pipelines, data warehouse queries, streaming ingestion, and batch processing jobs that feed AI models and training workflows.</div>
+        </div>
+        <div class="cp-signals">
+          <div class="cp-signal">ETL and data transformation pipeline costs — attributed per pipeline and per downstream AI consumer.</div>
+          <div class="cp-signal">Data warehouse query costs (Snowflake, BigQuery, Redshift) generated by AI feature extraction and training data preparation.</div>
+          <div class="cp-signal">Streaming ingestion costs — Kafka, Kinesis, or Pub/Sub costs attributable to real-time AI inference data feeds.</div>
+          <div class="cp-signal">Scheduled pipeline waste — pipelines running on schedule but producing outputs that no AI workload consumes.</div>
+        </div>
+        <div class="cp-actions">
+          <a href="#" class="cp-action" style="background:var(--c-data-lt);color:var(--c-data)">View pipeline costs →</a>
+          <a href="#" class="cp-action" style="background:var(--surf);color:var(--ink3);border:1px solid var(--rule2)">Pipeline attrition report</a>
+        </div>
+      </div>
+      <div class="cp-visual">
+        <div class="cpv-head">
+          <span class="cpv-head-title">Data &amp; Pipelines · Top cost sources</span>
+          <span class="cpv-head-val" style="color:var(--c-data)">$12,540</span>
+        </div>
+        <div class="cpv-rows">
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">BigQuery — feature store</div><div class="cpv-row-sub">84TB scanned/mo · training data</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:72%;background:var(--c-data)"></div></div>
+            <div class="cpv-row-cost">$4,820</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Kafka ingestion cluster</div><div class="cpv-row-sub">Real-time context enrichment</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:48%;background:var(--c-data)"></div></div>
+            <div class="cpv-row-cost">$3,210</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Spark ETL — nightly batch</div><div class="cpv-row-sub">Training data refresh pipeline</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:34%;background:var(--c-data)"></div></div>
+            <div class="cpv-row-cost">$2,280</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Dataflow — embedding pipeline</div><div class="cpv-row-sub">Document re-embedding runs</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:22%;background:var(--c-data)"></div></div>
+            <div class="cpv-row-cost">$1,480</div>
+          </div>
+        </div>
+        <div class="cpv-footer">
+          <span class="cpv-footer-lbl">Unused pipeline waste</span>
+          <span class="cpv-footer-insight" style="background:var(--c-data-lt);color:var(--c-data)">$1,840/mo identified</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STORAGE -->
+    <div class="cat-panel" id="cp-storage">
+      <div>
+        <div class="cp-header">
+          <span class="cp-badge" style="background:var(--c-storage-lt);color:var(--c-storage)">Category 05 — Storage &amp; Artefacts</span>
+          <div class="cp-name">Storage &amp; Artefacts</div>
+          <div class="cp-desc">The cost of storing AI outputs — model weights, training checkpoints, embeddings, vector stores, datasets, and evaluation artefacts. Often the most stale category, with costs accumulating long after data becomes irrelevant.</div>
+        </div>
+        <div class="cp-signals">
+          <div class="cp-signal">Model weight and checkpoint storage costs — broken down by model version and age, with stale version identification.</div>
+          <div class="cp-signal">Vector store and embedding index storage — by index, by freshness, and by downstream consumer count.</div>
+          <div class="cp-signal">Training dataset storage — by dataset, by last-accessed date, and by which training runs have consumed it.</div>
+          <div class="cp-signal">Storage class optimisation opportunities — data that should be in cold/archive tiers but is sitting in expensive hot storage.</div>
+        </div>
+        <div class="cp-actions">
+          <a href="#" class="cp-action" style="background:var(--c-storage-lt);color:var(--c-storage)">View storage breakdown →</a>
+          <a href="#" class="cp-action" style="background:var(--surf);color:var(--ink3);border:1px solid var(--rule2)">Archive recommendations</a>
+        </div>
+      </div>
+      <div class="cp-visual">
+        <div class="cpv-head">
+          <span class="cpv-head-title">Storage &amp; Artefacts · By type</span>
+          <span class="cpv-head-val" style="color:var(--c-storage)">$6,290</span>
+        </div>
+        <div class="cpv-rows">
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Model weights (S3)</div><div class="cpv-row-sub">4.2TB · 34 model versions stored</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:68%;background:var(--c-storage)"></div></div>
+            <div class="cpv-row-cost">$2,840</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Vector stores (Pinecone)</div><div class="cpv-row-sub">8 indices · 240M vectors</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:44%;background:var(--c-storage)"></div></div>
+            <div class="cpv-row-cost">$1,840</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Training datasets</div><div class="cpv-row-sub">2.8TB · 18 datasets</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:30%;background:var(--c-storage)"></div></div>
+            <div class="cpv-row-cost">$960</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Evaluation artefacts</div><div class="cpv-row-sub">1.1TB · stale &gt;90 days</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:16%;background:var(--c-storage)"></div></div>
+            <div class="cpv-row-cost">$420</div>
+          </div>
+        </div>
+        <div class="cpv-footer">
+          <span class="cpv-footer-lbl">Archive savings potential</span>
+          <span class="cpv-footer-insight" style="background:var(--c-storage-lt);color:var(--c-storage)">$1,240/mo available</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- NETWORK -->
+    <div class="cat-panel" id="cp-network">
+      <div>
+        <div class="cp-header">
+          <span class="cp-badge" style="background:var(--c-network-lt);color:var(--c-network)">Category 06 — Networking &amp; Egress</span>
+          <div class="cp-name">Networking &amp; Egress</div>
+          <div class="cp-desc">Data transfer costs generated by AI workloads — often invisible until they are significant. Model responses, embedding transfers, dataset movement, and cross-region replication all generate egress charges that compound with scale.</div>
+        </div>
+        <div class="cp-signals">
+          <div class="cp-signal">Cloud egress costs — data leaving your cloud environment, broken down by destination (internet, cross-region, cross-AZ).</div>
+          <div class="cp-signal">Model API response volume — large LLM outputs generate substantial egress costs that aren't always obvious from token pricing alone.</div>
+          <div class="cp-signal">Cross-region data replication costs — for disaster recovery and latency requirements, attributed to the AI workloads driving the replication.</div>
+          <div class="cp-signal">Inter-service communication costs — AI microservice mesh traffic costs within Kubernetes clusters.</div>
+        </div>
+        <div class="cp-actions">
+          <a href="#" class="cp-action" style="background:var(--c-network-lt);color:var(--c-network)">View network costs →</a>
+          <a href="#" class="cp-action" style="background:var(--surf);color:var(--ink3);border:1px solid var(--rule2)">Egress reduction tips</a>
+        </div>
+      </div>
+      <div class="cp-visual">
+        <div class="cpv-head">
+          <span class="cpv-head-title">Networking &amp; Egress · Breakdown</span>
+          <span class="cpv-head-val" style="color:var(--c-network)">$3,780</span>
+        </div>
+        <div class="cpv-rows">
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Internet egress (LLM responses)</div><div class="cpv-row-sub">84TB out/mo · inference svc</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:72%;background:var(--c-network)"></div></div>
+            <div class="cpv-row-cost">$1,890</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Cross-region replication</div><div class="cpv-row-sub">us-east-1 → eu-west-1</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:42%;background:var(--c-network)"></div></div>
+            <div class="cpv-row-cost">$1,080</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Cross-AZ pod traffic</div><div class="cpv-row-sub">K8s service mesh · inference</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:18%;background:var(--c-network)"></div></div>
+            <div class="cpv-row-cost">$480</div>
+          </div>
+        </div>
+        <div class="cpv-footer">
+          <span class="cpv-footer-lbl">Egress optimisation potential</span>
+          <span class="cpv-footer-insight" style="background:var(--c-network-lt);color:var(--c-network)">$620/mo · caching</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPS -->
+    <div class="cat-panel" id="cp-ops">
+      <div>
+        <div class="cp-header">
+          <span class="cp-badge" style="background:var(--c-ops-lt);color:var(--c-ops)">Category 07 — MLOps &amp; Tooling</span>
+          <div class="cp-name">MLOps &amp; Tooling</div>
+          <div class="cp-desc">The cost of the infrastructure that supports AI development — experiment tracking, model registries, CI/CD pipelines, monitoring stacks, and the supporting services that enable teams to build and deploy AI reliably.</div>
+        </div>
+        <div class="cp-signals">
+          <div class="cp-signal">Experiment tracking platform costs (MLflow, W&amp;B, Neptune) — often underestimated as "just tooling" but can be substantial at scale.</div>
+          <div class="cp-signal">CI/CD pipeline costs — compute for model testing, evaluation, and deployment automation.</div>
+          <div class="cp-signal">Monitoring and observability costs — for the AI models and infrastructure themselves (not the AIFinOps platform).</div>
+          <div class="cp-signal">Model registry and artefact management — versioning, promotion, and staging costs for model lifecycle management.</div>
+        </div>
+        <div class="cp-actions">
+          <a href="#" class="cp-action" style="background:var(--c-ops-lt);color:var(--c-ops)">View MLOps costs →</a>
+          <a href="#" class="cp-action" style="background:var(--surf);color:var(--ink3);border:1px solid var(--rule2)">Tooling consolidation report</a>
+        </div>
+      </div>
+      <div class="cp-visual">
+        <div class="cpv-head">
+          <span class="cpv-head-title">MLOps &amp; Tooling · Breakdown</span>
+          <span class="cpv-head-val" style="color:var(--c-ops)">$3,040</span>
+        </div>
+        <div class="cpv-rows">
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Weights &amp; Biases (W&amp;B)</div><div class="cpv-row-sub">42 users · 8M tracked runs</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:64%;background:var(--c-ops)"></div></div>
+            <div class="cpv-row-cost">$1,200</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">CI/CD compute (GitHub Actions)</div><div class="cpv-row-sub">Model eval + integration tests</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:40%;background:var(--c-ops)"></div></div>
+            <div class="cpv-row-cost">$780</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">MLflow tracking server</div><div class="cpv-row-sub">Self-hosted · EKS deployment</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:26%;background:var(--c-ops)"></div></div>
+            <div class="cpv-row-cost">$620</div>
+          </div>
+        </div>
+        <div class="cpv-footer">
+          <span class="cpv-footer-lbl">Tooling overlap detected</span>
+          <span class="cpv-footer-insight" style="background:var(--c-ops-lt);color:var(--c-ops)">2 duplicate tools found</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- WASTE -->
+    <div class="cat-panel" id="cp-waste">
+      <div>
+        <div class="cp-header">
+          <span class="cp-badge" style="background:var(--c-waste-lt);color:var(--c-waste)">Category 08 — Identified Waste</span>
+          <div class="cp-name">Identified Waste</div>
+          <div class="cp-desc">The most actionable category — every dollar of AI spend identified as waste across all other categories, consolidated into a single view with prioritised elimination actions and projected savings. This is where your FinOps team lives.</div>
+        </div>
+        <div class="cp-signals">
+          <div class="cp-signal">Idle resources — compute, GPU, and storage resources with no active usage, ranked by daily cost.</div>
+          <div class="cp-signal">Over-provisioning waste — the difference between provisioned and actual resource consumption across all compute categories.</div>
+          <div class="cp-signal">Shadow AI spend — unsanctioned tools and services identified through expense and billing analysis.</div>
+          <div class="cp-signal">Stale artefacts — model weights, datasets, and vector stores no longer referenced by any active workload.</div>
+          <div class="cp-signal">Duplicate pipelines and overlapping tools — redundant capabilities generating double cost with no additional value.</div>
+        </div>
+        <div class="cp-actions">
+          <a href="#" class="cp-action" style="background:var(--c-waste-lt);color:var(--c-waste)">View waste elimination queue →</a>
+          <a href="#" class="cp-action" style="background:var(--surf);color:var(--ink3);border:1px solid var(--rule2)">Automated cleanup options</a>
+        </div>
+      </div>
+      <div class="cp-visual">
+        <div class="cpv-head">
+          <span class="cpv-head-title">Identified Waste · By type</span>
+          <span class="cpv-head-val" style="color:var(--c-waste)">$5,040/mo</span>
+        </div>
+        <div class="cpv-rows">
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">GPU idle time</div><div class="cpv-row-sub">8 pods · avg 12% utilisation</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:74%;background:var(--c-waste)"></div></div>
+            <div class="cpv-row-cost">$1,840</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Over-provisioned compute</div><div class="cpv-row-sub">14 deployments · &lt;40% CPU util</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:58%;background:var(--c-waste)"></div></div>
+            <div class="cpv-row-cost">$1,420</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Stale model artefacts</div><div class="cpv-row-sub">22 model versions · &gt;90 days old</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:36%;background:var(--c-waste)"></div></div>
+            <div class="cpv-row-cost">$840</div>
+          </div>
+          <div class="cpv-row">
+            <div class="cpv-row-info"><div class="cpv-row-name">Shadow AI tools</div><div class="cpv-row-sub">3 untracked subscriptions</div></div>
+            <div class="cpv-row-bar-wrap"><div class="cpv-row-bar" style="width:22%;background:var(--c-waste)"></div></div>
+            <div class="cpv-row-cost">$580</div>
+          </div>
+        </div>
+        <div class="cpv-footer">
+          <span class="cpv-footer-lbl">Eliminatable this sprint</span>
+          <span class="cpv-footer-insight" style="background:var(--c-waste-lt);color:var(--c-waste)">$3,260 ready to action</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CROSS-CATEGORY ANALYSIS ── -->
+<div class="cross-section">
+  <div class="cross-inner">
+    <div class="cross-ey">Cross-category intelligence</div>
+    <h2 class="cross-sh">Insights that only appear when<br><em>categories talk to each other</em></h2>
+    <p class="cross-sl">The most valuable findings in AI FinOps come from correlating signals across categories — not from looking at each in isolation.</p>
+    <div class="cross-grid">
+      <div class="cross-card">
+        <div class="cross-icon">🔗</div>
+        <h4>Model cost vs infrastructure cost correlation</h4>
+        <p>When model API costs rise but compute stays flat — you're getting less compute efficiency per dollar of model spend. When both rise proportionally, it's healthy scale.</p>
+        <span class="cross-example" style="background:rgba(27,77,204,.2);color:#7daaff">Models ↔ Compute</span>
+      </div>
+      <div class="cross-card">
+        <div class="cross-icon">⚡</div>
+        <h4>GPU cost vs model API cost split</h4>
+        <p>A high GPU-to-API ratio signals heavy self-hosting. A high API-to-GPU ratio signals heavy third-party dependency. Optimal split depends on scale — and changes as you grow.</p>
+        <span class="cross-example" style="background:rgba(0,110,122,.2);color:#6adfc0">GPU ↔ Models</span>
+      </div>
+      <div class="cross-card">
+        <div class="cross-icon">💧</div>
+        <h4>Data pipeline cost vs model quality</h4>
+        <p>Expensive data pipelines should correlate with model performance improvements. When data cost grows but downstream model metrics plateau, the pipeline investment isn't paying off.</p>
+        <span class="cross-example" style="background:rgba(139,58,0,.2);color:#ffa96b">Data ↔ Models</span>
+      </div>
+      <div class="cross-card">
+        <div class="cross-icon">📦</div>
+        <h4>Storage growth vs waste accumulation rate</h4>
+        <p>When storage cost grows faster than active workload count, artefacts are accumulating faster than they're being cleaned up. Category view correlation surfaces this before it compounds.</p>
+        <span class="cross-example" style="background:rgba(154,96,0,.2);color:#ffd080">Storage ↔ Waste</span>
+      </div>
+      <div class="cross-card">
+        <div class="cross-icon">🔀</div>
+        <h4>MLOps cost vs team productivity</h4>
+        <p>Rising MLOps tool costs should correlate with faster model deployment cycles and more experiments. If tooling cost grows without a corresponding velocity improvement, it's overhead not investment.</p>
+        <span class="cross-example" style="background:rgba(176,28,28,.2);color:#ff9090">MLOps ↔ Compute</span>
+      </div>
+      <div class="cross-card">
+        <div class="cross-icon">🌐</div>
+        <h4>Network cost vs inference volume ratio</h4>
+        <p>Egress cost should scale linearly with inference volume. A super-linear relationship signals response caching opportunities or unnecessarily verbose model outputs adding avoidable transfer costs.</p>
+        <span class="cross-example" style="background:rgba(92,26,140,.2);color:#c8a0ff">Network ↔ Models</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PERSONA VIEWS ── -->
+<div class="section fade-up">
+  <div class="ey">Views by persona</div>
+  <h2 class="sh">Every stakeholder gets<br><em>their</em> category view</h2>
+  <p class="sl">Category Views are pre-filtered per persona so every role sees the dimensions they care about — without noise from categories irrelevant to their decisions.</p>
+  <div class="persona-grid">
+    <div class="persona">
+      <div class="persona-avatar" style="background:var(--c-model-lt)">👨‍💻</div>
+      <div class="persona-role" style="color:var(--c-model)">Engineering</div>
+      <div class="persona-name">Platform &amp; ML Engineers</div>
+      <div class="persona-q">"Which of our namespaces is growing fastest? Where are we wasting GPU budget right now?"</div>
+      <div class="persona-views">
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-infra)"></div>Compute by namespace and pod</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-gpu)"></div>GPU utilisation and waste</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-waste)"></div>Waste by workload type</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-ops)"></div>MLOps tooling costs</div>
+      </div>
+    </div>
+    <div class="persona">
+      <div class="persona-avatar" style="background:var(--c-data-lt)">💼</div>
+      <div class="persona-role" style="color:var(--c-data)">Finance &amp; Accounting</div>
+      <div class="persona-name">Finance Teams</div>
+      <div class="persona-q">"What did we spend on AI last month vs budget? Which category drove the variance?"</div>
+      <div class="persona-views">
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-model)"></div>Total AI spend by category</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-infra)"></div>Budget vs actual by category</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-storage)"></div>MoM trend and variance</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-waste)"></div>Waste cost and savings realised</div>
+      </div>
+    </div>
+    <div class="persona">
+      <div class="persona-avatar" style="background:var(--c-waste-lt)">📊</div>
+      <div class="persona-role" style="color:var(--c-waste)">FinOps Team</div>
+      <div class="persona-name">AI FinOps Practitioners</div>
+      <div class="persona-q">"Where is the most waste right now and what's the fastest path to eliminating it?"</div>
+      <div class="persona-views">
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-waste)"></div>Identified waste by category</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-model)"></div>Model cost efficiency scoring</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-infra)"></div>Right-sizing opportunity by category</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-gpu)"></div>Cross-category anomaly flags</div>
+      </div>
+    </div>
+    <div class="persona">
+      <div class="persona-avatar" style="background:var(--c-infra-lt)">🎯</div>
+      <div class="persona-role" style="color:var(--c-infra)">Product Management</div>
+      <div class="persona-name">Product &amp; Business Leaders</div>
+      <div class="persona-q">"What does it cost to serve each of our AI product features? Is cost growing with value?"</div>
+      <div class="persona-views">
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-model)"></div>Cost per product feature</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-infra)"></div>AI cost as % of revenue</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-data)"></div>Model cost vs usage volume</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-gpu)"></div>Cost trajectory vs product roadmap</div>
+      </div>
+    </div>
+    <div class="persona">
+      <div class="persona-avatar" style="background:var(--c-network-lt)">🏛️</div>
+      <div class="persona-role" style="color:var(--c-network)">Executive Leadership</div>
+      <div class="persona-name">CIO / CFO / CTO</div>
+      <div class="persona-q">"What is our total AI investment, what is it delivering, and where are we exposed?"</div>
+      <div class="persona-views">
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-model)"></div>AI cost overview — all categories</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-waste)"></div>Waste as % of total AI spend</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-infra)"></div>AI ROI vs cost trajectory</div>
+        <div class="persona-view"><div class="persona-view-dot" style="background:var(--c-gpu)"></div>Forecast vs budget exposure</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── PILLAR TABLE ── -->
+<div class="section fade-up">
+  <div class="ey">Platform integration</div>
+  <h2 class="sh">Category Views connect every<br>pillar to the same cost language</h2>
+  <p class="sl">Every platform capability produces and consumes category data — creating a unified cost vocabulary across your entire AI FinOps programme.</p>
+  <table class="ptable">
+    <thead>
+      <tr><th>Pillar</th><th>How category views integrate</th><th>Business outcome</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="p-pill" style="background:var(--c-model-lt);color:var(--c-model)">📡 Monitoring</span></td>
+        <td>Every monitoring signal — API costs, GPU telemetry, storage IO, network egress — is automatically categorised as data arrives. The monitoring dashboard surfaces costs in category view by default, so teams see spend in their own vocabulary rather than raw billing line items.</td>
+        <td>Teams understand their cost data immediately without requiring a finance translation step. Every engineer and product manager can read their relevant category view without training.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--c-infra-lt);color:var(--c-infra)">⚙️ Optimization</span></td>
+        <td>Right-sizing recommendations, model routing suggestions, and reserved capacity guidance are all scoped and ranked within their category — so the optimization engine can show "the top 5 compute category savings opportunities" or "the highest-ROI model category changes" without mixing recommendations across dimensions.</td>
+        <td>Optimisation actions are presented within the business context they affect — making approvals faster and more intuitive for the teams who own each category.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--c-gpu-lt);color:var(--c-gpu)">🔀 Orchestration</span></td>
+        <td>Workload scheduling decisions reference category cost data — routing jobs to the most cost-efficient compute option within the relevant infrastructure or GPU category. Category-level budget guardrails inform the orchestration engine's routing decisions in real time.</td>
+        <td>Orchestration optimises within category budget constraints automatically — a GPU category budget cap triggers spot routing before the cap is hit, not after it's exceeded.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--c-waste-lt);color:var(--c-waste)">🗑️ Waste elimination</span></td>
+        <td>The Identified Waste category is a direct output of waste elimination analysis — every idle resource, stale artefact, and over-provisioned workload surfaces in the waste category view with its elimination status, projected saving, and ownership information. Savings realised by waste elimination update the category in real time.</td>
+        <td>The waste category becomes a living measure of FinOps programme effectiveness — growing when new waste is found, shrinking as actions are taken. Executives can track AI FinOps ROI from a single category trend line.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="div" />
+
+<!-- ── TESTI ── -->
+<div class="section fade-up">
+  <div class="ey">Customer stories</div>
+  <h2 class="sh">What teams say about<br><em>Category Views</em></h2>
+  <div class="testi-grid">
+    <div class="testi">
+      <p class="testi-q">Before Category Views, our CFO asked "what did we spend on AI last month?" and it took our FinOps team three days to produce an answer. Now the AI Models category view is on the CFO's dashboard and she checks it herself on Monday mornings. That's a genuine transformation in how our organisation relates to AI cost.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--c-model-lt);color:var(--c-model)">PG</div>
+        <div><div class="testi-name">Priyanka Ghosh</div><div class="testi-role">Head of AI FinOps · Global Financial Services Firm</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">The GPU category view was a revelation. We knew GPU was expensive but we had no idea our actual utilisation was 48% — we were paying for 100% and using roughly half. The category view made that gap undeniable, and within a month we'd right-sized three GPU node pools based purely on what the category data showed.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--c-gpu-lt);color:var(--c-gpu)">AR</div>
+        <div><div class="testi-name">Arjun Reddy</div><div class="testi-role">VP Infrastructure · AI Research Scale-up (Hyderabad)</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">The Identified Waste category is the most useful single view in the platform. Every sprint, our FinOps team reviews it, picks the top three elimination actions, applies them, and then watches the waste category shrink in real time. It's turned AI waste management from a once-a-quarter audit into a weekly routine.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--c-waste-lt);color:var(--c-waste)">SK</div>
+        <div><div class="testi-name">Sonal Khanna</div><div class="testi-role">FinOps Lead · Enterprise SaaS Company (Bengaluru)</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── FAQ ── -->
+<div class="section fade-up">
+  <div class="ey">FAQ</div>
+  <h2 class="sh">Common questions</h2>
+  <div class="faq-list">
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How are costs assigned to categories — does it require manual tagging?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Built-in categories are populated automatically using a combination of service name matching, resource tag analysis, billing SKU classification, and infrastructure telemetry signals. Over 85% of cost items are categorised automatically without any manual input. The remaining items appear in an "Uncategorised" bucket that you can assign via the category builder using label rules or manual mapping. Custom categories require you to define the rule set once — after which all matching cost items are categorised automatically going forward.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can a cost item appear in multiple categories without double-counting total spend?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes. Multi-category assignment is a core design principle of Category Views. A GPU training pod, for example, can appear in both the "Compute Infrastructure" category and the "GPU &amp; Accelerators" category — each showing its relevant cost dimension. Total spend is never double-counted in summary views — the platform maintains a clear distinction between the base billing amount and the category lenses applied to it. When you're viewing total AI spend, each dollar appears exactly once.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can I create custom categories that reflect our specific business structure?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes — the custom category builder lets you define categories based on any dimension you have data for: team names, product lines, cost centres, use cases, deployment environments, or any combination of Kubernetes labels, AWS tags, Azure resource groups, or GCP labels. You can create hierarchical categories (e.g. "AI Spend > Generative AI > Customer-Facing") and drill through levels in the view. There is no limit on the number of custom categories, and they update automatically as new cost data arrives that matches your defined rules.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How does the Identified Waste category stay current between manual reviews?<span class="fq-ico">+</span></button>
+      <div class="fq-a">The Identified Waste category is updated continuously — every 15 minutes as new telemetry arrives. New waste items (newly idle pods, newly over-provisioned workloads, newly stale artefacts) appear in the category view immediately. Items that have been actioned (waste eliminated) are marked as resolved and move to the "Resolved waste" sub-category for 30 days, then archive. The category always reflects the current actionable waste picture — not a point-in-time snapshot from the last manual review.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can category views be embedded in our existing dashboards or BI tools?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes. Category data is available via our REST API and can be pushed to any BI tool (Looker, Tableau, Power BI, Metabase) via scheduled exports or real-time webhook. We provide pre-built dashboard templates for each major BI tool that map our category data model to standard chart types. Category views can also be embedded as iframes in internal tools and wikis, or shared as publicly accessible read-only links for stakeholders who don't need a full platform account.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA ── -->
+<section class="cta">
+  <div class="cta-deco">≡</div>
+  <div class="cta-inner">
+    <h2>See your AI spend<br>through the lens of<br><em>your business</em></h2>
+    <p>Connect your accounts and your first category view is ready in minutes — built automatically from your existing tags, labels, and billing data. No manual setup required.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-ink">Explore your categories free</a>
+      <a href="#" class="btn-outline-dk">See a live demo →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  function switchCat(id, btn) {
+    document.querySelectorAll('.cat-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.ctab').forEach(t => {
+      t.classList.remove('active');
+      t.style.background = '';
+      t.style.borderColor = '';
+      t.style.color = '';
+    });
+    document.getElementById('cp-' + id).classList.add('active');
+    btn.classList.add('active');
+    const colors = {
+      model: ['var(--c-model)', 'var(--c-model-lt)', 'var(--c-model)'],
+      infra:   ['var(--c-infra)', 'var(--c-infra-lt)', 'var(--c-infra)'],
+      gpu:     ['var(--c-gpu)',   'var(--c-gpu-lt)',   'var(--c-gpu)'],
+      data:    ['var(--c-data)',  'var(--c-data-lt)',  'var(--c-data)'],
+      storage: ['var(--c-storage)','var(--c-storage-lt)','var(--c-storage)'],
+      network: ['var(--c-network)','var(--c-network-lt)','var(--c-network)'],
+      ops:     ['var(--c-ops)',   'var(--c-ops-lt)',   'var(--c-ops)'],
+      waste:   ['var(--c-waste)', 'var(--c-waste-lt)', 'var(--c-waste)'],
+    };
+    const c = colors[id];
+    if (c) { btn.style.background = c[0]; btn.style.borderColor = c[0]; btn.style.color = '#fff'; }
+  }
+
+  /* init first tab colour */
+  const firstTab = document.querySelector('.ctab.active');
+  if (firstTab) { firstTab.style.background = 'var(--c-model)'; firstTab.style.borderColor = 'var(--c-model)'; firstTab.style.color = '#fff'; }
+
+  function tfq(btn) {
+    const item = btn.closest('.fq');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.fq.open').forEach(i => i.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

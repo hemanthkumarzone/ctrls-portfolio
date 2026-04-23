@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Right-size Recommendations — AI FinOps Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream:     #f8f6f0;
+      --white:     #ffffff;
+      --sand:      #ede9df;
+      --sand2:     #e2ddd2;
+      --ink:       #1a1714;
+      --ink2:      #3c3830;
+      --ink3:      #6b6559;
+      --ink4:      #9b9489;
+      --ink5:      #c9c3ba;
+      --rule:      rgba(26,23,20,.07);
+      --rule2:     rgba(26,23,20,.13);
+      --orange:    #d4500a;
+      --orange-lt: #fdeede;
+      --orange-mid:#e8621a;
+      --teal:      #0c6e5a;
+      --teal-lt:   #d0f0ea;
+      --blue:      #1555c4;
+      --blue-lt:   #dce8ff;
+      --amber:     #c47a00;
+      --amber-lt:  #fff3d0;
+      --green:     #1a6e3a;
+      --green-lt:  #d4f0df;
+      --red:       #c41c1c;
+      --red-lt:    #fde8e8;
+      --r:         6px;
+      --r-lg:      12px;
+      --r-xl:      20px;
+      --serif:     'Instrument Serif', Georgia, serif;
+      --bar:       'Barlow', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--bar); background: var(--cream); color: var(--ink); line-height: 1.7; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(248,246,240,.95); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--rule2);
+      height: 56px; padding: 0 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { font-family: var(--bar); font-size: 17px; font-weight: 700; color: var(--ink); text-decoration: none; letter-spacing: -.01em; }
+    .nav-brand em { font-style: normal; color: var(--orange); }
+    .nav-center { font-size: 12px; color: var(--ink3); display: flex; align-items: center; gap: 7px; }
+    .nav-center span { color: var(--ink2); font-weight: 500; }
+    .nav-center .sep { color: var(--ink5); }
+    .nav-cta { font-size: 13px; font-weight: 600; color: var(--white); background: var(--orange); padding: 8px 20px; border-radius: var(--r); text-decoration: none; letter-spacing: -.01em; transition: background .15s; }
+    .nav-cta:hover { background: var(--orange-mid); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--ink);
+      padding: 0 2.5rem;
+      overflow: hidden;
+      position: relative;
+    }
+    /* Swiss-grid overlay */
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(248,246,240,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(248,246,240,.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    /* Warm diagonal stripe */
+    .hero-stripe {
+      position: absolute; top: 0; right: 0;
+      width: 50%; height: 100%;
+      background: linear-gradient(135deg, transparent 30%, rgba(212,80,10,.06) 100%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1060px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 460px;
+      gap: 4rem; align-items: stretch;
+      position: relative; z-index: 1;
+    }
+    @media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; } }
+
+    .hero-text { padding: 6rem 0 5rem; }
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--orange); }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(38px, 6vw, 64px);
+      font-weight: 400; font-style: normal;
+      color: var(--cream); line-height: 1.08;
+      letter-spacing: -.01em; margin-bottom: 1.5rem;
+    }
+    .hero h1 em { font-style: italic; color: #f4a264; }
+    .hero-lead { font-size: 16px; color: var(--ink4); line-height: 1.8; max-width: 460px; margin-bottom: 2rem; }
+    .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn-orange { font-size: 13px; font-weight: 600; color: var(--white); background: var(--orange); padding: 11px 24px; border-radius: var(--r); text-decoration: none; transition: background .15s; letter-spacing: -.01em; }
+    .btn-orange:hover { background: var(--orange-mid); }
+    .btn-ghost { font-size: 13px; font-weight: 400; color: var(--ink4); background: transparent; padding: 11px 24px; border-radius: var(--r); border: 1px solid rgba(248,246,240,.15); text-decoration: none; transition: all .15s; }
+    .btn-ghost:hover { color: var(--cream); border-color: rgba(248,246,240,.3); }
+
+    /* hero stat row */
+    .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+    .hstat { }
+    .hstat-val { font-family: var(--serif); font-size: 28px; color: var(--cream); line-height: 1; margin-bottom: 3px; }
+    .hstat-val em { font-style: italic; color: #f4a264; }
+    .hstat-lbl { font-size: 11px; color: var(--ink3); }
+
+    /* ── HERO VISUAL — Recommendation engine panel ── */
+    .hero-visual {
+      background: rgba(255,255,255,.04);
+      border-left: 1px solid rgba(248,246,240,.07);
+      padding: 2rem 2rem 0;
+      display: flex; flex-direction: column;
+      align-self: stretch;
+    }
+    .hv-label { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink3); margin-bottom: 1.25rem; }
+    .hv-cards { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .hv-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(248,246,240,.08);
+      border-radius: var(--r-lg);
+      padding: 1rem;
+      transition: background .15s;
+    }
+    .hv-card:hover { background: rgba(255,255,255,.09); }
+    .hv-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .hv-card-name { font-size: 12px; font-weight: 600; color: var(--cream); }
+    .hv-card-save { font-size: 12px; font-weight: 600; color: #6ee7b7; }
+    .hv-card-type { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; display: inline-block; }
+    .hv-bars { display: flex; flex-direction: column; gap: 5px; }
+    .hv-bar-row { display: flex; align-items: center; gap: 8px; }
+    .hv-bar-lbl { font-size: 9px; color: var(--ink3); width: 52px; flex-shrink: 0; text-transform: uppercase; letter-spacing: .04em; }
+    .hv-bar-track { flex: 1; height: 4px; background: rgba(255,255,255,.08); border-radius: 2px; position: relative; overflow: hidden; }
+    .hv-bar-fill { height: 100%; border-radius: 2px; }
+    .hv-bar-fill.current { background: #f4a264; }
+    .hv-bar-fill.target  { background: #6ee7b7; }
+    .hv-bar-val { font-size: 9px; width: 32px; text-align: right; }
+    .hv-bar-val.cur { color: #f4a264; }
+    .hv-bar-val.tgt { color: #6ee7b7; }
+    .hv-action { font-size: 10px; font-weight: 600; padding: 5px 10px; border-radius: var(--r); margin-top: 8px; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; transition: opacity .15s; }
+    .hv-action:hover { opacity: .8; }
+    .hv-footer { padding: 1rem 0; border-top: 1px solid rgba(248,246,240,.07); margin-top: 1rem; display: flex; justify-content: space-between; }
+    .hv-footer-stat { text-align: center; }
+    .hv-footer-val { font-family: var(--serif); font-size: 20px; color: var(--cream); line-height: 1; }
+    .hv-footer-lbl { font-size: 9px; color: var(--ink3); text-transform: uppercase; letter-spacing: .06em; }
+
+    /* ── METRICS STRIP ── */
+    .metrics { background: var(--white); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .metrics-inner { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+    .mc { padding: 1.75rem 1.25rem; text-align: center; border-right: 1px solid var(--rule); }
+    .mc:last-child { border-right: none; }
+    .mc-val { font-family: var(--serif); font-size: 32px; color: var(--orange); line-height: 1; margin-bottom: 5px; }
+    .mc-val.teal { color: var(--teal); }
+    .mc-val.blue { color: var(--blue); }
+    .mc-lbl { font-size: 12px; color: var(--ink3); line-height: 1.4; }
+
+    /* ── SECTION ── */
+    .section { max-width: 1060px; margin: 0 auto; padding: 5rem 2.5rem; }
+    .ey { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--orange); display: flex; align-items: center; gap: 8px; margin-bottom: .75rem; }
+    .ey::before { content: ''; width: 14px; height: 1px; background: var(--orange); }
+    .sh { font-family: var(--serif); font-size: clamp(24px, 4vw, 40px); font-weight: 400; color: var(--ink); line-height: 1.2; margin-bottom: .75rem; letter-spacing: -.01em; }
+    .sl { font-size: 15px; color: var(--ink3); line-height: 1.8; max-width: 560px; margin-bottom: 2.5rem; }
+    hr.div { border: none; border-top: 1px solid var(--rule); max-width: 1060px; margin: 0 auto; }
+
+    /* ── WHY SECTION ── */
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    @media (max-width: 680px) { .why-grid { grid-template-columns: 1fr; gap: 2rem; } }
+    .why-text p { font-size: 14px; color: var(--ink2); line-height: 1.85; margin-bottom: 1rem; }
+    .why-text p:last-child { margin-bottom: 0; }
+    .why-stats { display: flex; flex-direction: column; gap: 12px; }
+    .why-stat {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); padding: 1.25rem;
+      display: flex; align-items: center; gap: 1.25rem;
+      transition: border-color .15s;
+    }
+    .why-stat:hover { border-color: var(--rule2); }
+    .why-stat-val { font-family: var(--serif); font-size: 32px; color: var(--orange); line-height: 1; white-space: nowrap; flex-shrink: 0; }
+    .why-stat-body h5 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+    .why-stat-body p { font-size: 12px; color: var(--ink3); line-height: 1.5; }
+
+    /* ── RECOMMENDATION TYPES ── */
+    .rtype-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+    .rtype {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); padding: 1.5rem;
+      position: relative; overflow: hidden;
+      transition: border-color .2s, transform .2s;
+    }
+    .rtype:hover { border-color: var(--rule2); transform: translateY(-2px); }
+    .rtype::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: var(--r-xl) var(--r-xl) 0 0; }
+    .rt-orange::after { background: var(--orange); }
+    .rt-teal::after   { background: var(--teal); }
+    .rt-blue::after   { background: var(--blue); }
+    .rt-amber::after  { background: var(--amber); }
+    .rt-green::after  { background: var(--green); }
+    .rtype-icon { font-size: 24px; margin-bottom: 12px; }
+    .rtype h4 { font-size: 15px; font-weight: 600; color: var(--ink); letter-spacing: -.01em; margin-bottom: 6px; }
+    .rtype p { font-size: 12px; color: var(--ink3); line-height: 1.65; margin-bottom: 12px; }
+    .rtype-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag { font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 20px; }
+    .tag-o { background: var(--orange-lt); color: var(--orange); }
+    .tag-t { background: var(--teal-lt); color: var(--teal); }
+    .tag-b { background: var(--blue-lt); color: var(--blue); }
+    .tag-a { background: var(--amber-lt); color: var(--amber); }
+    .tag-g { background: var(--green-lt); color: var(--green); }
+
+    /* ── RECOMMENDATION ENGINE ── */
+    .engine-section { background: var(--sand); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 5rem 2.5rem; }
+    .engine-inner { max-width: 1060px; margin: 0 auto; }
+    .engine-grid { display: grid; grid-template-columns: 1fr 420px; gap: 4rem; align-items: start; }
+    @media (max-width: 780px) { .engine-grid { grid-template-columns: 1fr; } }
+
+    /* how the engine works steps */
+    .engine-steps { display: flex; flex-direction: column; gap: 0; }
+    .estep { display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding: 1.5rem 0; border-bottom: 1px solid var(--rule); position: relative; }
+    .estep:last-child { border-bottom: none; }
+    .estep-num {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--orange); color: var(--white);
+      font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .estep-body h4 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+    .estep-body p { font-size: 13px; color: var(--ink3); line-height: 1.7; }
+
+    /* recommendation card visual */
+    .rec-card-vis {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); overflow: hidden;
+    }
+    .rcv-header { background: var(--ink); padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+    .rcv-title { font-size: 11px; font-weight: 600; color: var(--ink4); letter-spacing: .08em; text-transform: uppercase; }
+    .rcv-badge { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(212,80,10,.25); color: #f4a264; }
+
+    .rcv-body { padding: 1.25rem; }
+    .rcv-workload { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+    .rcv-ns { font-size: 11px; color: var(--ink4); margin-bottom: 1rem; }
+    .rcv-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
+    .rcv-col { background: var(--cream); border-radius: var(--r-lg); padding: .875rem; }
+    .rcv-col-lbl { font-size: 9px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink4); margin-bottom: 8px; }
+    .rcv-col.current .rcv-col-lbl { color: var(--red); }
+    .rcv-col.target  .rcv-col-lbl { color: var(--green); }
+    .rcv-res-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+    .rcv-res-key { color: var(--ink3); }
+    .rcv-res-val { font-weight: 600; color: var(--ink); }
+    .rcv-col.current .rcv-res-val { color: var(--red); }
+    .rcv-col.target  .rcv-res-val { color: var(--green); }
+
+    .rcv-saving-row { background: var(--green-lt); border-radius: var(--r); padding: .75rem 1rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .rcv-save-lbl { font-size: 12px; font-weight: 600; color: var(--green); }
+    .rcv-save-val { font-family: var(--serif); font-size: 22px; color: var(--green); }
+    .rcv-confidence { display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; }
+    .rcv-conf-bar { flex: 1; height: 5px; background: var(--sand); border-radius: 3px; overflow: hidden; }
+    .rcv-conf-fill { height: 100%; border-radius: 3px; background: var(--orange); }
+    .rcv-conf-lbl { font-size: 11px; color: var(--ink3); white-space: nowrap; }
+    .rcv-actions { display: flex; gap: 8px; }
+    .rcv-action { flex: 1; font-size: 12px; font-weight: 600; padding: 9px; border-radius: var(--r); text-align: center; cursor: pointer; transition: all .15s; text-decoration: none; display: block; }
+    .rcv-action.approve { background: var(--orange); color: var(--white); border: none; }
+    .rcv-action.approve:hover { background: var(--orange-mid); }
+    .rcv-action.review { background: transparent; color: var(--ink3); border: 1px solid var(--rule2); }
+    .rcv-action.review:hover { background: var(--cream); }
+    .rcv-meta { padding: .875rem 1.25rem; background: var(--cream); border-top: 1px solid var(--rule); display: flex; justify-content: space-between; }
+    .rcv-meta-item { font-size: 11px; color: var(--ink4); }
+    .rcv-meta-item strong { color: var(--ink2); font-weight: 600; }
+
+    /* ── IMPACT CALCULATOR ── */
+    .calc-section { background: var(--ink); padding: 5rem 2.5rem; }
+    .calc-inner { max-width: 1060px; margin: 0 auto; }
+    .calc-grid { display: grid; grid-template-columns: 1fr 440px; gap: 4rem; align-items: start; }
+    @media (max-width: 780px) { .calc-grid { grid-template-columns: 1fr; } }
+    .calc-text .ey { color: #f4a264; }
+    .calc-text .ey::before { background: #f4a264; }
+    .calc-text .sh { color: var(--cream); }
+    .calc-text p { font-size: 14px; color: var(--ink4); line-height: 1.8; margin-bottom: 1rem; }
+
+    /* savings table */
+    .savings-table { background: rgba(255,255,255,.05); border: 1px solid rgba(248,246,240,.08); border-radius: var(--r-xl); overflow: hidden; }
+    .st-header { padding: .875rem 1.25rem; background: rgba(255,255,255,.04); border-bottom: 1px solid rgba(248,246,240,.07); display: flex; justify-content: space-between; align-items: center; }
+    .st-title { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); }
+    .st-total { font-family: var(--serif); font-size: 20px; color: #6ee7b7; }
+    .st-rows {}
+    .st-row { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: center; padding: .875rem 1.25rem; border-bottom: 1px solid rgba(248,246,240,.05); transition: background .1s; }
+    .st-row:hover { background: rgba(255,255,255,.04); }
+    .st-row:last-child { border-bottom: none; }
+    .st-row-name { font-size: 12px; font-weight: 500; color: var(--cream); }
+    .st-row-type { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+    .st-row-save { font-size: 12px; font-weight: 600; color: #6ee7b7; }
+
+    /* ── WORKLOAD COVERAGE ── */
+    .coverage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .cov-card {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); padding: 1.5rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .cov-card:hover { border-color: var(--rule2); transform: translateY(-2px); }
+    .cov-icon { width: 42px; height: 42px; border-radius: var(--r-lg); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 12px; }
+    .cov-card h4 { font-size: 14px; font-weight: 600; color: var(--ink); letter-spacing: -.01em; margin-bottom: 6px; }
+    .cov-card p { font-size: 12px; color: var(--ink3); line-height: 1.65; margin-bottom: 12px; }
+    .cov-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+
+    /* ── PILLAR TABLE ── */
+    .ptable { width: 100%; border-collapse: collapse; }
+    .ptable thead th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--ink4); border-bottom: 2px solid var(--rule2); background: var(--sand); }
+    .ptable thead th:first-child { border-radius: var(--r) 0 0 0; }
+    .ptable thead th:last-child  { border-radius: 0 var(--r) 0 0; }
+    .ptable tbody tr { border-bottom: 1px solid var(--rule); transition: background .1s; }
+    .ptable tbody tr:hover { background: var(--sand); }
+    .ptable tbody td { padding: 13px 14px; font-size: 13px; color: var(--ink2); vertical-align: top; }
+    .ptable tbody td:first-child { color: var(--ink); font-weight: 600; }
+    .p-pill { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+
+    /* ── SAFETY SECTION ── */
+    .safety-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .safety-card {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); padding: 1.375rem;
+      display: flex; gap: 14px; align-items: flex-start;
+      transition: border-color .15s;
+    }
+    .safety-card:hover { border-color: var(--rule2); }
+    .safety-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+    .safety-card h4 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+    .safety-card p { font-size: 12px; color: var(--ink3); line-height: 1.6; }
+
+    /* ── TESTI ── */
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+    .testi { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-xl); padding: 1.5rem; }
+    .testi-q { font-family: var(--serif); font-size: 15px; color: var(--ink); line-height: 1.7; margin-bottom: 1.25rem; font-style: italic; }
+    .testi-q::before { content: '\201C'; color: var(--orange); font-size: 22px; line-height: 0; vertical-align: -5px; margin-right: 2px; }
+    .testi-meta { display: flex; align-items: center; gap: 10px; }
+    .testi-av { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .testi-name { font-size: 13px; font-weight: 600; color: var(--ink); }
+    .testi-role { font-size: 11px; color: var(--ink4); }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; max-width: 700px; }
+    .fq { border-bottom: 1px solid var(--rule); }
+    .fq:first-child { border-top: 1px solid var(--rule); }
+    .fq-q { width: 100%; text-align: left; background: transparent; border: none; padding: 1.1rem 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem; cursor: pointer; font-family: var(--serif); font-size: 16px; font-weight: 400; color: var(--ink); line-height: 1.4; }
+    .fq-q:hover { color: var(--orange); }
+    .fq-ico { width: 22px; height: 22px; border-radius: 50%; background: var(--sand); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 15px; color: var(--ink3); transition: transform .2s, background .2s; }
+    .fq.open .fq-ico { transform: rotate(45deg); background: var(--orange-lt); color: var(--orange); }
+    .fq-a { display: none; padding: 0 0 1.1rem; font-size: 13px; color: var(--ink3); line-height: 1.8; }
+    .fq.open .fq-a { display: block; }
+
+    /* callouts */
+    .callout { border-left: 3px solid var(--orange); background: var(--orange-lt); border-radius: 0 var(--r) var(--r) 0; padding: .875rem 1.1rem; margin: 1.25rem 0; }
+    .callout p { font-size: 13px; color: var(--orange); line-height: 1.65; margin: 0; }
+    .callout.teal { border-left-color: var(--teal); background: var(--teal-lt); }
+    .callout.teal p { color: var(--teal); }
+    .callout.green { border-left-color: var(--green); background: var(--green-lt); }
+    .callout.green p { color: var(--green); }
+
+    /* ── CTA ── */
+    .cta { background: var(--cream); border-top: 1px solid var(--rule2); padding: 6rem 2.5rem; text-align: center; position: relative; overflow: hidden; }
+    /* Decorative large serif number */
+    .cta::before { content: '⬡'; position: absolute; font-size: 400px; color: rgba(212,80,10,.04); top: -80px; right: -60px; line-height: 1; pointer-events: none; }
+    .cta-inner { position: relative; z-index: 1; max-width: 580px; margin: 0 auto; }
+    .cta h2 { font-family: var(--serif); font-size: clamp(28px, 4.5vw, 48px); font-weight: 400; color: var(--ink); letter-spacing: -.01em; line-height: 1.15; margin-bottom: 1rem; }
+    .cta h2 em { font-style: italic; color: var(--orange); }
+    .cta p { font-size: 15px; color: var(--ink3); line-height: 1.75; margin-bottom: 2.5rem; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-ink { font-size: 14px; font-weight: 600; color: var(--white); background: var(--ink); padding: 12px 28px; border-radius: var(--r); text-decoration: none; letter-spacing: -.01em; transition: background .15s; }
+    .btn-ink:hover { background: var(--ink2); }
+    .btn-outline-ink { font-size: 14px; font-weight: 400; color: var(--ink3); background: transparent; padding: 12px 28px; border-radius: var(--r); border: 1px solid var(--rule2); text-decoration: none; transition: all .15s; }
+    .btn-outline-ink:hover { border-color: var(--ink); color: var(--ink); }
+
+    /* scroll fade */
+    .fade-up { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="#" class="nav-brand">AI<em>FinOps</em></a>
+  <div class="nav-center">
+    <span>Services</span><span class="sep">/</span>
+    <span>Right-size Recommendations</span>
+  </div>
+  <a href="#" class="nav-cta">Start optimising</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-stripe"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Service — Right-size Recommendations</div>
+      <h1>Stop paying for<br>compute you<br><em>never use.</em></h1>
+      <p class="hero-lead">
+        The average AI workload runs at 35% of its provisioned capacity.
+        Every over-provisioned pod, over-sized instance, and over-requested
+        GPU is money leaving your organisation silently, every hour, every day.
+        Right-size Recommendations finds every one of them — and tells you
+        exactly what to do about it.
+      </p>
+      <div class="hero-btns">
+        <a href="#" class="btn-orange">See your savings potential</a>
+        <a href="#" class="btn-ghost">View a sample report →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat">
+          <div class="hstat-val"><em>35%</em></div>
+          <div class="hstat-lbl">Avg over-provisioning rate across AI workloads</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val"><em>28%</em></div>
+          <div class="hstat-lbl">Avg cost reduction from right-sizing</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val"><em>Zero</em></div>
+          <div class="hstat-lbl">Production incidents from right-sizing actions</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation panel visual -->
+    <div class="hero-visual">
+      <div class="hv-label">Top recommendations · prod-cluster</div>
+      <div class="hv-cards">
+
+        <div class="hv-card">
+          <div class="hv-card-top">
+            <span class="hv-card-name">llm-inference-svc</span>
+            <span class="hv-card-save">−$3,240/mo</span>
+          </div>
+          <span class="hv-card-type" style="background:rgba(212,80,10,.15);color:#f4a264">CPU right-size</span>
+          <div class="hv-bars">
+            <div class="hv-bar-row">
+              <span class="hv-bar-lbl">Current</span>
+              <div class="hv-bar-track"><div class="hv-bar-fill current" style="width:80%"></div></div>
+              <span class="hv-bar-val cur">8 vCPU</span>
+            </div>
+            <div class="hv-bar-row">
+              <span class="hv-bar-lbl">Actual use</span>
+              <div class="hv-bar-track"><div class="hv-bar-fill" style="width:22%;background:#f4a26488"></div></div>
+              <span class="hv-bar-val cur">1.8 avg</span>
+            </div>
+            <div class="hv-bar-row">
+              <span class="hv-bar-lbl">Target</span>
+              <div class="hv-bar-track"><div class="hv-bar-fill target" style="width:30%"></div></div>
+              <span class="hv-bar-val tgt">3 vCPU</span>
+            </div>
+          </div>
+          <span class="hv-action" style="background:rgba(26,110,58,.2);color:#6ee7b7">Apply recommendation →</span>
+        </div>
+
+        <div class="hv-card">
+          <div class="hv-card-top">
+            <span class="hv-card-name">embed-batch-job</span>
+            <span class="hv-card-save">−$1,890/mo</span>
+          </div>
+          <span class="hv-card-type" style="background:rgba(12,110,90,.15);color:#6adfc0">GPU right-size</span>
+          <div class="hv-bars">
+            <div class="hv-bar-row">
+              <span class="hv-bar-lbl">Current</span>
+              <div class="hv-bar-track"><div class="hv-bar-fill current" style="width:70%"></div></div>
+              <span class="hv-bar-val cur">4× A100</span>
+            </div>
+            <div class="hv-bar-row">
+              <span class="hv-bar-lbl">Peak util.</span>
+              <div class="hv-bar-track"><div class="hv-bar-fill" style="width:40%;background:#f4a26488"></div></div>
+              <span class="hv-bar-val cur">38% peak</span>
+            </div>
+            <div class="hv-bar-row">
+              <span class="hv-bar-lbl">Target</span>
+              <div class="hv-bar-track"><div class="hv-bar-fill target" style="width:35%"></div></div>
+              <span class="hv-bar-val tgt">2× A100</span>
+            </div>
+          </div>
+          <span class="hv-action" style="background:rgba(26,110,58,.2);color:#6ee7b7">Apply recommendation →</span>
+        </div>
+
+        <div class="hv-card">
+          <div class="hv-card-top">
+            <span class="hv-card-name">vector-db-pod</span>
+            <span class="hv-card-save">−$820/mo</span>
+          </div>
+          <span class="hv-card-type" style="background:rgba(21,85,196,.15);color:#9abeff">Memory right-size</span>
+          <div class="hv-bars">
+            <div class="hv-bar-row">
+              <span class="hv-bar-lbl">Current</span>
+              <div class="hv-bar-track"><div class="hv-bar-fill current" style="width:75%"></div></div>
+              <span class="hv-bar-val cur">32 GiB</span>
+            </div>
+            <div class="hv-bar-row">
+              <span class="hv-bar-lbl">P99 use</span>
+              <div class="hv-bar-track"><div class="hv-bar-fill" style="width:40%;background:#f4a26488"></div></div>
+              <span class="hv-bar-val cur">12.4 GiB</span>
+            </div>
+            <div class="hv-bar-row">
+              <span class="hv-bar-lbl">Target</span>
+              <div class="hv-bar-track"><div class="hv-bar-fill target" style="width:45%"></div></div>
+              <span class="hv-bar-val tgt">16 GiB</span>
+            </div>
+          </div>
+          <span class="hv-action" style="background:rgba(26,110,58,.2);color:#6ee7b7">Apply recommendation →</span>
+        </div>
+
+      </div>
+      <div class="hv-footer">
+        <div class="hv-footer-stat"><div class="hv-footer-val">47</div><div class="hv-footer-lbl">Recommendations</div></div>
+        <div class="hv-footer-stat"><div class="hv-footer-val" style="color:#6ee7b7">$18,420</div><div class="hv-footer-lbl">Monthly savings</div></div>
+        <div class="hv-footer-stat"><div class="hv-footer-val" style="color:#f4a264">94%</div><div class="hv-footer-lbl">Avg confidence</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── METRICS ── -->
+<div class="metrics">
+  <div class="metrics-inner">
+    <div class="mc"><div class="mc-val">28%</div><div class="mc-lbl">Average cost reduction from right-sizing</div></div>
+    <div class="mc"><div class="mc-val teal">94%</div><div class="mc-lbl">Average recommendation confidence score</div></div>
+    <div class="mc"><div class="mc-val">0</div><div class="mc-lbl">Production incidents from applied recommendations</div></div>
+    <div class="mc"><div class="mc-val teal">30 days</div><div class="mc-lbl">Lookback window for usage analysis</div></div>
+    <div class="mc"><div class="mc-val">8 types</div><div class="mc-lbl">Resource types covered per workload</div></div>
+    <div class="mc"><div class="mc-val blue">1-click</div><div class="mc-lbl">Or fully automated application</div></div>
+  </div>
+</div>
+
+<!-- ── WHY RIGHT-SIZING ── -->
+<div class="section fade-up">
+  <div class="ey">The problem</div>
+  <h2 class="sh">Over-provisioning is the default.<br>Right-sizing is the discipline.</h2>
+  <div class="why-grid">
+    <div class="why-text">
+      <p>
+        When engineers provision AI workloads, they do what any rational person does
+        under uncertainty: they add a safety margin. A model that ran at 4 vCPU
+        in testing gets 8 in production, just in case. A training job that peaked
+        at 2 GPUs gets 4, because nobody wants to explain a slow run to a deadline.
+      </p>
+      <p>
+        Individually, these decisions are reasonable. Collectively, they compound into
+        systematic over-provisioning across your entire infrastructure — and the
+        over-provisioned capacity sits idle, billing every second, while the workloads
+        themselves run at 30–40% of capacity.
+      </p>
+      <p>
+        Right-size Recommendations analyses actual resource consumption across a 30-day
+        window and produces precise, confidence-scored recommendations for every workload
+        — with projected savings, safety analysis, and one-click or automated application.
+        No engineering judgment required. No performance risk accepted.
+      </p>
+      <div class="callout">
+        <p>Right-sizing is the single highest-ROI optimisation action available for most AI teams. No architectural changes, no code changes — just matching provisioned resources to actual needs.</p>
+      </div>
+    </div>
+    <div class="why-stats">
+      <div class="why-stat">
+        <div class="why-stat-val">65%</div>
+        <div class="why-stat-body">
+          <h5>Of AI pods are over-provisioned</h5>
+          <p>Based on actual vs requested CPU and memory across 500+ customer clusters.</p>
+        </div>
+      </div>
+      <div class="why-stat">
+        <div class="why-stat-val">42%</div>
+        <div class="why-stat-body">
+          <h5>Average CPU request vs actual gap</h5>
+          <p>The median AI inference service requests 3× more CPU than it ever uses at P99.</p>
+        </div>
+      </div>
+      <div class="why-stat">
+        <div class="why-stat-val">38%</div>
+        <div class="why-stat-body">
+          <h5>Average GPU allocation waste</h5>
+          <p>GPU-allocated workloads use less than 62% of allocated GPU memory on average.</p>
+        </div>
+      </div>
+      <div class="why-stat">
+        <div class="why-stat-val">$0</div>
+        <div class="why-stat-body">
+          <h5>Performance cost of correct right-sizing</h5>
+          <p>Properly executed right-sizing maintains SLAs at P99 — waste removal, not capability reduction.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── RECOMMENDATION TYPES ── -->
+<div class="section fade-up">
+  <div class="ey">What we recommend</div>
+  <h2 class="sh">Eight resource dimensions.<br>Precise recommendations for each.</h2>
+  <p class="sl">Right-sizing is not just about CPU. Our engine analyses every resource dimension that drives AI infrastructure cost — independently and in combination.</p>
+  <div class="rtype-grid">
+    <div class="rtype rt-orange">
+      <div class="rtype-icon">⚙️</div>
+      <h4>CPU right-sizing</h4>
+      <p>Analyse actual CPU consumption at P50, P90, and P99 across a 30-day window. Recommend the CPU request and limit that satisfies P99 usage plus a configurable safety buffer — eliminating idle headroom without creating throttling risk.</p>
+      <div class="rtype-tags"><span class="tag tag-o">P99-safe</span><span class="tag tag-o">30-day window</span><span class="tag tag-o">Throttle-aware</span></div>
+    </div>
+    <div class="rtype rt-teal">
+      <div class="rtype-icon">🧠</div>
+      <h4>Memory right-sizing</h4>
+      <p>Map peak memory consumption including GC pressure and memory spikes. Recommend limits that accommodate P99.9 usage including burst — the resource type most dangerous to under-provision, calibrated carefully.</p>
+      <div class="rtype-tags"><span class="tag tag-t">P99.9 safe</span><span class="tag tag-t">OOM-aware</span><span class="tag tag-t">GC-aware</span></div>
+    </div>
+    <div class="rtype rt-blue">
+      <div class="rtype-icon">🖥️</div>
+      <h4>GPU right-sizing</h4>
+      <p>Per-device utilisation analysis using DCGM metrics. Recommend whether a workload needs fewer GPUs, a smaller GPU type, or a time-sliced configuration — with cost-per-inference before and after shown explicitly.</p>
+      <div class="rtype-tags"><span class="tag tag-b">DCGM-native</span><span class="tag tag-b">Type selection</span><span class="tag tag-b">Cost-per-infer</span></div>
+    </div>
+    <div class="rtype rt-amber">
+      <div class="rtype-icon">🏷️</div>
+      <h4>Instance type selection</h4>
+      <p>For cloud-managed node pools and VM-based workloads, recommend the optimal instance type based on the CPU:memory:GPU ratio the workload actually needs — often a 30–50% cheaper family.</p>
+      <div class="rtype-tags"><span class="tag tag-a">Cross-family</span><span class="tag tag-a">Cost-optimal</span><span class="tag tag-a">AWS/Azure/GCP</span></div>
+    </div>
+    <div class="rtype rt-green">
+      <div class="rtype-icon">📦</div>
+      <h4>Replica count optimisation</h4>
+      <p>Analyse replica count vs actual traffic and latency — identify services running 10 replicas that would serve their traffic at P99 SLA with 4. Recommend minimum replica counts with HPA settings that scale appropriately.</p>
+      <div class="rtype-tags"><span class="tag tag-g">HPA-aware</span><span class="tag tag-g">SLA-safe</span><span class="tag tag-g">Traffic-based</span></div>
+    </div>
+    <div class="rtype rt-orange">
+      <div class="rtype-icon">💾</div>
+      <h4>Storage right-sizing</h4>
+      <p>PersistentVolume utilisation analysis — identify volumes claimed at 500GB with 40GB in use. Recommend right-sized storage class and capacity with migration path included.</p>
+      <div class="rtype-tags"><span class="tag tag-o">PV analysis</span><span class="tag tag-o">Storage class</span><span class="tag tag-o">Migration path</span></div>
+    </div>
+    <div class="rtype rt-teal">
+      <div class="rtype-icon">🌐</div>
+      <h4>Model routing optimisation</h4>
+      <p>Analyse per-request complexity and recommend routing lower-complexity inferences to smaller, cheaper models — without changing the application layer. GPT-4 for complex requests, GPT-3.5 or Claude Haiku for simple ones.</p>
+      <div class="rtype-tags"><span class="tag tag-t">Multi-model</span><span class="tag tag-t">Complexity-aware</span><span class="tag tag-t">No code change</span></div>
+    </div>
+    <div class="rtype rt-blue">
+      <div class="rtype-icon">🏗️</div>
+      <h4>Node pool right-sizing</h4>
+      <p>Cluster-level analysis — identify node pools that are consistently underutilised and recommend consolidation, instance type changes, or spot pool migration for batch AI workloads.</p>
+      <div class="rtype-tags"><span class="tag tag-b">Cluster-level</span><span class="tag tag-b">Spot-aware</span><span class="tag tag-b">Consolidation</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ENGINE SECTION ── -->
+<div class="engine-section">
+  <div class="engine-inner">
+    <div class="engine-grid">
+      <div>
+        <div class="ey" style="color:var(--orange)">How it works</div>
+        <h2 class="sh">From raw telemetry to<br>actionable recommendation<br>in five steps</h2>
+        <p class="sl">Every recommendation is backed by 30 days of actual usage data, statistical analysis, safety validation, and a confidence score your team can trust.</p>
+        <div class="engine-steps">
+          <div class="estep">
+            <div class="estep-num">1</div>
+            <div class="estep-body">
+              <h4>Collect usage telemetry</h4>
+              <p>CPU, memory, GPU, storage, and network metrics are collected at 1-minute granularity from the Kubernetes metrics API, cAdvisor, and DCGM for GPU workloads. No agent changes or workload modifications required.</p>
+            </div>
+          </div>
+          <div class="estep">
+            <div class="estep-num">2</div>
+            <div class="estep-body">
+              <h4>Build usage distribution model</h4>
+              <p>Usage percentile profiles are constructed per workload per resource type — P50, P90, P99, P99.9 — across the 30-day window. Seasonal patterns and bursty workloads are identified and factored into the profile.</p>
+            </div>
+          </div>
+          <div class="estep">
+            <div class="estep-num">3</div>
+            <div class="estep-body">
+              <h4>Calculate safe right-size target</h4>
+              <p>The recommendation engine calculates the optimal resource target: usage ceiling (P99 for CPU, P99.9 for memory) plus a workload-type-specific safety buffer. Buffer defaults are tuned per resource type and can be overridden per workload.</p>
+            </div>
+          </div>
+          <div class="estep">
+            <div class="estep-num">4</div>
+            <div class="estep-body">
+              <h4>Score confidence and safety</h4>
+              <p>Each recommendation receives a confidence score based on data recency, usage variance, workload criticality, and the gap between current and recommended values. High-variance or critical workloads receive conservative buffers and lower confidence scores that trigger human review.</p>
+            </div>
+          </div>
+          <div class="estep">
+            <div class="estep-num">5</div>
+            <div class="estep-body">
+              <h4>Present with projected impact</h4>
+              <p>Recommendations are surfaced with: current resource configuration, recommended configuration, projected monthly saving, confidence score, estimated SLA impact (always zero for correctly scored recommendations), and one-click or automated application.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sample recommendation card -->
+      <div>
+        <div class="rec-card-vis">
+          <div class="rcv-header">
+            <span class="rcv-title">Recommendation detail</span>
+            <span class="rcv-badge">94% confidence</span>
+          </div>
+          <div class="rcv-body">
+            <div class="rcv-workload">llm-inference-service</div>
+            <div class="rcv-ns">ns/team-inference · Deployment · 6 replicas</div>
+            <div class="rcv-compare">
+              <div class="rcv-col current">
+                <div class="rcv-col-lbl">Current (over-provisioned)</div>
+                <div class="rcv-res-row"><span class="rcv-res-key">CPU request</span><span class="rcv-res-val">8 vCPU</span></div>
+                <div class="rcv-res-row"><span class="rcv-res-key">CPU limit</span><span class="rcv-res-val">12 vCPU</span></div>
+                <div class="rcv-res-row"><span class="rcv-res-key">Memory req</span><span class="rcv-res-val">32 GiB</span></div>
+                <div class="rcv-res-row"><span class="rcv-res-key">Cost/month</span><span class="rcv-res-val">$11,520</span></div>
+              </div>
+              <div class="rcv-col target">
+                <div class="rcv-col-lbl">Recommended (right-sized)</div>
+                <div class="rcv-res-row"><span class="rcv-res-key">CPU request</span><span class="rcv-res-val">3 vCPU</span></div>
+                <div class="rcv-res-row"><span class="rcv-res-key">CPU limit</span><span class="rcv-res-val">5 vCPU</span></div>
+                <div class="rcv-res-row"><span class="rcv-res-key">Memory req</span><span class="rcv-res-val">16 GiB</span></div>
+                <div class="rcv-res-row"><span class="rcv-res-key">Cost/month</span><span class="rcv-res-val">$4,320</span></div>
+              </div>
+            </div>
+            <div class="rcv-saving-row">
+              <span class="rcv-save-lbl">Monthly saving</span>
+              <span class="rcv-save-val">$7,200 / month</span>
+            </div>
+            <div class="rcv-confidence">
+              <span style="font-size:11px;color:var(--ink3);white-space:nowrap;">Confidence</span>
+              <div class="rcv-conf-bar"><div class="rcv-conf-fill" style="width:94%"></div></div>
+              <span class="rcv-conf-lbl">94% · SLA risk: none</span>
+            </div>
+            <div class="rcv-actions">
+              <a href="#" class="rcv-action approve">Apply now</a>
+              <a href="#" class="rcv-action review">Schedule for next deploy</a>
+            </div>
+          </div>
+          <div class="rcv-meta">
+            <span class="rcv-meta-item">P99 CPU: <strong>2.4 vCPU</strong></span>
+            <span class="rcv-meta-item">P99.9 mem: <strong>13.8 GiB</strong></span>
+            <span class="rcv-meta-item">30-day window</span>
+          </div>
+        </div>
+        <div class="callout green" style="margin-top:1.25rem">
+          <p>Every recommendation includes rollback instructions. If a right-sizing action causes any measurable SLA degradation, the system can restore the previous configuration in under 60 seconds.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SAVINGS TABLE ── -->
+<div class="calc-section">
+  <div class="calc-inner">
+    <div class="calc-grid">
+      <div class="calc-text">
+        <div class="ey">Impact by workload type</div>
+        <h2 class="sh" style="color:var(--cream)">Right-sizing savings<br><em style="font-family:var(--serif);font-style:italic;color:#f4a264">compound</em> across<br>your whole stack</h2>
+        <p>The savings potential is not concentrated in one workload type — it exists everywhere AI compute is provisioned. Inference services, training jobs, embedding pipelines, and development environments all carry systematic over-provisioning that compounds into significant monthly waste.</p>
+        <p>Our engine surfaces recommendations ranked by savings potential — so your team acts on the highest-value changes first, regardless of where in the stack they live.</p>
+        <div class="callout teal" style="background:rgba(12,110,90,.15);border-left-color:#6adfc0">
+          <p style="color:#6adfc0">On average, customers applying the top 10 right-sizing recommendations by value see 22% of their total AI cost reduction in the first 30 days — with zero performance impact.</p>
+        </div>
+      </div>
+      <div class="savings-table">
+        <div class="st-header">
+          <span class="st-title">Savings by workload type</span>
+          <span class="st-total">$34,810/mo total</span>
+        </div>
+        <div class="st-rows">
+          <div class="st-row">
+            <span class="st-row-name">LLM inference services</span>
+            <span class="st-row-type" style="background:rgba(212,80,10,.15);color:#f4a264">CPU + Memory</span>
+            <span class="st-row-save">$12,400/mo</span>
+          </div>
+          <div class="st-row">
+            <span class="st-row-name">GPU training jobs</span>
+            <span class="st-row-type" style="background:rgba(12,110,90,.15);color:#6adfc0">GPU + Instance</span>
+            <span class="st-row-save">$8,920/mo</span>
+          </div>
+          <div class="st-row">
+            <span class="st-row-name">Embedding pipelines</span>
+            <span class="st-row-type" style="background:rgba(21,85,196,.15);color:#9abeff">CPU + Replicas</span>
+            <span class="st-row-save">$4,840/mo</span>
+          </div>
+          <div class="st-row">
+            <span class="st-row-name">Vector database pods</span>
+            <span class="st-row-type" style="background:rgba(212,80,10,.15);color:#f4a264">Memory + Storage</span>
+            <span class="st-row-save">$3,210/mo</span>
+          </div>
+          <div class="st-row">
+            <span class="st-row-name">Dev / staging environments</span>
+            <span class="st-row-type" style="background:rgba(196,122,0,.15);color:#fcd34d">All resources</span>
+            <span class="st-row-save">$3,040/mo</span>
+          </div>
+          <div class="st-row">
+            <span class="st-row-name">Model routing improvements</span>
+            <span class="st-row-type" style="background:rgba(26,110,58,.15);color:#80e89a">Model selection</span>
+            <span class="st-row-save">$2,400/mo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WORKLOAD COVERAGE ── -->
+<div class="section fade-up">
+  <div class="ey">Coverage</div>
+  <h2 class="sh">Every AI workload type. Every cloud.<br>Every Kubernetes distribution.</h2>
+  <p class="sl">Right-size Recommendations works across the full AI infrastructure stack — wherever your workloads run and whatever they run on.</p>
+  <div class="coverage-grid">
+    <div class="cov-card">
+      <div class="cov-icon" style="background:var(--orange-lt)">🤖</div>
+      <h4>LLM inference services</h4>
+      <p>CPU, memory, replica count, and model routing optimisation for production inference deployments — with latency SLA validation before any change is applied.</p>
+      <div class="cov-tags"><span class="tag tag-o">CPU+Memory</span><span class="tag tag-o">Replicas</span><span class="tag tag-o">Model routing</span></div>
+    </div>
+    <div class="cov-card">
+      <div class="cov-icon" style="background:var(--teal-lt)">🏋️</div>
+      <h4>GPU training jobs</h4>
+      <p>GPU count, type, and utilisation analysis for distributed training. Recommend the optimal GPU topology for each training job's memory and compute profile.</p>
+      <div class="cov-tags"><span class="tag tag-t">GPU count</span><span class="tag tag-t">GPU type</span><span class="tag tag-t">Spot-routing</span></div>
+    </div>
+    <div class="cov-card">
+      <div class="cov-icon" style="background:var(--blue-lt)">📐</div>
+      <h4>Embedding pipelines</h4>
+      <p>Batch embedding workloads are often significantly over-provisioned because they run infrequently. Right-size based on actual peak throughput rather than theoretical capacity.</p>
+      <div class="cov-tags"><span class="tag tag-b">Batch-aware</span><span class="tag tag-b">Throughput-based</span></div>
+    </div>
+    <div class="cov-card">
+      <div class="cov-icon" style="background:var(--amber-lt)">🗄️</div>
+      <h4>Vector databases</h4>
+      <p>Memory and storage analysis for vector database deployments — the most commonly over-provisioned component in RAG architectures, driven by uncertainty about index growth.</p>
+      <div class="cov-tags"><span class="tag tag-a">Memory</span><span class="tag tag-a">Storage PV</span><span class="tag tag-a">Index-aware</span></div>
+    </div>
+    <div class="cov-card">
+      <div class="cov-icon" style="background:var(--green-lt)">🔬</div>
+      <h4>Fine-tuning jobs</h4>
+      <p>Analyse completed fine-tuning runs to recommend optimal resource profiles for future runs — reducing the per-job cost of iterative fine-tuning workflows.</p>
+      <div class="cov-tags"><span class="tag tag-g">Historical runs</span><span class="tag tag-g">Per-job cost</span></div>
+    </div>
+    <div class="cov-card">
+      <div class="cov-icon" style="background:var(--orange-lt)">🌐</div>
+      <h4>API gateway and routing</h4>
+      <p>Model routing layer analysis — identify where GPT-4 is being used for queries that GPT-3.5 or a smaller open-source model would serve at equivalent quality for 80% less cost.</p>
+      <div class="cov-tags"><span class="tag tag-o">Quality-aware</span><span class="tag tag-o">Cost-routing</span></div>
+    </div>
+    <div class="cov-card">
+      <div class="cov-icon" style="background:var(--teal-lt)">🧪</div>
+      <h4>Dev and staging environments</h4>
+      <p>Development environments are the most egregiously over-provisioned workload type. Apply aggressive right-sizing policies to non-production environments with zero SLA risk.</p>
+      <div class="cov-tags"><span class="tag tag-t">Aggressive mode</span><span class="tag tag-t">Env-aware</span></div>
+    </div>
+    <div class="cov-card">
+      <div class="cov-icon" style="background:var(--blue-lt)">🏗️</div>
+      <h4>Kubernetes node pools</h4>
+      <p>Cluster-level analysis to identify over-sized node pools, recommend cheaper instance families, and surface spot pool migration opportunities for batch AI workloads.</p>
+      <div class="cov-tags"><span class="tag tag-b">Node pools</span><span class="tag tag-b">Instance family</span></div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── PILLAR TABLE ── -->
+<div class="section fade-up">
+  <div class="ey">Platform integration</div>
+  <h2 class="sh">Right-sizing connects every<br>platform pillar into a loop</h2>
+  <p class="sl">Recommendations are not generated in isolation — they are fed by monitoring data, executed by the platform, and measured for savings impact.</p>
+  <table class="ptable">
+    <thead>
+      <tr><th>Pillar</th><th>How right-sizing integrates</th><th>Outcome</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="p-pill" style="background:var(--blue-lt);color:var(--blue)">📡 Monitoring</span></td>
+        <td>Monitoring telemetry at 1-minute granularity is the sole input to the right-sizing engine. CPU, memory, GPU utilisation, storage IO, and request rate data from every connected workload feeds the usage distribution models continuously — recommendations refresh as new data arrives.</td>
+        <td>Recommendations reflect your current reality — not a 90-day-old snapshot. A workload that changed its usage pattern last week will have updated recommendations within 7 days.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--orange-lt);color:var(--orange)">⚙️ Optimization</span></td>
+        <td>Right-sizing is the core optimization action. When a recommendation is approved, the optimization engine applies the change — updating Kubernetes resource requests and limits, adjusting instance types, or modifying model routing configuration — with rollback available for 7 days post-application.</td>
+        <td>From recommendation to applied change in under 2 minutes. Savings begin accumulating from the first billing cycle after application. ROI tracking shows realised vs projected savings per recommendation.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--teal-lt);color:var(--teal)">🔀 Orchestration</span></td>
+        <td>Node pool and instance type right-sizing recommendations feed the orchestration engine — which can reroute workloads to right-sized node pools before the node pool recommendation is applied, ensuring continuous availability during the transition.</td>
+        <td>Zero-downtime right-sizing for production workloads. Orchestration handles traffic migration; optimization handles resource reconfiguration. Both happen in sequence, automatically.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--green-lt);color:var(--green)">🗑️ Waste elimination</span></td>
+        <td>Right-sizing complements waste elimination: waste elimination removes resources with zero usage, right-sizing reduces over-provisioning on resources with active but inefficient usage. Together they form a complete cost reduction workflow — applied in the correct order to maximise savings without service disruption.</td>
+        <td>Combined savings from both capabilities appear in a unified waste elimination dashboard — showing total waste removed, split by idle resources and over-provisioned resources.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="div" />
+
+<!-- ── SAFETY SECTION ── */
+<div class="section fade-up">
+  <div class="ey">Safety first</div>
+  <h2 class="sh">Right-sizing with zero<br>performance risk</h2>
+  <p class="sl">The only reason right-sizing doesn't happen is fear of getting it wrong. Our safety model eliminates that fear — every recommendation is validated before application and reversible after it.</p>
+  <div class="safety-grid">
+    <div class="safety-card">
+      <div class="safety-icon">📊</div>
+      <div>
+        <h4>P99-based analysis</h4>
+        <p>Recommendations use P99 usage (P99.9 for memory) as the baseline — not averages. Your workloads will never be under-resourced under load.</p>
+      </div>
+    </div>
+    <div class="safety-card">
+      <div class="safety-icon">🛡️</div>
+      <div>
+        <h4>Configurable safety buffers</h4>
+        <p>Every recommendation includes a safety buffer above P99 usage. Default buffers are tuned per workload type. You can increase them for critical services.</p>
+      </div>
+    </div>
+    <div class="safety-card">
+      <div class="safety-icon">🔍</div>
+      <div>
+        <h4>Pre-flight SLA validation</h4>
+        <p>Before applying a recommendation, the engine simulates the new resource configuration against historical load patterns to confirm SLA targets are maintained.</p>
+      </div>
+    </div>
+    <div class="safety-card">
+      <div class="safety-icon">📈</div>
+      <div>
+        <h4>Confidence scoring</h4>
+        <p>High-variance workloads and recently changed workloads receive lower confidence scores and wider safety buffers automatically — no manual review required to identify risky recommendations.</p>
+      </div>
+    </div>
+    <div class="safety-card">
+      <div class="safety-icon">🔄</div>
+      <div>
+        <h4>7-day rollback window</h4>
+        <p>Every applied recommendation stores the previous configuration for 7 days. One-click rollback restores the original resource settings in under 60 seconds.</p>
+      </div>
+    </div>
+    <div class="safety-card">
+      <div class="safety-icon">🔔</div>
+      <div>
+        <h4>Post-application monitoring</h4>
+        <p>After applying a recommendation, enhanced monitoring runs for 72 hours — alerting immediately if any SLA degradation is detected, and triggering automatic rollback if configured.</p>
+      </div>
+    </div>
+    <div class="safety-card">
+      <div class="safety-icon">🚦</div>
+      <div>
+        <h4>Staged application</h4>
+        <p>For multi-replica deployments, right-sizing is applied to one replica at a time with a traffic observation period between each — ensuring no sudden resource shift across the entire deployment.</p>
+      </div>
+    </div>
+    <div class="safety-card">
+      <div class="safety-icon">✅</div>
+      <div>
+        <h4>Human approval mode</h4>
+        <p>All recommendations require explicit human approval by default. Automation can be enabled per workload type or namespace — you choose which workloads trust the system fully.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── TESTIMONIALS ── -->
+<div class="section fade-up">
+  <div class="ey">Customer stories</div>
+  <h2 class="sh">What teams say after<br>their first right-sizing sprint</h2>
+  <div class="testi-grid">
+    <div class="testi">
+      <p class="testi-q">Our engineers had been manually reviewing resource usage and adjusting limits every quarter — a two-week process that nobody enjoyed. Right-size Recommendations made it a 20-minute monthly review. The recommendations are accurate and the confidence scores are honest — low-confidence ones genuinely do need human review.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--orange-lt);color:var(--orange)">DM</div>
+        <div><div class="testi-name">Deepak Malhotra</div><div class="testi-role">Head of Platform Engineering · B2B AI Company (Pune)</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">We applied 34 recommendations in our first week. Total saving: $28,400 per month, zero incidents. The staged application gave our team confidence to approve changes they'd have been nervous about before — seeing it roll out one replica at a time with monitoring active is genuinely reassuring.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--teal-lt);color:var(--teal)">SI</div>
+        <div><div class="testi-name">Shruti Iyer</div><div class="testi-role">VP Engineering · Series B AI Infrastructure Startup</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">The model routing recommendations were a surprise — I didn't expect a right-sizing tool to tell us we were using GPT-4 for things that Haiku handles identically. That single recommendation saved $14,000 a month without touching any code. The quality analysis it uses is genuinely sophisticated.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--blue-lt);color:var(--blue)">KR</div>
+        <div><div class="testi-name">Kavitha Ramanan</div><div class="testi-role">CTO · AI-first SaaS Product (Chennai)</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── FAQ ── -->
+<div class="section fade-up">
+  <div class="ey">FAQ</div>
+  <h2 class="sh">Common questions</h2>
+  <div class="faq-list">
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How does right-sizing handle bursty workloads that spike unpredictably?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Bursty workloads are identified by their usage variance score — a high-variance workload has a wider gap between P50 and P99 usage. For these workloads, the right-sizing engine applies a larger safety buffer (configurable, default 40% above P99 for high-variance workloads vs 20% for stable ones) and assigns a lower confidence score. The recommendation still results in savings — just more conservative ones — and the lower confidence score flags it for human review before application. Workloads with unpredictable spikes beyond P99.9 are flagged as "review manually" and excluded from automated application.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can I set different right-sizing policies for production versus development environments?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes — environment-specific policies are a core configuration option. Development and staging environments can be configured with aggressive right-sizing (tight buffers, automated application, no minimum replica counts) while production environments use conservative buffers, staged rollout, and mandatory human approval. Policies are applied by namespace label, deployment label, or cluster — or any combination. You can also define "frozen" workloads that are excluded from right-sizing recommendations entirely, such as stateful services with manual scaling requirements.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">What happens if a right-sized workload starts under-performing after a recommendation is applied?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Post-application monitoring runs for 72 hours with enhanced SLA tracking. If any monitored SLA metric (latency P99, error rate, throughput) degrades beyond a configurable threshold, an alert is immediately fired and — if auto-rollback is configured — the previous resource configuration is restored within 60 seconds. You can also trigger a manual rollback at any time within the 7-day rollback window from the recommendations dashboard. In practice, correctly scored recommendations have a 0% production incident rate across our customer base.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How are model routing recommendations generated — how do you assess output quality?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Model routing recommendations analyse request complexity signals — prompt length, task type indicators from system prompt patterns, and historical response characteristics — to identify requests where a smaller or cheaper model is likely to produce equivalent output. We do not evaluate output quality directly (we never access your prompt content). Instead, we identify request categories that correlate with model-interchangeability based on complexity signals, and recommend routing thresholds with a conservative starting point. You validate the quality of routed responses in your own evaluation pipeline before increasing the routing percentage.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How long does it take to see the first recommendations after connecting a workload?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Initial recommendations based on the first 24 hours of data are available within 24 hours of connecting a workload — these are lower-confidence but often identify obvious over-provisioning cases (a CPU-requested pod that has never used more than 10% in 24 hours). Full 30-day window recommendations, with complete seasonal analysis and high-confidence scores, are available after 14 days. Recommendations refresh continuously as new usage data arrives — a workload that changes its pattern will have updated recommendations within 7 days of the change.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA ── -->
+<section class="cta">
+  <div class="cta-inner">
+    <h2>Find out exactly how much<br>you're <em>over-paying</em> today</h2>
+    <p>Connect your cluster and receive your first right-sizing report within 24 hours — free, with no changes required to your workloads or infrastructure.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-ink">Get your free savings report</a>
+      <a href="#" class="btn-outline-ink">See sample recommendations →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  function tfq(btn) {
+    const item = btn.closest('.fq');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.fq.open').forEach(i => i.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

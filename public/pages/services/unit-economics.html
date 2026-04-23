@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit Economics — AI FinOps Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --forest:    #0d2b1e;
+      --forest2:   #122d20;
+      --forest3:   #1a3d2c;
+      --forest4:   #234d38;
+      --moss:      #2e6b4a;
+      --sage:      #4a8c66;
+      --cream:     #f5f1e8;
+      --ivory:     #ede9de;
+      --sand:      #e3dece;
+      --sand2:     #d8d2c0;
+      --ink:       #111810;
+      --ink2:      #243320;
+      --ink3:      #4a6044;
+      --ink4:      #7a9070;
+      --ink5:      #aab8a0;
+      --rule:      rgba(17,24,16,.08);
+      --rule2:     rgba(17,24,16,.15);
+
+      /* warm accent palette */
+      --citron:    #9ea800;
+      --citron-lt: #f4f5cc;
+      --coral:     #c44832;
+      --coral-lt:  #fceae6;
+      --gold:      #c08820;
+      --gold-lt:   #fdf4dc;
+      --sky:       #1a6888;
+      --sky-lt:    #d4edf8;
+      --plum:      #6a1e5e;
+      --plum-lt:   #f5e0f2;
+
+      --r:    5px;
+      --r-lg: 12px;
+      --r-xl: 20px;
+      --jak:  'Plus Jakarta Sans', system-ui, sans-serif;
+      --fra:  'Fraunces', Georgia, serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--jak); background: var(--cream); color: var(--ink); line-height: 1.65; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(245,241,232,.95); backdrop-filter: blur(14px);
+      border-bottom: 2px solid var(--forest);
+      height: 56px; padding: 0 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { font-family: var(--jak); font-size: 17px; font-weight: 800; color: var(--ink); text-decoration: none; letter-spacing: -.02em; }
+    .nav-brand em { font-style: normal; color: var(--moss); }
+    .nav-bc { font-size: 12px; color: var(--ink3); display: flex; align-items: center; gap: 7px; }
+    .nav-bc strong { color: var(--ink2); font-weight: 600; }
+    .nav-bc .sep { color: var(--ink5); }
+    .nav-cta { font-size: 13px; font-weight: 700; color: var(--cream); background: var(--forest); padding: 8px 22px; border-radius: var(--r); text-decoration: none; transition: background .15s; }
+    .nav-cta:hover { background: var(--forest3); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--forest);
+      overflow: hidden; position: relative;
+    }
+    /* Fine halftone dots */
+    .hero-dots {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+    /* Large serif numeral watermark */
+    .hero-wm {
+      position: absolute; right: -80px; bottom: -80px;
+      font-family: var(--fra); font-size: 480px; font-weight: 300;
+      color: rgba(255,255,255,.03); line-height: 1;
+      user-select: none; pointer-events: none; letter-spacing: -.04em;
+    }
+    /* Citron accent line */
+    .hero-accent-line {
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--citron) 0%, var(--moss) 60%, transparent 100%);
+    }
+
+    .hero-inner {
+      max-width: 1080px; margin: 0 auto;
+      padding: 5.5rem 2.5rem 0;
+      display: grid; grid-template-columns: 1fr 460px;
+      gap: 4rem; align-items: end;
+      position: relative; z-index: 1;
+    }
+    @media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; padding-bottom: 3rem; } }
+
+    .hero-text { padding-bottom: 5rem; }
+    .hero-kicker {
+      font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--citron); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-kicker::before { content: ''; width: 30px; height: 2px; background: var(--citron); }
+
+    .hero h1 {
+      font-family: var(--fra); font-size: clamp(42px, 7vw, 80px);
+      font-weight: 300; color: var(--cream);
+      line-height: .95; letter-spacing: -.02em; margin-bottom: 1.5rem;
+    }
+    .hero h1 strong { font-weight: 600; display: block; }
+    .hero h1 em { font-style: italic; color: #b8d4a8; }
+
+    .hero-lead { font-size: 16px; color: var(--ink4); line-height: 1.82; max-width: 460px; margin-bottom: 2.5rem; }
+    .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 3rem; }
+    .btn-citron { font-size: 13px; font-weight: 700; color: var(--forest); background: var(--citron); padding: 11px 26px; border-radius: var(--r); text-decoration: none; transition: background .15s; }
+    .btn-citron:hover { background: #b4be00; }
+    .btn-ghost { font-size: 13px; font-weight: 500; color: var(--ink4); background: transparent; padding: 11px 24px; border-radius: var(--r); border: 1px solid rgba(245,241,232,.15); text-decoration: none; transition: all .15s; }
+    .btn-ghost:hover { color: var(--cream); border-color: rgba(245,241,232,.35); }
+
+    /* hero stat row */
+    .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+    .hstat {}
+    .hstat-val { font-family: var(--fra); font-size: 30px; font-weight: 300; font-style: italic; color: var(--cream); line-height: 1; margin-bottom: 3px; }
+    .hstat-val strong { font-style: normal; font-weight: 600; color: #b8d4a8; }
+    .hstat-lbl { font-size: 11px; color: var(--ink4); }
+
+    /* ── HERO VISUAL — unit cost dashboard ── */
+    .hero-unit {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-bottom: none;
+      border-radius: var(--r-xl) var(--r-xl) 0 0;
+      padding: 1.5rem;
+      font-family: var(--jak);
+    }
+    .hu-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .hu-title { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink4); }
+    .hu-trend { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+
+    /* big unit cost number */
+    .hu-primary { text-align: center; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .hu-primary-val { font-family: var(--fra); font-size: 52px; font-weight: 300; font-style: italic; color: var(--cream); line-height: 1; }
+    .hu-primary-unit { font-size: 11px; color: var(--ink4); margin-top: 4px; }
+    .hu-primary-change { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; margin-top: 6px; padding: 3px 10px; border-radius: 20px; }
+
+    /* unit cost breakdown */
+    .hu-rows { display: flex; flex-direction: column; gap: 7px; margin-bottom: 1.25rem; }
+    .hu-row { display: flex; align-items: center; gap: 10px; }
+    .hu-row-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .hu-row-lbl { font-size: 11px; color: var(--ink4); flex: 1; }
+    .hu-row-bar-wrap { width: 90px; height: 4px; background: rgba(255,255,255,.08); border-radius: 2px; }
+    .hu-row-bar { height: 100%; border-radius: 2px; }
+    .hu-row-val { font-size: 11px; font-weight: 600; color: var(--cream); width: 44px; text-align: right; }
+
+    /* mini kpi row */
+    .hu-kpis { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+    .hu-kpi { background: rgba(255,255,255,.06); border-radius: var(--r); padding: .5rem .625rem; text-align: center; }
+    .hu-kpi-val { font-size: 14px; font-weight: 700; color: var(--cream); line-height: 1; margin-bottom: 2px; }
+    .hu-kpi-lbl { font-size: 9px; color: var(--ink4); text-transform: uppercase; letter-spacing: .06em; }
+
+    /* ── METRICS ── */
+    .metrics { background: var(--forest2); border-top: 1px solid rgba(255,255,255,.04); border-bottom: 1px solid rgba(255,255,255,.04); }
+    .metrics-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+    .mc { padding: 1.75rem 1.25rem; text-align: center; border-right: 1px solid rgba(255,255,255,.06); }
+    .mc:last-child { border-right: none; }
+    .mc-val { font-family: var(--fra); font-size: 28px; font-weight: 300; font-style: italic; line-height: 1; margin-bottom: 5px; }
+    .mc-lbl { font-size: 11px; color: var(--ink4); line-height: 1.4; }
+
+    /* ── SECTION ── */
+    .section { max-width: 1080px; margin: 0 auto; padding: 5rem 2.5rem; }
+    .ey { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--moss); display: flex; align-items: center; gap: 10px; margin-bottom: .65rem; }
+    .ey::before { content: ''; width: 20px; height: 2px; background: var(--moss); }
+    .sh { font-family: var(--fra); font-size: clamp(26px, 4.5vw, 46px); font-weight: 300; color: var(--ink); line-height: 1.12; margin-bottom: .75rem; letter-spacing: -.01em; }
+    .sh strong { font-weight: 600; }
+    .sh em { font-style: italic; color: var(--moss); }
+    .sl { font-size: 15px; color: var(--ink3); line-height: 1.8; max-width: 580px; margin-bottom: 2.5rem; }
+    hr.div { border: none; border-top: 1px solid var(--rule); max-width: 1080px; margin: 0 auto; }
+
+    /* ── WHY SECTION ── */
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    @media (max-width: 700px) { .why-grid { grid-template-columns: 1fr; } }
+    .why-text p { font-size: 14px; color: var(--ink2); line-height: 1.85; margin-bottom: 1rem; }
+    .why-text p:last-child { margin-bottom: 0; }
+    .why-callout { border-left: 3px solid var(--citron); background: var(--citron-lt); border-radius: 0 var(--r) var(--r) 0; padding: .875rem 1.1rem; margin: 1.25rem 0; }
+    .why-callout p { font-size: 13px; color: var(--ink2); line-height: 1.65; margin: 0; }
+    .why-examples { display: flex; flex-direction: column; gap: 12px; }
+    .why-ex {
+      background: var(--ivory); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); padding: 1.25rem;
+      display: flex; gap: 14px; align-items: flex-start;
+      transition: border-color .15s;
+    }
+    .why-ex:hover { border-color: var(--rule2); }
+    .why-ex-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+    .why-ex h5 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+    .why-ex p  { font-size: 12px; color: var(--ink3); line-height: 1.55; }
+    .why-ex-metric { font-family: var(--fra); font-size: 20px; font-weight: 300; font-style: italic; color: var(--moss); margin-top: 6px; }
+
+    /* ── CORE METRICS SECTION ── */
+    .metrics-section { background: var(--forest); padding: 5rem 2.5rem; }
+    .metrics-inner2 { max-width: 1080px; margin: 0 auto; }
+    .mey { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--citron); display: flex; align-items: center; gap: 10px; margin-bottom: .65rem; }
+    .mey::before { content: ''; width: 20px; height: 2px; background: var(--citron); }
+    .msh { font-family: var(--fra); font-size: clamp(26px, 4.5vw, 44px); font-weight: 300; color: var(--cream); line-height: 1.12; margin-bottom: .75rem; }
+    .msh em { font-style: italic; color: #b8d4a8; font-weight: 300; }
+    .msl { font-size: 15px; color: var(--ink4); line-height: 1.8; max-width: 560px; margin-bottom: 3rem; }
+
+    /* metric tabs */
+    .met-tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .metab {
+      font-size: 12px; font-weight: 600; padding: 8px 18px;
+      border-radius: 24px; border: 1px solid rgba(255,255,255,.12);
+      background: transparent; color: var(--ink4); cursor: pointer;
+      transition: all .15s; letter-spacing: -.01em;
+    }
+    .metab:hover { color: var(--cream); border-color: rgba(255,255,255,.25); }
+    .metab.active { background: var(--citron); border-color: var(--citron); color: var(--forest); }
+
+    .met-panel { display: none; }
+    .met-panel.active { display: grid; grid-template-columns: 1fr 420px; gap: 3rem; align-items: start; }
+    @media (max-width: 780px) { .met-panel.active { grid-template-columns: 1fr; } }
+
+    .mp-left h3 { font-family: var(--fra); font-size: 24px; font-weight: 300; color: var(--cream); margin-bottom: .75rem; line-height: 1.25; }
+    .mp-left h3 em { font-style: italic; }
+    .mp-left p { font-size: 14px; color: var(--ink4); line-height: 1.8; margin-bottom: 1rem; }
+    .mp-left-checks { display: flex; flex-direction: column; gap: 8px; margin-top: 1.5rem; }
+    .mp-left-check { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--ink4); line-height: 1.5; }
+    .mp-left-check::before { content: '→'; color: var(--citron); flex-shrink: 0; font-weight: 700; margin-top: 1px; }
+
+    /* metric formula card */
+    .mp-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--r-xl); padding: 1.5rem;
+    }
+    .mpc-label { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink4); margin-bottom: 1rem; }
+    .mpc-big { text-align: center; margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .mpc-big-val { font-family: var(--fra); font-size: 44px; font-weight: 300; font-style: italic; color: var(--cream); line-height: 1; }
+    .mpc-big-unit { font-size: 12px; color: var(--ink4); margin-top: 4px; }
+    .mpc-formula { background: rgba(0,0,0,.25); border-radius: var(--r); padding: .875rem 1rem; font-family: 'Courier New', monospace; font-size: 12px; color: var(--ink5); margin-bottom: 1rem; line-height: 1.8; border: 1px solid rgba(255,255,255,.07); }
+    .mpc-k { color: var(--citron); }
+    .mpc-v { color: #b8d4a8; }
+    .mpc-c { color: #4a6044; font-style: italic; }
+    .mpc-breakdown { display: flex; flex-direction: column; gap: 6px; }
+    .mpc-row { display: flex; align-items: center; gap: 10px; }
+    .mpc-row-lbl { font-size: 11px; color: var(--ink4); flex: 1; }
+    .mpc-row-bar-wrap { width: 80px; height: 5px; background: rgba(255,255,255,.08); border-radius: 3px; }
+    .mpc-row-bar { height: 100%; border-radius: 3px; }
+    .mpc-row-val { font-size: 11px; font-weight: 700; color: var(--cream); width: 48px; text-align: right; }
+    .mpc-note { font-size: 11px; color: var(--ink4); margin-top: .75rem; padding-top: .75rem; border-top: 1px solid rgba(255,255,255,.08); }
+
+    /* ── WATERFALL SECTION ── */
+    .waterfall-section { background: var(--ivory); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 5rem 2.5rem; }
+    .wf-inner { max-width: 1080px; margin: 0 auto; }
+    .wf-grid { display: grid; grid-template-columns: 400px 1fr; gap: 4rem; align-items: start; }
+    @media (max-width: 780px) { .wf-grid { grid-template-columns: 1fr; } }
+
+    /* waterfall chart visual */
+    .wf-chart { background: var(--forest); border-radius: var(--r-xl); padding: 1.5rem; }
+    .wfc-title { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink4); margin-bottom: 1.25rem; }
+    .wfc-bars { display: flex; flex-direction: column; gap: 8px; }
+    .wfc-row { display: flex; align-items: center; gap: 10px; }
+    .wfc-label { font-size: 11px; color: var(--ink4); width: 100px; flex-shrink: 0; text-align: right; }
+    .wfc-bar-area { flex: 1; height: 28px; position: relative; }
+    .wfc-bar {
+      position: absolute; height: 100%; border-radius: var(--r);
+      display: flex; align-items: center; padding: 0 .5rem;
+      font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden;
+    }
+    .wfc-bar.total  { left: 0; width: 100%; background: var(--moss); color: var(--cream); }
+    .wfc-bar.infra  { left: 0; width: 44%; background: var(--citron); color: var(--forest); }
+    .wfc-bar.model  { left: 46%; width: 32%; background: #6adfc0; color: var(--forest); }
+    .wfc-bar.ops    { left: 80%; width: 10%; background: #b480ff; color: var(--cream); }
+    .wfc-bar.unit   { left: 0; width: 60%; background: rgba(245,241,232,.12); border: 1px solid rgba(245,241,232,.2); color: var(--cream); font-style: italic; }
+    .wfc-val { font-size: 11px; font-weight: 700; color: var(--cream); width: 52px; text-align: right; }
+    .wfc-divider { height: 1px; background: rgba(255,255,255,.07); margin: .25rem 0; }
+
+    .wf-explanations { display: flex; flex-direction: column; gap: 1.5rem; }
+    .wf-ex { background: var(--ivory); border: 1px solid var(--rule); border-radius: var(--r-xl); padding: 1.25rem; }
+    .wf-ex-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .wf-ex-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+    .wf-ex-title { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .wf-ex-val { font-family: var(--fra); font-size: 16px; font-weight: 300; font-style: italic; color: var(--ink3); margin-left: auto; }
+    .wf-ex-desc { font-size: 12px; color: var(--ink3); line-height: 1.6; }
+
+    /* ── BENCHMARK SECTION ── */
+    .bench-section { background: var(--cream); padding: 5rem 2.5rem; }
+    .bench-inner { max-width: 1080px; margin: 0 auto; }
+    .bench-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    @media (max-width: 680px) { .bench-grid { grid-template-columns: 1fr; } }
+    .bench-text p { font-size: 14px; color: var(--ink2); line-height: 1.85; margin-bottom: 1rem; }
+
+    /* benchmark comparison table */
+    .bench-table { background: var(--ivory); border: 1px solid var(--rule2); border-radius: var(--r-xl); overflow: hidden; }
+    .bt-head { background: var(--forest); padding: .875rem 1.25rem; display: flex; justify-content: space-between; align-items: center; }
+    .bt-head-title { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink4); }
+    .bt-head-badge { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(158,168,0,.25); color: var(--citron); }
+    .bt-rows {}
+    .bt-row { display: grid; grid-template-columns: 1fr 90px 90px 90px; gap: 8px; align-items: center; padding: .875rem 1.25rem; border-bottom: 1px solid var(--rule); transition: background .1s; }
+    .bt-row:hover { background: var(--sand); }
+    .bt-row:last-child { border-bottom: none; }
+    .bt-row.header { background: var(--sand); font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink4); }
+    .bt-row-name { font-size: 13px; font-weight: 600; color: var(--ink); }
+    .bt-row-sub  { font-size: 11px; color: var(--ink4); }
+    .bt-cell { font-size: 12px; font-weight: 600; text-align: right; }
+    .bt-cell.yours { color: var(--moss); }
+    .bt-cell.p50   { color: var(--ink3); }
+    .bt-cell.p75   { color: var(--coral); }
+    .bt-indicator { display: flex; align-items: center; justify-content: flex-end; gap: 4px; font-size: 10px; font-weight: 700; }
+
+    /* ── OPTIMIZATION LEVERS ── */
+    .levers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+    .lever {
+      background: var(--ivory); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); padding: 1.5rem;
+      position: relative; overflow: hidden;
+      transition: border-color .2s, transform .2s;
+    }
+    .lever:hover { border-color: var(--rule2); transform: translateY(-2px); }
+    .lever::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .lv-citron::before  { background: var(--citron); }
+    .lv-coral::before   { background: var(--coral); }
+    .lv-sky::before     { background: var(--sky); }
+    .lv-gold::before    { background: var(--gold); }
+    .lv-plum::before    { background: var(--plum); }
+    .lv-moss::before    { background: var(--moss); }
+    .lever-icon { font-size: 24px; margin-bottom: 10px; }
+    .lever h4   { font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: -.02em; margin-bottom: 6px; }
+    .lever p    { font-size: 12px; color: var(--ink3); line-height: 1.65; margin-bottom: 10px; }
+    .lever-impact { display: flex; align-items: center; gap: 8px; }
+    .lever-impact-val { font-family: var(--fra); font-size: 22px; font-weight: 300; font-style: italic; }
+    .lever-impact-lbl { font-size: 11px; color: var(--ink3); line-height: 1.3; }
+    .lever-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .ltag { font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 20px; }
+
+    /* ── PILLAR TABLE ── */
+    .ptable { width: 100%; border-collapse: collapse; }
+    .ptable thead th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink4); border-bottom: 2px solid var(--rule2); background: var(--ivory); }
+    .ptable thead th:first-child { border-radius: var(--r) 0 0 0; }
+    .ptable thead th:last-child  { border-radius: 0 var(--r) 0 0; }
+    .ptable tbody tr { border-bottom: 1px solid var(--rule); transition: background .1s; }
+    .ptable tbody tr:hover { background: var(--ivory); }
+    .ptable tbody td { padding: 13px 14px; font-size: 13px; color: var(--ink2); vertical-align: top; }
+    .ptable tbody td:first-child { color: var(--ink); font-weight: 700; }
+    .p-pill { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; }
+
+    /* ── TESTI ── */
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+    .testi { background: var(--ivory); border: 1px solid var(--rule); border-radius: var(--r-xl); padding: 1.75rem; }
+    .testi-q { font-family: var(--fra); font-size: 15px; font-style: italic; color: var(--ink); line-height: 1.68; margin-bottom: 1.25rem; font-weight: 300; }
+    .testi-q::before { content: '\201C'; color: var(--moss); font-size: 26px; line-height: 0; vertical-align: -6px; margin-right: 2px; }
+    .testi-meta { display: flex; align-items: center; gap: 12px; }
+    .testi-av { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .testi-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .testi-role { font-size: 11px; color: var(--ink4); }
+
+    /* ── CALLOUTS ── */
+    .callout { border-left: 3px solid var(--moss); background: var(--citron-lt); border-radius: 0 var(--r) var(--r) 0; padding: .875rem 1.1rem; margin: 1.25rem 0; }
+    .callout p { font-size: 13px; color: var(--ink2); line-height: 1.65; margin: 0; }
+    .callout.coral { border-left-color: var(--coral); background: var(--coral-lt); }
+    .callout.coral p { color: var(--coral); }
+    .callout.dk { border-left-color: rgba(158,168,0,.6); background: rgba(158,168,0,.12); }
+    .callout.dk p { color: var(--citron); }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; max-width: 700px; }
+    .fq { border-bottom: 1px solid var(--rule); }
+    .fq:first-child { border-top: 1px solid var(--rule); }
+    .fq-q { width: 100%; text-align: left; background: transparent; border: none; padding: 1.1rem 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem; cursor: pointer; font-family: var(--jak); font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.4; letter-spacing: -.02em; }
+    .fq-q:hover { color: var(--moss); }
+    .fq-ico { width: 22px; height: 22px; border-radius: 50%; background: var(--sand); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; color: var(--ink3); transition: transform .2s, background .2s; }
+    .fq.open .fq-ico { transform: rotate(45deg); background: var(--citron-lt); color: var(--moss); }
+    .fq-a { display: none; padding: 0 0 1.1rem; font-size: 13px; color: var(--ink3); line-height: 1.8; }
+    .fq.open .fq-a { display: block; }
+
+    /* ── CTA ── */
+    .cta { background: var(--forest); padding: 6rem 2.5rem; text-align: center; position: relative; overflow: hidden; }
+    .cta-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 24px 24px; }
+    .cta-line { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--citron) 0%, var(--moss) 60%, transparent 100%); }
+    .cta-inner { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+    .cta h2 { font-family: var(--fra); font-size: clamp(30px, 5.5vw, 58px); font-weight: 300; color: var(--cream); line-height: 1.1; margin-bottom: 1rem; }
+    .cta h2 em { font-style: italic; color: #b8d4a8; }
+    .cta h2 strong { font-weight: 600; color: var(--citron); }
+    .cta p { font-size: 15px; color: var(--ink4); line-height: 1.75; margin-bottom: 2.5rem; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    .fade-up { opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="#" class="nav-brand">AI<em>FinOps</em></a>
+  <div class="nav-bc">
+    <span>Services</span><span class="sep">/</span>
+    <strong>Unit Economics</strong>
+  </div>
+  <a href="#" class="nav-cta">See your unit costs</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-accent-line"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-wm">¢</div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-kicker">Service — Unit Economics</div>
+      <h1>
+        <strong>What does one</strong>
+        AI call actually
+        <em>cost you?</em>
+      </h1>
+      <p class="hero-lead">
+        Cloud bills tell you what you spent in total. Unit Economics tells you
+        what you spent per inference, per token, per API call, per user, per
+        revenue dollar. Those are the numbers that make AI sustainable — the
+        metrics that connect engineering decisions to business outcomes and
+        turn cost into a product discipline.
+      </p>
+      <div class="hero-btns">
+        <a href="#" class="btn-citron">Calculate your unit costs</a>
+        <a href="#" class="btn-ghost">See sample dashboard →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat">
+          <div class="hstat-val"><strong>$0.0042</strong></div>
+          <div class="hstat-lbl">Avg cost-per-inference tracked per workload</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val"><strong>15 min</strong></div>
+          <div class="hstat-lbl">Unit cost refresh frequency</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val"><strong>12+</strong></div>
+          <div class="hstat-lbl">Unit cost metrics tracked per service</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unit cost dashboard visual -->
+    <div class="hero-unit">
+      <div class="hu-topbar">
+        <span class="hu-title">Unit cost dashboard · llm-inference-svc</span>
+        <span class="hu-trend" style="background:rgba(158,168,0,.2);color:var(--citron)">−18% MoM</span>
+      </div>
+      <div class="hu-primary">
+        <div class="hu-primary-val">$0.0042</div>
+        <div class="hu-primary-unit">Cost per inference · April 2026</div>
+        <div class="hu-primary-change" style="background:rgba(158,168,0,.15);color:var(--citron)">
+          ↓ Was $0.0051 last month
+        </div>
+      </div>
+      <div class="hu-rows">
+        <div class="hu-row">
+          <div class="hu-row-dot" style="background:var(--citron)"></div>
+          <span class="hu-row-lbl">Compute (CPU+Mem)</span>
+          <div class="hu-row-bar-wrap"><div class="hu-row-bar" style="width:44%;background:var(--citron)"></div></div>
+          <span class="hu-row-val">$0.00185</span>
+        </div>
+        <div class="hu-row">
+          <div class="hu-row-dot" style="background:#6adfc0"></div>
+          <span class="hu-row-lbl">Model API tokens</span>
+          <div class="hu-row-bar-wrap"><div class="hu-row-bar" style="width:32%;background:#6adfc0"></div></div>
+          <span class="hu-row-val">$0.00134</span>
+        </div>
+        <div class="hu-row">
+          <div class="hu-row-dot" style="background:#b480ff"></div>
+          <span class="hu-row-lbl">GPU amortisation</span>
+          <div class="hu-row-bar-wrap"><div class="hu-row-bar" style="width:16%;background:#b480ff"></div></div>
+          <span class="hu-row-val">$0.00067</span>
+        </div>
+        <div class="hu-row">
+          <div class="hu-row-dot" style="background:#f4a264"></div>
+          <span class="hu-row-lbl">Shared overhead</span>
+          <div class="hu-row-bar-wrap"><div class="hu-row-bar" style="width:8%;background:#f4a264"></div></div>
+          <span class="hu-row-val">$0.00034</span>
+        </div>
+      </div>
+      <div class="hu-kpis">
+        <div class="hu-kpi">
+          <div class="hu-kpi-val">24.2M</div>
+          <div class="hu-kpi-lbl">Inferences/mo</div>
+        </div>
+        <div class="hu-kpi">
+          <div class="hu-kpi-val" style="color:#b8d4a8">$0.012</div>
+          <div class="hu-kpi-lbl">Revenue/infer.</div>
+        </div>
+        <div class="hu-kpi">
+          <div class="hu-kpi-val" style="color:var(--citron)">2.9×</div>
+          <div class="hu-kpi-lbl">Gross margin</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── METRICS BAND ── -->
+<div class="metrics">
+  <div class="metrics-inner">
+    <div class="mc"><div class="mc-val" style="color:var(--citron)">$0.0042</div><div class="mc-lbl" style="color:var(--ink4)">Median cost-per-inference tracked</div></div>
+    <div class="mc"><div class="mc-val" style="color:#b8d4a8">12+</div><div class="mc-lbl" style="color:var(--ink4)">Unit cost dimensions per workload</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--citron)">15 min</div><div class="mc-lbl" style="color:var(--ink4)">Refresh frequency for all unit metrics</div></div>
+    <div class="mc"><div class="mc-val" style="color:#6adfc0">100%</div><div class="mc-lbl" style="color:var(--ink4)">Cost components included in unit calc</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--citron)">Retro</div><div class="mc-lbl" style="color:var(--ink4)">Historical unit cost trend from day one</div></div>
+    <div class="mc"><div class="mc-val" style="color:#b480ff">Zero</div><div class="mc-lbl" style="color:var(--ink4)">Integrations required to get started</div></div>
+  </div>
+</div>
+
+<!-- ── WHY UNIT ECONOMICS ── -->
+<div class="section fade-up">
+  <div class="ey">Why it matters</div>
+  <h2 class="sh">Total spend is a <em>symptom.</em><br>Unit cost is the <strong>diagnosis.</strong></h2>
+  <div class="why-grid">
+    <div class="why-text">
+      <p>
+        Every engineering decision that affects AI cost — model selection, context window
+        length, caching strategy, batching, GPU provisioning — shows up in your unit cost.
+        But those signals are invisible in a monthly cloud bill. A bill that goes from
+        $80K to $100K tells you something changed. Unit cost tells you <em>what</em> changed
+        and gives you the lever to fix it.
+      </p>
+      <p>
+        Unit Economics transforms AI cost from a CFO problem into a product problem —
+        and product teams know how to optimise. When cost-per-inference is a metric
+        on the product dashboard alongside latency and error rate, engineers naturally
+        start asking "how do I reduce it?" the same way they ask "how do I reduce P99?"
+      </p>
+      <p>
+        The most financially sustainable AI products — those that scale without
+        proportionally scaling cost — are built by teams that track and optimise unit
+        economics from the earliest stage. Our platform makes that discipline available
+        from day one, with zero instrumentation required.
+      </p>
+      <div class="why-callout">
+        <p>A unit cost reduction of 30% on a service processing 50M inferences per month translates directly to the bottom line — regardless of what the total monthly bill says.</p>
+      </div>
+    </div>
+    <div class="why-examples">
+      <div class="why-ex">
+        <div class="why-ex-icon">🔍</div>
+        <div>
+          <h5>Cost per inference</h5>
+          <p>The foundational metric for any AI serving workload — the fully-loaded cost of one model prediction, including compute, model API tokens, GPU amortisation, and allocated overhead.</p>
+          <div class="why-ex-metric">$0.0042 / inference</div>
+        </div>
+      </div>
+      <div class="why-ex">
+        <div class="why-ex-icon">🔤</div>
+        <div>
+          <h5>Cost per 1,000 tokens</h5>
+          <p>The most granular LLM cost metric — separating input token cost from output token cost and comparing against the list price to surface prompt engineering savings opportunities.</p>
+          <div class="why-ex-metric">$1.84 / 1K tokens</div>
+        </div>
+      </div>
+      <div class="why-ex">
+        <div class="why-ex-icon">👤</div>
+        <div>
+          <h5>Cost per active user</h5>
+          <p>The business-level metric — total AI cost divided by monthly active users gives product and finance teams a single number that connects AI investment to usage scale.</p>
+          <div class="why-ex-metric">$0.38 / MAU / month</div>
+        </div>
+      </div>
+      <div class="why-ex">
+        <div class="why-ex-icon">💰</div>
+        <div>
+          <h5>AI cost as % of revenue</h5>
+          <p>The CFO metric — what fraction of every revenue dollar is consumed by AI infrastructure. The benchmark for AI-native product sustainability and a leading indicator of gross margin compression.</p>
+          <div class="why-ex-metric">0.38% of revenue</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CORE UNIT METRICS ── -->
+<div class="metrics-section">
+  <div class="metrics-inner2">
+    <div class="mey">Core unit metrics</div>
+    <h2 class="msh">12 unit cost metrics tracked<br>per workload. <em>Automatically.</em></h2>
+    <p class="msl">Every metric is calculated from real telemetry — not billing estimates. Model API costs, compute utilisation, GPU amortisation, and shared overhead are all factored into every unit cost calculation.</p>
+
+    <div class="met-tabs" role="tablist">
+      <button class="metab active" onclick="switchMet('inference',this)">Cost / Inference</button>
+      <button class="metab" onclick="switchMet('token',this)">Cost / Token</button>
+      <button class="metab" onclick="switchMet('user',this)">Cost / User</button>
+      <button class="metab" onclick="switchMet('revenue',this)">Cost / Revenue</button>
+      <button class="metab" onclick="switchMet('epoch',this)">Cost / Training Epoch</button>
+      <button class="metab" onclick="switchMet('session',this)">Cost / Session</button>
+    </div>
+
+    <!-- INFERENCE -->
+    <div class="met-panel active" id="met-inference">
+      <div class="mp-left">
+        <h3><em>Cost per inference</em> — the atomic unit of AI production cost</h3>
+        <p>The fully-loaded cost of serving one model prediction — from the moment a request arrives to the moment the response is returned. Includes all compute, model API tokens consumed, GPU time, network egress, and an allocated share of shared infrastructure overhead.</p>
+        <p>Tracked per model endpoint and per workload type — so a GPT-4 inference, a Claude Sonnet inference, and a self-hosted LLM inference are all measured and compared on the same basis, making model selection a data-driven decision.</p>
+        <div class="mp-left-checks">
+          <div class="mp-left-check">Segmented by model, endpoint, and request complexity tier</div>
+          <div class="mp-left-check">P50, P90, P99 cost distribution — not just averages</div>
+          <div class="mp-left-check">Trend over time with anomaly flags for cost spikes</div>
+          <div class="mp-left-check">Compared against your target cost ceiling and industry benchmarks</div>
+          <div class="mp-left-check">Directly linked to right-sizing and model routing recommendations</div>
+        </div>
+      </div>
+      <div class="mp-card">
+        <div class="mpc-label">Cost per inference · April 2026</div>
+        <div class="mpc-big">
+          <div class="mpc-big-val">$0.0042</div>
+          <div class="mpc-big-unit">per inference · llm-inference-svc</div>
+        </div>
+        <div class="mpc-formula">
+<span class="mpc-c"># Fully-loaded inference cost</span>
+unit_cost = (
+  compute_cost / inference_count
+  + model_token_cost / inference_count
+  + gpu_amortisation / inference_count
+  + overhead_alloc / inference_count
+)
+<span class="mpc-c"># = $0.00185 + $0.00134 + $0.00067 + $0.00034</span>
+</div>
+        <div class="mpc-breakdown">
+          <div class="mpc-row"><span class="mpc-row-lbl">Compute</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:44%;background:var(--citron)"></div></div><span class="mpc-row-val">$0.00185</span></div>
+          <div class="mpc-row"><span class="mpc-row-lbl">Model tokens</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:32%;background:#6adfc0"></div></div><span class="mpc-row-val">$0.00134</span></div>
+          <div class="mpc-row"><span class="mpc-row-lbl">GPU amort.</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:16%;background:#b480ff"></div></div><span class="mpc-row-val">$0.00067</span></div>
+          <div class="mpc-row"><span class="mpc-row-lbl">Overhead</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:8%;background:#f4a264"></div></div><span class="mpc-row-val">$0.00034</span></div>
+        </div>
+        <div class="mpc-note">24.2M inferences/mo · Target: &lt;$0.005 · Status: ✓ On target</div>
+      </div>
+    </div>
+
+    <!-- TOKEN -->
+    <div class="met-panel" id="met-token">
+      <div class="mp-left">
+        <h3><em>Cost per 1,000 tokens</em> — the LLM efficiency metric</h3>
+        <p>The most granular LLM cost metric — separating input token cost from output token cost and comparing your blended effective rate against the model's list price. The gap between list price and your effective rate reveals caching efficiency, batch discount effectiveness, and prompt engineering savings.</p>
+        <p>Tracked per model provider, per model version, and per workload — so you can compare your GPT-4 effective rate against your Claude Sonnet rate on equivalent task types, making model selection decisions financially precise.</p>
+        <div class="mp-left-checks">
+          <div class="mp-left-check">Input vs output token cost tracked separately — output tokens are typically 3–5× more expensive</div>
+          <div class="mp-left-check">Effective rate vs list price — the ratio shows your discount efficiency</div>
+          <div class="mp-left-check">Cache hit rate correlation — how prompt caching is reducing your effective token cost</div>
+          <div class="mp-left-check">Average context length trend — longer contexts = higher input cost per inference</div>
+          <div class="mp-left-check">Token cost forecast — projected monthly token spend at current usage growth rate</div>
+        </div>
+      </div>
+      <div class="mp-card">
+        <div class="mpc-label">Token economics · GPT-4 Turbo · April 2026</div>
+        <div class="mpc-big">
+          <div class="mpc-big-val">$1.84</div>
+          <div class="mpc-big-unit">effective cost per 1K tokens (blended)</div>
+        </div>
+        <div class="mpc-formula">
+<span class="mpc-c"># Effective token cost</span>
+input_cost  = tokens_in  × <span class="mpc-v">$0.01</span> / 1K
+output_cost = tokens_out × <span class="mpc-v">$0.03</span> / 1K
+cache_saving = cache_hits × <span class="mpc-v">$0.001</span> / 1K
+
+effective = (input_cost + output_cost
+            - cache_saving) / total_tokens
+</div>
+        <div class="mpc-breakdown">
+          <div class="mpc-row"><span class="mpc-row-lbl">Input (60% vol)</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:33%;background:var(--citron)"></div></div><span class="mpc-row-val">$0.60</span></div>
+          <div class="mpc-row"><span class="mpc-row-lbl">Output (40% vol)</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:67%;background:#6adfc0"></div></div><span class="mpc-row-val">$1.44</span></div>
+          <div class="mpc-row"><span class="mpc-row-lbl">Cache saving</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:11%;background:#b8d4a8"></div></div><span class="mpc-row-val">−$0.20</span></div>
+        </div>
+        <div class="mpc-note">List price: $2.00/1K blended · Your effective rate: $1.84 · Cache saving: $0.16</div>
+      </div>
+    </div>
+
+    <!-- USER -->
+    <div class="met-panel" id="met-user">
+      <div class="mp-left">
+        <h3><em>Cost per active user</em> — the product sustainability metric</h3>
+        <p>The bridge between AI infrastructure cost and product usage — dividing total AI cost by monthly active users to produce the most business-relevant AI cost metric for product teams, investors, and board presentations.</p>
+        <p>When cost-per-MAU is tracked over time alongside user growth rate, it tells a critical story: are you scaling AI cost sub-linearly with users (healthy) or are costs growing faster than your user base (unsustainable)?</p>
+        <div class="mp-left-checks">
+          <div class="mp-left-check">Cost per daily active user vs monthly active user — both tracked for different business contexts</div>
+          <div class="mp-left-check">Cost per paying user vs total user — showing true AI cost per revenue-generating customer</div>
+          <div class="mp-left-check">Sub-linearity score — how cost-per-user is trending as your user base grows</div>
+          <div class="mp-left-check">Feature-level cost per user — which product features drive per-user cost</div>
+          <div class="mp-left-check">Cohort cost analysis — how per-user AI cost differs across user cohorts and tiers</div>
+        </div>
+      </div>
+      <div class="mp-card">
+        <div class="mpc-label">Cost per user · April 2026</div>
+        <div class="mpc-big">
+          <div class="mpc-big-val">$0.38</div>
+          <div class="mpc-big-unit">per monthly active user</div>
+        </div>
+        <div class="mpc-formula">
+<span class="mpc-c"># Cost per active user</span>
+total_ai_cost = <span class="mpc-v">128250</span>   <span class="mpc-c"># $ / month</span>
+monthly_active_users = <span class="mpc-v">337500</span>
+cost_per_mau = total / mau  <span class="mpc-c"># = $0.38</span>
+
+<span class="mpc-c"># Sub-linearity: users +28%, cost +11%</span>
+<span class="mpc-c"># → cost scaling sub-linearly ✓</span>
+</div>
+        <div class="mpc-breakdown">
+          <div class="mpc-row"><span class="mpc-row-lbl">Free tier users</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:60%;background:var(--citron)"></div></div><span class="mpc-row-val">$0.22</span></div>
+          <div class="mpc-row"><span class="mpc-row-lbl">Pro tier users</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:80%;background:#6adfc0"></div></div><span class="mpc-row-val">$0.64</span></div>
+          <div class="mpc-row"><span class="mpc-row-lbl">Enterprise users</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:92%;background:#b480ff"></div></div><span class="mpc-row-val">$1.14</span></div>
+        </div>
+        <div class="mpc-note">Users: 337,500 MAU · MoM: users +28%, cost +11% · Sub-linear ✓</div>
+      </div>
+    </div>
+
+    <!-- REVENUE -->
+    <div class="met-panel" id="met-revenue">
+      <div class="mp-left">
+        <h3>AI cost as <em>% of revenue</em> — the CFO's metric</h3>
+        <p>The highest-level AI unit economics metric — what fraction of each revenue dollar is consumed by AI infrastructure. This is the metric that appears in board packs, investor due diligence, and gross margin analysis.</p>
+        <p>The target varies significantly by business model: AI-native API businesses often run at 15–25% of revenue, SaaS businesses with AI features target 2–8%, and enterprises with internal AI tooling track AI cost as % of operational budget rather than revenue.</p>
+        <div class="mp-left-checks">
+          <div class="mp-left-check">Real-time AI cost-to-revenue ratio updated as billing data arrives</div>
+          <div class="mp-left-check">Gross margin impact — how AI cost affects your product gross margin directly</div>
+          <div class="mp-left-check">Product-level breakdown — which product features are eating the most margin</div>
+          <div class="mp-left-check">Benchmark comparison — how your ratio compares to industry benchmarks by business model</div>
+          <div class="mp-left-check">Forecast — projected cost-to-revenue ratio at current growth trajectory</div>
+        </div>
+      </div>
+      <div class="mp-card">
+        <div class="mpc-label">AI cost as % of revenue · April 2026</div>
+        <div class="mpc-big">
+          <div class="mpc-big-val">0.38%</div>
+          <div class="mpc-big-unit">of total revenue consumed by AI infrastructure</div>
+        </div>
+        <div class="mpc-formula">
+<span class="mpc-c"># AI cost as % of revenue</span>
+total_ai_cost = <span class="mpc-v">128250</span>
+total_revenue = <span class="mpc-v">33800000</span>  <span class="mpc-c"># $33.8M</span>
+ratio = (ai_cost / revenue) × 100
+      = <span class="mpc-v">0.38</span>%
+
+<span class="mpc-c"># Gross margin impact:</span>
+<span class="mpc-c"># GM before AI cost: 74.2%</span>
+<span class="mpc-c"># GM after AI cost:  73.8%</span>
+</div>
+        <div class="mpc-breakdown">
+          <div class="mpc-row"><span class="mpc-row-lbl">Search AI feature</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:60%;background:var(--citron)"></div></div><span class="mpc-row-val">0.23%</span></div>
+          <div class="mpc-row"><span class="mpc-row-lbl">Content AI feature</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:30%;background:#6adfc0"></div></div><span class="mpc-row-val">0.11%</span></div>
+          <div class="mpc-row"><span class="mpc-row-lbl">Support AI feature</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:10%;background:#f4a264"></div></div><span class="mpc-row-val">0.04%</span></div>
+        </div>
+        <div class="mpc-note">Industry benchmark (SaaS + AI features): 0.3–0.8% · You: 0.38% · Within target ✓</div>
+      </div>
+    </div>
+
+    <!-- EPOCH -->
+    <div class="met-panel" id="met-epoch">
+      <div class="mp-left">
+        <h3><em>Cost per training epoch</em> — the ML efficiency metric</h3>
+        <p>For teams running training and fine-tuning workloads, cost-per-epoch is the key efficiency metric — the fully-loaded cost of one pass through the training dataset. It connects training budget to model quality milestones and enables informed decisions about training strategy.</p>
+        <p>When tracked against validation loss and downstream task performance, cost-per-epoch surfaces whether additional training is still delivering model quality improvement proportional to its cost — the fundamental question in optimising training spend.</p>
+        <div class="mp-left-checks">
+          <div class="mp-left-check">Calculated from GPU compute cost, storage IO, and data loading overhead per epoch</div>
+          <div class="mp-left-check">Cost vs validation loss curve — showing training efficiency over the run</div>
+          <div class="mp-left-check">Estimated total training cost at job completion — real-time forecast as training runs</div>
+          <div class="mp-left-check">Comparison across training runs — identify which hyperparameter choices reduce cost-per-epoch</div>
+          <div class="mp-left-check">Cost-per-quality-point — how much each improvement in evaluation benchmark costs</div>
+        </div>
+      </div>
+      <div class="mp-card">
+        <div class="mpc-label">Training cost per epoch · bert-finetune-v4</div>
+        <div class="mpc-big">
+          <div class="mpc-big-val">$2.14</div>
+          <div class="mpc-big-unit">per training epoch</div>
+        </div>
+        <div class="mpc-formula">
+<span class="mpc-c"># Cost per training epoch</span>
+gpu_hours_per_epoch = <span class="mpc-v">0.84</span>
+gpu_cost_per_hour   = <span class="mpc-v">2.10</span>   <span class="mpc-c"># A100 rate</span>
+storage_io_cost     = <span class="mpc-v">0.22</span>
+overhead_alloc      = <span class="mpc-v">0.06</span>
+
+epoch_cost = (gpu × rate) + io + overhead
+           = <span class="mpc-v">1.764</span> + <span class="mpc-v">0.22</span> + <span class="mpc-v">0.06</span> = <span class="mpc-v">$2.14</span>
+</div>
+        <div class="mpc-breakdown">
+          <div class="mpc-row"><span class="mpc-row-lbl">GPU compute</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:82%;background:var(--citron)"></div></div><span class="mpc-row-val">$1.764</span></div>
+          <div class="mpc-row"><span class="mpc-row-lbl">Storage IO</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:10%;background:#6adfc0"></div></div><span class="mpc-row-val">$0.220</span></div>
+          <div class="mpc-row"><span class="mpc-row-lbl">Overhead</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:3%;background:#f4a264"></div></div><span class="mpc-row-val">$0.060</span></div>
+        </div>
+        <div class="mpc-note">Run: 40 epochs planned · Est. total: $85.60 · Val loss: −0.014/epoch</div>
+      </div>
+    </div>
+
+    <!-- SESSION -->
+    <div class="met-panel" id="met-session">
+      <div class="mp-left">
+        <h3><em>Cost per session</em> — the product engagement metric</h3>
+        <p>For conversational AI products — chatbots, copilots, AI assistants — cost-per-session is the metric that connects AI infrastructure to product engagement metrics. A session includes all LLM calls, context window management, RAG retrieval, and tool use within one user interaction.</p>
+        <p>Tracked alongside session length and user satisfaction scores, cost-per-session reveals whether longer (higher satisfaction) sessions are cost-efficient or whether session cost is growing without proportional satisfaction improvement.</p>
+        <div class="mp-left-checks">
+          <div class="mp-left-check">Total session cost including all turns, retrieval, tool calls, and system overhead</div>
+          <div class="mp-left-check">Cost per session by session length bucket (short/medium/long/extended)</div>
+          <div class="mp-left-check">Cost correlation with user satisfaction score — identifying cost-efficient high-satisfaction session types</div>
+          <div class="mp-left-check">Abandoned session cost — the cost of sessions that users terminated early</div>
+          <div class="mp-left-check">Peak vs off-peak session cost — and whether scheduling less urgent AI tasks to off-peak is viable</div>
+        </div>
+      </div>
+      <div class="mp-card">
+        <div class="mpc-label">Cost per session · AI assistant product</div>
+        <div class="mpc-big">
+          <div class="mpc-big-val">$0.024</div>
+          <div class="mpc-big-unit">per user session · average 6.2 turns</div>
+        </div>
+        <div class="mpc-formula">
+<span class="mpc-c"># Session cost components</span>
+avg_turns_per_session = <span class="mpc-v">6.2</span>
+cost_per_turn         = <span class="mpc-v">0.0031</span>  <span class="mpc-c"># inference</span>
+rag_retrieval         = <span class="mpc-v">0.0008</span>  <span class="mpc-c"># per turn</span>
+session_overhead      = <span class="mpc-v">0.0012</span>  <span class="mpc-c"># fixed/session</span>
+
+session_cost = (turns × (inference + rag))
+             + overhead = <span class="mpc-v">$0.024</span>
+</div>
+        <div class="mpc-breakdown">
+          <div class="mpc-row"><span class="mpc-row-lbl">Inference (6.2 turns)</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:80%;background:var(--citron)"></div></div><span class="mpc-row-val">$0.019</span></div>
+          <div class="mpc-row"><span class="mpc-row-lbl">RAG retrieval</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:20%;background:#6adfc0"></div></div><span class="mpc-row-val">$0.005</span></div>
+          <div class="mpc-row"><span class="mpc-row-lbl">Session overhead</span><div class="mpc-row-bar-wrap"><div class="mpc-row-bar" style="width:5%;background:#f4a264"></div></div><span class="mpc-row-val">$0.001</span></div>
+        </div>
+        <div class="mpc-note">Sessions/mo: 2.1M · CSAT: 4.6/5 · Cost trend: −14% MoM</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── COST WATERFALL ── -->
+<div class="waterfall-section">
+  <div class="wf-inner">
+    <div class="ey" style="color:var(--moss)">Cost waterfall</div>
+    <h2 class="sh">How unit cost is<br><em>built up</em> from components</h2>
+    <p class="sl">Every unit cost metric is constructed from the same set of underlying cost components — surfaced transparently so you know exactly what's driving it and what to optimise first.</p>
+    <div class="wf-grid">
+      <div>
+        <div class="wf-chart">
+          <div class="wfc-title">Unit cost waterfall · cost/inference</div>
+          <div class="wfc-bars">
+            <div class="wfc-row">
+              <span class="wfc-label">Total cost/mo</span>
+              <div class="wfc-bar-area">
+                <div class="wfc-bar total">$128,250 total</div>
+              </div>
+              <span class="wfc-val">$128K</span>
+            </div>
+            <div class="wfc-divider"></div>
+            <div class="wfc-row">
+              <span class="wfc-label">Compute</span>
+              <div class="wfc-bar-area">
+                <div class="wfc-bar infra">44%</div>
+              </div>
+              <span class="wfc-val">$56.4K</span>
+            </div>
+            <div class="wfc-row">
+              <span class="wfc-label">Model API</span>
+              <div class="wfc-bar-area">
+                <div class="wfc-bar model">32%</div>
+              </div>
+              <span class="wfc-val">$41.0K</span>
+            </div>
+            <div class="wfc-row">
+              <span class="wfc-label">Overhead alloc.</span>
+              <div class="wfc-bar-area">
+                <div class="wfc-bar ops">8%</div>
+              </div>
+              <span class="wfc-val">$10.3K</span>
+            </div>
+            <div class="wfc-divider"></div>
+            <div class="wfc-row">
+              <span class="wfc-label">÷ 24.2M infer.</span>
+              <div class="wfc-bar-area">
+                <div class="wfc-bar unit" style="width:55%">= $0.0042 / inference</div>
+              </div>
+              <span class="wfc-val" style="color:var(--citron)">$0.0042</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wf-explanations">
+        <div class="wf-ex">
+          <div class="wf-ex-header">
+            <div class="wf-ex-dot" style="background:var(--citron)"></div>
+            <span class="wf-ex-title">Compute component</span>
+            <span class="wf-ex-val">44% · $0.00185</span>
+          </div>
+          <div class="wf-ex-desc">CPU, memory, and node pool costs allocated to this service via namespace attribution. This is the component most directly affected by right-sizing — reducing CPU requests from 8 to 3 vCPU cuts this component by ~60%.</div>
+        </div>
+        <div class="wf-ex">
+          <div class="wf-ex-header">
+            <div class="wf-ex-dot" style="background:#6adfc0"></div>
+            <span class="wf-ex-title">Model API component</span>
+            <span class="wf-ex-val">32% · $0.00134</span>
+          </div>
+          <div class="wf-ex-desc">Token costs from the upstream model API — input tokens × input price + output tokens × output price, net of cache savings. The lever here is prompt engineering (shorter inputs), output length control, and prompt caching strategy.</div>
+        </div>
+        <div class="wf-ex">
+          <div class="wf-ex-header">
+            <div class="wf-ex-dot" style="background:#b480ff"></div>
+            <span class="wf-ex-title">GPU amortisation</span>
+            <span class="wf-ex-val">16% · $0.00067</span>
+          </div>
+          <div class="wf-ex-desc">For self-hosted or GPU-accelerated inference, the amortised GPU hardware cost per inference — calculated from total GPU cost divided by total inference volume on those GPUs. Improving GPU utilisation reduces this directly.</div>
+        </div>
+        <div class="wf-ex">
+          <div class="wf-ex-header">
+            <div class="wf-ex-dot" style="background:#f4a264"></div>
+            <span class="wf-ex-title">Shared overhead</span>
+            <span class="wf-ex-val">8% · $0.00034</span>
+          </div>
+          <div class="wf-ex-desc">Allocated share of cluster overhead (monitoring, ingress, DNS, logging) using the proportional allocation policy. This component moves slowly and is the least actionable — but it should be visible in every unit cost for full transparency.</div>
+        </div>
+        <div class="callout" style="margin-top:.5rem">
+          <p>The waterfall makes optimisation prioritisation obvious: a 30% reduction in the compute component saves more per inference than a 30% reduction in the overhead component — because compute is 44% of the unit cost vs 8%.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BENCHMARKS ── -->
+<div class="bench-section">
+  <div class="bench-inner">
+    <div class="ey">Industry benchmarks</div>
+    <h2 class="sh">Know if your unit cost is<br><strong>competitive</strong> or <em>exposed.</em></h2>
+    <div class="bench-grid">
+      <div class="bench-text">
+        <p>Unit costs only tell a complete story when they're compared to something. Our benchmark database aggregates anonymised unit cost data from across our customer base — segmented by workload type, model, infrastructure, and business model — so you can see whether your cost-per-inference is world-class or whether there's significant room to improve.</p>
+        <p>Benchmarks are refreshed monthly and segmented precisely enough to be meaningful: comparing a GPT-4 Turbo inference cost against an open-source LLaMA inference cost on different hardware is not useful. We compare apples to apples.</p>
+        <div class="callout" style="margin-top:1rem">
+          <p>All benchmark data is anonymised and aggregated. No individual customer data is ever identifiable in benchmark reports.</p>
+        </div>
+        <div class="callout coral" style="margin-top:.75rem">
+          <p>A unit cost in the top quartile (P75+) is a leading indicator of gross margin pressure at scale. Most companies only discover this when they've grown 10× and the cost is material. Unit Economics surfaces it early.</p>
+        </div>
+      </div>
+      <div>
+        <div class="bench-table">
+          <div class="bt-head">
+            <span class="bt-head-title">Unit cost benchmarks · April 2026</span>
+            <span class="bt-head-badge">Anonymised · 500+ companies</span>
+          </div>
+          <div class="bt-rows">
+            <div class="bt-row header">
+              <span>Metric</span><span style="text-align:right">Yours</span><span style="text-align:right">P50</span><span style="text-align:right">P75</span>
+            </div>
+            <div class="bt-row">
+              <div>
+                <div class="bt-row-name">Cost / inference (GPT-4)</div>
+                <div class="bt-row-sub">LLM serving workloads</div>
+              </div>
+              <span class="bt-cell yours">$0.0042</span>
+              <span class="bt-cell p50">$0.0058</span>
+              <span class="bt-cell p75">$0.0091</span>
+            </div>
+            <div class="bt-row">
+              <div>
+                <div class="bt-row-name">Cost / 1K tokens (blended)</div>
+                <div class="bt-row-sub">LLM API consumers</div>
+              </div>
+              <span class="bt-cell yours">$1.84</span>
+              <span class="bt-cell p50">$2.10</span>
+              <span class="bt-cell p75">$2.65</span>
+            </div>
+            <div class="bt-row">
+              <div>
+                <div class="bt-row-name">Cost / MAU (SaaS + AI)</div>
+                <div class="bt-row-sub">B2B SaaS with AI features</div>
+              </div>
+              <span class="bt-cell yours">$0.38</span>
+              <span class="bt-cell p50">$0.52</span>
+              <span class="bt-cell p75">$0.88</span>
+            </div>
+            <div class="bt-row">
+              <div>
+                <div class="bt-row-name">AI cost as % of revenue</div>
+                <div class="bt-row-sub">SaaS businesses with AI features</div>
+              </div>
+              <span class="bt-cell yours">0.38%</span>
+              <span class="bt-cell p50">0.62%</span>
+              <span class="bt-cell p75">1.14%</span>
+            </div>
+            <div class="bt-row">
+              <div>
+                <div class="bt-row-name">Cost / training epoch (A100)</div>
+                <div class="bt-row-sub">LLM fine-tuning workloads</div>
+              </div>
+              <span class="bt-cell yours">$2.14</span>
+              <span class="bt-cell p50">$2.80</span>
+              <span class="bt-cell p75">$4.10</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── OPTIMISATION LEVERS ── -->
+<div class="section fade-up">
+  <div class="ey">Optimisation levers</div>
+  <h2 class="sh">Every unit cost metric has<br><em>levers</em> to pull it down</h2>
+  <p class="sl">Unit Economics doesn't just measure — it surfaces the specific levers that will move each metric, ranked by projected impact on your current unit cost profile.</p>
+  <div class="levers-grid">
+    <div class="lever lv-citron">
+      <div class="lever-icon">🔀</div>
+      <h4>Model routing by complexity</h4>
+      <p>Route simple inferences to cheaper, smaller models (Claude Haiku, GPT-3.5) while reserving expensive models for complex requests that genuinely need them.</p>
+      <div class="lever-impact">
+        <div class="lever-impact-val" style="color:var(--citron)">−30%</div>
+        <div class="lever-impact-lbl">avg reduction in cost-per-inference<br>for mixed-complexity workloads</div>
+      </div>
+      <div class="lever-tags">
+        <span class="ltag" style="background:var(--citron-lt);color:var(--ink2)">Model routing</span>
+        <span class="ltag" style="background:var(--citron-lt);color:var(--ink2)">No code change</span>
+      </div>
+    </div>
+    <div class="lever lv-coral">
+      <div class="lever-icon">📝</div>
+      <h4>Prompt engineering</h4>
+      <p>Shorter system prompts, more efficient few-shot examples, and structured output instructions directly reduce input token consumption — the most controllable part of LLM unit cost.</p>
+      <div class="lever-impact">
+        <div class="lever-impact-val" style="color:var(--coral)">−20%</div>
+        <div class="lever-impact-lbl">avg reduction in cost-per-token<br>from prompt optimisation</div>
+      </div>
+      <div class="lever-tags">
+        <span class="ltag" style="background:var(--coral-lt);color:var(--coral)">Prompt engineering</span>
+        <span class="ltag" style="background:var(--coral-lt);color:var(--coral)">Token reduction</span>
+      </div>
+    </div>
+    <div class="lever lv-sky">
+      <div class="lever-icon">⚡</div>
+      <h4>Prompt caching strategy</h4>
+      <p>Cache static system prompt prefixes to pay only for new tokens on repeated requests. Anthropic's prompt caching and OpenAI's cached inputs can reduce effective token cost by 60–90% on cache-eligible content.</p>
+      <div class="lever-impact">
+        <div class="lever-impact-val" style="color:var(--sky)">−60%</div>
+        <div class="lever-impact-lbl">reduction in input token cost<br>for cacheable system prompts</div>
+      </div>
+      <div class="lever-tags">
+        <span class="ltag" style="background:var(--sky-lt);color:var(--sky)">Prompt caching</span>
+        <span class="ltag" style="background:var(--sky-lt);color:var(--sky)">Immediate impact</span>
+      </div>
+    </div>
+    <div class="lever lv-gold">
+      <div class="lever-icon">📦</div>
+      <h4>Request batching</h4>
+      <p>Aggregate multiple independent inference requests into single batched API calls — reducing per-call overhead, improving GPU utilisation, and qualifying for batch discount pricing where available.</p>
+      <div class="lever-impact">
+        <div class="lever-impact-val" style="color:var(--gold)">−25%</div>
+        <div class="lever-impact-lbl">reduction in compute cost-per-inference<br>for batchable workloads</div>
+      </div>
+      <div class="lever-tags">
+        <span class="ltag" style="background:var(--gold-lt);color:var(--gold)">Batching</span>
+        <span class="ltag" style="background:var(--gold-lt);color:var(--gold)">GPU utilisation</span>
+      </div>
+    </div>
+    <div class="lever lv-plum">
+      <div class="lever-icon">🎯</div>
+      <h4>Right-sizing inference infrastructure</h4>
+      <p>The compute component of unit cost is directly proportional to over-provisioning. Eliminating idle headroom in CPU and memory requests reduces the infrastructure portion of cost-per-inference without affecting throughput or latency.</p>
+      <div class="lever-impact">
+        <div class="lever-impact-val" style="color:var(--plum)">−35%</div>
+        <div class="lever-impact-lbl">reduction in the compute component<br>of unit cost from right-sizing</div>
+      </div>
+      <div class="lever-tags">
+        <span class="ltag" style="background:var(--plum-lt);color:var(--plum)">Right-sizing</span>
+        <span class="ltag" style="background:var(--plum-lt);color:var(--plum)">Compute savings</span>
+      </div>
+    </div>
+    <div class="lever lv-moss">
+      <div class="lever-icon">🔋</div>
+      <h4>Quantisation and model compression</h4>
+      <p>For self-hosted models, switching from FP32 to INT8 or INT4 quantisation can reduce GPU memory requirements by 50–75% — allowing more inferences per GPU, directly cutting cost-per-inference.</p>
+      <div class="lever-impact">
+        <div class="lever-impact-val" style="color:var(--moss)">−40%</div>
+        <div class="lever-impact-lbl">reduction in GPU cost-per-inference<br>from INT8 quantisation</div>
+      </div>
+      <div class="lever-tags">
+        <span class="ltag" style="background:var(--citron-lt);color:var(--moss)">Quantisation</span>
+        <span class="ltag" style="background:var(--citron-lt);color:var(--moss)">Self-hosted models</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── PILLAR TABLE ── -->
+<div class="section fade-up">
+  <div class="ey">Platform integration</div>
+  <h2 class="sh">Unit Economics makes every<br>platform pillar <em>measurable.</em></h2>
+  <p class="sl">Unit cost metrics give every platform action a financial consequence — turning abstract optimisation work into quantified, attributable unit cost improvements.</p>
+  <table class="ptable">
+    <thead>
+      <tr><th>Pillar</th><th>How unit economics integrates</th><th>Measurable outcome</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="p-pill" style="background:var(--sky-lt);color:var(--sky)">📡 Monitoring</span></td>
+        <td>Every monitored workload has a real-time unit cost metric alongside its usage and performance metrics. Anomaly detection runs on unit cost trends — a spike in cost-per-inference triggers an alert just as a latency spike would. Unit cost dashboards are the primary view for engineering teams tracking their workload efficiency.</td>
+        <td>Engineers see cost-per-inference on the same dashboard as P99 latency and error rate. Unit cost anomalies surface in the same alert pipeline as performance anomalies — so cost spikes are treated with the same urgency as outages.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--citron-lt);color:var(--ink2)">⚙️ Optimization</span></td>
+        <td>Every right-sizing recommendation, model routing suggestion, and prompt caching opportunity is quantified in unit cost terms — not just dollar amounts. A right-sizing recommendation shows: "This will reduce your cost-per-inference from $0.0042 to $0.0028 — a 33% unit cost improvement." This makes optimisation decisions obvious.</td>
+        <td>Teams evaluate optimisation actions by their unit cost impact rather than their total cost impact — which naturally prioritises high-volume workloads where unit cost reduction compounds across millions of inferences per month.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--plum-lt);color:var(--plum)">🔀 Orchestration</span></td>
+        <td>The orchestration engine uses unit cost signals to make routing decisions — scheduling batch workloads during periods when spot instance pricing drives down the compute component of unit cost, and routing to the lowest-cost-per-inference model endpoint that meets the latency SLA. Routing is optimised for unit cost, not just total cost.</td>
+        <td>Orchestration actively reduces unit cost by routing to cost-efficient compute rather than just any available compute. Cost-per-inference improvements from orchestration are tracked separately and attributed to the orchestration engine for FinOps programme reporting.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--citron-lt);color:var(--moss)">🗑️ Waste elimination</span></td>
+        <td>Idle resources inflate unit cost by adding fixed cost to the denominator without increasing the inference volume denominator. A pod consuming 30% of its allocated resources is inflating the compute component of unit cost by approximately 3×. Waste elimination is unit cost reduction — surfaced in unit cost terms so the impact is immediately visible.</td>
+        <td>Every waste elimination action shows its unit cost impact: "Retiring this idle pod will reduce cost-per-inference from $0.0042 to $0.0038." Teams can see the unit economics impact of waste before approving any elimination action.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="div" />
+
+<!-- ── TESTIMONIALS ── -->
+<div class="section fade-up">
+  <div class="ey">Customer stories</div>
+  <h2 class="sh">What happens when teams<br>start tracking <em>unit costs</em></h2>
+  <div class="testi-grid">
+    <div class="testi">
+      <p class="testi-q">We reduced our cost-per-inference by 41% in three months — not by spending less, but by spending the same on 70% more inferences. The unit economics dashboard made it obvious which changes were actually improving efficiency versus which were just moving spend around. That distinction had been invisible to us before.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--citron-lt);color:var(--ink2)">RV</div>
+        <div><div class="testi-name">Rahul Verma</div><div class="testi-role">VP Engineering · AI-native SaaS (Bengaluru)</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">Our CFO asked for "AI cost as a percentage of revenue" in every board deck. Before this, our FinOps team spent two days computing it manually from three different systems. Now it's a live metric. The CFO checks it every Monday. But more importantly — it changed how our product team thinks. AI features now have a cost-of-goods line in their P&L, which changed every product decision we make.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--citron-lt);color:var(--moss)">PJ</div>
+        <div><div class="testi-name">Priya Joshi</div><div class="testi-role">CTO · B2B AI Platform (Mumbai)</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">The prompt caching insight from the token economics tab was the single highest-ROI change we've made. We were paying full input price on 94% of our system prompt tokens — which were identical across requests. Implementing prompt caching based on the recommendation reduced our cost-per-session by 38% overnight. Four-hour change, permanent improvement.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--sky-lt);color:var(--sky)">AT</div>
+        <div><div class="testi-name">Arjun Trivedi</div><div class="testi-role">Head of AI Engineering · Consumer AI App (Hyderabad)</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── FAQ ── -->
+<div class="section fade-up">
+  <div class="ey">FAQ</div>
+  <h2 class="sh">Common questions</h2>
+  <div class="faq-list">
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How does the platform calculate cost-per-inference when multiple cost components span different billing sources?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Unit cost calculation is a multi-source attribution process. Compute cost comes from Kubernetes cluster billing and is attributed to the specific service via namespace-level cost allocation. Model API token cost comes from the provider's billing API (OpenAI, Anthropic, etc.) and is attributed using API key ownership mapping. GPU cost comes from either cloud billing or DCGM utilisation data for reserved hardware. Shared overhead is allocated using your configured allocation policy. All components are normalised to a per-inference basis by dividing by the actual inference count measured from the service's request metrics. The calculation runs every 15 minutes and is fully auditable — you can see exactly how every component was derived.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can unit cost metrics be tracked historically so we can see how they've improved over time?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes. Unit cost history is available from the moment you connect your data sources. For all cost components that existed before your connection date, retroactive calculation is available using your historical billing data — most customers can view 12–24 months of unit cost history immediately after connecting. Unit cost trend charts show the trajectory of each metric alongside the specific platform actions (right-sizing applied, model routing changes, waste eliminated) that caused changes — so you can attribute unit cost improvements to specific decisions.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How do you handle unit cost for services where inference volume isn't easily countable — like batch jobs or streaming workloads?<span class="fq-ico">+</span></button>
+      <div class="fq-a">For workloads where "inference" is not a clean unit, we support alternative unit definitions: for batch jobs, the unit can be "records processed" (cost per 1,000 records processed), "job run" (cost per job execution), or "epoch" (cost per training epoch). For streaming workloads, the unit can be "event processed" or "context update." You configure the unit definition per workload type, and the platform measures that unit's volume from the appropriate source (job completion events, Kafka consumer lag metrics, etc.) and divides total cost accordingly. Any countable business event that your infrastructure can emit can become a unit cost denominator.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How are benchmark comparisons compiled, and can I trust them?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Benchmarks are compiled from opt-in aggregated data from AIFinOps customers who have consented to anonymised benchmark participation. The data is segmented by workload type (inference serving, training, embedding, RAG), model provider, infrastructure type (cloud-managed Kubernetes, self-hosted GPU, serverless), and business model (API-first, SaaS with AI features, enterprise internal tooling). Benchmarks are recalculated monthly. No individual customer's data is identifiable — minimum cohort size for any benchmark segment is 20 companies. We also publish methodology documentation so you understand exactly what is included in each benchmark calculation.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can I set unit cost targets and get alerts when a metric breaches the target?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes. Every unit cost metric supports configurable target thresholds — both absolute values (e.g. "alert when cost-per-inference exceeds $0.006") and percentage deviations from a rolling baseline (e.g. "alert when cost-per-inference increases more than 20% week-over-week"). Targets can be set at the workload level, the team level, or the product level. Alerts are delivered via Slack, PagerDuty, email, or webhook — with the same routing and escalation configuration as cost anomaly alerts. You can also set "milestone alerts" that notify you when a metric improves past a target — for recognising team optimisation achievements.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA ── -->
+<section class="cta">
+  <div class="cta-dots"></div>
+  <div class="cta-line"></div>
+  <div class="cta-inner">
+    <h2>Know what every AI call<br><em>actually</em> costs you.<br><strong>Then make it cheaper.</strong></h2>
+    <p>Connect your accounts and your first unit cost metrics are live within 15 minutes — with full historical trend from day one and benchmark comparison included.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-citron">Calculate your unit costs free</a>
+      <a href="#" class="btn-ghost">See a sample dashboard →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  function switchMet(id, btn) {
+    document.querySelectorAll('.met-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.metab').forEach(t => t.classList.remove('active'));
+    document.getElementById('met-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+  function tfq(btn) {
+    const item = btn.closest('.fq');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.fq.open').forEach(i => i.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

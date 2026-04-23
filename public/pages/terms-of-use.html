@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Use — AI FinOps Platform</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f9f9f7;
+      color: #1a1a18;
+      line-height: 1.75;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      background: #ffffff;
+      border-bottom: 0.5px solid rgba(26,26,24,0.1);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .topbar-brand { font-size: 15px; font-weight: 500; color: #1a1a18; text-decoration: none; }
+    .topbar-brand span { color: #185FA5; }
+    .topbar-meta { font-size: 12px; color: #888780; }
+
+    /* ── Layout ── */
+    .page-wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    @media (max-width: 700px) {
+      .page-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .sidebar { display: none; }
+    }
+
+    /* ── Sidebar ── */
+    .sidebar { position: sticky; top: 2rem; }
+    .sidebar-label {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.07em;
+      text-transform: uppercase; color: #888780; margin-bottom: 0.75rem;
+    }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+    .sidebar-nav a {
+      font-size: 13px; color: #5f5e5a; text-decoration: none;
+      padding: 5px 10px; border-radius: 6px;
+      border-left: 2px solid transparent;
+      transition: background 0.12s, color 0.12s;
+    }
+    .sidebar-nav a:hover { background: rgba(26,26,24,0.05); color: #1a1a18; }
+    .sidebar-nav a.active { color: #185FA5; border-left-color: #185FA5; background: #E6F1FB; }
+    .sidebar-contact {
+      margin-top: 1.5rem; background: #ffffff;
+      border: 0.5px solid rgba(26,26,24,0.1); border-radius: 10px; padding: 1rem;
+    }
+    .sidebar-contact p { font-size: 12px; color: #5f5e5a; line-height: 1.6; margin-bottom: 8px; }
+    .sidebar-contact a { font-size: 12px; color: #185FA5; text-decoration: none; font-weight: 500; }
+
+    /* ── Content ── */
+    .page-header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 0.5px solid rgba(26,26,24,0.1); }
+    .page-header-eyebrow {
+      display: inline-block; font-size: 11px; font-weight: 500;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: #185FA5; background: #E6F1FB;
+      padding: 3px 12px; border-radius: 20px; margin-bottom: 1rem;
+    }
+    .page-header h1 { font-size: 32px; font-weight: 500; color: #1a1a18; margin-bottom: 0.75rem; line-height: 1.2; }
+    .page-header p { font-size: 15px; color: #5f5e5a; line-height: 1.75; max-width: 580px; }
+    .last-updated {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; color: #5f5e5a; background: #f1efe8;
+      padding: 4px 12px; border-radius: 20px; margin-top: 0.75rem;
+    }
+
+    /* Summary cards */
+    .summary-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px; margin-bottom: 3rem;
+    }
+    .summary-card {
+      background: #ffffff; border: 0.5px solid rgba(26,26,24,0.1);
+      border-radius: 10px; padding: 1rem;
+    }
+    .summary-card-icon { font-size: 18px; margin-bottom: 8px; }
+    .summary-card h4 { font-size: 13px; font-weight: 500; color: #1a1a18; margin-bottom: 4px; }
+    .summary-card p { font-size: 12px; color: #5f5e5a; line-height: 1.55; }
+
+    /* Policy sections */
+    .policy-section { margin-bottom: 3rem; scroll-margin-top: 2rem; }
+    .policy-section-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 1rem; padding-bottom: 0.75rem;
+      border-bottom: 0.5px solid rgba(26,26,24,0.08);
+    }
+    .section-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #1a1a18; color: #f9f9f7;
+      font-size: 12px; font-weight: 500;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .policy-section h2 { font-size: 18px; font-weight: 500; color: #1a1a18; }
+    .policy-section h3 { font-size: 14px; font-weight: 500; color: #1a1a18; margin: 1.5rem 0 0.5rem; }
+    .policy-section p { font-size: 14px; color: #3a3a38; line-height: 1.8; margin-bottom: 1rem; }
+    .policy-section p:last-child { margin-bottom: 0; }
+
+    /* Lists */
+    .policy-list {
+      margin: 0.5rem 0 1rem; padding-left: 0;
+      list-style: none; display: flex; flex-direction: column; gap: 6px;
+    }
+    .policy-list li {
+      font-size: 14px; color: #3a3a38; line-height: 1.65;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .policy-list li::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+      background: #185FA5; flex-shrink: 0; margin-top: 8px;
+    }
+    .policy-list.red li::before { background: #A32D2D; }
+    .policy-list.amber li::before { background: #BA7517; }
+
+    /* Tables */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 1rem 0 1.5rem; }
+    .data-table th {
+      text-align: left; font-weight: 500; font-size: 11px;
+      letter-spacing: 0.05em; text-transform: uppercase; color: #888780;
+      padding: 8px 12px; background: #f1efe8;
+      border-bottom: 0.5px solid rgba(26,26,24,0.1);
+    }
+    .data-table th:first-child { border-radius: 6px 0 0 0; }
+    .data-table th:last-child  { border-radius: 0 6px 0 0; }
+    .data-table td {
+      padding: 10px 12px; border-bottom: 0.5px solid rgba(26,26,24,0.07);
+      color: #3a3a38; vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:nth-child(even) td { background: rgba(26,26,24,0.02); }
+
+    /* Callouts */
+    .callout {
+      border-left: 3px solid #185FA5; background: #E6F1FB;
+      border-radius: 0 8px 8px 0; padding: 0.875rem 1rem; margin: 1rem 0;
+    }
+    .callout p { font-size: 13px; color: #0C447C; margin: 0; line-height: 1.65; }
+    .callout.amber { border-left-color: #BA7517; background: #FAEEDA; }
+    .callout.amber p { color: #633806; }
+    .callout.red { border-left-color: #A32D2D; background: #FCEBEB; }
+    .callout.red p { color: #791F1F; }
+    .callout.green { border-left-color: #3B6D11; background: #EAF3DE; }
+    .callout.green p { color: #27500A; }
+
+    /* Plan table */
+    .plan-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px; margin: 1rem 0 1.5rem;
+    }
+    .plan-card {
+      background: #ffffff; border: 0.5px solid rgba(26,26,24,0.1);
+      border-radius: 12px; padding: 1.25rem;
+    }
+    .plan-card.featured { border: 2px solid #185FA5; }
+    .plan-badge {
+      font-size: 10px; font-weight: 500; padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; display: inline-block;
+    }
+    .plan-card h4 { font-size: 15px; font-weight: 500; color: #1a1a18; margin-bottom: 6px; }
+    .plan-card p { font-size: 12px; color: #5f5e5a; line-height: 1.6; }
+
+    /* Rights grid */
+    .rights-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px; margin: 1rem 0 1.5rem;
+    }
+    .right-card {
+      background: #ffffff; border: 0.5px solid rgba(26,26,24,0.1);
+      border-radius: 10px; padding: 1rem;
+    }
+    .right-card h4 { font-size: 13px; font-weight: 500; color: #1a1a18; margin-bottom: 4px; }
+    .right-card p  { font-size: 12px; color: #5f5e5a; line-height: 1.55; }
+
+    .divider { border: none; border-top: 0.5px solid rgba(26,26,24,0.08); margin: 2rem 0; }
+
+    /* ── Dark mode ── */
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a18; color: #f1efe8; }
+      .topbar { background: #2c2c2a; border-bottom-color: rgba(241,239,232,0.08); }
+      .topbar-brand { color: #f1efe8; }
+      .page-header { border-bottom-color: rgba(241,239,232,0.08); }
+      .page-header h1 { color: #f1efe8; }
+      .page-header p { color: #b4b2a9; }
+      .page-header-eyebrow { background: #0C447C; color: #B5D4F4; }
+      .last-updated { background: #2c2c2a; color: #888780; }
+      .summary-card { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
+      .summary-card h4 { color: #f1efe8; }
+      .summary-card p { color: #b4b2a9; }
+      .policy-section h2 { color: #f1efe8; }
+      .policy-section h3 { color: #f1efe8; }
+      .policy-section p { color: #d3d1c7; }
+      .policy-section-header { border-bottom-color: rgba(241,239,232,0.08); }
+      .section-num { background: #f1efe8; color: #1a1a18; }
+      .data-table th { background: #2c2c2a; color: #888780; border-bottom-color: rgba(241,239,232,0.1); }
+      .data-table td { color: #d3d1c7; border-bottom-color: rgba(241,239,232,0.06); }
+      .data-table tr:nth-child(even) td { background: rgba(241,239,232,0.03); }
+      .policy-list li { color: #d3d1c7; }
+      .policy-list li::before { background: #85B7EB; }
+      .policy-list.red li::before { background: #F09595; }
+      .policy-list.amber li::before { background: #FAC775; }
+      .callout { background: #0C447C; border-left-color: #85B7EB; }
+      .callout p { color: #B5D4F4; }
+      .callout.amber { background: #633806; border-left-color: #FAC775; }
+      .callout.amber p { color: #FAC775; }
+      .callout.red { background: #791F1F; border-left-color: #F09595; }
+      .callout.red p { color: #F09595; }
+      .callout.green { background: #27500A; border-left-color: #C0DD97; }
+      .callout.green p { color: #C0DD97; }
+      .plan-card { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
+      .plan-card.featured { border-color: #85B7EB; }
+      .plan-card h4 { color: #f1efe8; }
+      .plan-card p { color: #b4b2a9; }
+      .right-card { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
+      .right-card h4 { color: #f1efe8; }
+      .right-card p { color: #b4b2a9; }
+      .divider { border-top-color: rgba(241,239,232,0.08); }
+      .sidebar-nav a { color: #888780; }
+      .sidebar-nav a:hover { background: rgba(241,239,232,0.06); color: #f1efe8; }
+      .sidebar-nav a.active { background: #0C447C; color: #B5D4F4; border-left-color: #85B7EB; }
+      .sidebar-contact { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
+      .sidebar-contact p { color: #b4b2a9; }
+      .sidebar-contact a { color: #85B7EB; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Top bar ── -->
+<div class="topbar">
+  <a href="#" class="topbar-brand">AI<span>FinOps</span></a>
+  <span class="topbar-meta">Legal · Terms of Use</span>
+</div>
+
+<div class="page-wrap">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar" aria-label="Page navigation">
+    <p class="sidebar-label">On this page</p>
+    <nav class="sidebar-nav">
+      <a href="#acceptance">Acceptance</a>
+      <a href="#definitions">Definitions</a>
+      <a href="#eligibility">Eligibility</a>
+      <a href="#account">Account registration</a>
+      <a href="#services">Platform services</a>
+      <a href="#monitoring-terms">Monitoring</a>
+      <a href="#optimization-terms">Optimization</a>
+      <a href="#orchestration-terms">Orchestration</a>
+      <a href="#waste-terms">Waste elimination</a>
+      <a href="#acceptable-use">Acceptable use</a>
+      <a href="#prohibited">Prohibited conduct</a>
+      <a href="#subscription">Subscription &amp; billing</a>
+      <a href="#ip">Intellectual property</a>
+      <a href="#customer-data">Customer data</a>
+      <a href="#confidentiality">Confidentiality</a>
+      <a href="#warranties">Warranties</a>
+      <a href="#liability">Limitation of liability</a>
+      <a href="#indemnification">Indemnification</a>
+      <a href="#termination">Termination</a>
+      <a href="#disputes">Disputes</a>
+      <a href="#changes">Changes to terms</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="sidebar-contact">
+      <p>Legal questions or concerns?</p>
+      <a href="mailto:legal@aifinops.com">legal@aifinops.com</a>
+    </div>
+  </aside>
+
+  <!-- ── Main content ── -->
+  <main class="content">
+
+    <div class="page-header">
+      <span class="page-header-eyebrow">Legal</span>
+      <h1>Terms of Use</h1>
+      <p>
+        These Terms govern your access to and use of the AIFinOps platform — including
+        our monitoring, optimization, orchestration, and AI waste elimination services.
+        Please read them carefully before using the platform.
+      </p>
+      <span class="last-updated">Last updated: April 18, 2026 · Version 2.4</span>
+    </div>
+
+    <!-- At-a-glance -->
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-card-icon">📄</div>
+        <h4>Binding agreement</h4>
+        <p>Using the platform means you accept these terms. If you disagree, do not use the service.</p>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-icon">🏢</div>
+        <h4>Business use only</h4>
+        <p>The platform is designed for organisations and professionals, not individual consumers.</p>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-icon">🔒</div>
+        <h4>Your data is yours</h4>
+        <p>We never claim ownership of your infrastructure data, workload metadata, or AI telemetry.</p>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-icon">⚖️</div>
+        <h4>Governed by US law</h4>
+        <p>These terms are governed by California law. EU customers also benefit from GDPR protections.</p>
+      </div>
+    </div>
+
+    <!-- 1. Acceptance -->
+    <section class="policy-section" id="acceptance">
+      <div class="policy-section-header">
+        <div class="section-num">1</div>
+        <h2>Acceptance of terms</h2>
+      </div>
+      <p>
+        By accessing or using the AIFinOps platform ("Platform"), creating an account,
+        clicking "I agree", or using any of our APIs or integrations, you ("Customer",
+        "you", or "your") agree to be legally bound by these Terms of Use ("Terms"),
+        our Privacy Policy, and any additional terms applicable to specific features or
+        subscription plans you use.
+      </p>
+      <p>
+        If you are accepting these Terms on behalf of an organisation or legal entity,
+        you represent and warrant that you have the authority to bind that entity to
+        these Terms. In that case, "you" refers to that entity.
+      </p>
+      <div class="callout red">
+        <p>
+          If you do not agree to these Terms, you may not access or use the Platform.
+          Continued use of the Platform following notice of any updates to these Terms
+          constitutes acceptance of the revised Terms.
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. Definitions -->
+    <section class="policy-section" id="definitions">
+      <div class="policy-section-header">
+        <div class="section-num">2</div>
+        <h2>Definitions</h2>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Term</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Platform</strong></td><td>The AIFinOps web application, APIs, CLI tools, agents, integrations, and all associated services.</td></tr>
+          <tr><td><strong>Services</strong></td><td>The four core capabilities: AI Monitoring, Optimization, Orchestration, and Waste Elimination, as described in Section 5.</td></tr>
+          <tr><td><strong>Customer Data</strong></td><td>All data, content, and information submitted to, ingested by, or generated within the Platform by or on behalf of you, including infrastructure telemetry, billing data, and workload metadata.</td></tr>
+          <tr><td><strong>Platform Data</strong></td><td>Aggregated, anonymised, and de-identified data derived from use of the Platform that does not identify you or your organisation.</td></tr>
+          <tr><td><strong>Subscription</strong></td><td>The paid or free-tier plan that governs your access to the Platform, as set out in an Order Form or selected at account creation.</td></tr>
+          <tr><td><strong>Authorised User</strong></td><td>Any employee, contractor, or agent to whom you grant access to the Platform under your account.</td></tr>
+          <tr><td><strong>Agent</strong></td><td>The lightweight software component installed in your environment to collect telemetry for monitoring and waste elimination purposes.</td></tr>
+          <tr><td><strong>Order Form</strong></td><td>A written or electronic order executed between AIFinOps and you specifying the Subscription plan, fees, and any special terms.</td></tr>
+          <tr><td><strong>DPA</strong></td><td>The Data Processing Agreement governing our processing of personal data on your behalf, incorporated into these Terms by reference.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 3. Eligibility -->
+    <section class="policy-section" id="eligibility">
+      <div class="policy-section-header">
+        <div class="section-num">3</div>
+        <h2>Eligibility</h2>
+      </div>
+      <p>
+        To use the Platform you must: (a) be at least 18 years of age; (b) have the legal
+        capacity to enter into binding contracts in your jurisdiction; (c) be acting on
+        behalf of a business, organisation, or as a professional individual — the Platform
+        is not intended for personal consumer use; and (d) not be located in a country
+        subject to a US government embargo or listed on any US government prohibited or
+        restricted party list.
+      </p>
+      <p>
+        You represent and warrant that all information you provide during registration
+        is accurate, current, and complete, and that you will keep it updated throughout
+        your use of the Platform.
+      </p>
+    </section>
+
+    <!-- 4. Account registration -->
+    <section class="policy-section" id="account">
+      <div class="policy-section-header">
+        <div class="section-num">4</div>
+        <h2>Account registration and security</h2>
+      </div>
+      <p>
+        Access to the Platform requires the creation of an account. You are responsible
+        for maintaining the confidentiality of your account credentials and for all
+        activities that occur under your account, whether or not you have authorised them.
+      </p>
+      <ul class="policy-list">
+        <li>You must provide a valid organisational email address. Shared or role-based email addresses (e.g. info@, admin@) are permitted for administrative accounts but must be associated with a named responsible individual.</li>
+        <li>You are responsible for all Authorised Users you provision under your account. Each Authorised User must individually agree to these Terms before accessing the Platform.</li>
+        <li>You must promptly notify us at security@aifinops.com if you suspect any unauthorised access to your account or any breach of credentials.</li>
+        <li>We reserve the right to suspend or terminate any account that we reasonably believe has been compromised or is being used in violation of these Terms.</li>
+        <li>Multi-factor authentication (MFA) is strongly recommended and may be required for certain subscription tiers or as a condition of enterprise agreements.</li>
+      </ul>
+      <div class="callout amber">
+        <p>
+          You are liable for all actions taken under your account and by your Authorised
+          Users, including any automated actions triggered by rules or policies you configure
+          in the Platform. Ensure Authorised Users understand the scope of permissions
+          they are granted.
+        </p>
+      </div>
+    </section>
+
+    <!-- 5. Platform services -->
+    <section class="policy-section" id="services">
+      <div class="policy-section-header">
+        <div class="section-num">5</div>
+        <h2>Platform services overview</h2>
+      </div>
+      <p>
+        The Platform provides four core Services. Each Service is made available in
+        accordance with your Subscription plan and the technical documentation published
+        at docs.aifinops.com. We may update, enhance, or modify any Service at any time
+        with reasonable notice, provided that we do not materially degrade the core
+        functionality available to you under your Subscription during the then-current
+        billing period.
+      </p>
+      <div class="plan-grid">
+        <div class="plan-card">
+          <span class="plan-badge" style="background:#E6F1FB; color:#0C447C;">📡 Service 1</span>
+          <h4>AI monitoring</h4>
+          <p>Real-time and historical visibility into AI workload costs, GPU utilisation, model usage, and spend anomalies across connected cloud and on-premises infrastructure.</p>
+        </div>
+        <div class="plan-card">
+          <span class="plan-badge" style="background:#E1F5EE; color:#085041;">⚙️ Service 2</span>
+          <h4>Optimization</h4>
+          <p>Automated and advisory recommendations to right-size compute, route model calls, compress inference workloads, and reduce AI infrastructure costs without degrading performance.</p>
+        </div>
+        <div class="plan-card">
+          <span class="plan-badge" style="background:#FAEEDA; color:#633806;">🔀 Service 3</span>
+          <h4>Orchestration</h4>
+          <p>Intelligent scheduling, workload routing, and priority queuing across multi-cloud and on-premises environments, respecting data residency and latency requirements.</p>
+        </div>
+        <div class="plan-card">
+          <span class="plan-badge" style="background:#EAF3DE; color:#27500A;">🗑️ Service 4</span>
+          <h4>Waste elimination</h4>
+          <p>Automated detection and remediation of idle resources, orphaned workloads, shadow AI spend, and duplicate pipelines — within policies and guardrails you configure.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Monitoring terms -->
+    <section class="policy-section" id="monitoring-terms">
+      <div class="policy-section-header">
+        <div class="section-num">6</div>
+        <h2>Monitoring service — specific terms</h2>
+      </div>
+      <p>
+        By enabling the Monitoring Service, you grant AIFinOps read-only access to the
+        billing, usage, and telemetry data sources you connect, including but not limited
+        to cloud provider cost and usage reports, AI model provider usage APIs, and
+        hardware telemetry streams.
+      </p>
+      <ul class="policy-list">
+        <li>You warrant that you have the legal right and necessary permissions to connect the data sources you link to the Platform, and that doing so does not violate any agreement with your cloud or AI model provider.</li>
+        <li>Monitoring data is processed to generate dashboards, reports, alerts, and anomaly detections visible within your account. It is not shared with other customers or used for cross-customer benchmarking without your explicit written opt-in.</li>
+        <li>The on-premises monitoring Agent operates with the minimum permissions required to collect metric data. You are responsible for reviewing and approving Agent permissions before deployment in your environment.</li>
+        <li>We do not guarantee 100% accuracy of cost or usage data displayed in the Platform. Displayed figures are derived from source data provided by your cloud and model providers and may lag real-time billing by up to 24 hours depending on provider export schedules.</li>
+        <li>You may revoke Monitoring access to any connected source at any time from your account settings. Revocation does not delete historical data already ingested unless you submit a data deletion request.</li>
+      </ul>
+    </section>
+
+    <!-- 7. Optimization terms -->
+    <section class="policy-section" id="optimization-terms">
+      <div class="policy-section-header">
+        <div class="section-num">7</div>
+        <h2>Optimization service — specific terms</h2>
+      </div>
+      <p>
+        The Optimization Service analyses your Customer Data to generate cost reduction
+        recommendations and, where you configure automation, to execute approved actions
+        such as right-sizing compute resources or routing model calls.
+      </p>
+      <ul class="policy-list">
+        <li>Optimization recommendations are generated based solely on your own Customer Data. We make no representation that recommendations will result in any specific level of cost savings, as outcomes depend on your infrastructure configuration and usage patterns.</li>
+        <li>Automated optimization actions (such as resizing an instance or switching a model route) are executed only within the explicit permission boundaries and approval workflows you configure. You bear responsibility for reviewing and approving the scope of any automated actions before enabling them.</li>
+        <li>We are not responsible for any service degradation, increased latency, or application errors that result from optimization actions you approve and execute — whether manually or automatically — through the Platform.</li>
+        <li>Estimated savings figures displayed in the Platform are projections based on historical usage patterns and current pricing. They are not guarantees of future savings and should not be relied upon as financial commitments.</li>
+      </ul>
+      <div class="callout amber">
+        <p>
+          Before enabling any automated optimization that modifies live infrastructure,
+          we strongly recommend testing in a non-production environment and reviewing
+          our Automation Safety Guide at docs.aifinops.com/automation-safety.
+        </p>
+      </div>
+    </section>
+
+    <!-- 8. Orchestration terms -->
+    <section class="policy-section" id="orchestration-terms">
+      <div class="policy-section-header">
+        <div class="section-num">8</div>
+        <h2>Orchestration service — specific terms</h2>
+      </div>
+      <p>
+        The Orchestration Service schedules and routes AI workloads across your connected
+        infrastructure. By enabling Orchestration, you authorise the Platform to interact
+        with your connected environments in accordance with the permissions and policies
+        you configure.
+      </p>
+      <ul class="policy-list">
+        <li>You are responsible for ensuring that workload routing decisions made by the Platform comply with any data sovereignty, data residency, regulatory, or contractual obligations applicable to your organisation. We enforce residency tags you configure but cannot independently verify whether a given residency requirement applies to a particular workload.</li>
+        <li>The Platform may route workloads to spot, preemptible, or interruptible compute instances to reduce costs when you enable this option. You acknowledge that such instances may be terminated by the underlying cloud provider at short notice, and you are responsible for ensuring workloads are designed to tolerate interruption.</li>
+        <li>Orchestration actions are logged with a full audit trail accessible in your account. You agree to maintain these logs for the retention periods required by any applicable regulations governing your industry.</li>
+        <li>We do not guarantee specific scheduling latencies, queue times, or job completion times, as these depend on the availability and capacity of your connected infrastructure environments.</li>
+      </ul>
+    </section>
+
+    <!-- 9. Waste elimination terms -->
+    <section class="policy-section" id="waste-terms">
+      <div class="policy-section-header">
+        <div class="section-num">9</div>
+        <h2>Waste elimination service — specific terms</h2>
+      </div>
+      <p>
+        The Waste Elimination Service identifies and remediates idle, orphaned, and
+        wasteful resources within your connected environments. Automated remediation
+        actions (such as suspending idle instances or terminating stalled jobs) are
+        only executed within guardrails you explicitly configure and approve.
+      </p>
+      <ul class="policy-list">
+        <li>You are solely responsible for configuring appropriate idle detection thresholds, exclusion lists, and approval workflows before enabling any automated waste remediation. Misconfigured policies may result in unintended termination of resources — AIFinOps is not liable for loss of data or service resulting from automated actions triggered by policies you have enabled.</li>
+        <li>Shadow AI discovery operates by scanning connected expense management, procurement, and billing systems using read-only access you grant. You warrant that you have the authority to grant this access and that doing so complies with your internal policies and any applicable vendor agreements.</li>
+        <li>The Platform will not terminate, suspend, or modify any resource that is explicitly included in your protected resource list. You are responsible for maintaining an accurate and up-to-date protected resource list if certain workloads must not be subject to automated waste actions.</li>
+        <li>All waste remediation actions include a default notification period (configurable, minimum 15 minutes) before execution, giving your team the opportunity to override an action before it is carried out.</li>
+      </ul>
+      <div class="callout red">
+        <p>
+          Automated waste elimination actions that terminate or suspend live resources are
+          irreversible in some cases. Always configure a protected resource list and test
+          policies in a staging environment before applying them to production workloads.
+        </p>
+      </div>
+    </section>
+
+    <!-- 10. Acceptable use -->
+    <section class="policy-section" id="acceptable-use">
+      <div class="policy-section-header">
+        <div class="section-num">10</div>
+        <h2>Acceptable use</h2>
+      </div>
+      <p>
+        You agree to use the Platform only for lawful purposes and in accordance with
+        these Terms. The Platform is provided to help organisations manage and optimise
+        their AI infrastructure costs — any use outside this purpose must be approved
+        in writing by AIFinOps.
+      </p>
+      <ul class="policy-list">
+        <li>You may connect only infrastructure, accounts, and data sources that you own or are legally authorised to connect. Connecting third-party systems without authorisation is a material breach of these Terms.</li>
+        <li>You may not use the Platform to monitor, analyse, or take action on infrastructure belonging to any person or organisation other than yourself without their express written consent.</li>
+        <li>You may not use the Platform to circumvent, abuse, or exploit pricing mechanisms, reserved instance commitments, or billing systems of any cloud or AI model provider in a manner that violates those providers' own terms of service.</li>
+        <li>You must ensure all Authorised Users comply with these Terms. You are responsible for promptly revoking access for any Authorised User who leaves your organisation or whose access is no longer required.</li>
+        <li>You may not use the Platform to collect, process, or store sensitive personal data (including health, financial, or biometric data) of individuals unless you have executed a Data Processing Agreement with us and confirmed that appropriate safeguards are in place.</li>
+      </ul>
+    </section>
+
+    <!-- 11. Prohibited conduct -->
+    <section class="policy-section" id="prohibited">
+      <div class="policy-section-header">
+        <div class="section-num">11</div>
+        <h2>Prohibited conduct</h2>
+      </div>
+      <p>The following are strictly prohibited and will result in immediate account suspension and potential legal action:</p>
+      <ul class="policy-list red">
+        <li>Attempting to gain unauthorised access to any part of the Platform, its infrastructure, or any other customer's account or data.</li>
+        <li>Reverse engineering, decompiling, disassembling, or attempting to derive the source code, algorithms, or trade secrets of the Platform.</li>
+        <li>Reproducing, sublicensing, reselling, or creating derivative works based on the Platform or its features without express written authorisation from AIFinOps.</li>
+        <li>Introducing malicious code, viruses, trojans, or any software designed to interfere with, damage, or disrupt the Platform or the infrastructure of other customers.</li>
+        <li>Using automated tools (scrapers, bots, crawlers) to extract data from the Platform other than through our published and authorised APIs.</li>
+        <li>Submitting false, misleading, or fraudulent information to the Platform, including falsified billing data, manipulated usage metrics, or fabricated resource tags.</li>
+        <li>Using the Platform to facilitate any activity that violates applicable law, including sanctions laws, export controls, data protection regulations, or financial services regulations.</li>
+        <li>Attempting to benchmark, profile, or extract competitive intelligence about the Platform's internal algorithms, pricing logic, or optimisation models for use in a competing product.</li>
+      </ul>
+    </section>
+
+    <!-- 12. Subscription and billing -->
+    <section class="policy-section" id="subscription">
+      <div class="policy-section-header">
+        <div class="section-num">12</div>
+        <h2>Subscription and billing</h2>
+      </div>
+      <h3>Subscription plans</h3>
+      <div class="plan-grid">
+        <div class="plan-card">
+          <span class="plan-badge" style="background:#f1efe8; color:#5f5e5a;">Free</span>
+          <h4>Starter</h4>
+          <p>Up to 3 connected accounts, core monitoring, and anomaly alerts. No payment required. No time limit.</p>
+        </div>
+        <div class="plan-card featured">
+          <span class="plan-badge" style="background:#E6F1FB; color:#0C447C;">Most popular</span>
+          <h4>Growth</h4>
+          <p>Unlimited connections, full optimization and orchestration, waste elimination, and priority support. Billed monthly or annually.</p>
+        </div>
+        <div class="plan-card">
+          <span class="plan-badge" style="background:#EEEDFE; color:#3C3489;">Enterprise</span>
+          <h4>Enterprise</h4>
+          <p>Custom limits, dedicated SLA, RBAC, SSO, DPA, and named customer success manager. Custom pricing via Order Form.</p>
+        </div>
+      </div>
+      <h3>Payment terms</h3>
+      <ul class="policy-list">
+        <li>Paid Subscriptions are billed in advance — monthly plans on the same calendar date each month, annual plans on the anniversary of your subscription start date.</li>
+        <li>All fees are quoted and charged in US dollars unless an Order Form specifies otherwise. You are responsible for any applicable taxes, withholding, or currency conversion fees.</li>
+        <li>Payment is processed by our payment processor, Stripe. We do not store full card details. By providing payment information you authorise recurring charges in accordance with your Subscription plan.</li>
+        <li>If a payment fails, we will notify you and retry over a 7-day grace period. If payment remains outstanding after 14 days, we may suspend your account until outstanding amounts are settled.</li>
+        <li>Annual plan customers are entitled to a refund of unused months within 30 days of annual renewal if they downgrade or cancel, subject to a maximum refund of 10 unused months.</li>
+      </ul>
+      <h3>Plan changes and cancellation</h3>
+      <ul class="policy-list">
+        <li>You may upgrade your Subscription at any time. Upgrades take effect immediately and are prorated for the remaining billing period.</li>
+        <li>You may downgrade or cancel your Subscription at any time. Downgrade or cancellation takes effect at the end of the then-current billing period. No refunds are issued for partial billing periods except as stated above for annual plans.</li>
+        <li>On cancellation, your account enters a 90-day data retention period during which you may export your data. After 90 days, all Customer Data is permanently deleted.</li>
+      </ul>
+    </section>
+
+    <!-- 13. Intellectual property -->
+    <section class="policy-section" id="ip">
+      <div class="policy-section-header">
+        <div class="section-num">13</div>
+        <h2>Intellectual property</h2>
+      </div>
+      <p>
+        All rights, title, and interest in the Platform — including its software,
+        algorithms, user interface, documentation, trademarks, and Platform Data —
+        remain the exclusive property of AIFinOps, Inc. and its licensors. These
+        Terms do not grant you any ownership rights in the Platform.
+      </p>
+      <ul class="policy-list">
+        <li>Subject to your compliance with these Terms and payment of applicable fees, AIFinOps grants you a limited, non-exclusive, non-transferable, revocable licence to access and use the Platform during your Subscription solely for your internal business operations.</li>
+        <li>You may not copy, modify, distribute, sell, sublicense, or create derivative works of any part of the Platform without our prior written consent.</li>
+        <li>Any feedback, suggestions, or ideas you provide about the Platform may be used by AIFinOps without restriction, attribution, or compensation. You waive any moral rights in such feedback.</li>
+        <li>The AIFinOps name, logo, and product names are trademarks of AIFinOps, Inc. You may not use these marks without our prior written permission, except as expressly permitted in our Brand Guidelines.</li>
+      </ul>
+    </section>
+
+    <!-- 14. Customer data -->
+    <section class="policy-section" id="customer-data">
+      <div class="policy-section-header">
+        <div class="section-num">14</div>
+        <h2>Customer data</h2>
+      </div>
+      <p>
+        You retain full ownership of all Customer Data. AIFinOps does not claim any
+        ownership rights in your Customer Data. By submitting Customer Data to the
+        Platform, you grant AIFinOps a limited, non-exclusive licence to process,
+        store, and use that data solely to: (a) provide the Services; (b) maintain
+        and improve the Platform's security and reliability; and (c) comply with
+        applicable legal obligations.
+      </p>
+      <ul class="policy-list">
+        <li>We will not use your Customer Data to train machine learning models intended for use by other customers, share it with competitors, or use it to generate public benchmarks or industry reports without your explicit written consent.</li>
+        <li>You are responsible for ensuring that Customer Data you submit to the Platform does not contain any data that you are not lawfully permitted to process, including personal data processed without appropriate legal basis or data subject to regulatory restrictions on transfer.</li>
+        <li>You represent and warrant that your Customer Data and your use of the Platform do not infringe any third-party intellectual property rights, violate any applicable law, or breach any third-party agreement including your cloud and AI provider terms of service.</li>
+        <li>In the event of account termination, Customer Data will be retained for 90 days and may be exported in full during this window. After 90 days it is permanently and irreversibly deleted from all production and backup systems.</li>
+      </ul>
+      <div class="callout green">
+        <p>
+          Our Data Processing Agreement (DPA) sets out the full legal framework governing
+          our processing of any personal data contained in Customer Data. Contact
+          legal@aifinops.com to obtain, review, or execute your DPA.
+        </p>
+      </div>
+    </section>
+
+    <!-- 15. Confidentiality -->
+    <section class="policy-section" id="confidentiality">
+      <div class="policy-section-header">
+        <div class="section-num">15</div>
+        <h2>Confidentiality</h2>
+      </div>
+      <p>
+        Each party agrees to keep confidential all non-public information disclosed by
+        the other party that is designated as confidential or that reasonably should be
+        understood to be confidential given the nature of the information ("Confidential
+        Information"). Customer Data is deemed Confidential Information of yours.
+        AIFinOps's pricing, roadmap, and proprietary technology are deemed Confidential
+        Information of AIFinOps.
+      </p>
+      <ul class="policy-list">
+        <li>Each party will use the other's Confidential Information only to the extent necessary to perform its obligations or exercise its rights under these Terms.</li>
+        <li>Each party will protect Confidential Information with at least the same degree of care it uses to protect its own confidential information of a similar nature, but never less than reasonable care.</li>
+        <li>Confidentiality obligations do not apply to information that: (a) is or becomes publicly available through no breach of these Terms; (b) was already known to the receiving party without restriction; (c) is independently developed without use of Confidential Information; or (d) is required to be disclosed by law, provided that the disclosing party gives the other prior written notice where legally permitted.</li>
+        <li>Confidentiality obligations survive termination of these Terms for a period of three (3) years, except with respect to trade secrets, which are protected indefinitely.</li>
+      </ul>
+    </section>
+
+    <!-- 16. Warranties -->
+    <section class="policy-section" id="warranties">
+      <div class="policy-section-header">
+        <div class="section-num">16</div>
+        <h2>Warranties and disclaimers</h2>
+      </div>
+      <p>
+        AIFinOps warrants that: (a) the Platform will perform materially in accordance
+        with its published documentation during your Subscription; (b) we will employ
+        reasonable security measures to protect Customer Data; and (c) we have the right
+        to enter into these Terms and provide the Services.
+      </p>
+      <div class="callout red">
+        <p>
+          Except as expressly stated above, the Platform is provided "as is" and "as
+          available". AIFinOps expressly disclaims all other warranties, express or implied,
+          including implied warranties of merchantability, fitness for a particular purpose,
+          non-infringement, and any warranty that the Platform will be uninterrupted,
+          error-free, or free of viruses or harmful components. Cost savings figures,
+          optimization recommendations, and waste estimates are projections, not guarantees.
+        </p>
+      </div>
+    </section>
+
+    <!-- 17. Limitation of liability -->
+    <section class="policy-section" id="liability">
+      <div class="policy-section-header">
+        <div class="section-num">17</div>
+        <h2>Limitation of liability</h2>
+      </div>
+      <p>
+        To the maximum extent permitted by applicable law, in no event will AIFinOps,
+        its affiliates, directors, employees, or licensors be liable to you for any:
+      </p>
+      <ul class="policy-list red">
+        <li>Indirect, incidental, special, consequential, or punitive damages.</li>
+        <li>Loss of profits, revenue, data, business, goodwill, or anticipated savings.</li>
+        <li>Cost of substitute services or technologies.</li>
+        <li>Damages arising from automated actions taken by the Platform under policies you configured and enabled.</li>
+        <li>Damages arising from third-party actions, including your cloud or AI model providers' decisions to terminate spot instances, change pricing, or modify APIs.</li>
+      </ul>
+      <p>
+        AIFinOps's total cumulative liability to you for all claims arising out of or
+        relating to these Terms or the Platform, regardless of the form of the claim,
+        will not exceed the greater of: (a) the total fees paid by you to AIFinOps
+        in the twelve (12) months preceding the event giving rise to the claim; or
+        (b) US$500.
+      </p>
+      <p>
+        The limitations above apply even if AIFinOps has been advised of the possibility
+        of such damages and even if any limited remedy set out in these Terms fails of
+        its essential purpose. Some jurisdictions do not allow the exclusion of certain
+        damages, so the above limitations may not fully apply to you.
+      </p>
+    </section>
+
+    <!-- 18. Indemnification -->
+    <section class="policy-section" id="indemnification">
+      <div class="policy-section-header">
+        <div class="section-num">18</div>
+        <h2>Indemnification</h2>
+      </div>
+      <p>
+        You agree to defend, indemnify, and hold harmless AIFinOps and its affiliates,
+        officers, directors, employees, and agents from and against any claims, damages,
+        losses, liabilities, costs, and expenses (including reasonable legal fees) arising
+        out of or relating to:
+      </p>
+      <ul class="policy-list">
+        <li>Your breach of any provision of these Terms.</li>
+        <li>Your Customer Data, including any claim that Customer Data infringes or misappropriates a third party's intellectual property rights.</li>
+        <li>Your violation of any applicable law or the rights of any third party.</li>
+        <li>Automated actions executed by the Platform as a result of policies and guardrails you configured and approved.</li>
+        <li>Unauthorised use of the Platform by any Authorised User or person accessing the Platform through your account.</li>
+      </ul>
+      <p>
+        AIFinOps will promptly notify you of any claim subject to indemnification and
+        will cooperate with your defence at your expense. You may not settle any claim
+        that imposes any obligation on or admission of liability by AIFinOps without
+        our prior written consent.
+      </p>
+    </section>
+
+    <!-- 19. Termination -->
+    <section class="policy-section" id="termination">
+      <div class="policy-section-header">
+        <div class="section-num">19</div>
+        <h2>Termination and suspension</h2>
+      </div>
+      <h3>Termination by you</h3>
+      <p>
+        You may terminate your Subscription at any time by cancelling from your account
+        settings or by contacting support@aifinops.com. Termination takes effect at the
+        end of your current billing period. You retain full data export access during
+        the 90-day post-termination retention window.
+      </p>
+      <h3>Termination or suspension by AIFinOps</h3>
+      <ul class="policy-list">
+        <li>We may suspend your account immediately and without notice if we reasonably believe your use poses a security risk to the Platform or other customers, or if you are in material breach of these Terms.</li>
+        <li>We may terminate your Subscription with 30 days' written notice for any reason, in which case we will provide a prorated refund for any prepaid fees for the unused portion of your billing period.</li>
+        <li>We may terminate your Subscription immediately and without refund if you materially breach these Terms and fail to cure the breach within 14 days of written notice, or if the breach is not capable of cure.</li>
+      </ul>
+      <h3>Effect of termination</h3>
+      <ul class="policy-list">
+        <li>On termination, all licences granted to you under these Terms immediately cease. You must cease all use of the Platform and delete any locally cached Platform data.</li>
+        <li>Sections of these Terms that by their nature should survive — including Intellectual Property, Customer Data, Confidentiality, Warranties, Limitation of Liability, Indemnification, Disputes, and this Termination section — will survive termination.</li>
+      </ul>
+    </section>
+
+    <!-- 20. Disputes -->
+    <section class="policy-section" id="disputes">
+      <div class="policy-section-header">
+        <div class="section-num">20</div>
+        <h2>Disputes and governing law</h2>
+      </div>
+      <p>
+        These Terms are governed by and construed in accordance with the laws of the
+        State of California, USA, without regard to its conflict-of-law principles.
+      </p>
+      <h3>Informal resolution</h3>
+      <p>
+        Before initiating any formal dispute resolution process, you agree to contact
+        us at legal@aifinops.com to attempt to resolve the dispute informally. We will
+        endeavour to respond within 10 business days and work in good faith toward a
+        mutually acceptable resolution.
+      </p>
+      <h3>Binding arbitration</h3>
+      <p>
+        If informal resolution fails, any dispute, claim, or controversy arising out
+        of or relating to these Terms or the Platform will be resolved by binding
+        individual arbitration administered by JAMS under its Streamlined Arbitration
+        Rules, conducted in San Francisco, California, except that either party may
+        seek injunctive or equitable relief in a court of competent jurisdiction to
+        prevent actual or threatened infringement of intellectual property rights.
+      </p>
+      <div class="callout amber">
+        <p>
+          Class action waiver: you and AIFinOps each waive any right to participate in
+          a class action lawsuit or class-wide arbitration. All disputes must be brought
+          in your individual capacity only.
+        </p>
+      </div>
+      <h3>EU and UK customers</h3>
+      <p>
+        If you are located in the European Union or United Kingdom, mandatory consumer
+        protection laws of your country of residence may apply and cannot be excluded
+        by contract. Nothing in these Terms limits rights you have under applicable
+        mandatory law. Disputes may alternatively be submitted to your local competent
+        court.
+      </p>
+    </section>
+
+    <!-- 21. Changes -->
+    <section class="policy-section" id="changes">
+      <div class="policy-section-header">
+        <div class="section-num">21</div>
+        <h2>Changes to these terms</h2>
+      </div>
+      <p>
+        We may update these Terms from time to time to reflect changes in our services,
+        legal requirements, or business practices. When we make material changes we will:
+      </p>
+      <ul class="policy-list">
+        <li>Post the updated Terms at aifinops.com/legal/terms with a revised "Last updated" date and version number.</li>
+        <li>Send an email notification to your registered account administrator at least 14 days before the updated Terms take effect.</li>
+        <li>Display a prominent in-platform notification for 30 days following the change.</li>
+        <li>For material changes that adversely affect your rights, provide an option to terminate your Subscription and receive a prorated refund if you do not accept the new Terms before they take effect.</li>
+      </ul>
+      <p>
+        Minor changes (such as clarifications, typographical corrections, or updates to
+        contact information) may be made without advance notice. Your continued use of the
+        Platform after the effective date of any update constitutes acceptance of the
+        revised Terms.
+      </p>
+    </section>
+
+    <!-- 22. Contact -->
+    <section class="policy-section" id="contact">
+      <div class="policy-section-header">
+        <div class="section-num">22</div>
+        <h2>Contact us</h2>
+      </div>
+      <p>
+        For questions about these Terms, legal notices, or to report a violation,
+        please contact our legal team:
+      </p>
+      <table class="data-table">
+        <tbody>
+          <tr><td style="font-weight:500; width:180px;">General legal enquiries</td><td><a href="mailto:legal@aifinops.com" style="color:#185FA5;">legal@aifinops.com</a></td></tr>
+          <tr><td style="font-weight:500;">Security concerns</td><td><a href="mailto:security@aifinops.com" style="color:#185FA5;">security@aifinops.com</a></td></tr>
+          <tr><td style="font-weight:500;">Privacy &amp; data requests</td><td><a href="mailto:privacy@aifinops.com" style="color:#185FA5;">privacy@aifinops.com</a></td></tr>
+          <tr><td style="font-weight:500;">Billing disputes</td><td><a href="mailto:billing@aifinops.com" style="color:#185FA5;">billing@aifinops.com</a></td></tr>
+          <tr><td style="font-weight:500;">Registered address</td><td>AIFinOps, Inc., 100 Technology Drive, Suite 400, San Francisco, CA 94105, USA</td></tr>
+          <tr><td style="font-weight:500;">EU representative</td><td>AIFinOps EU Ltd., 1 Grand Canal Square, Dublin 2, Ireland</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.policy-section');
+  const links = document.querySelectorAll('.sidebar-nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector('.sidebar-nav a[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

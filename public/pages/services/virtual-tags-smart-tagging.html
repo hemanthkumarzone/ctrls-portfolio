@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Virtual Tags & Smart Tagging — AI FinOps Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #f3f1f8;
+      --white:   #ffffff;
+      --surf:    #ece9f4;
+      --surf2:   #e0dcea;
+      --ink:     #14102a;
+      --ink2:    #2e2856;
+      --ink3:    #5c5880;
+      --ink4:    #9390b0;
+      --ink5:    #c4c1d8;
+      --rule:    rgba(20,16,42,.07);
+      --rule2:   rgba(20,16,42,.14);
+
+      /* bold constructivist primaries */
+      --indigo:  #2c1fcc;
+      --indigo-lt:#e8e5ff;
+      --violet:  #6d1fd4;
+      --violet-lt:#f0e6ff;
+      --cyan:    #0097b2;
+      --cyan-lt: #d4f5ff;
+      --lime:    #3d8c00;
+      --lime-lt: #e4f7cc;
+      --coral:   #d43a1f;
+      --coral-lt:#ffe8e4;
+      --amber:   #c47a00;
+      --amber-lt:#fff0cc;
+
+      --r:       5px;
+      --r-lg:    12px;
+      --r-xl:    18px;
+      --fg:      'Familjen Grotesk', system-ui, sans-serif;
+      --fc:      'Fira Code', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--fg); background: var(--bg); color: var(--ink); line-height: 1.65; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(243,241,248,.94); backdrop-filter: blur(14px);
+      border-bottom: 2px solid var(--indigo);
+      height: 56px; padding: 0 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { font-size: 17px; font-weight: 700; color: var(--ink); text-decoration: none; letter-spacing: -.02em; }
+    .nav-brand em { font-style: normal; color: var(--indigo); }
+    .nav-bc { font-family: var(--fc); font-size: 11px; color: var(--ink3); display: flex; align-items: center; gap: 7px; }
+    .nav-bc strong { color: var(--ink2); }
+    .nav-bc .sep { color: var(--ink5); }
+    .nav-cta { font-size: 13px; font-weight: 700; color: var(--white); background: var(--indigo); padding: 8px 22px; border-radius: var(--r); text-decoration: none; transition: background .15s; letter-spacing: -.01em; }
+    .nav-cta:hover { background: var(--ink2); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--ink);
+      padding: 5.5rem 2.5rem 0;
+      position: relative; overflow: hidden;
+    }
+    /* Constructivist geometric shapes */
+    .hero-geo {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .geo-circle {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.05);
+    }
+    .geo-c1 { width: 500px; height: 500px; top: -250px; right: -100px; }
+    .geo-c2 { width: 300px; height: 300px; top: -50px; right: 150px; border-color: rgba(44,31,204,.25); background: rgba(44,31,204,.04); }
+    .geo-rect { position: absolute; width: 120px; height: 120px; bottom: 40px; left: 60px; border: 1px solid rgba(255,255,255,.04); transform: rotate(18deg); }
+
+    .hero-inner {
+      max-width: 1060px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 480px;
+      gap: 4rem; align-items: end;
+      position: relative; z-index: 1;
+    }
+    @media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; padding-bottom: 3rem; } }
+
+    .hero-text { padding-bottom: 4.5rem; }
+    .hero-kicker { font-family: var(--fc); font-size: 11px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: #8880ff; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; }
+    .hero-kicker::before { content: '//'; color: var(--indigo); }
+
+    .hero h1 { font-size: clamp(36px, 6vw, 66px); font-weight: 700; color: var(--white); line-height: 1.0; letter-spacing: -.04em; margin-bottom: 1.5rem; }
+    .hero h1 .line2 { display: block; color: #8880ff; }
+    .hero h1 .line3 { display: block; font-style: italic; font-weight: 400; color: var(--bg); font-family: var(--fc); font-size: .52em; letter-spacing: -.02em; margin-top: .25rem; }
+
+    .hero-lead { font-size: 16px; color: var(--ink4); line-height: 1.82; max-width: 460px; margin-bottom: 2.5rem; }
+    .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 3rem; }
+    .btn-indigo { font-size: 13px; font-weight: 700; color: var(--white); background: var(--indigo); padding: 11px 24px; border-radius: var(--r); text-decoration: none; transition: background .15s; letter-spacing: -.01em; }
+    .btn-indigo:hover { background: #1f14a0; }
+    .btn-ghost { font-family: var(--fc); font-size: 12px; color: var(--ink3); background: transparent; padding: 11px 24px; border-radius: var(--r); border: 1px solid rgba(255,255,255,.12); text-decoration: none; transition: all .15s; }
+    .btn-ghost:hover { color: var(--white); border-color: rgba(255,255,255,.3); }
+
+    /* floating tag pills */
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .htag { font-family: var(--fc); font-size: 11px; padding: 5px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; animation: float 3s ease-in-out infinite; }
+    .htag::before { content: '#'; font-weight: 600; }
+    .htag:nth-child(2) { animation-delay: .4s; }
+    .htag:nth-child(3) { animation-delay: .8s; }
+    .htag:nth-child(4) { animation-delay: 1.2s; }
+    .htag:nth-child(5) { animation-delay: 1.6s; }
+    .htag:nth-child(6) { animation-delay: 2.0s; }
+    @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-3px); } }
+    .ht-i { background: rgba(44,31,204,.25); color: #8880ff; border: 1px solid rgba(44,31,204,.3); }
+    .ht-v { background: rgba(109,31,212,.2); color: #b480ff; border: 1px solid rgba(109,31,212,.25); }
+    .ht-c { background: rgba(0,151,178,.2); color: #60d8f0; border: 1px solid rgba(0,151,178,.25); }
+    .ht-l { background: rgba(61,140,0,.2); color: #90d460; border: 1px solid rgba(61,140,0,.25); }
+
+    /* ── HERO VISUAL — Tag coverage progress panel ── */
+    .hero-vis {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-bottom: none;
+      border-radius: var(--r-xl) var(--r-xl) 0 0;
+      padding: 1.5rem;
+      font-family: var(--fc);
+    }
+    .hv-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .hv-head-title { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); }
+    .hv-head-pct { font-size: 10px; color: #90d460; background: rgba(61,140,0,.2); padding: 3px 10px; border-radius: 20px; }
+
+    /* big coverage ring */
+    .hv-ring-wrap { display: flex; justify-content: center; margin-bottom: 1.25rem; }
+    .hv-ring { position: relative; width: 110px; height: 110px; }
+    .hv-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .hv-ring-track { fill: none; stroke: rgba(255,255,255,.08); stroke-width: 8; }
+    .hv-ring-fill  { fill: none; stroke: #8880ff; stroke-width: 8; stroke-linecap: round; stroke-dasharray: 283; stroke-dashoffset: 51; transition: stroke-dashoffset .8s; }
+    .hv-ring-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .hv-ring-val { font-family: var(--fg); font-size: 24px; font-weight: 700; color: var(--white); line-height: 1; }
+    .hv-ring-sub { font-size: 9px; color: var(--ink4); text-transform: uppercase; letter-spacing: .08em; }
+
+    .hv-rows { display: flex; flex-direction: column; gap: 7px; margin-bottom: 1.25rem; }
+    .hv-row { display: flex; align-items: center; gap: 10px; }
+    .hv-row-label { font-size: 10px; color: var(--ink3); width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .hv-row-bar-wrap { flex: 1; height: 4px; background: rgba(255,255,255,.07); border-radius: 2px; }
+    .hv-row-bar { height: 100%; border-radius: 2px; }
+    .hv-row-val { font-size: 10px; color: var(--ink4); width: 34px; text-align: right; }
+
+    .hv-footer { display: flex; gap: 8px; }
+    .hv-chip { flex: 1; background: rgba(255,255,255,.06); border-radius: var(--r); padding: .5rem .625rem; text-align: center; }
+    .hv-chip-val { font-family: var(--fg); font-size: 15px; font-weight: 700; color: var(--white); line-height: 1; }
+    .hv-chip-lbl { font-size: 9px; color: var(--ink4); text-transform: uppercase; letter-spacing: .05em; margin-top: 2px; }
+
+    /* ── METRICS ── */
+    .metrics { background: var(--white); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .metrics-inner { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+    .mc { padding: 1.75rem 1.25rem; text-align: center; border-right: 1px solid var(--rule); }
+    .mc:last-child { border-right: none; }
+    .mc-val { font-size: 30px; font-weight: 700; line-height: 1; margin-bottom: 5px; letter-spacing: -.03em; }
+    .mc-lbl { font-size: 12px; color: var(--ink3); line-height: 1.4; }
+
+    /* ── SECTION ── */
+    .section { max-width: 1060px; margin: 0 auto; padding: 5rem 2.5rem; }
+    .ey { font-family: var(--fc); font-size: 11px; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; color: var(--indigo); display: flex; align-items: center; gap: 8px; margin-bottom: .65rem; }
+    .ey::before { content: '//'; color: var(--indigo); opacity: .5; }
+    .sh { font-size: clamp(24px, 4vw, 40px); font-weight: 700; color: var(--ink); line-height: 1.12; margin-bottom: .75rem; letter-spacing: -.03em; }
+    .sh em { font-style: italic; font-weight: 400; color: var(--indigo); }
+    .sl { font-size: 15px; color: var(--ink3); line-height: 1.8; max-width: 580px; margin-bottom: 2.5rem; }
+    hr.div { border: none; border-top: 1px solid var(--rule); max-width: 1060px; margin: 0 auto; }
+
+    /* ── THE PROBLEM ── */
+    .prob-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; }
+    @media (max-width: 680px) { .prob-grid { grid-template-columns: 1fr; } }
+    .prob-text p { font-size: 14px; color: var(--ink2); line-height: 1.85; margin-bottom: 1rem; }
+    .prob-text p:last-child { margin-bottom: 0; }
+    .prob-stats { display: flex; flex-direction: column; gap: 12px; }
+    .pstat { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-xl); padding: 1.25rem; display: flex; gap: 1.25rem; align-items: center; transition: border-color .15s; }
+    .pstat:hover { border-color: var(--rule2); }
+    .pstat-val { font-size: 32px; font-weight: 700; color: var(--indigo); letter-spacing: -.04em; flex-shrink: 0; line-height: 1; }
+    .pstat-body h5 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+    .pstat-body p { font-size: 12px; color: var(--ink3); line-height: 1.5; }
+
+    /* ── VIRTUAL vs SMART TABS ── */
+    .vs-tabs { display: flex; gap: 0; margin-bottom: 2.5rem; border: 2px solid var(--ink); border-radius: var(--r); overflow: hidden; display: inline-flex; }
+    .vstab { font-size: 13px; font-weight: 700; padding: 10px 28px; cursor: pointer; transition: all .15s; background: transparent; border: none; color: var(--ink3); letter-spacing: -.01em; }
+    .vstab.active { background: var(--indigo); color: var(--white); }
+    .vstab:not(.active):hover { background: var(--surf); color: var(--ink); }
+
+    .vs-panel { display: none; }
+    .vs-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    @media (max-width: 680px) { .vs-panel.active { grid-template-columns: 1fr; } }
+
+    .vsp-left h3 { font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -.02em; margin-bottom: .75rem; }
+    .vsp-left p { font-size: 14px; color: var(--ink2); line-height: 1.8; margin-bottom: 1rem; }
+    .vsp-checks { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+    .vsp-check { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--ink2); line-height: 1.5; }
+    .vsp-check-dot { width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+    .vsp-check-dot svg { width: 10px; height: 10px; }
+
+    /* tag example panel */
+    .tag-demo { background: var(--ink); border-radius: var(--r-xl); padding: 1.5rem; font-family: var(--fc); }
+    .td-title { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink4); margin-bottom: 1.25rem; }
+    .td-resource { background: rgba(255,255,255,.06); border-radius: var(--r-lg); padding: 1rem; margin-bottom: .875rem; }
+    .td-res-name { font-size: 12px; font-weight: 500; color: var(--white); margin-bottom: 8px; }
+    .td-res-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .td-tag { font-size: 10px; padding: 3px 8px; border-radius: 4px; display: flex; align-items: center; gap: 4px; }
+    .td-tag-real { background: rgba(61,140,0,.2); color: #90d460; border: 1px solid rgba(61,140,0,.25); }
+    .td-tag-virtual { background: rgba(44,31,204,.25); color: #8880ff; border: 1px solid rgba(44,31,204,.35); }
+    .td-tag-virtual::before { content: '◇'; font-size: 8px; }
+    .td-tag-smart { background: rgba(0,151,178,.2); color: #60d8f0; border: 1px solid rgba(0,151,178,.3); }
+    .td-tag-smart::before { content: '✦'; font-size: 8px; }
+    .td-legend { display: flex; flex-direction: column; gap: 5px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,.07); }
+    .td-leg-item { display: flex; align-items: center; gap: 8px; font-size: 10px; color: var(--ink4); }
+    .td-leg-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ── SMART TAGGING METHODS ── */
+    .method-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+    .method {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); padding: 1.5rem;
+      position: relative; overflow: hidden;
+      transition: border-color .2s, transform .2s;
+    }
+    .method:hover { border-color: var(--rule2); transform: translateY(-2px); }
+    .method::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .m-i::before { background: var(--indigo); }
+    .m-v::before { background: var(--violet); }
+    .m-c::before { background: var(--cyan); }
+    .m-l::before { background: var(--lime); }
+    .m-a::before { background: var(--amber); }
+    .m-co::before { background: var(--coral); }
+    .method-icon { font-size: 24px; margin-bottom: 12px; }
+    .method h4 { font-size: 15px; font-weight: 700; color: var(--ink); letter-spacing: -.02em; margin-bottom: 6px; }
+    .method p { font-size: 12px; color: var(--ink3); line-height: 1.65; margin-bottom: 12px; }
+    .method-example { background: var(--surf); border-radius: var(--r); padding: .625rem .875rem; margin-bottom: 10px; }
+    .method-example-lbl { font-family: var(--fc); font-size: 9px; color: var(--ink4); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+    .method-example-code { font-family: var(--fc); font-size: 11px; color: var(--ink2); line-height: 1.5; }
+    .method-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .mtag { font-family: var(--fc); font-size: 9px; padding: 2px 7px; border-radius: 3px; }
+
+    /* ── COVERAGE WIZARD (interactive) ── */
+    .wizard-section { background: var(--surf); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 5rem 2.5rem; }
+    .wizard-inner { max-width: 1060px; margin: 0 auto; }
+    .wizard-grid { display: grid; grid-template-columns: 1fr 400px; gap: 4rem; align-items: start; }
+    @media (max-width: 780px) { .wizard-grid { grid-template-columns: 1fr; } }
+    .wizard-sliders { display: flex; flex-direction: column; gap: 1.5rem; }
+    .wslider-label { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+    .wslider-label span { font-family: var(--fc); font-size: 12px; font-weight: 400; }
+    .wslider { width: 100%; -webkit-appearance: none; appearance: none; height: 4px; border-radius: 2px; background: var(--surf2); outline: none; }
+    .wslider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--indigo); cursor: pointer; border: 2px solid var(--white); box-shadow: 0 1px 4px rgba(44,31,204,.3); }
+    .wslider::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--indigo); cursor: pointer; border: 2px solid var(--white); }
+    .wslider-desc { font-size: 12px; color: var(--ink4); margin-top: 4px; }
+
+    /* coverage result panel */
+    .coverage-result { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-xl); padding: 1.5rem; }
+    .cr-title { font-family: var(--fc); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink4); margin-bottom: 1.25rem; }
+    .cr-big { text-align: center; margin-bottom: 1.25rem; }
+    .cr-big-val { font-size: 56px; font-weight: 700; color: var(--indigo); letter-spacing: -.04em; line-height: 1; }
+    .cr-big-lbl { font-size: 12px; color: var(--ink3); margin-top: 4px; }
+    .cr-breakdown { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.25rem; }
+    .cr-row { display: flex; align-items: center; gap: 10px; }
+    .cr-row-label { font-size: 12px; color: var(--ink2); flex: 1; }
+    .cr-row-bar-wrap { width: 100px; height: 6px; background: var(--surf); border-radius: 3px; }
+    .cr-row-bar { height: 100%; border-radius: 3px; transition: width .4s; }
+    .cr-row-val { font-family: var(--fc); font-size: 11px; font-weight: 500; color: var(--ink); width: 38px; text-align: right; }
+    .cr-insight { background: var(--indigo-lt); border-radius: var(--r); padding: .75rem 1rem; }
+    .cr-insight-text { font-size: 12px; color: var(--indigo); line-height: 1.6; }
+
+    /* ── VIRTUAL TAG BUILDER ── */
+    .builder-section { background: var(--ink); padding: 5rem 2.5rem; }
+    .builder-inner { max-width: 1060px; margin: 0 auto; }
+    .b-ey { font-family: var(--fc); font-size: 11px; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; color: #8880ff; display: flex; align-items: center; gap: 8px; margin-bottom: .65rem; }
+    .b-ey::before { content: '//'; color: var(--indigo); }
+    .b-sh { font-size: clamp(24px, 4vw, 38px); font-weight: 700; color: var(--white); line-height: 1.12; margin-bottom: .75rem; letter-spacing: -.03em; }
+    .b-sl { font-size: 15px; color: var(--ink4); line-height: 1.8; max-width: 560px; margin-bottom: 3rem; }
+    .builder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    @media (max-width: 680px) { .builder-grid { grid-template-columns: 1fr; } }
+    .rule-card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.09); border-radius: var(--r-xl); padding: 1.5rem; transition: background .15s; }
+    .rule-card:hover { background: rgba(255,255,255,.09); }
+    .rule-type { font-family: var(--fc); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; padding: 3px 10px; border-radius: 4px; display: inline-block; margin-bottom: .875rem; }
+    .rule-card h4 { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 6px; letter-spacing: -.02em; }
+    .rule-card p { font-size: 12px; color: var(--ink4); line-height: 1.65; margin-bottom: 1rem; }
+    .rule-code { background: rgba(0,0,0,.3); border-radius: var(--r); padding: .875rem 1rem; font-family: var(--fc); font-size: 11px; line-height: 1.7; color: #c4c1d8; border: 1px solid rgba(255,255,255,.07); }
+    .rc-comment { color: #5c5880; }
+    .rc-key { color: #8880ff; }
+    .rc-val { color: #90d460; }
+    .rc-str { color: #60d8f0; }
+    .rc-op  { color: #b480ff; }
+
+    /* ── PILLAR TABLE ── */
+    .ptable { width: 100%; border-collapse: collapse; }
+    .ptable thead th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--ink4); border-bottom: 2px solid var(--rule2); background: var(--surf); }
+    .ptable thead th:first-child { border-radius: var(--r) 0 0 0; }
+    .ptable thead th:last-child  { border-radius: 0 var(--r) 0 0; }
+    .ptable tbody tr { border-bottom: 1px solid var(--rule); transition: background .1s; }
+    .ptable tbody tr:hover { background: var(--surf); }
+    .ptable tbody td { padding: 13px 14px; font-size: 13px; color: var(--ink2); vertical-align: top; }
+    .ptable tbody td:first-child { color: var(--ink); font-weight: 600; }
+    .p-pill { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; }
+
+    /* ── TAG GOVERNANCE ── */
+    .gov-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .gov-card { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-xl); padding: 1.5rem; transition: border-color .15s, transform .15s; }
+    .gov-card:hover { border-color: var(--rule2); transform: translateY(-2px); }
+    .gov-icon { font-size: 22px; margin-bottom: 10px; }
+    .gov-card h4 { font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: -.02em; margin-bottom: 6px; }
+    .gov-card p { font-size: 12px; color: var(--ink3); line-height: 1.65; }
+
+    /* ── TESTI ── */
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+    .testi { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-xl); padding: 1.5rem; }
+    .testi-q { font-size: 13px; color: var(--ink); line-height: 1.75; margin-bottom: 1.25rem; font-style: italic; }
+    .testi-q::before { content: '\201C'; color: var(--indigo); font-size: 20px; line-height: 0; vertical-align: -4px; margin-right: 2px; font-style: normal; }
+    .testi-meta { display: flex; align-items: center; gap: 10px; }
+    .testi-av { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .testi-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .testi-role { font-size: 11px; color: var(--ink4); }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; max-width: 700px; }
+    .fq { border-bottom: 1px solid var(--rule); }
+    .fq:first-child { border-top: 1px solid var(--rule); }
+    .fq-q { width: 100%; text-align: left; background: transparent; border: none; padding: 1.1rem 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem; cursor: pointer; font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.4; letter-spacing: -.02em; }
+    .fq-q:hover { color: var(--indigo); }
+    .fq-ico { width: 22px; height: 22px; border-radius: 4px; background: var(--surf); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; color: var(--ink3); transition: transform .2s, background .2s; }
+    .fq.open .fq-ico { transform: rotate(45deg); background: var(--indigo-lt); color: var(--indigo); }
+    .fq-a { display: none; padding: 0 0 1.1rem; font-size: 13px; color: var(--ink3); line-height: 1.8; }
+    .fq.open .fq-a { display: block; }
+
+    /* ── CALLOUTS ── */
+    .callout { border-left: 3px solid var(--indigo); background: var(--indigo-lt); border-radius: 0 var(--r) var(--r) 0; padding: .875rem 1.1rem; margin: 1.25rem 0; }
+    .callout p { font-size: 13px; color: var(--indigo); line-height: 1.65; margin: 0; }
+    .callout.lime { border-left-color: var(--lime); background: var(--lime-lt); }
+    .callout.lime p { color: var(--lime); }
+    .callout.violet { border-left-color: var(--violet); background: var(--violet-lt); }
+    .callout.violet p { color: var(--violet); }
+
+    /* ── CTA ── */
+    .cta { background: var(--ink); padding: 6rem 2.5rem; text-align: center; position: relative; overflow: hidden; }
+    /* Bold geometric CTA background */
+    .cta::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(-45deg, transparent, transparent 32px, rgba(44,31,204,.04) 32px, rgba(44,31,204,.04) 33px); }
+    .cta-corner { position: absolute; width: 200px; height: 200px; border: 2px solid rgba(44,31,204,.15); border-radius: 50%; }
+    .cta-corner.tl { top: -100px; left: -60px; }
+    .cta-corner.br { bottom: -100px; right: -60px; }
+    .cta-inner { position: relative; z-index: 1; max-width: 580px; margin: 0 auto; }
+    .cta h2 { font-size: clamp(28px, 5vw, 50px); font-weight: 700; color: var(--white); letter-spacing: -.04em; line-height: 1.1; margin-bottom: 1rem; }
+    .cta h2 .accent { color: #8880ff; }
+    .cta p { font-size: 15px; color: var(--ink4); line-height: 1.75; margin-bottom: 2.5rem; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-white { font-size: 14px; font-weight: 700; color: var(--ink); background: var(--white); padding: 12px 30px; border-radius: var(--r); text-decoration: none; transition: background .15s; }
+    .btn-white:hover { background: var(--bg); }
+    .btn-ghost2 { font-family: var(--fc); font-size: 12px; color: var(--ink4); background: transparent; padding: 12px 30px; border-radius: var(--r); border: 1px solid rgba(255,255,255,.15); text-decoration: none; transition: all .15s; }
+    .btn-ghost2:hover { color: var(--white); border-color: rgba(255,255,255,.3); }
+
+    .fade-up { opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="#" class="nav-brand">AI<em>FinOps</em></a>
+  <div class="nav-bc">
+    <span>Services</span><span class="sep">/</span>
+    <strong>Virtual Tags &amp; Smart Tagging</strong>
+  </div>
+  <a href="#" class="nav-cta">Start tagging free</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-geo">
+    <div class="geo-circle geo-c1"></div>
+    <div class="geo-circle geo-c2"></div>
+    <div class="geo-rect"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-kicker">Service — Virtual Tags &amp; Smart Tagging</div>
+      <h1>
+        Tag everything.
+        <span class="line2">Attribute everything.</span>
+        <span class="line3">// without touching your infra</span>
+      </h1>
+      <p class="hero-lead">
+        Missing tags are the root cause of 90% of cost attribution failures.
+        Virtual Tags and Smart Tagging fix the problem at the platform layer —
+        not by asking engineers to re-tag hundreds of resources,
+        but by inferring, inheriting, and applying tags automatically
+        so that every dollar of AI spend is attributed from day one.
+      </p>
+      <div class="hero-btns">
+        <a href="#" class="btn-indigo">See your attribution gaps</a>
+        <a href="#" class="btn-ghost">// browse tag templates →</a>
+      </div>
+      <div class="hero-tags">
+        <span class="htag ht-i">team:inference</span>
+        <span class="htag ht-v">product:search</span>
+        <span class="htag ht-c">env:production</span>
+        <span class="htag ht-l">cost-centre:ai-platform</span>
+        <span class="htag ht-i">owner:ml-team</span>
+        <span class="htag ht-v">workload:fine-tune</span>
+      </div>
+    </div>
+
+    <!-- Tag coverage ring panel -->
+    <div class="hero-vis">
+      <div class="hv-head">
+        <span class="hv-head-title">Tag coverage · prod-cluster</span>
+        <span class="hv-head-pct">+38% since SmartTag</span>
+      </div>
+      <div class="hv-ring-wrap">
+        <div class="hv-ring">
+          <svg viewBox="0 0 100 100">
+            <circle class="hv-ring-track" cx="50" cy="50" r="45" />
+            <circle class="hv-ring-fill" cx="50" cy="50" r="45" />
+          </svg>
+          <div class="hv-ring-label">
+            <div class="hv-ring-val">82%</div>
+            <div class="hv-ring-sub">Attributed</div>
+          </div>
+        </div>
+      </div>
+      <div class="hv-rows">
+        <div class="hv-row">
+          <span class="hv-row-label">team</span>
+          <div class="hv-row-bar-wrap"><div class="hv-row-bar" style="width:92%;background:#8880ff"></div></div>
+          <span class="hv-row-val">92%</span>
+        </div>
+        <div class="hv-row">
+          <span class="hv-row-label">product</span>
+          <div class="hv-row-bar-wrap"><div class="hv-row-bar" style="width:84%;background:#8880ff"></div></div>
+          <span class="hv-row-val">84%</span>
+        </div>
+        <div class="hv-row">
+          <span class="hv-row-label">env</span>
+          <div class="hv-row-bar-wrap"><div class="hv-row-bar" style="width:96%;background:#90d460"></div></div>
+          <span class="hv-row-val">96%</span>
+        </div>
+        <div class="hv-row">
+          <span class="hv-row-label">cost-centre</span>
+          <div class="hv-row-bar-wrap"><div class="hv-row-bar" style="width:74%;background:#60d8f0"></div></div>
+          <span class="hv-row-val">74%</span>
+        </div>
+        <div class="hv-row">
+          <span class="hv-row-label">workload-type</span>
+          <div class="hv-row-bar-wrap"><div class="hv-row-bar" style="width:68%;background:#b480ff"></div></div>
+          <span class="hv-row-val">68%</span>
+        </div>
+      </div>
+      <div class="hv-footer">
+        <div class="hv-chip"><div class="hv-chip-val">1,847</div><div class="hv-chip-lbl">Tagged</div></div>
+        <div class="hv-chip"><div class="hv-chip-val" style="color:#ff9090">412</div><div class="hv-chip-lbl">Gaps</div></div>
+        <div class="hv-chip"><div class="hv-chip-val" style="color:#90d460">341</div><div class="hv-chip-lbl">Auto-inferred</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── METRICS ── -->
+<div class="metrics">
+  <div class="metrics-inner">
+    <div class="mc"><div class="mc-val" style="color:var(--indigo)">90%</div><div class="mc-lbl">Avg attribution improvement on activation</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--violet)">Zero</div><div class="mc-lbl">Infrastructure changes required</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--cyan)">30+</div><div class="mc-lbl">Smart tagging inference signals</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--lime)">100%</div><div class="mc-lbl">Cost items coverable with virtual tags</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--indigo)">Real-time</div><div class="mc-lbl">Tag propagation across cost model</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--violet)">∞</div><div class="mc-lbl">Custom virtual tag dimensions</div></div>
+  </div>
+</div>
+
+<!-- ── THE PROBLEM ── -->
+<div class="section fade-up">
+  <div class="ey">The problem</div>
+  <h2 class="sh">Untagged resources are<br><em>unattributed spend.</em></h2>
+  <div class="prob-grid">
+    <div class="prob-text">
+      <p>
+        Cloud providers and AI platforms generate thousands of billable line items per month.
+        Your cost attribution is only as good as your tagging coverage — and in practice,
+        tagging is an afterthought. Pods get deployed without labels,
+        API keys get shared across teams, and billing line items carry no project context.
+        The result: a growing pile of "unattributed" spend that no one owns and no one fixes.
+      </p>
+      <p>
+        The conventional solution is to mandate better tagging and train engineers to apply
+        labels consistently. This approach has a 100% failure rate at scale. Engineers have
+        ship deadlines. Tags get forgotten. And by the time the unattributed spend is
+        discovered in the monthly report, it's weeks old.
+      </p>
+      <p>
+        Virtual Tags and Smart Tagging take the opposite approach: instead of asking humans
+        to tag perfectly, we infer tags automatically from every available signal —
+        naming conventions, deployment metadata, git repository ownership, IAM roles,
+        team membership, and usage patterns — and apply them in the platform layer,
+        without touching a single production resource.
+      </p>
+      <div class="callout">
+        <p>Virtual tags exist only in the AIFinOps platform. They never modify your cloud resources, Kubernetes manifests, or infrastructure-as-code. Zero risk, immediate attribution improvement.</p>
+      </div>
+    </div>
+    <div class="prob-stats">
+      <div class="pstat">
+        <div class="pstat-val">44%</div>
+        <div class="pstat-body">
+          <h5>Average untagged spend on day one</h5>
+          <p>Across new customers, 44% of AI spend has insufficient tagging for meaningful attribution when they first connect.</p>
+        </div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-val">$0</div>
+        <div class="pstat-body">
+          <h5>ROI from unattributed spend</h5>
+          <p>Cost that isn't attributed to a team or product can't be optimised, reported, or held accountable. It simply grows unchecked.</p>
+        </div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-val">6 wks</div>
+        <div class="pstat-body">
+          <h5>Average time to full attribution without smart tagging</h5>
+          <p>Manual re-tagging campaigns take 6–12 weeks and have low compliance rates without automated enforcement.</p>
+        </div>
+      </div>
+      <div class="pstat">
+        <div class="pstat-val">82%</div>
+        <div class="pstat-body">
+          <h5>Avg attribution after 30 days with Smart Tagging</h5>
+          <p>After 30 days of smart tag inference, customers achieve 82% average attribution coverage — without re-tagging anything.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── VIRTUAL vs SMART ── -->
+<div class="section fade-up">
+  <div class="ey">Two capabilities. One solution.</div>
+  <h2 class="sh">Virtual Tags and Smart Tagging<br>solve different parts<br>of the <em>same problem</em></h2>
+  <p class="sl">They work together — Smart Tagging fills the gaps automatically, Virtual Tags let you extend the attribution model beyond what your cloud infrastructure supports.</p>
+
+  <div style="margin-bottom:2rem">
+    <div class="vs-tabs">
+      <button class="vstab active" onclick="switchVS('virtual',this)">Virtual Tags</button>
+      <button class="vstab" onclick="switchVS('smart',this)">Smart Tagging</button>
+    </div>
+  </div>
+
+  <!-- VIRTUAL TAGS -->
+  <div class="vs-panel active" id="vs-virtual">
+    <div class="vsp-left">
+      <h3>Virtual Tags — tags that exist only in the platform</h3>
+      <p>Virtual Tags are attribution dimensions that you define inside the AIFinOps platform and apply to cost items — without touching your cloud resources, Kubernetes manifests, or infrastructure-as-code. They let you build an attribution model that reflects your organisation's actual structure, not just what your cloud provider supports.</p>
+      <p>A cloud bill doesn't know about your "Payments" product line, your "AI Platform" cost centre, or whether a workload is "customer-facing" vs "internal." Virtual Tags let you define these dimensions and apply them to your cost data — so your reports reflect your business, not your cloud topology.</p>
+      <div class="vsp-checks">
+        <div class="vsp-check">
+          <div class="vsp-check-dot" style="background:var(--lime-lt)"><svg viewBox="0 0 10 10" fill="none" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
+          <span>Create any tag dimension your org needs — team, product, use-case, customer segment, compliance scope, strategic initiative</span>
+        </div>
+        <div class="vsp-check">
+          <div class="vsp-check-dot" style="background:var(--lime-lt)"><svg viewBox="0 0 10 10" fill="none" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
+          <span>Apply virtual tags using rule-based matching — by existing tag values, resource names, account IDs, namespace patterns, or cost thresholds</span>
+        </div>
+        <div class="vsp-check">
+          <div class="vsp-check-dot" style="background:var(--lime-lt)"><svg viewBox="0 0 10 10" fill="none" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
+          <span>Retroactively apply virtual tags to historical cost data — rewrite your entire attribution history without touching production</span>
+        </div>
+        <div class="vsp-check">
+          <div class="vsp-check-dot" style="background:var(--lime-lt)"><svg viewBox="0 0 10 10" fill="none" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
+          <span>Override incorrect or inconsistent existing tags without modifying your infrastructure — platform-level corrections that don't require a deployment</span>
+        </div>
+        <div class="vsp-check">
+          <div class="vsp-check-dot" style="background:var(--lime-lt)"><svg viewBox="0 0 10 10" fill="none" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
+          <span>Every virtual tag is versioned — changes are tracked, and you can see how your attribution model evolved over time</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tag-demo">
+      <div class="td-title">Tag state · llm-inference-svc</div>
+      <div class="td-resource">
+        <div class="td-res-name">llm-inference-svc-v3 · ns/team-inference</div>
+        <div class="td-res-tags">
+          <span class="td-tag td-tag-real">app: llm-serve</span>
+          <span class="td-tag td-tag-real">env: prod</span>
+          <span class="td-tag td-tag-virtual">product: search-ai ◇</span>
+          <span class="td-tag td-tag-virtual">cost-centre: ai-platform ◇</span>
+          <span class="td-tag td-tag-virtual">tier: revenue-generating ◇</span>
+        </div>
+      </div>
+      <div class="td-resource">
+        <div class="td-res-name">embed-batch-job-q4 · ns/team-training</div>
+        <div class="td-res-tags">
+          <span class="td-tag td-tag-real">job-type: embedding</span>
+          <span class="td-tag td-tag-virtual">product: content-rec ◇</span>
+          <span class="td-tag td-tag-virtual">business-unit: growth ◇</span>
+          <span class="td-tag td-tag-virtual">workload: batch ◇</span>
+        </div>
+      </div>
+      <div class="td-resource">
+        <div class="td-res-name">vector-db-prod · ns/team-platform</div>
+        <div class="td-res-tags">
+          <span class="td-tag td-tag-real">db-type: vector</span>
+          <span class="td-tag td-tag-real">tier: stateful</span>
+          <span class="td-tag td-tag-virtual">shared-by: all-products ◇</span>
+          <span class="td-tag td-tag-virtual">allocation: proportional ◇</span>
+        </div>
+      </div>
+      <div class="td-legend">
+        <div class="td-leg-item"><div class="td-leg-dot" style="background:var(--lime)"></div>Real tag (on the resource)</div>
+        <div class="td-leg-item"><div class="td-leg-dot" style="background:var(--indigo)"></div>◇ Virtual tag (platform only, no infra change)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SMART TAGGING -->
+  <div class="vs-panel" id="vs-smart">
+    <div class="vsp-left">
+      <h3>Smart Tagging — automatic attribution from 30+ signals</h3>
+      <p>Smart Tagging uses machine learning and rule-based inference to automatically determine who owns each untagged resource — using 30+ signals from your infrastructure, code repositories, identity provider, billing history, and usage patterns.</p>
+      <p>When a new pod is deployed without labels, Smart Tagging immediately analyses its namespace, name pattern, resource requests, access credentials, and similar resources it has seen before — and infers the most likely team, product, and environment attribution. You see a confidence score and can approve or override with one click.</p>
+      <div class="vsp-checks">
+        <div class="vsp-check">
+          <div class="vsp-check-dot" style="background:var(--cyan-lt)"><svg viewBox="0 0 10 10" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
+          <span>Inferences applied as virtual tags — never modifies your actual infrastructure or existing labels</span>
+        </div>
+        <div class="vsp-check">
+          <div class="vsp-check-dot" style="background:var(--cyan-lt)"><svg viewBox="0 0 10 10" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
+          <span>Confidence score per inference — high-confidence inferences auto-apply, lower confidence ones queue for human review</span>
+        </div>
+        <div class="vsp-check">
+          <div class="vsp-check-dot" style="background:var(--cyan-lt)"><svg viewBox="0 0 10 10" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
+          <span>Feedback loop — every human approval or correction trains the model, improving accuracy over time for your organisation</span>
+        </div>
+        <div class="vsp-check">
+          <div class="vsp-check-dot" style="background:var(--cyan-lt)"><svg viewBox="0 0 10 10" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
+          <span>Works across all connected sources — K8s, AWS, Azure, GCP, and AI API accounts treated uniformly</span>
+        </div>
+        <div class="vsp-check">
+          <div class="vsp-check-dot" style="background:var(--cyan-lt)"><svg viewBox="0 0 10 10" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg></div>
+          <span>New resources are inferred within 15 minutes of appearing — attribution gaps never persist for more than one reporting cycle</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tag-demo">
+      <div class="td-title">Smart inference queue · 5 pending</div>
+      <div class="td-resource">
+        <div class="td-res-name" style="margin-bottom:6px">rag-pipeline-v2 <span style="font-size:10px;color:var(--ink4)">· untagged · $840/mo</span></div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:10px">
+            <span style="color:var(--ink4)">team:content-ai</span>
+            <span style="color:#90d460">94% confidence</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px">
+            <span style="color:var(--ink4)">product:search</span>
+            <span style="color:#90d460">91% confidence</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <span style="font-size:10px;font-weight:600;padding:3px 10px;border-radius:4px;background:rgba(61,140,0,.2);color:#90d460;cursor:pointer">✓ Apply</span>
+          <span style="font-size:10px;padding:3px 10px;border-radius:4px;background:rgba(255,255,255,.06);color:var(--ink4);cursor:pointer">Edit</span>
+        </div>
+      </div>
+      <div class="td-resource">
+        <div class="td-res-name" style="margin-bottom:6px">gpt4-eval-job <span style="font-size:10px;color:var(--ink4)">· untagged · $220/mo</span></div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:10px">
+            <span style="color:var(--ink4)">team:ml-platform</span>
+            <span style="color:#60d8f0">76% confidence</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px">
+            <span style="color:var(--ink4)">type:eval-pipeline</span>
+            <span style="color:#90d460">88% confidence</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <span style="font-size:10px;font-weight:600;padding:3px 10px;border-radius:4px;background:rgba(61,140,0,.2);color:#90d460;cursor:pointer">✓ Apply</span>
+          <span style="font-size:10px;padding:3px 10px;border-radius:4px;background:rgba(255,255,255,.06);color:var(--ink4);cursor:pointer">Edit</span>
+        </div>
+      </div>
+      <div class="td-legend">
+        <div class="td-leg-item"><div class="td-leg-dot" style="background:var(--cyan)"></div>✦ Smart-inferred tag (auto-applied if &gt;90% confidence)</div>
+        <div class="td-leg-item"><div class="td-leg-dot" style="background:#5c5880"></div>76–90% → queue for human review</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── SMART TAGGING METHODS ── -->
+<div class="section fade-up">
+  <div class="ey">Inference signals</div>
+  <h2 class="sh">30+ signals. One accurate<br>attribution <em>inference</em>.</h2>
+  <p class="sl">Smart Tagging combines signals from six inference categories to build the most accurate ownership determination possible for each untagged resource.</p>
+  <div class="method-grid">
+
+    <div class="method m-i">
+      <div class="method-icon">📛</div>
+      <h4>Naming convention inference</h4>
+      <p>Analyses resource names, namespace names, and deployment names against your organisation's naming patterns to infer team and product ownership.</p>
+      <div class="method-example">
+        <div class="method-example-lbl">Example signal</div>
+        <div class="method-example-code">pod: <span style="color:var(--indigo)">search</span>-llm-<span style="color:var(--indigo)">prod</span>-v4<br>→ team: search-ai, env: production</div>
+      </div>
+      <div class="method-tags">
+        <span class="mtag" style="background:var(--indigo-lt);color:var(--indigo)">Pattern matching</span>
+        <span class="mtag" style="background:var(--indigo-lt);color:var(--indigo)">ML-trained</span>
+      </div>
+    </div>
+
+    <div class="method m-v">
+      <div class="method-icon">🗂️</div>
+      <h4>Namespace inheritance</h4>
+      <p>Propagates team and product tags from parent namespace to all resources within it — covering the most common gap where namespaces are tagged but pods are not.</p>
+      <div class="method-example">
+        <div class="method-example-lbl">Example rule</div>
+        <div class="method-example-code">namespace: team-inference<br>→ inherit: team=inference-eng</div>
+      </div>
+      <div class="method-tags">
+        <span class="mtag" style="background:var(--violet-lt);color:var(--violet)">Rule-based</span>
+        <span class="mtag" style="background:var(--violet-lt);color:var(--violet)">Automatic</span>
+      </div>
+    </div>
+
+    <div class="method m-c">
+      <div class="method-icon">🔑</div>
+      <h4>API key &amp; credential ownership</h4>
+      <p>Traces AI API calls back to the API key used — and maps API keys to their registered owner in your identity provider — attributing model spend that has no other tag signal.</p>
+      <div class="method-example">
+        <div class="method-example-lbl">Example signal</div>
+        <div class="method-example-code">api_key: sk-team-product-<br>search-prod<br>→ team: product, product: search</div>
+      </div>
+      <div class="method-tags">
+        <span class="mtag" style="background:var(--cyan-lt);color:var(--cyan)">Identity-linked</span>
+        <span class="mtag" style="background:var(--cyan-lt);color:var(--cyan)">SSO integration</span>
+      </div>
+    </div>
+
+    <div class="method m-l">
+      <div class="method-icon">💻</div>
+      <h4>Git repository ownership</h4>
+      <p>Maps container images back to their source git repositories via image labels or registry metadata — then infers team ownership from the repository's CODEOWNERS file or team membership.</p>
+      <div class="method-example">
+        <div class="method-example-lbl">Example signal</div>
+        <div class="method-example-code">image: ghcr.io/org/<span style="color:var(--lime)">search-team</span>/llm-serve<br>→ team: search-team (CODEOWNERS)</div>
+      </div>
+      <div class="method-tags">
+        <span class="mtag" style="background:var(--lime-lt);color:var(--lime)">GitHub/GitLab</span>
+        <span class="mtag" style="background:var(--lime-lt);color:var(--lime)">CODEOWNERS</span>
+      </div>
+    </div>
+
+    <div class="method m-a">
+      <div class="method-icon">🕐</div>
+      <h4>Usage pattern similarity</h4>
+      <p>Compares a new untagged resource's usage pattern — time of day, resource profile, request patterns — to known tagged resources to find similar workloads and infer likely ownership.</p>
+      <div class="method-example">
+        <div class="method-example-lbl">Example signal</div>
+        <div class="method-example-code">usage-pattern: matches<br>embed-svc-prod-v2 (94%)<br>→ inherit team:data-eng</div>
+      </div>
+      <div class="method-tags">
+        <span class="mtag" style="background:var(--amber-lt);color:var(--amber)">ML clustering</span>
+        <span class="mtag" style="background:var(--amber-lt);color:var(--amber)">Similarity search</span>
+      </div>
+    </div>
+
+    <div class="method m-co">
+      <div class="method-icon">🏛️</div>
+      <h4>IAM role &amp; account structure</h4>
+      <p>Infers team and environment from IAM role names, AWS account structure, Azure subscription hierarchy, and GCP project organisation — reflecting how your cloud governance model encodes ownership.</p>
+      <div class="method-example">
+        <div class="method-example-lbl">Example signal</div>
+        <div class="method-example-code">iam_role: search-team-prod-role<br>account: 112233 (search-production)<br>→ team: search, env: production</div>
+      </div>
+      <div class="method-tags">
+        <span class="mtag" style="background:var(--coral-lt);color:var(--coral)">AWS/Azure/GCP</span>
+        <span class="mtag" style="background:var(--coral-lt);color:var(--coral)">Hierarchy-aware</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── COVERAGE WIZARD ── -->
+<div class="wizard-section">
+  <div class="wizard-inner">
+    <div class="ey">Attribution coverage estimator</div>
+    <h2 class="sh">Estimate your coverage<br>improvement</h2>
+    <p class="sl">Adjust the sliders to match your current tagging state and see the projected attribution improvement from Virtual Tags and Smart Tagging.</p>
+    <div class="wizard-grid">
+      <div>
+        <div class="wizard-sliders">
+          <div>
+            <div class="wslider-label">Current tagging coverage<span id="lbl-current">44%</span></div>
+            <input type="range" class="wslider" id="sl-current" min="0" max="90" value="44" oninput="updateCalc()" />
+            <div class="wslider-desc">% of resources that have at least one meaningful tag today</div>
+          </div>
+          <div>
+            <div class="wslider-label">Naming convention consistency<span id="lbl-naming">60%</span></div>
+            <input type="range" class="wslider" id="sl-naming" min="0" max="100" value="60" oninput="updateCalc()" />
+            <div class="wslider-desc">% of resource names that follow a consistent pattern your team understands</div>
+          </div>
+          <div>
+            <div class="wslider-label">Namespace tag coverage<span id="lbl-ns">70%</span></div>
+            <input type="range" class="wslider" id="sl-ns" min="0" max="100" value="70" oninput="updateCalc()" />
+            <div class="wslider-desc">% of namespaces (or cloud accounts) that have team/product tags applied</div>
+          </div>
+          <div>
+            <div class="wslider-label">GitHub/GitLab integration<span id="lbl-git">Yes</span></div>
+            <input type="range" class="wslider" id="sl-git" min="0" max="1" value="1" step="1" oninput="updateCalc()" />
+            <div class="wslider-desc">Whether your container images can be traced back to source repositories</div>
+          </div>
+          <div>
+            <div class="wslider-label">SSO / identity provider connected<span id="lbl-sso">Yes</span></div>
+            <input type="range" class="wslider" id="sl-sso" min="0" max="1" value="1" step="1" oninput="updateCalc()" />
+            <div class="wslider-desc">Whether API keys and credentials are mapped to named individuals or teams</div>
+          </div>
+        </div>
+      </div>
+      <div class="coverage-result">
+        <div class="cr-title">Projected attribution coverage</div>
+        <div class="cr-big">
+          <div class="cr-big-val" id="result-pct">82%</div>
+          <div class="cr-big-lbl">Estimated coverage after Virtual Tags + Smart Tagging</div>
+        </div>
+        <div class="cr-breakdown">
+          <div class="cr-row">
+            <span class="cr-row-label">From existing tags</span>
+            <div class="cr-row-bar-wrap"><div class="cr-row-bar" id="bar-existing" style="width:49%;background:var(--lime)"></div></div>
+            <span class="cr-row-val" id="val-existing">44%</span>
+          </div>
+          <div class="cr-row">
+            <span class="cr-row-label">Namespace inheritance</span>
+            <div class="cr-row-bar-wrap"><div class="cr-row-bar" id="bar-ns" style="width:20%;background:var(--indigo)"></div></div>
+            <span class="cr-row-val" id="val-ns">18%</span>
+          </div>
+          <div class="cr-row">
+            <span class="cr-row-label">Naming inference</span>
+            <div class="cr-row-bar-wrap"><div class="cr-row-bar" id="bar-naming" style="width:10%;background:var(--violet)"></div></div>
+            <span class="cr-row-val" id="val-naming">9%</span>
+          </div>
+          <div class="cr-row">
+            <span class="cr-row-label">Git + SSO signals</span>
+            <div class="cr-row-bar-wrap"><div class="cr-row-bar" id="bar-git" style="width:12%;background:var(--cyan)"></div></div>
+            <span class="cr-row-val" id="val-git">11%</span>
+          </div>
+        </div>
+        <div class="cr-insight">
+          <div class="cr-insight-text" id="result-insight">Starting from 44% coverage, Smart Tagging and namespace inheritance typically lift you to 80%+ within 30 days. Virtual tags close the remaining gap to 95%+ over time.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── VIRTUAL TAG BUILDER ── -->
+<div class="builder-section">
+  <div class="builder-inner">
+    <div class="b-ey">Virtual tag rule types</div>
+    <h2 class="b-sh">Six rule types for any<br>attribution scenario</h2>
+    <p class="b-sl">Every virtual tag is defined by a rule that maps conditions to tag values. Six rule types cover every attribution scenario — from simple pattern matching to complex multi-condition logic.</p>
+    <div class="builder-grid">
+
+      <div class="rule-card">
+        <span class="rule-type" style="background:rgba(44,31,204,.25);color:#8880ff">Pattern match</span>
+        <h4>Resource name pattern</h4>
+        <p>Apply a virtual tag when a resource name matches a regex or wildcard pattern — the most common rule type for organisations with consistent naming conventions.</p>
+        <div class="rule-code">
+          <span class="rc-comment"># tag all pods with "search" in the name</span><br>
+          <span class="rc-key">if</span> resource.name <span class="rc-op">matches</span> <span class="rc-str">"*search*"</span>:<br>
+          &nbsp;&nbsp;<span class="rc-key">apply</span> product = <span class="rc-val">"search-ai"</span><br>
+          &nbsp;&nbsp;<span class="rc-key">apply</span> team = <span class="rc-val">"search-eng"</span>
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-type" style="background:rgba(109,31,212,.2);color:#b480ff">Inheritance</span>
+        <h4>Tag inheritance</h4>
+        <p>Propagate one or more tags from a parent resource (namespace, account, subscription) to all child resources — filling the most common gap automatically.</p>
+        <div class="rule-code">
+          <span class="rc-comment"># inherit from namespace to all pods</span><br>
+          <span class="rc-key">if</span> namespace.tag[<span class="rc-str">"team"</span>] exists:<br>
+          &nbsp;&nbsp;<span class="rc-key">inherit</span> team → all child pods<br>
+          &nbsp;&nbsp;<span class="rc-key">inherit</span> cost-centre → all child pods
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-type" style="background:rgba(0,151,178,.2);color:#60d8f0">Lookup table</span>
+        <h4>Lookup table mapping</h4>
+        <p>Map a specific tag value or resource attribute to a set of virtual tags using an uploaded CSV or inline mapping table — ideal for batch-correcting known mis-tagged resources.</p>
+        <div class="rule-code">
+          <span class="rc-comment"># map existing team names to cost centres</span><br>
+          <span class="rc-key">lookup</span> tag[<span class="rc-str">"team"</span>] in csv:<br>
+          &nbsp;&nbsp;search-eng → cc: <span class="rc-val">"cc-search"</span><br>
+          &nbsp;&nbsp;ml-platform → cc: <span class="rc-val">"cc-infra"</span>
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-type" style="background:rgba(61,140,0,.2);color:#90d460">Condition</span>
+        <h4>Multi-condition rule</h4>
+        <p>Apply virtual tags only when multiple conditions are all true — AND/OR logic across any combination of resource attributes, existing tags, cost thresholds, or time patterns.</p>
+        <div class="rule-code">
+          <span class="rc-comment"># tag large training jobs differently</span><br>
+          <span class="rc-key">if</span> resource.type == <span class="rc-str">"Job"</span><br>
+          &nbsp;&nbsp;<span class="rc-op">AND</span> resource.gpu_count > <span class="rc-val">4</span>:<br>
+          &nbsp;&nbsp;<span class="rc-key">apply</span> workload-tier = <span class="rc-val">"large-training"</span>
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-type" style="background:rgba(196,122,0,.2);color:#e0a830">Tiered</span>
+        <h4>Cost-threshold tiering</h4>
+        <p>Apply different virtual tag values based on a resource's monthly cost — automatically segmenting workloads into cost tiers for differentiated governance and reporting.</p>
+        <div class="rule-code">
+          <span class="rc-comment"># tier workloads by monthly cost</span><br>
+          <span class="rc-key">if</span> monthly_cost > <span class="rc-val">5000</span>:<br>
+          &nbsp;&nbsp;<span class="rc-key">apply</span> cost-tier = <span class="rc-val">"high"</span><br>
+          <span class="rc-key">elif</span> monthly_cost > <span class="rc-val">1000</span>:<br>
+          &nbsp;&nbsp;<span class="rc-key">apply</span> cost-tier = <span class="rc-val">"medium"</span>
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-type" style="background:rgba(212,58,31,.15);color:#e87060">Composite</span>
+        <h4>Composite tag assembly</h4>
+        <p>Build new virtual tag values by combining parts of existing tags or attributes — for example, assembling a unique workload identifier from team + product + environment.</p>
+        <div class="rule-code">
+          <span class="rc-comment"># build a composite workload ID</span><br>
+          <span class="rc-key">compose</span> workload-id =<br>
+          &nbsp;&nbsp;tag[<span class="rc-str">"team"</span>] + <span class="rc-str">"-"</span><br>
+          &nbsp;&nbsp;+ tag[<span class="rc-str">"product"</span>] + <span class="rc-str">"-"</span><br>
+          &nbsp;&nbsp;+ tag[<span class="rc-str">"env"</span>]
+        </div>
+      </div>
+
+    </div>
+    <div class="callout lime" style="margin-top:2rem;background:rgba(61,140,0,.15);border-left-color:#90d460">
+      <p style="color:#90d460">All virtual tag rules are version-controlled and retroactive — a new rule applies to your entire cost history immediately, not just future data. Every historical report updates automatically.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── TAG GOVERNANCE ── -->
+<div class="section fade-up">
+  <div class="ey">Tag governance</div>
+  <h2 class="sh">Tags only stay accurate<br>if they're <em>governed</em></h2>
+  <p class="sl">Creating tags is the first step. Keeping them accurate as your infrastructure evolves requires ongoing governance — automated enforcement, drift detection, and policy tools.</p>
+  <div class="gov-grid">
+    <div class="gov-card">
+      <div class="gov-icon">📋</div>
+      <h4>Required tag policies</h4>
+      <p>Define which tags are mandatory for all resources, per namespace, or per resource type. New resources missing required tags trigger immediate alerts — before cost accumulates unattributed.</p>
+    </div>
+    <div class="gov-card">
+      <div class="gov-icon">📉</div>
+      <h4>Coverage drift alerts</h4>
+      <p>Automated alerts when tag coverage drops below a configurable threshold — catching new untagged deployments within 15 minutes rather than discovering them in the next monthly report.</p>
+    </div>
+    <div class="gov-card">
+      <div class="gov-icon">🔄</div>
+      <h4>Tag standardisation enforcement</h4>
+      <p>Define allowed values for each tag key (e.g. environment must be "prod", "staging", or "dev" — not "production", "Production", or "prd") and auto-normalise non-standard values via virtual tag correction rules.</p>
+    </div>
+    <div class="gov-card">
+      <div class="gov-icon">📊</div>
+      <h4>Tag coverage reporting</h4>
+      <p>Per-namespace, per-team, and per-tag-key coverage reports showing attribution completeness, trend over time, and which resources are responsible for coverage gaps.</p>
+    </div>
+    <div class="gov-card">
+      <div class="gov-icon">🔗</div>
+      <h4>Inheritance chain visualiser</h4>
+      <p>See exactly where each virtual tag value came from — which rule applied it, which parent it was inherited from, and what confidence score the inference carried.</p>
+    </div>
+    <div class="gov-card">
+      <div class="gov-icon">⚡</div>
+      <h4>Terraform & IaC integration</h4>
+      <p>Optional: integrate with your Terraform or Helm workflows to validate that required tags are present before deployment — preventing gaps from entering production in the first place.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── PILLAR TABLE ── -->
+<div class="section fade-up">
+  <div class="ey">Platform integration</div>
+  <h2 class="sh">Tags power every platform pillar.<br><em>Better tags = better everything.</em></h2>
+  <p class="sl">Tag coverage is foundational — every platform capability works better when every resource is accurately attributed. Virtual Tags and Smart Tagging multiply the value of the entire platform.</p>
+  <table class="ptable">
+    <thead>
+      <tr><th>Pillar</th><th>How tagging improves this capability</th><th>Concrete outcome</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="p-pill" style="background:var(--indigo-lt);color:var(--indigo)">📡 Monitoring</span></td>
+        <td>Every monitoring dashboard, alert, and anomaly detection rule filters by tags. Without accurate tags, cost spikes appear as unattributed line items — impossible to route to the right team. With 90%+ coverage from Virtual Tags and Smart Tagging, every monitoring signal is immediately routable to an owner.</td>
+        <td>Anomaly alerts contain the owning team's name, not just a resource ID. Teams see only their own cost data in monitoring dashboards. Finance reports categorise correctly on day one.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--lime-lt);color:var(--lime)">⚙️ Optimization</span></td>
+        <td>Right-sizing recommendations and model routing suggestions are ranked by savings impact within their team or product scope. Without accurate team attribution, the highest-value recommendation for a team may be invisible in their view because the resource appears unattributed. Virtual Tags fix this immediately.</td>
+        <td>Every optimisation recommendation is shown to the team who needs to approve it. Savings are reported by team and product line. FinOps can prioritise actions by business unit impact.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--cyan-lt);color:var(--cyan)">🔀 Orchestration</span></td>
+        <td>Orchestration routing policies and data residency enforcement reference tags to decide where workloads run. A workload tagged with "data-residency: eu" will only be routed to EU regions. Workloads with no team tag cannot be subject to team-level budget guardrails. Smart Tagging ensures these policies have full coverage.</td>
+        <td>Data residency tags apply to 100% of workloads — not just the ones engineers remembered to tag. Budget guardrails apply to every team's compute, not just the tagged subset.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--violet-lt);color:var(--violet)">🗑️ Waste elimination</span></td>
+        <td>Waste elimination actions require ownership attribution to route approval requests to the right person. An idle pod with no team tag cannot be automatically assigned to a team for approval — it sits in the "unowned" waste bucket with no action. Virtual Tags close this gap, making automated waste workflows work for 95%+ of identified waste rather than just the tagged fraction.</td>
+        <td>Every waste item has an owner. Automated cleanup approvals route to the right team lead. Monthly waste reports show savings by team and product line — not just totals.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="div" />
+
+<!-- ── TESTIMONIALS ── -->
+<div class="section fade-up">
+  <div class="ey">Customer stories</div>
+  <h2 class="sh">What teams say after<br>fixing their tagging</h2>
+  <div class="testi-grid">
+    <div class="testi">
+      <p class="testi-q">We had a "fix the tagging" initiative that had been on the engineering backlog for 18 months. Smart Tagging achieved in two weeks what that initiative couldn't achieve in a year and a half. We went from 38% attribution to 84% without a single engineering sprint. The virtual tag rules closed the remaining gap in another week.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--indigo-lt);color:var(--indigo)">RS</div>
+        <div><div class="testi-name">Rohit Sharma</div><div class="testi-role">Head of Platform Engineering · Series B AI Company (Pune)</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">The retroactive application of virtual tags was the feature that changed everything for us. We had two years of cost history that was 60% unattributed. After building our virtual tag rules, we could suddenly see two years of per-team, per-product cost history — as if we'd always had perfect tagging. Our CFO was genuinely surprised when we showed her the report.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--lime-lt);color:var(--lime)">PK</div>
+        <div><div class="testi-name">Pooja Krishnan</div><div class="testi-role">Head of AI FinOps · Enterprise Technology Firm</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">The tag governance policies prevented more untagged resources from accumulating while we cleaned up the existing backlog. Coverage drift alerts fired within 15 minutes of any new untagged deployment — so our ops team could fix it before it was even visible in cost reports. It's the first time tagging has actually stuck in our organisation.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--cyan-lt);color:var(--cyan)">AM</div>
+        <div><div class="testi-name">Aditya Mehta</div><div class="testi-role">Cloud FinOps Lead · Global B2B SaaS (Bengaluru)</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── FAQ ── -->
+<div class="section fade-up">
+  <div class="ey">FAQ</div>
+  <h2 class="sh">Common questions</h2>
+  <div class="faq-list">
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Do Virtual Tags ever modify my actual cloud resources or Kubernetes manifests?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Never. Virtual Tags exist exclusively within the AIFinOps platform — they are applied to cost data in our platform's data model and never written back to your cloud resources, Kubernetes resource definitions, Terraform state, or any infrastructure component. If you disconnect AIFinOps, your resources retain exactly the tags they had before. Virtual Tags are additive and non-destructive by design.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How do Smart Tagging inferences handle conflicts with existing tags?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Existing real tags always take precedence over Smart Tagging inferences by default. If a resource already has a "team: search" tag, Smart Tagging will not overwrite it — it will only infer values for tag dimensions that are missing. You can configure override behaviour per rule type: some organisations prefer smart inferences to correct known mis-tagged resources (e.g. "team: Team-Search" normalised to "team: search"). Any override requires explicit configuration and is versioned in the audit trail.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Do virtual tag rules apply to historical cost data?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes — retroactive application is a core feature. When you create or modify a virtual tag rule, it applies to all historical cost data in your connected accounts (up to your data retention limit). This means you can "rewrite" your cost history immediately — a rule created today will show correct attribution on reports going back months or years. Retroactive application typically completes within minutes for most data sets and within a few hours for very large historical datasets.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How accurate is the Smart Tagging inference, and can I control what gets auto-applied?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Across our customer base, Smart Tagging achieves 88% accuracy on inferences applied with confidence ≥ 90%. You control the confidence threshold for auto-application — the default is 90% (auto-apply) vs below 90% (queue for review). You can raise the threshold for any tag dimension, or set all inferences to require human approval. Every inference that is applied is logged with its confidence score and the signals that drove it, so you have a full audit trail of every tag value's provenance.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can virtual tags be used for more than cost attribution — like governance and compliance?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes. Virtual Tags can carry any metadata relevant to your governance model, not just team and product attribution. Common governance use cases include: data residency tags (for routing and compliance enforcement), sensitivity classification tags (for access control policies), compliance scope tags (for HIPAA or SOX workload identification), and strategic initiative tags (for board-level investment tracking). Any virtual tag dimension you define can be used in platform policies, routing rules, budget guardrails, and reports.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA ── -->
+<section class="cta">
+  <div class="cta-corner tl"></div>
+  <div class="cta-corner br"></div>
+  <div class="cta-inner">
+    <h2>Fix your attribution.<br><span class="accent">Tag everything.</span><br>Know who owns what.</h2>
+    <p>Connect your accounts and see your current tag coverage in under 5 minutes — then watch Smart Tagging close the gaps automatically from day one.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-white">See your attribution gaps free</a>
+      <a href="#" class="btn-ghost2">// browse virtual tag templates →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* Virtual vs Smart tab switcher */
+  function switchVS(id, btn) {
+    document.querySelectorAll('.vs-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.vstab').forEach(t => t.classList.remove('active'));
+    document.getElementById('vs-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  /* Coverage calculator */
+  function updateCalc() {
+    const current = parseInt(document.getElementById('sl-current').value);
+    const naming  = parseInt(document.getElementById('sl-naming').value);
+    const ns      = parseInt(document.getElementById('sl-ns').value);
+    const git     = parseInt(document.getElementById('sl-git').value);
+    const sso     = parseInt(document.getElementById('sl-sso').value);
+
+    document.getElementById('lbl-current').textContent = current + '%';
+    document.getElementById('lbl-naming').textContent  = naming + '%';
+    document.getElementById('lbl-ns').textContent      = ns + '%';
+    document.getElementById('lbl-git').textContent     = git ? 'Yes' : 'No';
+    document.getElementById('lbl-sso').textContent     = sso ? 'Yes' : 'No';
+
+    const fromExisting = current;
+    const fromNs       = Math.round((100 - current) * (ns / 100) * 0.62);
+    const fromNaming   = Math.round((100 - current - fromNs) * (naming / 100) * 0.28);
+    const fromGitSso   = Math.round((100 - current - fromNs - fromNaming) * (git + sso) / 2 * 0.34);
+    const total = Math.min(97, fromExisting + fromNs + fromNaming + fromGitSso);
+
+    document.getElementById('result-pct').textContent = total + '%';
+    document.getElementById('val-existing').textContent = fromExisting + '%';
+    document.getElementById('val-ns').textContent       = fromNs + '%';
+    document.getElementById('val-naming').textContent   = fromNaming + '%';
+    document.getElementById('val-git').textContent      = fromGitSso + '%';
+
+    document.getElementById('bar-existing').style.width = (fromExisting / 1.1) + '%';
+    document.getElementById('bar-ns').style.width       = (fromNs / 1.1) + '%';
+    document.getElementById('bar-naming').style.width   = (fromNaming / 1.1) + '%';
+    document.getElementById('bar-git').style.width      = (fromGitSso / 1.1) + '%';
+
+    let insight = '';
+    if (total >= 90) insight = `With ${current}% existing coverage and strong infrastructure signals, you can expect ${total}% attribution within 30 days — close to complete. Virtual tag rules will close the remaining gap.`;
+    else if (total >= 75) insight = `Starting from ${current}% coverage, Smart Tagging and namespace inheritance will lift you to ${total}%. Enabling the remaining integrations will push you above 90%.`;
+    else insight = `From ${current}% coverage, you're projected to reach ${total}%. Connecting your identity provider and improving namespace tagging would significantly accelerate coverage improvement.`;
+    document.getElementById('result-insight').textContent = insight;
+  }
+
+  /* FAQ */
+  function tfq(btn) {
+    const item = btn.closest('.fq');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.fq.open').forEach(i => i.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  }
+
+  /* Scroll animations */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
