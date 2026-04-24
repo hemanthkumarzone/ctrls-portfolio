@@ -14,16 +14,11 @@ const ServiceCard = ({ icon, emoji, title, description }: Props) => {
     "Category Views": "category-views",
     "Reporting": "reporting",
     "Cost Analyzer": "cost-analyzer",
-    
+    "Forecasting": "predictive-cost-forecasting ",
     "K8s Cost Observability": "k8s-cost-observability-attribution",
-    
+    "Budgeting": "budgeting",
     "Recommendations": "right-size-recommendations",
     "Anomaly Detection": "anomaly-detection-circuit-breakers",
-    
-    
-    
-    
-    
     "Virtual Tags": "virtual-tags-smart-tagging",
     "Cost Allocation": "cost-allocation",
     "Unit Economics" : "unit-economics"

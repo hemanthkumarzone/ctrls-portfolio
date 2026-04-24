@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Budgeting — AI FinOps Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bone:    #f6f3ee;
+      --white:   #ffffff;
+      --linen:   #ede9e1;
+      --linen2:  #e2ddd4;
+      --linen3:  #d4cfc5;
+      --ink:     #1a140e;
+      --ink2:    #352a20;
+      --ink3:    #6b5c4e;
+      --ink4:    #9e8e80;
+      --ink5:    #c8bdb2;
+      --rule:    rgba(26,20,14,.08);
+      --rule2:   rgba(26,20,14,.16);
+
+      /* Burgundy / wine signature */
+      --wine:    #7a1c2e;
+      --wine2:   #9b2540;
+      --wine-lt: #fce8ec;
+      --wine-gl: rgba(122,28,46,.1);
+
+      /* Copper / gold accent */
+      --copper:  #b06820;
+      --copper2: #c97d2e;
+      --cop-lt:  #fdf0e0;
+
+      /* supporting */
+      --teal:    #0d6b60;
+      --teal-lt: #d0f0ec;
+      --slate:   #1e3a5f;
+      --slate-lt:#dce8f8;
+      --sage:    #3a6b3a;
+      --sage-lt: #dcf0dc;
+      --rose:    #c44040;
+      --rose-lt: #fce8e8;
+
+      --r:    5px;
+      --r-lg: 12px;
+      --r-xl: 20px;
+      --man:  'Manrope', system-ui, sans-serif;
+      --play: 'Playfair Display', Georgia, serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--man); background: var(--bone); color: var(--ink); line-height: 1.65; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(246,243,238,.95); backdrop-filter: blur(14px);
+      border-bottom: 2px solid var(--wine);
+      height: 56px; padding: 0 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { font-family: var(--man); font-size: 17px; font-weight: 800; color: var(--ink); text-decoration: none; letter-spacing: -.02em; }
+    .nav-brand em { font-style: normal; color: var(--wine); }
+    .nav-bc { font-size: 12px; color: var(--ink3); display: flex; align-items: center; gap: 7px; }
+    .nav-bc strong { color: var(--ink2); font-weight: 600; }
+    .nav-bc .sep { color: var(--ink5); }
+    .nav-cta { font-size: 13px; font-weight: 700; color: var(--white); background: var(--wine); padding: 8px 22px; border-radius: var(--r); text-decoration: none; transition: background .15s; }
+    .nav-cta:hover { background: var(--wine2); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--ink);
+      overflow: hidden; position: relative;
+    }
+    /* Ledger lines texture */
+    .hero-ledger {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(246,243,238,.04) 1px, transparent 1px);
+      background-size: 100% 48px;
+      pointer-events: none;
+    }
+    /* Copper glow accent */
+    .hero-glow {
+      position: absolute; top: -180px; right: -60px;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(176,104,32,.1) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    /* Large serif $ watermark */
+    .hero-wm {
+      position: absolute; right: -30px; bottom: -100px;
+      font-family: var(--play); font-size: 520px; font-weight: 700;
+      color: rgba(246,243,238,.025); line-height: 1;
+      user-select: none; pointer-events: none;
+    }
+    /* Top accent stripe */
+    .hero-stripe {
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--wine) 0%, var(--copper) 50%, transparent 100%);
+    }
+
+    .hero-inner {
+      max-width: 1080px; margin: 0 auto;
+      padding: 5.5rem 2.5rem 0;
+      display: grid; grid-template-columns: 1fr 460px;
+      gap: 4rem; align-items: end;
+      position: relative; z-index: 1;
+    }
+    @media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; padding-bottom: 3rem; } }
+
+    .hero-text { padding-bottom: 5rem; }
+    .hero-kicker {
+      font-size: 11px; font-weight: 700; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--copper2);
+      margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;
+    }
+    .hero-kicker::before { content: ''; width: 28px; height: 2px; background: var(--copper); }
+
+    .hero h1 {
+      font-family: var(--play);
+      font-size: clamp(38px, 6.5vw, 72px);
+      font-weight: 700; color: var(--bone);
+      line-height: .98; letter-spacing: -.01em; margin-bottom: 1.5rem;
+    }
+    .hero h1 em { font-style: italic; color: #d4a98a; font-weight: 400; }
+    .hero h1 .line-copper { color: var(--copper2); display: block; }
+
+    .hero-lead { font-size: 16px; color: var(--ink4); line-height: 1.82; max-width: 460px; margin-bottom: 2.5rem; }
+    .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 3rem; }
+    .btn-wine { font-size: 13px; font-weight: 700; color: var(--white); background: var(--wine); padding: 11px 26px; border-radius: var(--r); text-decoration: none; transition: background .15s; }
+    .btn-wine:hover { background: var(--wine2); }
+    .btn-ghost { font-size: 13px; font-weight: 500; color: var(--ink4); background: transparent; padding: 11px 24px; border-radius: var(--r); border: 1px solid rgba(246,243,238,.15); text-decoration: none; transition: all .15s; }
+    .btn-ghost:hover { color: var(--bone); border-color: rgba(246,243,238,.32); }
+
+    /* hero stat row */
+    .hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+    .hstat { border-left: 2px solid rgba(176,104,32,.5); padding-left: 1rem; }
+    .hstat-val { font-family: var(--play); font-size: 26px; font-weight: 400; font-style: italic; color: var(--bone); line-height: 1; margin-bottom: 3px; }
+    .hstat-val strong { font-style: normal; font-weight: 700; color: var(--copper2); }
+    .hstat-lbl { font-size: 11px; color: var(--ink4); }
+
+    /* ── HERO VISUAL — budget tracker ── */
+    .hero-budget {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(246,243,238,.1);
+      border-bottom: none;
+      border-radius: var(--r-xl) var(--r-xl) 0 0;
+      padding: 1.5rem;
+      font-family: var(--man);
+    }
+    .hb-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .hb-title { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink4); }
+    .hb-period { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(176,104,32,.2); color: var(--copper2); border: 1px solid rgba(176,104,32,.25); }
+
+    /* budget vs actual bars */
+    .hb-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.25rem; }
+    .hb-item {}
+    .hb-item-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+    .hb-item-name { font-size: 11px; font-weight: 600; color: var(--bone); }
+    .hb-item-vals { font-size: 10px; color: var(--ink4); }
+    .hb-item-vals span { font-weight: 600; }
+    .hb-track { height: 6px; background: rgba(255,255,255,.08); border-radius: 3px; position: relative; overflow: hidden; }
+    .hb-budget-bar { position: absolute; left: 0; top: 0; height: 100%; border-radius: 3px; opacity: .3; }
+    .hb-actual-bar { position: absolute; left: 0; top: 0; height: 100%; border-radius: 3px; }
+
+    .hb-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+    .hb-kpi { background: rgba(255,255,255,.06); border-radius: var(--r); padding: .5rem .625rem; text-align: center; }
+    .hb-kpi-val { font-size: 14px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
+    .hb-kpi-lbl { font-size: 9px; color: var(--ink4); text-transform: uppercase; letter-spacing: .05em; }
+
+    /* ── METRICS BAND ── */
+    .metrics { background: var(--ink2); border-top: 1px solid rgba(246,243,238,.06); border-bottom: 1px solid rgba(246,243,238,.06); }
+    .metrics-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+    .mc { padding: 1.75rem 1.25rem; text-align: center; border-right: 1px solid rgba(246,243,238,.06); }
+    .mc:last-child { border-right: none; }
+    .mc-val { font-family: var(--play); font-size: 28px; font-weight: 400; font-style: italic; line-height: 1; margin-bottom: 5px; }
+    .mc-lbl { font-size: 11px; color: var(--ink4); line-height: 1.4; }
+
+    /* ── SECTION ── */
+    .section { max-width: 1080px; margin: 0 auto; padding: 5rem 2.5rem; }
+    .ey { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--wine); display: flex; align-items: center; gap: 10px; margin-bottom: .65rem; }
+    .ey::before { content: ''; width: 20px; height: 2px; background: var(--wine); }
+    .sh { font-family: var(--play); font-size: clamp(26px, 4.5vw, 46px); font-weight: 700; color: var(--ink); line-height: 1.12; margin-bottom: .75rem; }
+    .sh em { font-style: italic; color: var(--wine); font-weight: 400; }
+    .sh strong { font-weight: 700; }
+    .sl { font-size: 15px; color: var(--ink3); line-height: 1.8; max-width: 580px; margin-bottom: 2.5rem; }
+    hr.div { border: none; border-top: 1px solid var(--rule); max-width: 1080px; margin: 0 auto; }
+
+    /* ── WHY BUDGETING ── */
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    @media (max-width: 700px) { .why-grid { grid-template-columns: 1fr; } }
+    .why-text p { font-size: 14px; color: var(--ink2); line-height: 1.85; margin-bottom: 1rem; }
+    .callout { border-left: 3px solid var(--wine); background: var(--wine-lt); border-radius: 0 var(--r) var(--r) 0; padding: .875rem 1.1rem; margin: 1.25rem 0; }
+    .callout p { font-size: 13px; color: var(--wine); line-height: 1.65; margin: 0; }
+    .callout.copper { border-left-color: var(--copper); background: var(--cop-lt); }
+    .callout.copper p { color: var(--copper); }
+    .callout.teal { border-left-color: var(--teal); background: var(--teal-lt); }
+    .callout.teal p { color: var(--teal); }
+    .callout.sage { border-left-color: var(--sage); background: var(--sage-lt); }
+    .callout.sage p { color: var(--sage); }
+
+    .why-pain { display: flex; flex-direction: column; gap: 10px; }
+    .pain-card { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-xl); padding: 1.25rem; display: flex; gap: 14px; align-items: flex-start; transition: border-color .15s; }
+    .pain-card:hover { border-color: var(--rule2); }
+    .pain-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+    .pain-card h5 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+    .pain-card p  { font-size: 12px; color: var(--ink3); line-height: 1.55; }
+
+    /* ── BUDGET TYPES ── */
+    .btype-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .btype {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); padding: 1.75rem;
+      position: relative; overflow: hidden;
+      transition: border-color .2s, transform .2s;
+    }
+    .btype:hover { border-color: var(--rule2); transform: translateY(-2px); }
+    .btype::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+    .bt-wine::before    { background: var(--wine); }
+    .bt-copper::before  { background: var(--copper); }
+    .bt-teal::before    { background: var(--teal); }
+    .bt-slate::before   { background: var(--slate); }
+    .bt-sage::before    { background: var(--sage); }
+    .bt-rose::before    { background: var(--rose); }
+    .btype-num { font-family: var(--play); font-size: 52px; font-weight: 700; font-style: italic; line-height: 1; opacity: .08; margin-bottom: 6px; }
+    .btype h4 { font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -.02em; margin-bottom: 6px; }
+    .btype-who { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+    .btype p  { font-size: 12px; color: var(--ink3); line-height: 1.65; margin-bottom: 12px; }
+    .btype-features { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .btype-feat { font-size: 12px; color: var(--ink3); display: flex; gap: 8px; align-items: flex-start; line-height: 1.4; }
+    .btype-feat::before { content: '—'; flex-shrink: 0; color: var(--ink5); }
+    .btype-badge { font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 20px; display: inline-block; }
+
+    /* ── BUDGET BUILDER SECTION ── */
+    .builder-section { background: var(--linen); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 5rem 2.5rem; }
+    .builder-inner { max-width: 1080px; margin: 0 auto; }
+    .builder-grid { display: grid; grid-template-columns: 1fr 460px; gap: 4rem; align-items: start; }
+    @media (max-width: 780px) { .builder-grid { grid-template-columns: 1fr; } }
+
+    /* builder steps */
+    .builder-steps { display: flex; flex-direction: column; gap: 0; }
+    .bstep { display: grid; grid-template-columns: 44px 1fr; gap: 16px; padding: 1.5rem 0; border-bottom: 1px solid var(--rule); }
+    .bstep:last-child { border-bottom: none; }
+    .bstep-num { width: 32px; height: 32px; border-radius: 50%; background: var(--wine); color: var(--white); font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .bstep h4 { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 5px; letter-spacing: -.01em; }
+    .bstep p  { font-size: 13px; color: var(--ink3); line-height: 1.7; }
+
+    /* budget card preview */
+    .budget-card {
+      background: var(--white); border: 1px solid var(--rule);
+      border-radius: var(--r-xl); overflow: hidden;
+      box-shadow: 0 4px 24px rgba(26,20,14,.08);
+    }
+    .bc-head { background: var(--ink); padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; }
+    .bc-head-title { font-family: var(--play); font-size: 14px; font-style: italic; font-weight: 400; color: var(--bone); }
+    .bc-head-badge { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(176,104,32,.25); color: var(--copper2); }
+    .bc-body { padding: 1.25rem; }
+    .bc-overview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1.25rem; }
+    .bc-kpi { background: var(--bone); border-radius: var(--r-lg); padding: .875rem; }
+    .bc-kpi-val { font-family: var(--play); font-size: 22px; font-weight: 700; line-height: 1; margin-bottom: 3px; }
+    .bc-kpi-lbl { font-size: 10px; color: var(--ink4); line-height: 1.3; }
+    .bc-section-title { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink4); margin-bottom: .875rem; }
+    .bc-lines { display: flex; flex-direction: column; gap: 0; }
+    .bc-line { display: grid; grid-template-columns: 1fr 72px 72px 70px; gap: 8px; align-items: center; padding: .625rem 0; border-bottom: 1px solid var(--rule); font-size: 12px; }
+    .bc-line:last-child { border-bottom: none; }
+    .bc-line.header { font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--ink4); padding-bottom: .5rem; }
+    .bc-line-name { color: var(--ink); font-weight: 600; }
+    .bc-line-budget { color: var(--ink3); text-align: right; }
+    .bc-line-actual { text-align: right; font-weight: 600; }
+    .bc-line-var { text-align: right; font-weight: 700; }
+    .bc-line .var-over  { color: var(--rose); }
+    .bc-line .var-under { color: var(--sage); }
+    .bc-line .var-track { color: var(--ink3); }
+    .bc-gauge-row { margin-top: 1rem; }
+    .bc-gauge-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink3); margin-bottom: 5px; }
+    .bc-gauge-track { height: 8px; background: var(--linen); border-radius: 4px; overflow: hidden; }
+    .bc-gauge-fill { height: 100%; border-radius: 4px; transition: width .5s; }
+    .bc-footer { padding: .875rem 1.25rem; background: var(--bone); border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; }
+    .bc-foot-lbl { font-size: 11px; color: var(--ink4); }
+    .bc-foot-exports { display: flex; gap: 6px; }
+    .bc-exp { font-size: 10px; font-weight: 600; padding: 4px 10px; border-radius: var(--r); background: var(--white); border: 1px solid var(--rule2); color: var(--ink3); cursor: pointer; transition: all .15s; }
+    .bc-exp:hover { border-color: var(--wine); color: var(--wine); }
+
+    /* ── VARIANCE TRACKER (interactive) ── */
+    .variance-section { background: var(--wine); padding: 5rem 2.5rem; }
+    .var-inner { max-width: 1080px; margin: 0 auto; }
+    .var-ey { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--copper2); display: flex; align-items: center; gap: 10px; margin-bottom: .65rem; }
+    .var-ey::before { content: ''; width: 20px; height: 2px; background: var(--copper); }
+    .var-sh { font-family: var(--play); font-size: clamp(26px, 4.5vw, 44px); font-weight: 700; color: var(--bone); line-height: 1.12; margin-bottom: .75rem; }
+    .var-sh em { font-style: italic; color: #d4a98a; font-weight: 400; }
+    .var-sl { font-size: 15px; color: rgba(246,243,238,.6); line-height: 1.8; max-width: 560px; margin-bottom: 3rem; }
+
+    .var-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+    .var-card {
+      background: rgba(246,243,238,.08);
+      border: 1px solid rgba(246,243,238,.12);
+      border-radius: var(--r-xl); padding: 1.5rem;
+      transition: background .15s;
+    }
+    .var-card:hover { background: rgba(246,243,238,.12); }
+    .var-icon { font-size: 24px; margin-bottom: 10px; }
+    .var-card h4 { font-size: 14px; font-weight: 700; color: var(--bone); letter-spacing: -.02em; margin-bottom: 6px; }
+    .var-card p  { font-size: 12px; color: rgba(246,243,238,.6); line-height: 1.65; margin-bottom: 10px; }
+    .var-example { background: rgba(0,0,0,.2); border-radius: var(--r); padding: .625rem .875rem; }
+    .var-ex-label { font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(246,243,238,.4); margin-bottom: 4px; }
+    .var-ex-val { font-family: var(--play); font-size: 18px; font-style: italic; font-weight: 400; color: var(--bone); }
+    .var-ex-status { font-size: 10px; font-weight: 600; margin-top: 3px; }
+
+    /* ── GUARDRAILS ── */
+    .guardrail-section { background: var(--white); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 5rem 2.5rem; }
+    .gr-inner { max-width: 1080px; margin: 0 auto; }
+    .gr-grid { display: grid; grid-template-columns: 1fr 420px; gap: 4rem; align-items: start; }
+    @media (max-width: 780px) { .gr-grid { grid-template-columns: 1fr; } }
+
+    .guardrail-types { display: flex; flex-direction: column; gap: 12px; }
+    .gr-card { background: var(--bone); border: 1px solid var(--rule); border-radius: var(--r-xl); padding: 1.25rem; display: flex; gap: 14px; align-items: flex-start; transition: border-color .15s; }
+    .gr-card:hover { border-color: var(--rule2); }
+    .gr-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+    .gr-card h4 { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .gr-card p  { font-size: 12px; color: var(--ink3); line-height: 1.6; }
+
+    /* guardrail alert visual */
+    .gr-visual { background: var(--ink); border-radius: var(--r-xl); overflow: hidden; }
+    .grv-head { padding: .875rem 1.25rem; background: rgba(246,243,238,.05); border-bottom: 1px solid rgba(246,243,238,.07); display: flex; justify-content: space-between; align-items: center; }
+    .grv-title { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink4); }
+    .grv-live  { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: rgba(176,104,32,.2); color: var(--copper2); }
+    .grv-alerts { padding: .875rem; display: flex; flex-direction: column; gap: 8px; }
+    .grv-alert { border-radius: var(--r-lg); padding: .75rem 1rem; display: flex; gap: 10px; align-items: flex-start; border: 1px solid transparent; }
+    .grv-alert.crit { background: rgba(196,64,64,.1); border-color: rgba(196,64,64,.2); }
+    .grv-alert.warn { background: rgba(176,104,32,.1); border-color: rgba(176,104,32,.2); }
+    .grv-alert.info { background: rgba(13,107,96,.1); border-color: rgba(13,107,96,.2); }
+    .grv-alert.ok   { background: rgba(58,107,58,.1); border-color: rgba(58,107,58,.2); }
+    .grv-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+    .crit .grv-dot { background: var(--rose); box-shadow: 0 0 6px rgba(196,64,64,.5); }
+    .warn .grv-dot { background: var(--copper2); }
+    .info .grv-dot { background: #2dd4bf; }
+    .ok   .grv-dot { background: #4ade80; }
+    .grv-alert-name { font-size: 11px; font-weight: 700; color: var(--bone); margin-bottom: 2px; }
+    .grv-alert-desc { font-size: 10px; color: var(--ink4); line-height: 1.4; }
+    .grv-alert-val  { font-size: 12px; font-weight: 700; color: var(--bone); margin-left: auto; white-space: nowrap; padding-left: 8px; flex-shrink: 0; }
+    .grv-footer { padding: .875rem 1.25rem; border-top: 1px solid rgba(246,243,238,.07); display: flex; justify-content: space-between; font-size: 11px; color: var(--ink4); }
+
+    /* ── BUDGET HIERARCHY ── */
+    .hier-section { background: var(--linen); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 5rem 2.5rem; }
+    .hier-inner { max-width: 1080px; margin: 0 auto; }
+    .hier-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    @media (max-width: 700px) { .hier-grid { grid-template-columns: 1fr; } }
+    .hier-text p { font-size: 14px; color: var(--ink2); line-height: 1.85; margin-bottom: 1rem; }
+
+    /* hierarchy tree */
+    .hier-tree { display: flex; flex-direction: column; gap: 6px; }
+    .ht-level { border-radius: var(--r-xl); padding: .875rem 1.125rem; border: 1px solid transparent; position: relative; display: flex; align-items: center; justify-content: space-between; transition: border-color .15s; }
+    .ht-level:hover { border-color: var(--rule2); }
+    .ht-l0 { background: var(--wine); border-color: var(--wine)!important; }
+    .ht-l1 { background: var(--white); border-color: var(--rule); margin-left: 1.25rem; }
+    .ht-l2 { background: var(--bone); border-color: var(--rule); margin-left: 2.5rem; }
+    .ht-l3 { background: var(--bone); border-color: var(--rule); margin-left: 3.75rem; }
+    .ht-connector { position: absolute; left: -16px; top: 50%; width: 12px; height: 1px; background: var(--rule2); }
+    .ht-label { font-size: 12px; font-weight: 700; letter-spacing: -.01em; }
+    .ht-l0 .ht-label { color: var(--white); }
+    .ht-l1 .ht-label, .ht-l2 .ht-label, .ht-l3 .ht-label { color: var(--ink); }
+    .ht-sub { font-size: 10px; color: var(--ink4); margin-top: 1px; }
+    .ht-l0 .ht-sub { color: rgba(246,243,238,.6); }
+    .ht-values { text-align: right; flex-shrink: 0; }
+    .ht-budget { font-size: 12px; font-weight: 700; }
+    .ht-l0 .ht-budget { color: var(--copper2); }
+    .ht-pct { font-size: 10px; color: var(--ink4); }
+    .ht-l0 .ht-pct { color: rgba(246,243,238,.5); }
+
+    /* ── PILLAR TABLE ── */
+    .ptable { width: 100%; border-collapse: collapse; }
+    .ptable thead th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink4); border-bottom: 2px solid var(--rule2); background: var(--linen); }
+    .ptable thead th:first-child { border-radius: var(--r) 0 0 0; }
+    .ptable thead th:last-child  { border-radius: 0 var(--r) 0 0; }
+    .ptable tbody tr { border-bottom: 1px solid var(--rule); transition: background .1s; }
+    .ptable tbody tr:hover { background: var(--linen); }
+    .ptable tbody td { padding: 13px 14px; font-size: 13px; color: var(--ink2); vertical-align: top; }
+    .ptable tbody td:first-child { color: var(--ink); font-weight: 700; }
+    .p-pill { font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; }
+
+    /* ── APPROVAL WORKFLOW ── */
+    .approval-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0; border: 1px solid var(--rule2); border-radius: var(--r-xl); overflow: hidden; }
+    .ap-step { padding: 1.75rem; border-right: 1px solid var(--rule); background: var(--white); transition: background .15s; }
+    .ap-step:hover { background: var(--bone); }
+    .ap-step:last-child { border-right: none; }
+    .ap-num { width: 32px; height: 32px; border-radius: 50%; background: var(--wine); color: var(--white); font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+    .ap-step h4 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+    .ap-step p  { font-size: 11px; color: var(--ink3); line-height: 1.6; }
+    .ap-badge   { font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: var(--r); margin-top: 8px; display: inline-block; }
+    @media (max-width: 640px) { .approval-grid { grid-template-columns: 1fr; } .ap-step { border-right: none; border-bottom: 1px solid var(--rule); } .ap-step:last-child { border-bottom: none; } }
+
+    /* ── TESTI ── */
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+    .testi { background: var(--white); border: 1px solid var(--rule); border-radius: var(--r-xl); padding: 1.75rem; }
+    .testi-q { font-family: var(--play); font-size: 15px; font-style: italic; font-weight: 400; color: var(--ink); line-height: 1.68; margin-bottom: 1.25rem; }
+    .testi-q::before { content: '\201C'; color: var(--wine); font-size: 26px; line-height: 0; vertical-align: -6px; margin-right: 2px; font-style: normal; }
+    .testi-meta { display: flex; align-items: center; gap: 12px; }
+    .testi-av { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .testi-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .testi-role { font-size: 11px; color: var(--ink4); }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; max-width: 700px; }
+    .fq { border-bottom: 1px solid var(--rule); }
+    .fq:first-child { border-top: 1px solid var(--rule); }
+    .fq-q { width: 100%; text-align: left; background: transparent; border: none; padding: 1.1rem 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem; cursor: pointer; font-family: var(--play); font-size: 16px; font-weight: 400; color: var(--ink); line-height: 1.4; }
+    .fq-q:hover { color: var(--wine); }
+    .fq-ico { width: 22px; height: 22px; border-radius: 50%; background: var(--linen); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; color: var(--ink3); transition: transform .2s, background .2s; }
+    .fq.open .fq-ico { transform: rotate(45deg); background: var(--wine-lt); color: var(--wine); }
+    .fq-a { display: none; padding: 0 0 1.1rem; font-size: 13px; color: var(--ink3); line-height: 1.8; }
+    .fq.open .fq-a { display: block; }
+
+    /* ── CTA ── */
+    .cta { background: var(--ink); padding: 6rem 2.5rem; text-align: center; position: relative; overflow: hidden; }
+    .cta-ledger { position: absolute; inset: 0; background-image: linear-gradient(rgba(246,243,238,.03) 1px, transparent 1px); background-size: 100% 48px; }
+    .cta-glow { position: absolute; top: -80px; left: 50%; transform: translateX(-50%); width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(122,28,46,.1) 0%, transparent 65%); }
+    .cta-inner { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; }
+    .cta h2 { font-family: var(--play); font-size: clamp(30px, 5.5vw, 58px); font-weight: 700; color: var(--bone); line-height: 1.08; margin-bottom: 1rem; }
+    .cta h2 em { font-style: italic; color: #d4a98a; font-weight: 400; }
+    .cta h2 .copper-word { color: var(--copper2); }
+    .cta p { font-size: 15px; color: var(--ink4); line-height: 1.75; margin-bottom: 2.5rem; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-bone { font-size: 14px; font-weight: 700; color: var(--ink); background: var(--bone); padding: 12px 30px; border-radius: var(--r); text-decoration: none; transition: background .15s; }
+    .btn-bone:hover { background: var(--white); }
+    .btn-ghost2 { font-size: 14px; font-weight: 500; color: var(--ink4); background: transparent; padding: 12px 30px; border-radius: var(--r); border: 1px solid rgba(246,243,238,.15); text-decoration: none; transition: all .15s; }
+    .btn-ghost2:hover { color: var(--bone); border-color: rgba(246,243,238,.3); }
+
+    .fade-up { opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="#" class="nav-brand">AI<em>FinOps</em></a>
+  <div class="nav-bc">
+    <span>Services</span><span class="sep">/</span>
+    <strong>Budgeting</strong>
+  </div>
+  <a href="#" class="nav-cta">Set up your AI budget</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-stripe"></div>
+  <div class="hero-ledger"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-wm">$</div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-kicker">Service — Budgeting</div>
+      <h1>
+        Set the budget.<br>
+        <em>Hold the line.</em><br>
+        <span class="line-copper">Know before you breach it.</span>
+      </h1>
+      <p class="hero-lead">
+        AI budgets fail for one reason: they're set once and then forgotten
+        until month-end reveals the damage. Our Budgeting service makes AI
+        budgets living governance instruments — structured by team, product,
+        and category, monitored in real time, enforced before breaches happen,
+        and reconciled automatically every month.
+      </p>
+      <div class="hero-btns">
+        <a href="#" class="btn-wine">Set up your AI budget</a>
+        <a href="#" class="btn-ghost">See budget templates →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat">
+          <div class="hstat-val"><strong>Zero</strong></div>
+          <div class="hstat-lbl">Budget overruns after guardrails enabled</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val"><strong>14 days</strong></div>
+          <div class="hstat-lbl">Avg advance warning on breach trajectories</div>
+        </div>
+        <div class="hstat">
+          <div class="hstat-val"><strong>100%</strong></div>
+          <div class="hstat-lbl">Of spend attributed to a budget line</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Budget tracker visual -->
+    <div class="hero-budget">
+      <div class="hb-topbar">
+        <span class="hb-title">Budget vs actual · April 2026</span>
+        <span class="hb-period">Day 24 of 30</span>
+      </div>
+      <div class="hb-items">
+        <div class="hb-item">
+          <div class="hb-item-header">
+            <span class="hb-item-name">AI Models &amp; APIs</span>
+            <span class="hb-item-vals"><span style="color:#f87171">$48.2K</span> / $44K budget</span>
+          </div>
+          <div class="hb-track">
+            <div class="hb-budget-bar" style="width:100%;background:var(--rose)"></div>
+            <div class="hb-actual-bar" style="width:110%;background:var(--rose)"></div>
+          </div>
+        </div>
+        <div class="hb-item">
+          <div class="hb-item-header">
+            <span class="hb-item-name">Compute Infrastructure</span>
+            <span class="hb-item-vals"><span style="color:#34d399">$31.4K</span> / $36K budget</span>
+          </div>
+          <div class="hb-track">
+            <div class="hb-budget-bar" style="width:100%;background:var(--copper)"></div>
+            <div class="hb-actual-bar" style="width:87%;background:var(--copper2)"></div>
+          </div>
+        </div>
+        <div class="hb-item">
+          <div class="hb-item-header">
+            <span class="hb-item-name">GPU &amp; Accelerators</span>
+            <span class="hb-item-vals"><span style="color:#fbbf24">$22.8K</span> / $24K budget</span>
+          </div>
+          <div class="hb-track">
+            <div class="hb-budget-bar" style="width:100%;background:var(--copper)"></div>
+            <div class="hb-actual-bar" style="width:95%;background:var(--copper2)"></div>
+          </div>
+        </div>
+        <div class="hb-item">
+          <div class="hb-item-header">
+            <span class="hb-item-name">Data &amp; Storage</span>
+            <span class="hb-item-vals"><span style="color:#6ee7b7">$14.1K</span> / $18K budget</span>
+          </div>
+          <div class="hb-track">
+            <div class="hb-budget-bar" style="width:100%;background:#2dd4bf"></div>
+            <div class="hb-actual-bar" style="width:78%;background:#2dd4bf"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hb-summary">
+        <div class="hb-kpi">
+          <div class="hb-kpi-val" style="color:var(--copper2)">$138K</div>
+          <div class="hb-kpi-lbl">Total budget</div>
+        </div>
+        <div class="hb-kpi">
+          <div class="hb-kpi-val" style="color:#fbbf24">$116.5K</div>
+          <div class="hb-kpi-lbl">Spent to date</div>
+        </div>
+        <div class="hb-kpi">
+          <div class="hb-kpi-val" style="color:#f87171">+$4.2K</div>
+          <div class="hb-kpi-lbl">Forecast over</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── METRICS ── -->
+<div class="metrics">
+  <div class="metrics-inner">
+    <div class="mc"><div class="mc-val" style="color:var(--copper2)">6</div><div class="mc-lbl" style="color:var(--ink4)">Budget hierarchy levels — company to workload</div></div>
+    <div class="mc"><div class="mc-val" style="color:#d4a98a">Real-time</div><div class="mc-lbl" style="color:var(--ink4)">Budget vs actual refresh frequency</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--copper2)">100%</div><div class="mc-lbl" style="color:var(--ink4)">Spend attributed to a budget line</div></div>
+    <div class="mc"><div class="mc-val" style="color:#4ade80">Zero</div><div class="mc-lbl" style="color:var(--ink4)">Overruns after forecast guardrails enabled</div></div>
+    <div class="mc"><div class="mc-val" style="color:var(--copper2)">5</div><div class="mc-lbl" style="color:var(--ink4)">Alert thresholds — 50%, 75%, 85%, 90%, 100%</div></div>
+    <div class="mc"><div class="mc-val" style="color:#d4a98a">Auto</div><div class="mc-lbl" style="color:var(--ink4)">Monthly reconciliation — zero manual steps</div></div>
+  </div>
+</div>
+
+<!-- ── WHY BUDGETING ── -->
+<div class="section fade-up">
+  <div class="ey">The problem</div>
+  <h2 class="sh">AI budgets aren't failing because<br>of <em>spending — </em>they're failing because<br>of <em>structure.</em></h2>
+  <div class="why-grid">
+    <div class="why-text">
+      <p>
+        Most organisations set an AI budget once at the start of the year — a
+        single number negotiated between engineering and finance based on last
+        year's actuals and a growth assumption. Then they watch it get consumed
+        in real time through a cloud billing dashboard that shows total spend
+        but tells them nothing about which team, product, or category is driving it.
+      </p>
+      <p>
+        The problem is not that teams overspend — it is that the budget
+        structure does not match the way AI costs actually accumulate.
+        AI spending is distributed across teams, products, models, and
+        infrastructure layers simultaneously. A single "AI budget" is too
+        blunt an instrument to govern that complexity.
+      </p>
+      <p>
+        Effective AI budgeting requires a hierarchy: company-level total, broken
+        down by business unit, then by team, then by product, then by cost category —
+        with real-time tracking, forecast-driven alerts, and enforcement mechanisms
+        that act before the breach, not after the invoice.
+      </p>
+      <div class="callout">
+        <p>A budget that no one checks until month-end is not a budget — it is a retrospective report. Budgeting should be a live governance layer, not a finance reconciliation exercise.</p>
+      </div>
+    </div>
+    <div class="why-pain">
+      <div class="pain-card">
+        <div class="pain-icon">📋</div>
+        <div>
+          <h5>One number for everything</h5>
+          <p>A single "AI infrastructure" budget line cannot tell you which team overspent, which product feature is above margin, or which infrastructure component has room to grow. Granularity is governance.</p>
+        </div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🕐</div>
+        <div>
+          <h5>Lag between spend and awareness</h5>
+          <p>Teams spend in real time but see budget impact on a 2–4 week lag through monthly finance reports. By then, the decision that caused the overrun is ancient history and unfixable.</p>
+        </div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🤝</div>
+        <div>
+          <h5>No team ownership of the budget</h5>
+          <p>When a single engineering VP owns the AI budget, individual teams have no visibility into or accountability for their contribution to it. Cost governance without team-level ownership produces no behavioural change.</p>
+        </div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📦</div>
+        <div>
+          <h5>Budget vs actual unreconciled</h5>
+          <p>Finance maintains the budget in one system and cloud cost data lives in another. Manual reconciliation takes days each month, produces errors, and delays the reporting that teams and executives need.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── BUDGET TYPES ── -->
+<div class="section fade-up">
+  <div class="ey">Budget types</div>
+  <h2 class="sh">Six budget types. <em>Every dimension</em><br>of AI spend governed.</h2>
+  <p class="sl">AI infrastructure doesn't have one budget — it has overlapping budgets by team, product, category, environment, and project. All managed in one place, without conflict or double-counting.</p>
+  <div class="btype-grid">
+    <div class="btype bt-wine">
+      <div class="btype-num">01</div>
+      <h4>Team budgets</h4>
+      <div class="btype-who" style="color:var(--wine)">Engineering leads · FinOps</div>
+      <p>A monthly or quarterly spend limit per engineering team, covering all workloads, APIs, and infrastructure they own. The primary accountability unit for engineering cost governance.</p>
+      <div class="btype-features">
+        <div class="btype-feat">Real-time spend vs budget dashboard per team</div>
+        <div class="btype-feat">Forecast-driven alerts before breach</div>
+        <div class="btype-feat">Automatic rollover and carry-forward options</div>
+      </div>
+      <span class="btype-badge" style="background:var(--wine-lt);color:var(--wine)">Engineering governance</span>
+    </div>
+    <div class="btype bt-copper">
+      <div class="btype-num">02</div>
+      <h4>Product budgets</h4>
+      <div class="btype-who" style="color:var(--copper)">Product leads · Finance</div>
+      <p>A cost ceiling per product feature or product line — connecting AI infrastructure spend directly to product P&amp;L. Makes product teams accountable for the AI cost their features generate.</p>
+      <div class="btype-features">
+        <div class="btype-feat">AI cost as % of product revenue tracked live</div>
+        <div class="btype-feat">Feature-level cost-per-user budget lines</div>
+        <div class="btype-feat">Cross-team product budgets (shared workloads)</div>
+      </div>
+      <span class="btype-badge" style="background:var(--cop-lt);color:var(--copper)">Product P&amp;L</span>
+    </div>
+    <div class="btype bt-teal">
+      <div class="btype-num">03</div>
+      <h4>Category budgets</h4>
+      <div class="btype-who" style="color:var(--teal)">FinOps · Finance</div>
+      <p>Separate budgets per cost category — model API spend, compute infrastructure, GPU resources, storage. Prevents undifferentiated growth in any single cost dimension.</p>
+      <div class="btype-features">
+        <div class="btype-feat">Budget per cost category across all teams</div>
+        <div class="btype-feat">Category-level variance analysis monthly</div>
+        <div class="btype-feat">Automatic category re-allocation if one exceeds</div>
+      </div>
+      <span class="btype-badge" style="background:var(--teal-lt);color:var(--teal)">Category governance</span>
+    </div>
+    <div class="btype bt-slate">
+      <div class="btype-num">04</div>
+      <h4>Environment budgets</h4>
+      <div class="btype-who" style="color:var(--slate)">Platform teams</div>
+      <p>Separate budget envelopes for production, staging, development, and experiment environments — ensuring development spending doesn't consume production budget and experiment costs are explicitly allocated.</p>
+      <div class="btype-features">
+        <div class="btype-feat">Strict dev/staging budget caps with auto-enforcement</div>
+        <div class="btype-feat">Experiment budget pools with expiry dates</div>
+        <div class="btype-feat">Environment cost as % of total AI spend</div>
+      </div>
+      <span class="btype-badge" style="background:var(--slate-lt);color:var(--slate)">Environment control</span>
+    </div>
+    <div class="btype bt-sage">
+      <div class="btype-num">05</div>
+      <h4>Project budgets</h4>
+      <div class="btype-who" style="color:var(--sage)">Project leads · Finance</div>
+      <p>Time-bound budgets for specific AI initiatives — a training run, a model evaluation project, a proof-of-concept, or a migration. Closes automatically at project end date.</p>
+      <div class="btype-features">
+        <div class="btype-feat">Project code mapped to a spend cap and end date</div>
+        <div class="btype-feat">Alerts at 50%, 75%, and 100% of project budget</div>
+        <div class="btype-feat">Automatic budget release on project completion</div>
+      </div>
+      <span class="btype-badge" style="background:var(--sage-lt);color:var(--sage)">Time-bound initiative</span>
+    </div>
+    <div class="btype bt-rose">
+      <div class="btype-num">06</div>
+      <h4>Contingency reserves</h4>
+      <div class="btype-who" style="color:var(--rose)">Finance · CTO</div>
+      <p>An unallocated budget reserve that can be drawn on when a team or category legitimately exceeds its original allocation — with a formal approval workflow before funds are released.</p>
+      <div class="btype-features">
+        <div class="btype-feat">Reserve draws require approval chain before release</div>
+        <div class="btype-feat">Reserve utilisation tracked separately in reporting</div>
+        <div class="btype-feat">Auto-alert when reserve falls below threshold</div>
+      </div>
+      <span class="btype-badge" style="background:var(--rose-lt);color:var(--rose)">Safety net</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── BUDGET BUILDER ── -->
+<div class="builder-section">
+  <div class="builder-inner">
+    <div class="ey">Budget builder</div>
+    <h2 class="sh">From first budget to live<br>governance in <em>five steps.</em></h2>
+    <p class="sl">Building a structured AI budget should not require a finance degree or a month of spreadsheet work. Our builder walks every step — from structure to activation — in under an hour.</p>
+    <div class="builder-grid">
+      <div>
+        <div class="builder-steps">
+          <div class="bstep">
+            <div class="bstep-num">1</div>
+            <div>
+              <h4>Define your budget structure</h4>
+              <p>Choose which hierarchy levels to govern — company total, business unit, team, product, category, environment, project. Pre-built templates for common organisational structures are available — startup (team + category), enterprise (BU + team + product), and data-centre (environment + workload type).</p>
+            </div>
+          </div>
+          <div class="bstep">
+            <div class="bstep-num">2</div>
+            <div>
+              <h4>Set budget amounts per node</h4>
+              <p>Enter budget amounts at each level of your hierarchy — either as absolute amounts or as percentages of the parent budget. Import from an existing spreadsheet or let the system suggest amounts based on your last 90 days of actual spend plus your configured growth assumption.</p>
+            </div>
+          </div>
+          <div class="bstep">
+            <div class="bstep-num">3</div>
+            <div>
+              <h4>Connect spend to budget lines</h4>
+              <p>Map your actual AI spend sources to the correct budget lines using the cost allocation model you've configured. Every billing item is automatically matched to a budget line — any unmatched items appear in an "unbudgeted" bucket for immediate assignment.</p>
+            </div>
+          </div>
+          <div class="bstep">
+            <div class="bstep-num">4</div>
+            <div>
+              <h4>Configure alerts and guardrails</h4>
+              <p>Set which threshold alerts fire at which levels (50%, 75%, 85%, 90%, 100%), who receives each alert, and whether any thresholds trigger automated enforcement actions — throttling, circuit breakers, or approval-gate escalations.</p>
+            </div>
+          </div>
+          <div class="bstep">
+            <div class="bstep-num">5</div>
+            <div>
+              <h4>Activate and govern continuously</h4>
+              <p>Once activated, the budget is live — tracking in real time, alerting on trajectory, reconciling automatically at month-end, and rolling forward to the next period with configurable carry-forward and reset rules.</p>
+            </div>
+          </div>
+        </div>
+        <div class="callout copper" style="margin-top:2rem">
+          <p>The entire setup process is wizard-guided with no SQL, no data engineering, and no finance configuration required. Most customers complete initial budget setup in under one hour.</p>
+        </div>
+      </div>
+
+      <!-- Budget card visual -->
+      <div>
+        <div class="budget-card">
+          <div class="bc-head">
+            <span class="bc-head-title">AI Infrastructure Budget · April 2026</span>
+            <span class="bc-head-badge">Month 4 of 12</span>
+          </div>
+          <div class="bc-body">
+            <div class="bc-overview">
+              <div class="bc-kpi">
+                <div class="bc-kpi-val" style="color:var(--copper)">$138K</div>
+                <div class="bc-kpi-lbl">Monthly budget<br>total</div>
+              </div>
+              <div class="bc-kpi">
+                <div class="bc-kpi-val" style="color:var(--rose)">$116.5K</div>
+                <div class="bc-kpi-lbl">Spent to date<br>(day 24)</div>
+              </div>
+              <div class="bc-kpi">
+                <div class="bc-kpi-val" style="color:var(--rose)">$148.2K</div>
+                <div class="bc-kpi-lbl">Forecast<br>month-end</div>
+              </div>
+            </div>
+            <div class="bc-section-title">Budget by team</div>
+            <div class="bc-lines">
+              <div class="bc-line header">
+                <span>Team</span><span>Budget</span><span>Actual</span><span>Variance</span>
+              </div>
+              <div class="bc-line">
+                <span class="bc-line-name">team-inference</span>
+                <span class="bc-line-budget">$44,000</span>
+                <span class="bc-line-actual" style="color:var(--rose)">$48,200</span>
+                <span class="bc-line-var var-over">+$4,200</span>
+              </div>
+              <div class="bc-line">
+                <span class="bc-line-name">team-training</span>
+                <span class="bc-line-budget">$36,000</span>
+                <span class="bc-line-actual" style="color:var(--sage)">$31,400</span>
+                <span class="bc-line-var var-under">−$4,600</span>
+              </div>
+              <div class="bc-line">
+                <span class="bc-line-name">team-platform</span>
+                <span class="bc-line-budget">$28,000</span>
+                <span class="bc-line-actual" style="color:var(--copper)">$23,100</span>
+                <span class="bc-line-var var-track">−$4,900</span>
+              </div>
+              <div class="bc-line">
+                <span class="bc-line-name">team-data</span>
+                <span class="bc-line-budget">$18,000</span>
+                <span class="bc-line-actual" style="color:var(--sage)">$13,800</span>
+                <span class="bc-line-var var-under">−$4,200</span>
+              </div>
+              <div class="bc-line">
+                <span class="bc-line-name">shared-overhead</span>
+                <span class="bc-line-budget">$12,000</span>
+                <span class="bc-line-actual" style="color:var(--copper)">$0</span>
+                <span class="bc-line-var var-track" style="color:var(--ink4)">Allocated</span>
+              </div>
+            </div>
+            <div class="bc-gauge-row">
+              <div class="bc-gauge-label">
+                <span>Budget consumed (day 24/30)</span>
+                <span style="font-weight:700;color:var(--rose)">84.4% spent</span>
+              </div>
+              <div class="bc-gauge-track">
+                <div class="bc-gauge-fill" style="width:84.4%;background:linear-gradient(90deg,var(--copper) 0%,var(--rose) 100%)"></div>
+              </div>
+            </div>
+          </div>
+          <div class="bc-footer">
+            <span class="bc-foot-lbl">Export statement</span>
+            <div class="bc-foot-exports">
+              <div class="bc-exp">PDF</div>
+              <div class="bc-exp">Excel</div>
+              <div class="bc-exp">CSV</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── VARIANCE TRACKER ── -->
+<div class="variance-section">
+  <div class="var-inner">
+    <div class="var-ey">Variance analysis</div>
+    <h2 class="var-sh">Understand every <em>gap</em><br>between budget and reality</h2>
+    <p class="var-sl">Budget vs actual variance only tells you the amount of the gap. Variance analysis tells you the cause — and gives you the lever to close it before month-end.</p>
+    <div class="var-grid">
+      <div class="var-card">
+        <div class="var-icon">📈</div>
+        <h4>Volume variance</h4>
+        <p>The portion of the variance explained by higher or lower usage volume than the budget assumed — more API calls, more training runs, more active users.</p>
+        <div class="var-example">
+          <div class="var-ex-label">This month · team-inference</div>
+          <div class="var-ex-val">+$3,200 over</div>
+          <div class="var-ex-status" style="color:var(--copper2)">↑ 18% more inferences than budgeted</div>
+        </div>
+      </div>
+      <div class="var-card">
+        <div class="var-icon">💹</div>
+        <h4>Rate variance</h4>
+        <p>The portion of the variance explained by unit cost being higher or lower than the budget assumed — model price changes, infrastructure efficiency improvements, or spot market fluctuations.</p>
+        <div class="var-example">
+          <div class="var-ex-label">This month · model API costs</div>
+          <div class="var-ex-val">+$840 over</div>
+          <div class="var-ex-status" style="color:var(--copper2)">↑ Avg token cost +6% vs budget assumption</div>
+        </div>
+      </div>
+      <div class="var-card">
+        <div class="var-icon">🔀</div>
+        <h4>Mix variance</h4>
+        <p>The portion of the variance explained by a shift in the mix of spending — more high-cost workloads than budgeted, or a model mix shift toward more expensive models than assumed.</p>
+        <div class="var-example">
+          <div class="var-ex-label">This month · model mix</div>
+          <div class="var-ex-val">+$1,140 over</div>
+          <div class="var-ex-status" style="color:var(--copper2)">GPT-4 share +12% vs budget (GPT-3.5 −12%)</div>
+        </div>
+      </div>
+      <div class="var-card">
+        <div class="var-icon">🗓️</div>
+        <h4>Timing variance</h4>
+        <p>The portion of the variance explained by spend timing — costs landing earlier in the month than the budget assumed (uneven spend profile), not a structural overspend issue.</p>
+        <div class="var-example">
+          <div class="var-ex-label">Day 24 pace check</div>
+          <div class="var-ex-val">Tracking 104%</div>
+          <div class="var-ex-status" style="color:#4ade80">No timing anomaly — spend front-loaded as expected</div>
+        </div>
+      </div>
+      <div class="var-card">
+        <div class="var-icon">🌱</div>
+        <h4>Scope variance</h4>
+        <p>The portion of the variance explained by new workloads or services that were not included in the original budget — new product features, unplanned experiments, or shadow AI spend.</p>
+        <div class="var-example">
+          <div class="var-ex-label">New unbudgeted spend</div>
+          <div class="var-ex-val">$2,400</div>
+          <div class="var-ex-status" style="color:var(--copper2)">3 new services: not in April budget</div>
+        </div>
+      </div>
+      <div class="var-card">
+        <div class="var-icon">💡</div>
+        <h4>Efficiency variance</h4>
+        <p>The portion of the variance explained by waste or inefficiency — idle resources, over-provisioned workloads, or missed optimisation actions that added cost beyond what optimal operations would have incurred.</p>
+        <div class="var-example">
+          <div class="var-ex-label">Recoverable through optimisation</div>
+          <div class="var-ex-val">$3,800</div>
+          <div class="var-ex-status" style="color:#4ade80">Right-sizing + caching would close 91% of gap</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── GUARDRAILS ── -->
+<div class="guardrail-section">
+  <div class="gr-inner">
+    <div class="ey">Budget guardrails</div>
+    <h2 class="sh">Alerts that fire before the<br>breach — <em>not after the bill.</em></h2>
+    <p class="sl">Budget guardrails are the enforcement layer — translating budget limits into real-time alerts, team notifications, and automated responses that prevent breaches rather than just recording them.</p>
+    <div class="gr-grid">
+      <div class="guardrail-types">
+        <div class="gr-card">
+          <div class="gr-icon">🚦</div>
+          <div>
+            <h4>Five-threshold alert system</h4>
+            <p>Configurable alerts at 50%, 75%, 85%, 90%, and 100% of budget — each with independent escalation paths. Early thresholds go to team leads for awareness; 90%+ thresholds escalate to engineering management, FinOps, and finance automatically.</p>
+          </div>
+        </div>
+        <div class="gr-card">
+          <div class="gr-icon">🔮</div>
+          <div>
+            <h4>Forecast-triggered (not spend-triggered)</h4>
+            <p>Guardrails fire when the <em>forecast</em> reaches a threshold — not when actual spend does. A team on track to breach budget in 8 days gets an alert today, giving time to act before the breach, not after it.</p>
+          </div>
+        </div>
+        <div class="gr-card">
+          <div class="gr-icon">📋</div>
+          <div>
+            <h4>Context-rich alert packages</h4>
+            <p>Every alert includes: current budget status, top 3 cost drivers, variance breakdown (volume / rate / mix / scope), recommended actions ranked by budget impact, and a one-click link to the budget dashboard.</p>
+          </div>
+        </div>
+        <div class="gr-card">
+          <div class="gr-icon">⚙️</div>
+          <div>
+            <h4>Automated enforcement options</h4>
+            <p>Optional automation when thresholds are crossed — activate a circuit breaker, throttle a specific service, pause non-critical jobs, or require approval for any new spend above a threshold. All actions logged and reversible.</p>
+          </div>
+        </div>
+        <div class="gr-card">
+          <div class="gr-icon">🤝</div>
+          <div>
+            <h4>Budget exception workflow</h4>
+            <p>When a team needs to exceed their budget, a formal exception request can be submitted in-platform — specifying the amount, reason, and duration. Approvers review and approve or deny with full audit trail.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alert visual -->
+      <div>
+        <div class="gr-visual">
+          <div class="grv-head">
+            <span class="grv-title">Active budget alerts · April 2026</span>
+            <span class="grv-live">4 active alerts</span>
+          </div>
+          <div class="grv-alerts">
+            <div class="grv-alert crit">
+              <div class="grv-dot"></div>
+              <div>
+                <div class="grv-alert-name">team-inference · 100% breach</div>
+                <div class="grv-alert-desc">Actual spend exceeded budget. Exception or action required immediately.</div>
+              </div>
+              <span class="grv-alert-val" style="color:#f87171">+$4,200</span>
+            </div>
+            <div class="grv-alert warn">
+              <div class="grv-dot"></div>
+              <div>
+                <div class="grv-alert-name">model-api category · 92% forecast</div>
+                <div class="grv-alert-desc">Forecast: $48.2K vs $44K budget. 6 days remaining.</div>
+              </div>
+              <span class="grv-alert-val" style="color:#fbbf24">92%</span>
+            </div>
+            <div class="grv-alert warn">
+              <div class="grv-dot"></div>
+              <div>
+                <div class="grv-alert-name">GPU pool · 88% forecast trajectory</div>
+                <div class="grv-alert-desc">At current rate: $23.4K vs $24K budget by month-end.</div>
+              </div>
+              <span class="grv-alert-val" style="color:#fbbf24">88%</span>
+            </div>
+            <div class="grv-alert info">
+              <div class="grv-dot"></div>
+              <div>
+                <div class="grv-alert-name">project-search-v2 · 75% consumed</div>
+                <div class="grv-alert-desc">Project budget $18K, spent $13.5K. 2 weeks remaining on project.</div>
+              </div>
+              <span class="grv-alert-val" style="color:#2dd4bf">75%</span>
+            </div>
+            <div class="grv-alert ok">
+              <div class="grv-dot"></div>
+              <div>
+                <div class="grv-alert-name">team-training · under budget</div>
+                <div class="grv-alert-desc">$31.4K of $36K. Forecast month-end: $33.8K — $2.2K under.</div>
+              </div>
+              <span class="grv-alert-val" style="color:#4ade80">87%</span>
+            </div>
+          </div>
+          <div class="grv-footer">
+            <span>Last updated: 12 min ago</span>
+            <span>5 alerts configured · 4 active</span>
+          </div>
+        </div>
+        <div class="callout sage" style="margin-top:1rem">
+          <p>Under-budget teams are flagged too — unused budget that will not roll forward creates opportunities to redeploy budget to teams approaching their limits, within the same billing period.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BUDGET HIERARCHY ── -->
+<div class="hier-section">
+  <div class="hier-inner">
+    <div class="ey">Budget hierarchy</div>
+    <h2 class="sh">From company total to<br>individual <em>workload — </em>one<br>connected budget tree.</h2>
+    <div class="hier-grid">
+      <div class="hier-text">
+        <p>
+          Every budget level rolls up to the level above it — so a team-level overspend
+          automatically shows in the business unit view, which rolls into the company total.
+          Finance sees the full picture; teams see only their slice.
+        </p>
+        <p>
+          Budget hierarchies are configurable — you define which levels exist for your
+          organisation. A startup may have three levels (company → team → category);
+          an enterprise may have six (company → division → BU → team → product → project).
+          Both are supported with no configuration limit.
+        </p>
+        <p>
+          Each node in the hierarchy carries its own budget, alert thresholds, approvers,
+          and enforcement rules — independently configured but aggregated upward for
+          parent-level visibility.
+        </p>
+        <div class="callout copper" style="margin-top:1.5rem">
+          <p>Parent budgets are the sum of their children — ensuring perfect mathematical consistency between all levels. No manual reconciliation between hierarchy levels ever required.</p>
+        </div>
+      </div>
+      <div>
+        <div class="hier-tree">
+          <div class="ht-level ht-l0">
+            <div>
+              <div class="ht-label">Company Total</div>
+              <div class="ht-sub">All AI infrastructure spend</div>
+            </div>
+            <div class="ht-values">
+              <div class="ht-budget" style="color:var(--copper2)">$138,000</div>
+              <div class="ht-pct">Monthly budget</div>
+            </div>
+          </div>
+          <div class="ht-level ht-l1">
+            <div class="ht-connector"></div>
+            <div>
+              <div class="ht-label">Business Unit: AI Platform</div>
+              <div class="ht-sub">Core AI product teams</div>
+            </div>
+            <div class="ht-values">
+              <div class="ht-budget" style="color:var(--wine)">$108,000</div>
+              <div class="ht-pct">78% of total</div>
+            </div>
+          </div>
+          <div class="ht-level ht-l2">
+            <div class="ht-connector"></div>
+            <div>
+              <div class="ht-label">team-inference</div>
+              <div class="ht-sub">LLM serving · embeddings</div>
+            </div>
+            <div class="ht-values">
+              <div class="ht-budget" style="color:var(--rose)">$44,000 ⚠</div>
+              <div class="ht-pct">+$4.2K over</div>
+            </div>
+          </div>
+          <div class="ht-level ht-l3">
+            <div class="ht-connector"></div>
+            <div>
+              <div class="ht-label">product: search-ai</div>
+              <div class="ht-sub">Search feature AI costs</div>
+            </div>
+            <div class="ht-values">
+              <div class="ht-budget" style="color:var(--rose)">$28,000</div>
+              <div class="ht-pct">Category budget</div>
+            </div>
+          </div>
+          <div class="ht-level ht-l3">
+            <div class="ht-connector"></div>
+            <div>
+              <div class="ht-label">product: support-ai</div>
+              <div class="ht-sub">Support chatbot AI costs</div>
+            </div>
+            <div class="ht-values">
+              <div class="ht-budget" style="color:var(--sage)">$16,000</div>
+              <div class="ht-pct">On track ✓</div>
+            </div>
+          </div>
+          <div class="ht-level ht-l2">
+            <div class="ht-connector"></div>
+            <div>
+              <div class="ht-label">team-training</div>
+              <div class="ht-sub">Model training · fine-tuning</div>
+            </div>
+            <div class="ht-values">
+              <div class="ht-budget" style="color:var(--sage)">$36,000</div>
+              <div class="ht-pct">−$4.6K under</div>
+            </div>
+          </div>
+          <div class="ht-level ht-l1">
+            <div class="ht-connector"></div>
+            <div>
+              <div class="ht-label">Business Unit: Data Platform</div>
+              <div class="ht-sub">Data &amp; analytics teams</div>
+            </div>
+            <div class="ht-values">
+              <div class="ht-budget" style="color:var(--copper)">$30,000</div>
+              <div class="ht-pct">22% of total</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── APPROVAL WORKFLOW ── -->
+<div class="section fade-up">
+  <div class="ey">Budget governance</div>
+  <h2 class="sh">Budget exceptions handled <em>in-platform,</em><br>not in email chains.</h2>
+  <p class="sl">When teams need to go over budget, a formal exception request keeps the process structured, auditable, and fast — without email threads, spreadsheet attachments, or finance delays.</p>
+  <div class="approval-grid">
+    <div class="ap-step">
+      <div class="ap-num">1</div>
+      <h4>Team lead submits request</h4>
+      <p>Specifies: amount needed, reason, duration (one-time or recurring), and which budget source to draw from (contingency reserve or budget reallocation from another team).</p>
+      <span class="ap-badge" style="background:var(--wine-lt);color:var(--wine)">In-platform form · 2 min</span>
+    </div>
+    <div class="ap-step">
+      <div class="ap-num">2</div>
+      <h4>FinOps reviews impact</h4>
+      <p>FinOps team sees the exception request alongside the current budget state, forecast impact, and whether the contingency reserve can cover it — with full context to recommend approval or alternatives.</p>
+      <span class="ap-badge" style="background:var(--cop-lt);color:var(--copper)">Impact analysis auto-generated</span>
+    </div>
+    <div class="ap-step">
+      <div class="ap-num">3</div>
+      <h4>Finance approves and releases</h4>
+      <p>Finance approver sees the full request package — business justification, amount, duration, and FinOps recommendation — and approves or denies with a single action in Slack or email.</p>
+      <span class="ap-badge" style="background:var(--teal-lt);color:var(--teal)">One-click approval · Slack / Email</span>
+    </div>
+    <div class="ap-step">
+      <div class="ap-num">4</div>
+      <h4>Budget updated instantly</h4>
+      <p>On approval, the team's budget limit updates immediately — the exception amount is reflected in all dashboards, reports, and alert thresholds without any manual configuration change.</p>
+      <span class="ap-badge" style="background:var(--sage-lt);color:var(--sage)">Instant · Full audit trail</span>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── PILLAR TABLE ── -->
+<div class="section fade-up">
+  <div class="ey">Platform integration</div>
+  <h2 class="sh">Budgets are the governance layer<br>that makes every pillar <em>accountable.</em></h2>
+  <p class="sl">Every platform capability produces cost data — budgeting is the layer that gives that data a governance structure and makes every dollar answerable to a line on a budget.</p>
+  <table class="ptable">
+    <thead>
+      <tr><th>Pillar</th><th>How budgeting governs this capability</th><th>Governance outcome</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="p-pill" style="background:var(--slate-lt);color:var(--slate)">📡 Monitoring</span></td>
+        <td>Every monitoring dashboard shows a budget context layer — current spend vs budget alongside the cost metrics, so engineers see their budget position every time they check their workload costs. Anomaly detection alerts include budget impact — a spend spike is surfaced with "this anomaly moves the team's budget from 72% to 89% utilized" — making the financial consequence of every cost event immediately clear.</td>
+        <td>Engineers develop budget awareness as a natural extension of operational monitoring — not as a separate finance discipline. Budget consciousness becomes part of the engineering workflow rather than a monthly finance review.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--cop-lt);color:var(--copper)">⚙️ Optimization</span></td>
+        <td>Right-sizing recommendations and model routing changes are prioritised by their budget impact — which recommendations, if applied, most reduce the team's forecast overspend? The optimisation engine presents its recommendations in budget terms: "Applying these 3 recommendations will move your team from 106% of budget to 94% of budget." Budget status becomes the primary optimisation prioritisation signal for teams approaching their limits.</td>
+        <td>Optimisation actions are taken with explicit budget goals rather than vague cost-reduction mandates. Teams know exactly how much budget headroom each action creates — making approval decisions faster and more consistent.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--teal-lt);color:var(--teal)">🔀 Orchestration</span></td>
+        <td>The orchestration engine uses team and category budget consumption as a live routing signal — when a team is at 85% of budget with 10 days remaining, the engine automatically shifts that team's batch and training workloads to spot instances and more aggressive scheduling to reduce the remaining-month cost trajectory. Budget thresholds trigger orchestration policy changes, making budget enforcement an automatic process rather than a manual intervention.</td>
+        <td>Budget guardrails are enforced automatically through orchestration — without manual intervention from engineering or FinOps teams. Teams approaching their limits get cost relief from the orchestration engine before a human needs to act.</td>
+      </tr>
+      <tr>
+        <td><span class="p-pill" style="background:var(--sage-lt);color:var(--sage)">🗑️ Waste elimination</span></td>
+        <td>Waste elimination actions are prioritised by their budget impact for each team — which identified waste items, if eliminated, most improve the team's budget trajectory before month-end? The waste elimination engine surfaces a "budget-critical waste queue" — the specific items that, if actioned today, would prevent a budget breach by month-end. Waste becomes a budget management tool, not just a cost efficiency exercise.</td>
+        <td>Waste elimination is driven by budget urgency — teams facing imminent budget breaches get targeted waste recommendations that can resolve the breach within days. The speed of waste elimination increases when budget stakes are clear and quantified.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="div" />
+
+<!-- ── TESTIMONIALS ── -->
+<div class="section fade-up">
+  <div class="ey">Customer stories</div>
+  <h2 class="sh">What changes when AI budgets<br>are <em>governed properly</em></h2>
+  <div class="testi-grid">
+    <div class="testi">
+      <p class="testi-q">Before this, our quarterly AI budget review was a three-hour meeting where we looked at what had already been spent and argued about who was responsible. Now it's a 20-minute meeting where we look at current forecast vs budget, identify the two or three actions needed to stay on track, and assign owners. The entire dynamic shifted from retrospective blame to prospective management.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--wine-lt);color:var(--wine)">SN</div>
+        <div><div class="testi-name">Smitha Nair</div><div class="testi-role">VP Engineering · Enterprise AI Platform (Bengaluru)</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">The team-level budget visibility changed engineering culture more than any mandate we'd ever tried. When team leads can see their own budget position every day — not just at month-end — they start making different decisions. Resource requests come with cost context. Engineers start asking "does this need GPT-4 or will Haiku do?" without being prompted. Budget awareness becomes self-reinforcing.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--teal-lt);color:var(--teal)">RK</div>
+        <div><div class="testi-name">Rohit Kapoor</div><div class="testi-role">CTO · Series C AI SaaS (Mumbai)</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <p class="testi-q">Finance reconciliation used to take our team four days at month-end — pulling data from three billing systems, matching it to the budget spreadsheet, resolving discrepancies, and producing a report that was already two weeks stale by the time it reached leadership. Now the reconciliation is automatic and the report is ready on the 1st. We reallocated those four days to actual financial planning work.</p>
+      <div class="testi-meta">
+        <div class="testi-av" style="background:var(--cop-lt);color:var(--copper)">PA</div>
+        <div><div class="testi-name">Priya Agarwal</div><div class="testi-role">Head of Finance · AI-first Product Company (Delhi)</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ── FAQ ── -->
+<div class="section fade-up">
+  <div class="ey">FAQ</div>
+  <h2 class="sh">Common questions</h2>
+  <div class="faq-list">
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How does the budget system handle mid-month budget reallocation between teams?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Budget reallocations between teams are handled through the in-platform exception and reallocation workflow. A team lead or FinOps practitioner can propose a reallocation — specifying the source team (whose budget is being reduced), the destination team, the amount, and the reason. The reallocation requires approval from both the source team's budget owner and the relevant finance approver. Once approved, both teams' budgets update instantly and all dashboards, alerts, and reports reflect the new allocation from the moment of approval. Every reallocation is logged in the audit trail with full approval history.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can we set annual budgets and track against them monthly without re-entering data?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes. Annual budgets are entered once and distributed across months either evenly or according to a seasonal profile you define (e.g. higher Q4 due to planned training runs). Monthly budget periods are automatically created from the annual figure. You can also define a growth profile — for example, budget grows 8% each month — and the system applies it automatically to create forward monthly budgets. At the end of each month, the system automatically rolls to the next period, carrying forward any configured unspent balance rules (e.g. 50% of unused budget carries to next month) and creating the next month's tracking period without any manual setup.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How are shared costs handled in the budget — do they create double-counting?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Shared costs are handled through the same allocation methodology as your cost allocation model — shared infrastructure is distributed to teams according to the allocation policy (proportional, even split, or custom weighted), and each team's budget includes an allowance for their allocated share of shared costs. There is no double-counting: the shared cost pool is allocated once and the allocated amounts appear in each team's budget line, not in a separate shared budget. Parent-level budgets are always the mathematical sum of their children — including the already-allocated shared costs — so the hierarchy is always internally consistent.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can budget guardrails trigger automated actions, and how do I control what they're allowed to do?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Automated enforcement is opt-in at every level. By default, all guardrails are notification-only — they alert the right people but take no automated action. You enable automated actions per threshold per budget node: for example, you might enable "activate spot routing" at 85% of budget and "pause non-critical training jobs" at 95%, while keeping 100% as notification-only pending human decision. Each automation type (throttle, circuit breaker, spot routing, job pause) requires explicit enablement and is scoped to specific workload types or services. All automated actions are logged, reversible, and can be overridden by any authorized user within 60 seconds of triggering.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How does budget reporting integrate with our existing finance systems?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Budget reports export in PDF, Excel, and CSV formats on configurable schedules — delivered to finance teams or uploaded directly to cloud storage (S3, Azure Blob, GCS) for ingestion into ERP or FP&amp;A systems. We provide pre-built export templates formatted for common finance systems including SAP, Oracle NetSuite, and Workday. For real-time integration, the budget API allows finance systems to pull current budget vs actual data at any granularity. GL account codes and cost centre codes can be mapped to each budget node and included in all exports — ensuring the exported data maps directly to your chart of accounts without manual reconciliation.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA ── -->
+<section class="cta">
+  <div class="cta-ledger"></div>
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <h2>
+      Set the budget.<br>
+      <span class="copper-word">Govern it live.</span><br>
+      <em>Close the month on target.</em>
+    </h2>
+    <p>Build your first AI budget structure in under an hour — with real-time tracking, forecast-driven alerts, and automatic month-end reconciliation from day one.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-bone">Set up your AI budget free</a>
+      <a href="#" class="btn-ghost2">View budget templates →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  function tfq(btn) {
+    const item = btn.closest('.fq');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.fq.open').forEach(i => i.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
