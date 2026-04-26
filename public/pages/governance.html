@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Governance — AI FinOps Platform</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f9f9f7;
+      color: #1a1a18;
+      line-height: 1.7;
+      padding: 3rem 1.5rem;
+    }
+
+    .gov-section {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .gov-eyebrow {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #185FA5;
+      margin-bottom: 0.75rem;
+    }
+
+    .gov-section h1 {
+      font-size: 36px;
+      font-weight: 500;
+      color: #1a1a18;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .gov-section .lead {
+      font-size: 16px;
+      color: #5f5e5a;
+      max-width: 640px;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .gov-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 2.5rem;
+    }
+
+    .gov-card {
+      background: #ffffff;
+      border: 0.5px solid rgba(26,26,24,0.12);
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: border-color 0.15s;
+    }
+
+    .gov-card:hover {
+      border-color: rgba(26,26,24,0.25);
+    }
+
+    .gov-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .gov-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .gov-card h3 {
+      font-size: 15px;
+      font-weight: 500;
+      color: #1a1a18;
+    }
+
+    .gov-card p {
+      font-size: 13px;
+      color: #5f5e5a;
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .gov-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    /* Tag color variants */
+    .tag-blue   { background: #E6F1FB; color: #0C447C; }
+    .tag-coral  { background: #FAECE7; color: #712B13; }
+    .tag-purple { background: #EEEDFE; color: #3C3489; }
+    .tag-teal   { background: #E1F5EE; color: #085041; }
+    .tag-amber  { background: #FAEEDA; color: #633806; }
+    .tag-green  { background: #EAF3DE; color: #27500A; }
+
+    /* Icon background variants */
+    .icon-blue   { background: #E6F1FB; }
+    .icon-coral  { background: #FAECE7; }
+    .icon-purple { background: #EEEDFE; }
+    .icon-teal   { background: #E1F5EE; }
+    .icon-amber  { background: #FAEEDA; }
+    .icon-green  { background: #EAF3DE; }
+
+    .gov-banner {
+      background: #f1efe8;
+      border: 0.5px solid rgba(26,26,24,0.12);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .gov-banner-icon {
+      font-size: 20px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .gov-banner h3 {
+      font-size: 14px;
+      font-weight: 500;
+      color: #1a1a18;
+      margin-bottom: 4px;
+    }
+
+    .gov-banner p {
+      font-size: 13px;
+      color: #5f5e5a;
+      line-height: 1.6;
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a18; color: #f1efe8; }
+
+      .gov-section h1 { color: #f1efe8; }
+      .gov-eyebrow { color: #85B7EB; }
+      .gov-section .lead { color: #b4b2a9; }
+
+      .gov-card { background: #2c2c2a; border-color: rgba(241,239,232,0.1); }
+      .gov-card:hover { border-color: rgba(241,239,232,0.22); }
+      .gov-card h3 { color: #f1efe8; }
+      .gov-card p { color: #b4b2a9; }
+
+      .tag-blue   { background: #0C447C; color: #B5D4F4; }
+      .tag-coral  { background: #712B13; color: #F5C4B3; }
+      .tag-purple { background: #3C3489; color: #CECBF6; }
+      .tag-teal   { background: #085041; color: #9FE1CB; }
+      .tag-amber  { background: #633806; color: #FAC775; }
+      .tag-green  { background: #27500A; color: #C0DD97; }
+
+      .icon-blue   { background: #0C447C; }
+      .icon-coral  { background: #712B13; }
+      .icon-purple { background: #3C3489; }
+      .icon-teal   { background: #085041; }
+      .icon-amber  { background: #633806; }
+      .icon-green  { background: #27500A; }
+
+      .gov-banner { background: #2c2c2a; border-color: rgba(241,239,232,0.1); }
+      .gov-banner h3 { color: #f1efe8; }
+      .gov-banner p { color: #b4b2a9; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="gov-section" aria-label="AI FinOps Governance">
+
+  <p class="gov-eyebrow">Platform capability</p>
+  <h1>Governance</h1>
+  <p class="lead">
+    A responsible AI FinOps platform requires robust governance across six core pillars —
+    ensuring your AI investments are secure, compliant, transparent, and aligned with
+    business outcomes.
+  </p>
+
+  <div class="gov-grid">
+
+    <div class="gov-card">
+      <div class="gov-card-header">
+        <div class="gov-icon icon-blue">🗄️</div>
+        <h3>Data governance</h3>
+      </div>
+      <p>Ensure quality, lineage, and responsible use of financial and operational data that powers AI models and cost decisions.</p>
+      <div class="gov-tags">
+        <span class="tag tag-blue">Data quality</span>
+        <span class="tag tag-blue">Data lineage</span>
+        <span class="tag tag-blue">Metadata standards</span>
+        <span class="tag tag-blue">Data residency</span>
+        <span class="tag tag-blue">Privacy controls</span>
+      </div>
+    </div>
+
+    <div class="gov-card">
+      <div class="gov-card-header">
+        <div class="gov-icon icon-coral">🔐</div>
+        <h3>Security</h3>
+      </div>
+      <p>Protect AI workloads, cost data, and infrastructure from unauthorized access, breaches, and policy violations.</p>
+      <div class="gov-tags">
+        <span class="tag tag-coral">Access controls</span>
+        <span class="tag tag-coral">Encryption at rest</span>
+        <span class="tag tag-coral">Audit logging</span>
+        <span class="tag tag-coral">Threat detection</span>
+        <span class="tag tag-coral">Zero trust</span>
+      </div>
+    </div>
+
+    <div class="gov-card">
+      <div class="gov-card-header">
+        <div class="gov-icon icon-purple">📋</div>
+        <h3>Regulatory compliance</h3>
+      </div>
+      <p>Maintain adherence to financial regulations, AI-specific laws, and industry standards across all jurisdictions you operate in.</p>
+      <div class="gov-tags">
+        <span class="tag tag-purple">GDPR / DPDPA</span>
+        <span class="tag tag-purple">SOC 2 / ISO 27001</span>
+        <span class="tag tag-purple">AI Act readiness</span>
+        <span class="tag tag-purple">Audit trails</span>
+        <span class="tag tag-purple">Licensing compliance</span>
+      </div>
+    </div>
+
+    <div class="gov-card">
+      <div class="gov-card-header">
+        <div class="gov-icon icon-teal">💰</div>
+        <h3>Cost governance</h3>
+      </div>
+      <p>Define policies, guardrails, and accountability structures to manage AI spend against business value and defined thresholds.</p>
+      <div class="gov-tags">
+        <span class="tag tag-teal">Budget guardrails</span>
+        <span class="tag tag-teal">Tagging policies</span>
+        <span class="tag tag-teal">Cost ownership</span>
+        <span class="tag tag-teal">Anomaly thresholds</span>
+        <span class="tag tag-teal">Showback / chargeback</span>
+      </div>
+    </div>
+
+    <div class="gov-card">
+      <div class="gov-card-header">
+        <div class="gov-icon icon-amber">🤖</div>
+        <h3>AI model governance</h3>
+      </div>
+      <p>Govern the AI models your platform deploys — from bias detection and explainability to version control and performance benchmarks.</p>
+      <div class="gov-tags">
+        <span class="tag tag-amber">Model explainability</span>
+        <span class="tag tag-amber">Bias &amp; fairness</span>
+        <span class="tag tag-amber">Version control</span>
+        <span class="tag tag-amber">Drift monitoring</span>
+        <span class="tag tag-amber">Ethical guardrails</span>
+      </div>
+    </div>
+
+    <div class="gov-card">
+      <div class="gov-card-header">
+        <div class="gov-icon icon-green">📊</div>
+        <h3>Policy &amp; risk management</h3>
+      </div>
+      <p>Establish accountability frameworks, risk registers, and escalation paths across engineering, finance, and leadership stakeholders.</p>
+      <div class="gov-tags">
+        <span class="tag tag-green">Risk register</span>
+        <span class="tag tag-green">Policy enforcement</span>
+        <span class="tag tag-green">Cross-functional ownership</span>
+        <span class="tag tag-green">Exception management</span>
+        <span class="tag tag-green">Compliance KPIs</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="gov-banner" role="note">
+    <div class="gov-banner-icon">💡</div>
+    <div>
+      <h3>Built for enterprise-grade accountability</h3>
+      <p>
+        Our governance framework aligns with the FinOps Foundation's Governance, Policy &amp; Risk
+        capability — covering cloud, SaaS, AI/ML, and hybrid environments under a single
+        unified policy layer.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+</body>
+</html>

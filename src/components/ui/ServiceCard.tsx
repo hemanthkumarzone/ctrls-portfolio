@@ -9,8 +9,32 @@ type Props = {
 
 const ServiceCard = ({ icon, emoji, title, description }: Props) => {
 
-  // 🔥 CREATE URL SLUG
-  const slug = title.toLowerCase().replace(/\s+/g, "-");
+  // ✅ MANUAL MAP (for special cases)
+  const slugMap: Record<string, string> = {
+    "Category Views": "category-views",
+    "Reporting": "reporting",
+    "Cost Analyzer": "cost-analyzer",
+    "Forecasting": "predictive-cost-forecasting ",
+    "K8s Cost Observability": "k8s-cost-observability-attribution",
+    "Budgeting": "budgeting",
+    "Recommendations": "right-size-recommendations",
+    "Anomaly Detection": "anomaly-detection-circuit-breakers",
+    "Virtual Tags": "virtual-tags-smart-tagging",
+    "Cost Allocation": "cost-allocation",
+    "Unit Economics" : "unit-economics"
+  };
+
+  // ✅ FALLBACK SLUG (for safety)
+  const generateSlug = (text: string) =>
+    text
+      .toLowerCase()
+      .replace(/&/g, "and")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .trim();
+
+  const slug = slugMap[title] || generateSlug(title);
 
   return (
     <Link to={`/services/${slug}`}>
@@ -25,14 +49,14 @@ const ServiceCard = ({ icon, emoji, title, description }: Props) => {
         )}
 
         <h3
-  className="text-white text-[20px] font-semibold mb-[8px]"
-  dangerouslySetInnerHTML={{ __html: title as string }}
-/>
+          className="text-white text-[20px] font-semibold mb-[8px]"
+          dangerouslySetInnerHTML={{ __html: title }}
+        />
 
         <div
-  className="text-[#929292] text-[13px] leading-[28px] px-6"
-  dangerouslySetInnerHTML={{ __html: description as string }}
-/>
+          className="text-[#929292] text-[13px] leading-[28px] px-6"
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
 
       </div>
     </Link>

@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security — AI FinOps Platform</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f9f9f7;
+      color: #1a1a18;
+      line-height: 1.75;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      background: #ffffff;
+      border-bottom: 0.5px solid rgba(26,26,24,0.1);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .topbar-brand { font-size: 15px; font-weight: 500; color: #1a1a18; text-decoration: none; }
+    .topbar-brand span { color: #185FA5; }
+    .topbar-meta { font-size: 12px; color: #888780; }
+
+    /* ── Hero ── */
+    .hero {
+      background: #ffffff;
+      border-bottom: 0.5px solid rgba(26,26,24,0.1);
+      padding: 5rem 1.5rem 4rem;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #185FA5; background: #E6F1FB;
+      padding: 4px 14px; border-radius: 20px; margin-bottom: 1.25rem;
+    }
+    .hero h1 {
+      font-size: clamp(30px, 5vw, 50px); font-weight: 500;
+      color: #1a1a18; line-height: 1.15; max-width: 700px;
+      margin: 0 auto 1.25rem;
+    }
+    .hero h1 em { font-style: normal; color: #185FA5; }
+    .hero p {
+      font-size: 17px; color: #5f5e5a; max-width: 580px;
+      margin: 0 auto 2.5rem; line-height: 1.75;
+    }
+    .hero-badges {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 12px; font-weight: 500; padding: 7px 16px;
+      border-radius: 20px; background: #f1efe8;
+      border: 0.5px solid rgba(26,26,24,0.12); color: #1a1a18;
+    }
+
+    /* ── Trust bar ── */
+    .trust-bar { background: #1a1a18; padding: 2rem 1.5rem; }
+    .trust-inner {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 2rem; text-align: center;
+    }
+    .trust-item-icon { font-size: 22px; margin-bottom: 6px; }
+    .trust-item-label { font-size: 13px; font-weight: 500; color: #f1efe8; margin-bottom: 2px; }
+    .trust-item-sub { font-size: 11px; color: #888780; }
+
+    /* ── Layout ── */
+    .page-wrap {
+      max-width: 980px; margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 3rem; align-items: start;
+    }
+    @media (max-width: 700px) {
+      .page-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .sidebar { display: none; }
+    }
+
+    /* ── Sidebar ── */
+    .sidebar { position: sticky; top: 2rem; }
+    .sidebar-label {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.07em;
+      text-transform: uppercase; color: #888780; margin-bottom: 0.75rem;
+    }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+    .sidebar-nav a {
+      font-size: 13px; color: #5f5e5a; text-decoration: none;
+      padding: 5px 10px; border-radius: 6px;
+      border-left: 2px solid transparent;
+      transition: background 0.12s, color 0.12s;
+    }
+    .sidebar-nav a:hover { background: rgba(26,26,24,0.05); color: #1a1a18; }
+    .sidebar-nav a.active { color: #185FA5; border-left-color: #185FA5; background: #E6F1FB; }
+    .sidebar-contact {
+      margin-top: 1.5rem; background: #ffffff;
+      border: 0.5px solid rgba(26,26,24,0.1); border-radius: 10px; padding: 1rem;
+    }
+    .sidebar-contact p { font-size: 12px; color: #5f5e5a; line-height: 1.6; margin-bottom: 8px; }
+    .sidebar-contact a { font-size: 12px; color: #185FA5; text-decoration: none; font-weight: 500; }
+
+    /* ── Sections ── */
+    .sec { margin-bottom: 3.5rem; scroll-margin-top: 2rem; }
+    .sec-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 1.25rem; padding-bottom: 0.75rem;
+      border-bottom: 0.5px solid rgba(26,26,24,0.08);
+    }
+    .sec-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .sec h2 { font-size: 20px; font-weight: 500; color: #1a1a18; }
+    .sec h3 { font-size: 14px; font-weight: 500; color: #1a1a18; margin: 1.5rem 0 0.5rem; }
+    .sec p { font-size: 14px; color: #3a3a38; line-height: 1.8; margin-bottom: 1rem; }
+    .sec p:last-child { margin-bottom: 0; }
+
+    /* ── Cert grid ── */
+    .cert-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px; margin: 1.25rem 0;
+    }
+    .cert-card {
+      background: #ffffff; border: 0.5px solid rgba(26,26,24,0.1);
+      border-radius: 12px; padding: 1.25rem; text-align: center;
+      transition: border-color 0.15s;
+    }
+    .cert-card:hover { border-color: rgba(26,26,24,0.22); }
+    .cert-card-icon { font-size: 28px; margin-bottom: 10px; }
+    .cert-card h4 { font-size: 14px; font-weight: 500; color: #1a1a18; margin-bottom: 4px; }
+    .cert-card p { font-size: 12px; color: #5f5e5a; line-height: 1.55; }
+    .cert-badge {
+      display: inline-block; font-size: 10px; font-weight: 500;
+      padding: 3px 10px; border-radius: 20px; margin-top: 8px;
+    }
+
+    /* ── Feature grid ── */
+    .feature-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px; margin: 1.25rem 0;
+    }
+    .feature-card {
+      background: #ffffff; border: 0.5px solid rgba(26,26,24,0.1);
+      border-radius: 12px; padding: 1.25rem;
+      transition: border-color 0.15s;
+    }
+    .feature-card:hover { border-color: rgba(26,26,24,0.22); }
+    .feature-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .feature-icon {
+      width: 34px; height: 34px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .feature-card h4 { font-size: 13px; font-weight: 500; color: #1a1a18; }
+    .feature-card p { font-size: 12px; color: #5f5e5a; line-height: 1.6; }
+
+    /* ── Pillar security cards ── */
+    .pillar-sec-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px; margin: 1.25rem 0;
+    }
+    .pillar-sec-card {
+      background: #ffffff; border: 0.5px solid rgba(26,26,24,0.1);
+      border-radius: 12px; padding: 1.25rem;
+    }
+    .pillar-sec-pill {
+      font-size: 10px; font-weight: 500; padding: 3px 10px;
+      border-radius: 20px; display: inline-block; margin-bottom: 10px;
+    }
+    .pillar-sec-card h4 { font-size: 14px; font-weight: 500; color: #1a1a18; margin-bottom: 6px; }
+    .pillar-sec-card p { font-size: 12px; color: #5f5e5a; line-height: 1.6; margin-bottom: 10px; }
+    .pillar-sec-list { display: flex; flex-direction: column; gap: 5px; }
+    .pillar-sec-list span {
+      font-size: 11px; color: #5f5e5a; display: flex; gap: 6px; align-items: flex-start;
+    }
+    .pillar-sec-list span::before {
+      content: ''; width: 4px; height: 4px; border-radius: 50%;
+      flex-shrink: 0; margin-top: 5px;
+    }
+
+    /* ── Shared responsibility table ── */
+    .resp-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 14px; margin: 1.25rem 0;
+    }
+    @media (max-width: 580px) { .resp-grid { grid-template-columns: 1fr; } }
+    .resp-card {
+      background: #ffffff; border: 0.5px solid rgba(26,26,24,0.1);
+      border-radius: 12px; padding: 1.25rem;
+    }
+    .resp-card h4 { font-size: 13px; font-weight: 500; color: #1a1a18; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 0.5px solid rgba(26,26,24,0.08); }
+    .resp-list { display: flex; flex-direction: column; gap: 7px; }
+    .resp-list span { font-size: 12px; color: #5f5e5a; display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; }
+    .resp-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+
+    /* ── Policy list ── */
+    .policy-list {
+      margin: 0.5rem 0 1rem; padding-left: 0;
+      list-style: none; display: flex; flex-direction: column; gap: 6px;
+    }
+    .policy-list li {
+      font-size: 14px; color: #3a3a38; line-height: 1.65;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .policy-list li::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+      background: #185FA5; flex-shrink: 0; margin-top: 8px;
+    }
+
+    /* ── Callouts ── */
+    .callout {
+      border-left: 3px solid #185FA5; background: #E6F1FB;
+      border-radius: 0 8px 8px 0; padding: 0.875rem 1rem; margin: 1rem 0;
+    }
+    .callout p { font-size: 13px; color: #0C447C; margin: 0; line-height: 1.65; }
+    .callout.green { border-left-color: #3B6D11; background: #EAF3DE; }
+    .callout.green p { color: #27500A; }
+    .callout.amber { border-left-color: #BA7517; background: #FAEEDA; }
+    .callout.amber p { color: #633806; }
+
+    /* ── Data table ── */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 1rem 0 1.5rem; }
+    .data-table th {
+      text-align: left; font-weight: 500; font-size: 11px;
+      letter-spacing: 0.05em; text-transform: uppercase; color: #888780;
+      padding: 8px 12px; background: #f1efe8;
+      border-bottom: 0.5px solid rgba(26,26,24,0.1);
+    }
+    .data-table th:first-child { border-radius: 6px 0 0 0; }
+    .data-table th:last-child  { border-radius: 0 6px 0 0; }
+    .data-table td {
+      padding: 10px 12px; border-bottom: 0.5px solid rgba(26,26,24,0.07);
+      color: #3a3a38; vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:nth-child(even) td { background: rgba(26,26,24,0.02); }
+
+    /* ── Incident timeline ── */
+    .timeline { display: flex; flex-direction: column; gap: 0; margin: 1rem 0; }
+    .timeline-item { display: grid; grid-template-columns: 80px 1fr; gap: 16px; padding: 1rem 0; border-bottom: 0.5px solid rgba(26,26,24,0.07); }
+    .timeline-item:last-child { border-bottom: none; }
+    .timeline-time { font-size: 12px; font-weight: 500; color: #185FA5; padding-top: 2px; white-space: nowrap; }
+    .timeline-body h4 { font-size: 13px; font-weight: 500; color: #1a1a18; margin-bottom: 3px; }
+    .timeline-body p { font-size: 12px; color: #5f5e5a; line-height: 1.55; }
+
+    /* ── Status indicator ── */
+    .status-row {
+      background: #EAF3DE; border: 0.5px solid rgba(59,109,17,0.2);
+      border-radius: 10px; padding: 1rem 1.25rem;
+      display: flex; align-items: center; gap: 12px; margin: 1.25rem 0;
+    }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; background: #3B6D11; flex-shrink: 0; }
+    .status-text h4 { font-size: 13px; font-weight: 500; color: #27500A; }
+    .status-text p { font-size: 12px; color: #3B6D11; }
+
+    /* ── CTA band ── */
+    .cta-band { background: #1a1a18; padding: 4rem 1.5rem; text-align: center; }
+    .cta-band h2 { font-size: 28px; font-weight: 500; color: #f1efe8; margin-bottom: 0.75rem; line-height: 1.25; }
+    .cta-band p { font-size: 15px; color: #888780; max-width: 480px; margin: 0 auto 2rem; line-height: 1.7; }
+    .cta-buttons { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .btn-light {
+      display: inline-block; background: #f1efe8; color: #1a1a18;
+      font-size: 14px; font-weight: 500; padding: 11px 26px;
+      border-radius: 8px; text-decoration: none; transition: background 0.15s;
+    }
+    .btn-light:hover { background: #ffffff; }
+    .btn-ghost {
+      display: inline-block; background: transparent; color: #f1efe8;
+      font-size: 14px; font-weight: 500; padding: 11px 26px;
+      border-radius: 8px; border: 0.5px solid rgba(241,239,232,0.3);
+      text-decoration: none; transition: background 0.15s;
+    }
+    .btn-ghost:hover { background: rgba(241,239,232,0.08); }
+
+    .divider { border: none; border-top: 0.5px solid rgba(26,26,24,0.08); margin: 2rem 0; }
+
+    /* colour helpers */
+    .c-blue-bg   { background: #E6F1FB; color: #0C447C; }
+    .c-teal-bg   { background: #E1F5EE; color: #085041; }
+    .c-amber-bg  { background: #FAEEDA; color: #633806; }
+    .c-green-bg  { background: #EAF3DE; color: #27500A; }
+    .c-purple-bg { background: #EEEDFE; color: #3C3489; }
+    .c-coral-bg  { background: #FAECE7; color: #712B13; }
+    .icon-blue   { background: #E6F1FB; }
+    .icon-teal   { background: #E1F5EE; }
+    .icon-amber  { background: #FAEEDA; }
+    .icon-green  { background: #EAF3DE; }
+    .icon-purple { background: #EEEDFE; }
+    .icon-coral  { background: #FAECE7; }
+
+    /* ── Dark mode ── */
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a18; color: #f1efe8; }
+      .topbar { background: #2c2c2a; border-bottom-color: rgba(241,239,232,0.08); }
+      .topbar-brand { color: #f1efe8; }
+      .hero { background: #2c2c2a; border-bottom-color: rgba(241,239,232,0.08); }
+      .hero-eyebrow { background: #0C447C; color: #B5D4F4; }
+      .hero h1 { color: #f1efe8; }
+      .hero h1 em { color: #85B7EB; }
+      .hero p { color: #b4b2a9; }
+      .hero-badge { background: #2c2c2a; border-color: rgba(241,239,232,0.12); color: #f1efe8; }
+      .trust-bar { background: #2c2c2a; }
+      .sec h2 { color: #f1efe8; }
+      .sec h3 { color: #f1efe8; }
+      .sec p { color: #d3d1c7; }
+      .sec-header { border-bottom-color: rgba(241,239,232,0.08); }
+      .cert-card { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
+      .cert-card:hover { border-color: rgba(241,239,232,0.2); }
+      .cert-card h4 { color: #f1efe8; }
+      .cert-card p { color: #b4b2a9; }
+      .feature-card { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
+      .feature-card:hover { border-color: rgba(241,239,232,0.2); }
+      .feature-card h4 { color: #f1efe8; }
+      .feature-card p { color: #b4b2a9; }
+      .pillar-sec-card { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
+      .pillar-sec-card h4 { color: #f1efe8; }
+      .pillar-sec-card p { color: #b4b2a9; }
+      .pillar-sec-list span { color: #b4b2a9; }
+      .resp-card { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
+      .resp-card h4 { color: #f1efe8; border-bottom-color: rgba(241,239,232,0.08); }
+      .resp-list span { color: #b4b2a9; }
+      .policy-list li { color: #d3d1c7; }
+      .callout { background: #0C447C; border-left-color: #85B7EB; }
+      .callout p { color: #B5D4F4; }
+      .callout.green { background: #27500A; border-left-color: #C0DD97; }
+      .callout.green p { color: #C0DD97; }
+      .callout.amber { background: #633806; border-left-color: #FAC775; }
+      .callout.amber p { color: #FAC775; }
+      .data-table th { background: #2c2c2a; color: #888780; border-bottom-color: rgba(241,239,232,0.1); }
+      .data-table td { color: #d3d1c7; border-bottom-color: rgba(241,239,232,0.06); }
+      .data-table tr:nth-child(even) td { background: rgba(241,239,232,0.03); }
+      .timeline-item { border-bottom-color: rgba(241,239,232,0.08); }
+      .timeline-body h4 { color: #f1efe8; }
+      .timeline-body p { color: #b4b2a9; }
+      .status-row { background: #27500A; border-color: rgba(192,221,151,0.2); }
+      .status-dot { background: #C0DD97; }
+      .status-text h4 { color: #C0DD97; }
+      .status-text p { color: #9FE1CB; }
+      .cta-band { background: #2c2c2a; }
+      .cta-band h2 { color: #f1efe8; }
+      .cta-band p { color: #888780; }
+      .icon-blue   { background: #0C447C; }
+      .icon-teal   { background: #085041; }
+      .icon-amber  { background: #633806; }
+      .icon-green  { background: #27500A; }
+      .icon-purple { background: #3C3489; }
+      .icon-coral  { background: #712B13; }
+      .c-blue-bg   { background: #0C447C; color: #B5D4F4; }
+      .c-teal-bg   { background: #085041; color: #9FE1CB; }
+      .c-amber-bg  { background: #633806; color: #FAC775; }
+      .c-green-bg  { background: #27500A; color: #C0DD97; }
+      .c-purple-bg { background: #3C3489; color: #CECBF6; }
+      .c-coral-bg  { background: #712B13; color: #F5C4B3; }
+      .sidebar-nav a { color: #888780; }
+      .sidebar-nav a:hover { background: rgba(241,239,232,0.06); color: #f1efe8; }
+      .sidebar-nav a.active { background: #0C447C; color: #B5D4F4; border-left-color: #85B7EB; }
+      .sidebar-contact { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
+      .sidebar-contact p { color: #b4b2a9; }
+      .sidebar-contact a { color: #85B7EB; }
+      .divider { border-top-color: rgba(241,239,232,0.08); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Top bar ── -->
+<div class="topbar">
+  <a href="#" class="topbar-brand">AI<span>FinOps</span></a>
+  <span class="topbar-meta">Trust &amp; Security</span>
+</div>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <span class="hero-eyebrow">Security</span>
+  <h1>Your AI infrastructure data is <em>safe with us</em></h1>
+  <p>
+    We built security into every layer of the platform — from the agent that
+    collects telemetry in your environment to the encryption that protects
+    every byte at rest and in transit. This page explains exactly how.
+  </p>
+  <div class="hero-badges">
+    <span class="hero-badge">🛡️ SOC 2 Type II</span>
+    <span class="hero-badge">🔐 ISO 27001</span>
+    <span class="hero-badge">🇪🇺 GDPR compliant</span>
+    <span class="hero-badge">🇮🇳 DPDPA compliant</span>
+    <span class="hero-badge">🔑 AES-256 encryption</span>
+    <span class="hero-badge">✅ Pen tested annually</span>
+  </div>
+</section>
+
+<!-- ── Trust bar ── -->
+<div class="trust-bar" role="region" aria-label="Security certifications">
+  <div class="trust-inner">
+    <div>
+      <div class="trust-item-icon">🛡️</div>
+      <div class="trust-item-label">SOC 2 Type II</div>
+      <div class="trust-item-sub">Audited annually</div>
+    </div>
+    <div>
+      <div class="trust-item-icon">🔐</div>
+      <div class="trust-item-label">ISO 27001</div>
+      <div class="trust-item-sub">Certified</div>
+    </div>
+    <div>
+      <div class="trust-item-icon">⏱️</div>
+      <div class="trust-item-label">72-hour breach notice</div>
+      <div class="trust-item-sub">GDPR Article 33</div>
+    </div>
+    <div>
+      <div class="trust-item-icon">🔑</div>
+      <div class="trust-item-label">Zero-knowledge option</div>
+      <div class="trust-item-sub">BYOK key management</div>
+    </div>
+    <div>
+      <div class="trust-item-icon">🔍</div>
+      <div class="trust-item-label">Pen tested</div>
+      <div class="trust-item-sub">Annual + on major releases</div>
+    </div>
+    <div>
+      <div class="trust-item-icon">99.9%</div>
+      <div class="trust-item-label">Uptime SLA</div>
+      <div class="trust-item-sub">Enterprise: 99.99%</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Page layout ── -->
+<div class="page-wrap">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" aria-label="Page navigation">
+    <p class="sidebar-label">On this page</p>
+    <nav class="sidebar-nav">
+      <a href="#certifications">Certifications</a>
+      <a href="#infrastructure">Infrastructure security</a>
+      <a href="#data-security">Data security</a>
+      <a href="#access-control">Access control</a>
+      <a href="#network">Network security</a>
+      <a href="#pillar-security">Security by capability</a>
+      <a href="#agent-security">Agent security</a>
+      <a href="#shared-responsibility">Shared responsibility</a>
+      <a href="#vendor-security">Vendor &amp; supply chain</a>
+      <a href="#incident-response">Incident response</a>
+      <a href="#vulnerability">Vulnerability management</a>
+      <a href="#compliance">Compliance &amp; regulations</a>
+      <a href="#enterprise">Enterprise security features</a>
+      <a href="#responsible-disclosure">Responsible disclosure</a>
+      <a href="#contact">Security contact</a>
+    </nav>
+    <div class="sidebar-contact">
+      <p>Found a vulnerability? Report it responsibly.</p>
+      <a href="mailto:security@aifinops.com">security@aifinops.com</a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="content">
+
+    <!-- Platform status -->
+    <div class="status-row">
+      <div class="status-dot"></div>
+      <div class="status-text">
+        <h4>All systems operational</h4>
+        <p>Last checked April 18, 2026 · View live status at status.aifinops.com</p>
+      </div>
+    </div>
+
+    <!-- 1. Certifications -->
+    <section class="sec" id="certifications">
+      <div class="sec-header">
+        <div class="sec-icon icon-blue">🏅</div>
+        <h2>Certifications and compliance</h2>
+      </div>
+      <p>
+        Our security programme is independently verified through third-party audits
+        and certifications. We publish our compliance posture transparently so you
+        can make an informed decision about trusting us with your AI infrastructure data.
+      </p>
+      <div class="cert-grid">
+        <div class="cert-card">
+          <div class="cert-card-icon">🛡️</div>
+          <h4>SOC 2 Type II</h4>
+          <p>Annual audit covering Security, Availability, and Confidentiality trust service criteria.</p>
+          <span class="cert-badge c-blue-bg">Report available under NDA</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-icon">🔐</div>
+          <h4>ISO 27001</h4>
+          <p>Certified information security management system covering all production infrastructure and processes.</p>
+          <span class="cert-badge c-green-bg">Certificate publicly available</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-icon">🇪🇺</div>
+          <h4>GDPR</h4>
+          <p>Full compliance with EU General Data Protection Regulation. DPA with SCCs available for EU customers.</p>
+          <span class="cert-badge c-teal-bg">DPA available on request</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-icon">🇮🇳</div>
+          <h4>DPDPA 2023</h4>
+          <p>Compliant with India's Digital Personal Data Protection Act 2023 including cross-border transfer rules.</p>
+          <span class="cert-badge c-amber-bg">India region available</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-icon">🏛️</div>
+          <h4>CCPA</h4>
+          <p>Compliant with California Consumer Privacy Act. Data subject request fulfilment within 45 days.</p>
+          <span class="cert-badge c-purple-bg">California region available</span>
+        </div>
+        <div class="cert-card">
+          <div class="cert-card-icon">💳</div>
+          <h4>PCI DSS</h4>
+          <p>Payment card data is handled exclusively by Stripe (PCI DSS Level 1). We never store card numbers.</p>
+          <span class="cert-badge c-coral-bg">Handled by Stripe</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Infrastructure security -->
+    <section class="sec" id="infrastructure">
+      <div class="sec-header">
+        <div class="sec-icon icon-teal">🏗️</div>
+        <h2>Infrastructure security</h2>
+      </div>
+      <p>
+        Our platform runs on AWS with multi-region redundancy. All infrastructure is
+        provisioned and managed through infrastructure-as-code with version-controlled
+        configurations, mandatory change review, and automated compliance checks on
+        every deployment.
+      </p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-teal">🌍</div>
+            <h4>Multi-region architecture</h4>
+          </div>
+          <p>Production workloads are distributed across AWS US-East, EU-West, and AP-Southeast regions. Data residency is enforced at the infrastructure level — your data never leaves your chosen region.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-teal">⚙️</div>
+            <h4>Infrastructure as code</h4>
+          </div>
+          <p>All infrastructure is defined in Terraform and deployed through CI/CD pipelines with mandatory peer review, security scanning, and automated policy checks before any change reaches production.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-teal">🔄</div>
+            <h4>Immutable deployments</h4>
+          </div>
+          <p>We use immutable infrastructure patterns — servers are never patched in place. Every deployment replaces instances entirely, eliminating configuration drift and reducing attack surface.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-teal">💾</div>
+            <h4>Backup and recovery</h4>
+          </div>
+          <p>All customer data is backed up continuously to geographically separate AWS regions. Backups are encrypted, integrity-checked hourly, and tested monthly. RTO is under 4 hours; RPO is under 1 hour.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Data security -->
+    <section class="sec" id="data-security">
+      <div class="sec-header">
+        <div class="sec-icon icon-purple">🔒</div>
+        <h2>Data security and encryption</h2>
+      </div>
+      <p>
+        Every piece of data you entrust to the platform — billing telemetry, workload
+        metadata, cost attribution records, orchestration logs — is encrypted at every
+        stage of its lifecycle.
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Data state</th><th>Encryption standard</th><th>Key management</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Data in transit</td>
+            <td>TLS 1.3 (minimum TLS 1.2). TLS 1.0/1.1 disabled.</td>
+            <td>Managed certificates via AWS ACM with auto-renewal</td>
+          </tr>
+          <tr>
+            <td>Data at rest (databases)</td>
+            <td>AES-256 encryption on all RDS and DynamoDB instances</td>
+            <td>AWS KMS managed keys (default) or BYOK (Enterprise)</td>
+          </tr>
+          <tr>
+            <td>Data at rest (object storage)</td>
+            <td>AES-256 encryption on all S3 buckets. Bucket policies enforce encryption.</td>
+            <td>AWS KMS with per-customer key isolation on Enterprise tier</td>
+          </tr>
+          <tr>
+            <td>Data at rest (backups)</td>
+            <td>AES-256 with separate encryption keys from production</td>
+            <td>AWS KMS with cross-region key replication</td>
+          </tr>
+          <tr>
+            <td>Agent telemetry in transit</td>
+            <td>TLS 1.3 with certificate pinning. Agent refuses connections to unverified endpoints.</td>
+            <td>Short-lived mTLS client certificates rotated every 24 hours</td>
+          </tr>
+          <tr>
+            <td>Secrets and credentials</td>
+            <td>Never stored in code or environment variables. Stored in AWS Secrets Manager.</td>
+            <td>Automatic rotation every 30 days for all platform secrets</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Bring your own key (BYOK)</h3>
+      <p>
+        Enterprise customers can supply their own AWS KMS keys (or keys from Azure Key
+        Vault and HashiCorp Vault) for all data encryption. BYOK means only you can
+        decrypt your data — even if our systems were compromised, your data remains
+        inaccessible without your key. Revoking your key immediately renders all stored
+        data unreadable.
+      </p>
+      <div class="callout green">
+        <p>
+          We maintain strict data isolation between customers at both the application
+          and infrastructure layer. Your data is logically and physically separated from
+          all other customers — we do not use shared databases or storage buckets across
+          customer accounts.
+        </p>
+      </div>
+    </section>
+
+    <!-- 4. Access control -->
+    <section class="sec" id="access-control">
+      <div class="sec-header">
+        <div class="sec-icon icon-amber">🪪</div>
+        <h2>Access control and identity</h2>
+      </div>
+      <p>
+        Access to customer data within our systems is controlled by a strict
+        least-privilege model. No engineer has standing access to production customer
+        data — all access is time-limited, requires justification, and is fully logged.
+      </p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-amber">🔑</div>
+            <h4>Zero standing access</h4>
+          </div>
+          <p>No AIFinOps employee has permanent access to production systems or customer data. Access is granted on-demand via a just-in-time (JIT) access system, requires manager approval, and expires automatically.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-amber">📋</div>
+            <h4>Immutable audit logs</h4>
+          </div>
+          <p>Every access event — including all read operations on customer data — is written to tamper-proof, append-only audit logs in AWS CloudTrail. Logs are retained for 3 years and available for your review on request.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-amber">📱</div>
+            <h4>MFA enforced internally</h4>
+          </div>
+          <p>MFA using hardware security keys (YubiKey) is mandatory for all AIFinOps employees accessing production systems. TOTP-based MFA is also available but not accepted for high-privilege operations.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-amber">👤</div>
+            <h4>Role-based access control</h4>
+          </div>
+          <p>Internal roles follow a strict least-privilege model reviewed quarterly. Engineers cannot deploy to production without a code review, and deployment pipelines enforce separation of duties — the author cannot approve their own change.</p>
+        </div>
+      </div>
+      <h3>Customer-facing access controls</h3>
+      <ul class="policy-list">
+        <li>RBAC with custom roles — define exactly what each team member can view, configure, or automate within your account.</li>
+        <li>SSO via SAML 2.0 and OIDC — integrate with Okta, Azure AD, Google Workspace, and other identity providers.</li>
+        <li>MFA support — TOTP and hardware security keys supported for all account users. MFA can be enforced organisation-wide from your admin settings.</li>
+        <li>Session management — configurable session timeouts, concurrent session limits, and forced re-authentication for sensitive operations.</li>
+        <li>API key scoping — API keys can be scoped to read-only, specific capabilities, or specific connected environments. Keys are rotatable and revocable at any time.</li>
+        <li>IP allowlisting — restrict Platform access to specific IP ranges for additional defence-in-depth.</li>
+      </ul>
+    </section>
+
+    <!-- 5. Network security -->
+    <section class="sec" id="network">
+      <div class="sec-header">
+        <div class="sec-icon icon-coral">🌐</div>
+        <h2>Network security</h2>
+      </div>
+      <p>
+        Our network architecture is designed to minimise attack surface, isolate
+        components, and detect threats in real time at every layer.
+      </p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-coral">🛡️</div>
+            <h4>DDoS protection</h4>
+          </div>
+          <p>All public endpoints are protected by AWS Shield Advanced with automatic detection and mitigation of volumetric, protocol, and application-layer DDoS attacks.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-coral">🔥</div>
+            <h4>Web application firewall</h4>
+          </div>
+          <p>AWS WAF is deployed in front of all public APIs and the web application, with managed rule sets for OWASP Top 10, bot detection, and custom rate limiting rules.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-coral">🏠</div>
+            <h4>VPC isolation</h4>
+          </div>
+          <p>All production services run in isolated VPCs with no direct public internet access. Traffic between services travels over private endpoints. Internet-facing services are restricted to load balancers and API gateways only.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-coral">🔎</div>
+            <h4>Intrusion detection</h4>
+          </div>
+          <p>AWS GuardDuty monitors all VPC flow logs, DNS queries, and CloudTrail events for anomalous activity. Alerts trigger automated containment and human review within 15 minutes during business hours, 30 minutes at all other times.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Security by capability -->
+    <section class="sec" id="pillar-security">
+      <div class="sec-header">
+        <div class="sec-icon icon-blue">🔐</div>
+        <h2>Security by platform capability</h2>
+      </div>
+      <p>
+        Each of our four core capabilities has specific security controls designed
+        around the data it processes and the actions it can take in your environment.
+      </p>
+      <div class="pillar-sec-grid">
+
+        <div class="pillar-sec-card">
+          <span class="pillar-sec-pill c-blue-bg">📡 Monitoring</span>
+          <h4>Read-only by design</h4>
+          <p>The monitoring capability operates exclusively with read-only permissions on connected accounts. It cannot modify, create, or delete any resource in your environment.</p>
+          <div class="pillar-sec-list">
+            <span style="--dot-color:#185FA5;">Read-only IAM roles only</span>
+            <span>Principle of least privilege enforced per source</span>
+            <span>Connected source credentials encrypted at rest with BYOK</span>
+            <span>Prompt content never collected unless explicitly enabled</span>
+            <span>Telemetry streams anonymised before cross-region replication</span>
+          </div>
+        </div>
+
+        <div class="pillar-sec-card">
+          <span class="pillar-sec-pill c-teal-bg">⚙️ Optimization</span>
+          <h4>Advisory first, automated with approval</h4>
+          <p>Optimization recommendations are generated within your data boundary. Automated actions require explicit policy setup and operate strictly within your approved guardrails.</p>
+          <div class="pillar-sec-list">
+            <span>Recommendations generated within your region</span>
+            <span>No workload metadata shared cross-customer</span>
+            <span>Automated actions gated by approval workflows</span>
+            <span>All actions logged with user, timestamp, and justification</span>
+            <span>Rollback supported for all reversible actions</span>
+          </div>
+        </div>
+
+        <div class="pillar-sec-card">
+          <span class="pillar-sec-pill c-amber-bg">🔀 Orchestration</span>
+          <h4>Permission-scoped scheduling</h4>
+          <p>The orchestration engine operates only within the permissions and resource boundaries you define. Residency tags are cryptographically enforced — jobs cannot be routed outside tagged regions.</p>
+          <div class="pillar-sec-list">
+            <span>Cryptographic enforcement of data residency tags</span>
+            <span>Scheduling permissions scoped per environment</span>
+            <span>Full execution audit trail retained for 12 months</span>
+            <span>mTLS authentication for all scheduler-to-cloud API calls</span>
+            <span>Job metadata encrypted in transit and at rest</span>
+          </div>
+        </div>
+
+        <div class="pillar-sec-card">
+          <span class="pillar-sec-pill c-green-bg">🗑️ Waste elimination</span>
+          <h4>Protected resources always excluded</h4>
+          <p>Automated waste actions are constrained by a protected resource list you maintain. A mandatory notification window precedes every automated action, with a kill switch available at all times.</p>
+          <div class="pillar-sec-list">
+            <span>Protected resource list enforced at action layer</span>
+            <span>Minimum 15-minute notification window before action</span>
+            <span>Emergency kill switch to pause all automation instantly</span>
+            <span>Shadow AI discovery via read-only expense API access</span>
+            <span>All remediation actions require human approval by default</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 7. Agent security -->
+    <section class="sec" id="agent-security">
+      <div class="sec-header">
+        <div class="sec-icon icon-green">🤖</div>
+        <h2>Agent security</h2>
+      </div>
+      <p>
+        The AIFinOps Agent is a lightweight binary you install in your on-premises
+        or private cloud environment to collect hardware and workload telemetry.
+        Its security model is designed around minimal footprint and zero trust.
+      </p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-green">📦</div>
+            <h4>Minimal permissions</h4>
+          </div>
+          <p>The Agent runs as a non-root, dedicated system user with read-only access to metrics APIs (DCGM, Prometheus, /proc). It cannot write to your filesystem, execute commands, or modify any configuration.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-green">📡</div>
+            <h4>Outbound-only communication</h4>
+          </div>
+          <p>The Agent initiates outbound-only connections over TLS 1.3 to a fixed set of AIFinOps endpoints (published at docs.aifinops.com/agent/endpoints). It accepts no inbound connections and opens no ports.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-green">🔏</div>
+            <h4>Code signing</h4>
+          </div>
+          <p>Every Agent release is signed with our GPG key. The installer verifies the signature before executing. Signatures and checksums are published at aifinops.com/agent/verify for independent verification.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-green">🔄</div>
+            <h4>Automatic updates with approval</h4>
+          </div>
+          <p>Agent updates are delivered automatically by default but can be set to manual approval mode in enterprise environments. All updates maintain backward compatibility with a 6-month deprecation notice for breaking changes.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-green">🚫</div>
+            <h4>No data residency outside your network</h4>
+          </div>
+          <p>The Agent holds a maximum 60-second metric buffer in memory only — nothing is written to disk. If the outbound connection is unavailable, buffered data is dropped, not queued to disk.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-green">🧪</div>
+            <h4>Open for audit</h4>
+          </div>
+          <p>The Agent's source code is available for review under NDA for enterprise customers. We also publish a detailed technical specification of every system call and network request the Agent makes.</p>
+        </div>
+      </div>
+      <div class="callout">
+        <p>
+          You can review the exact permissions the Agent requires, inspect its network
+          traffic, and uninstall it at any time without data loss — the Agent holds no
+          persistent state. Full technical documentation at docs.aifinops.com/agent/security.
+        </p>
+      </div>
+    </section>
+
+    <!-- 8. Shared responsibility -->
+    <section class="sec" id="shared-responsibility">
+      <div class="sec-header">
+        <div class="sec-icon icon-purple">🤝</div>
+        <h2>Shared responsibility model</h2>
+      </div>
+      <p>
+        Security is a joint effort. We secure the platform and its infrastructure.
+        You are responsible for how you configure access, what you connect, and
+        the policies you set. Here is how the boundary works.
+      </p>
+      <div class="resp-grid">
+        <div class="resp-card">
+          <h4>AIFinOps is responsible for</h4>
+          <div class="resp-list">
+            <span><div class="resp-dot" style="background:#185FA5;"></div>Physical and network security of all platform infrastructure</span>
+            <span><div class="resp-dot" style="background:#185FA5;"></div>Encryption of data at rest and in transit within our systems</span>
+            <span><div class="resp-dot" style="background:#185FA5;"></div>Platform application security, patching, and vulnerability management</span>
+            <span><div class="resp-dot" style="background:#185FA5;"></div>Internal access controls and employee security posture</span>
+            <span><div class="resp-dot" style="background:#185FA5;"></div>SOC 2 / ISO 27001 compliance and audit evidence</span>
+            <span><div class="resp-dot" style="background:#185FA5;"></div>DDoS protection, WAF, and intrusion detection on platform endpoints</span>
+            <span><div class="resp-dot" style="background:#185FA5;"></div>Incident detection, response, and customer notification</span>
+            <span><div class="resp-dot" style="background:#185FA5;"></div>Agent binary integrity and secure update delivery</span>
+            <span><div class="resp-dot" style="background:#185FA5;"></div>Sub-processor security and vendor risk management</span>
+          </div>
+        </div>
+        <div class="resp-card">
+          <h4>You are responsible for</h4>
+          <div class="resp-list">
+            <span><div class="resp-dot" style="background:#0F6E56;"></div>Managing and rotating API keys and credentials used to connect your accounts</span>
+            <span><div class="resp-dot" style="background:#0F6E56;"></div>Configuring appropriate RBAC and MFA for your Authorised Users</span>
+            <span><div class="resp-dot" style="background:#0F6E56;"></div>Setting and maintaining your protected resource list before enabling automation</span>
+            <span><div class="resp-dot" style="background:#0F6E56;"></div>Reviewing automation guardrails and approval workflows before enabling them</span>
+            <span><div class="resp-dot" style="background:#0F6E56;"></div>Ensuring connected data sources comply with your own security and compliance policies</span>
+            <span><div class="resp-dot" style="background:#0F6E56;"></div>Granting only the minimum necessary permissions when connecting cloud accounts</span>
+            <span><div class="resp-dot" style="background:#0F6E56;"></div>Promptly revoking access for departed employees or compromised credentials</span>
+            <span><div class="resp-dot" style="background:#0F6E56;"></div>Maintaining security of the systems in which the Agent is deployed</span>
+            <span><div class="resp-dot" style="background:#0F6E56;"></div>Compliance obligations specific to your industry and jurisdiction</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Vendor and supply chain -->
+    <section class="sec" id="vendor-security">
+      <div class="sec-header">
+        <div class="sec-icon icon-amber">🏭</div>
+        <h2>Vendor and supply chain security</h2>
+      </div>
+      <p>
+        Our platform is only as secure as the vendors we depend on. We apply a
+        rigorous vendor risk management process to every third party that has
+        access to customer data or our production systems.
+      </p>
+      <ul class="policy-list">
+        <li>All sub-processors are reviewed annually against a 50-point security checklist covering data handling, encryption, access controls, incident response, and compliance certifications.</li>
+        <li>Third-party software dependencies are scanned continuously using Dependabot and Snyk. Critical and high vulnerabilities are patched within 24 hours; medium vulnerabilities within 7 days.</li>
+        <li>Our software build pipeline is isolated from the internet, uses reproducible builds, and generates an SBOM (software bill of materials) for every release — available to enterprise customers on request.</li>
+        <li>All production code changes require two independent code reviews, automated SAST (static application security testing), and secrets scanning before merge. No single engineer can deploy to production alone.</li>
+        <li>A full and current list of sub-processors is published at aifinops.com/legal/sub-processors. Customers are notified 14 days before any new sub-processor with access to customer data is added.</li>
+      </ul>
+    </section>
+
+    <!-- 10. Incident response -->
+    <section class="sec" id="incident-response">
+      <div class="sec-header">
+        <div class="sec-icon icon-coral">🚨</div>
+        <h2>Incident response</h2>
+      </div>
+      <p>
+        We maintain a documented and tested incident response plan. In the event of
+        a security incident affecting your data, we will notify you promptly and
+        transparently — before we have all the answers, not after.
+      </p>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-time">0 – 1 hr</div>
+          <div class="timeline-body">
+            <h4>Detection and triage</h4>
+            <p>Automated monitoring detects the incident. On-call security engineer is paged. Incident is classified by severity (P1–P4) and an incident commander is assigned for P1/P2 events.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">1 – 4 hrs</div>
+          <div class="timeline-body">
+            <h4>Containment</h4>
+            <p>Affected systems are isolated. Scope of impact is assessed. If customer data may be involved, the legal and privacy teams are engaged. Initial internal communication is sent.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">Within 24 hrs</div>
+          <div class="timeline-body">
+            <h4>Customer notification (if impacted)</h4>
+            <p>Affected customers receive an initial notification via email and in-platform alert. We share what we know, what we don't yet know, and what steps we are taking — even if the investigation is ongoing.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">Within 72 hrs</div>
+          <div class="timeline-body">
+            <h4>Regulatory notification</h4>
+            <p>Where a personal data breach is confirmed, we notify the relevant supervisory authority (e.g. Ireland DPC for GDPR) within 72 hours as required by GDPR Article 33.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">Post-incident</div>
+          <div class="timeline-body">
+            <h4>Root cause analysis and remediation</h4>
+            <p>A blameless post-mortem is conducted within 5 business days. A written root cause analysis (RCA) report is shared with affected customers. Remediation actions are tracked to completion.</p>
+          </div>
+        </div>
+      </div>
+      <div class="callout amber">
+        <p>
+          Our incident response plan is tested through tabletop exercises twice a year
+          and a live red team exercise annually. Test results inform improvements to
+          our detection, containment, and communication procedures.
+        </p>
+      </div>
+    </section>
+
+    <!-- 11. Vulnerability management -->
+    <section class="sec" id="vulnerability">
+      <div class="sec-header">
+        <div class="sec-icon icon-green">🔍</div>
+        <h2>Vulnerability management</h2>
+      </div>
+      <p>
+        We proactively find and fix vulnerabilities through a layered programme of
+        automated scanning, independent penetration testing, and a public bug bounty
+        programme.
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Activity</th><th>Frequency</th><th>Scope</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Automated SAST (static analysis)</td><td>Every code commit</td><td>All application code</td></tr>
+          <tr><td>Dependency vulnerability scanning</td><td>Continuous (Snyk + Dependabot)</td><td>All third-party libraries</td></tr>
+          <tr><td>Container image scanning</td><td>Every image build</td><td>All production containers</td></tr>
+          <tr><td>Infrastructure misconfiguration scanning</td><td>Daily</td><td>All AWS accounts and resources</td></tr>
+          <tr><td>External penetration test</td><td>Annual + after major releases</td><td>Web app, APIs, Agent, network perimeter</td></tr>
+          <tr><td>Internal red team exercise</td><td>Annual</td><td>Full kill-chain simulation</td></tr>
+          <tr><td>Bug bounty programme</td><td>Continuous</td><td>Web app, APIs, Agent</td></tr>
+        </tbody>
+      </table>
+      <h3>Patch SLAs</h3>
+      <table class="data-table">
+        <thead>
+          <tr><th>Severity</th><th>CVSS score</th><th>Patch SLA</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Critical</td><td>9.0 – 10.0</td><td>Within 24 hours of confirmation</td></tr>
+          <tr><td>High</td><td>7.0 – 8.9</td><td>Within 7 days</td></tr>
+          <tr><td>Medium</td><td>4.0 – 6.9</td><td>Within 30 days</td></tr>
+          <tr><td>Low</td><td>0.1 – 3.9</td><td>Next scheduled release cycle</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 12. Compliance -->
+    <section class="sec" id="compliance">
+      <div class="sec-header">
+        <div class="sec-icon icon-blue">🏛️</div>
+        <h2>Compliance and regulations</h2>
+      </div>
+      <p>
+        Our platform is designed to help your organisation meet its compliance obligations
+        — not create new ones. Here is how each capability supports common regulatory requirements.
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Regulation</th><th>How the platform helps</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>GDPR (EU)</strong></td>
+            <td>Data residency enforcement, DPA with SCCs, right-to-erasure workflows, 72-hour breach notification, audit logs for all data access events.</td>
+          </tr>
+          <tr>
+            <td><strong>DPDPA 2023 (India)</strong></td>
+            <td>India region available, cross-border transfer controls, data fiduciary consent management, localisation of sensitive AI workload telemetry.</td>
+          </tr>
+          <tr>
+            <td><strong>CCPA (California)</strong></td>
+            <td>Data subject request fulfilment within 45 days, opt-out of data sale (we never sell data), deletion request workflows, data inventory reporting.</td>
+          </tr>
+          <tr>
+            <td><strong>HIPAA</strong></td>
+            <td>BAA available for healthcare customers. PHI must not be included in workload metadata. Monitoring and audit log capabilities support HIPAA security rule requirements.</td>
+          </tr>
+          <tr>
+            <td><strong>SOX</strong></td>
+            <td>Immutable audit trails for all cost allocation, spend approvals, and orchestration actions. Financial data lineage tracking from source billing to allocated cost centre.</td>
+          </tr>
+          <tr>
+            <td><strong>FedRAMP (in progress)</strong></td>
+            <td>FedRAMP Moderate authorisation in progress. US GovCloud region available for pre-authorisation use by federal agencies under an ATO.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 13. Enterprise security features -->
+    <section class="sec" id="enterprise">
+      <div class="sec-header">
+        <div class="sec-icon icon-purple">🏢</div>
+        <h2>Enterprise security features</h2>
+      </div>
+      <p>
+        Enterprise customers get additional security controls designed for
+        organisations with complex compliance requirements and large user populations.
+      </p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-purple">🔑</div>
+            <h4>BYOK encryption</h4>
+          </div>
+          <p>Supply your own encryption keys from AWS KMS, Azure Key Vault, or HashiCorp Vault. Revoke at any time to immediately block all access to your data.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-purple">🏠</div>
+            <h4>Private link / VPC peering</h4>
+          </div>
+          <p>Connect your infrastructure to our platform over AWS PrivateLink or VPC peering — your traffic never traverses the public internet.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-purple">📋</div>
+            <h4>Custom data retention</h4>
+          </div>
+          <p>Set custom retention periods per data type to match your regulatory requirements — from 30 days to 7 years. Automated deletion with certificate on completion.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-purple">🔐</div>
+            <h4>SSO with SCIM provisioning</h4>
+          </div>
+          <p>SAML 2.0 and OIDC SSO with SCIM-based automatic user provisioning and deprovisioning. Departing employees lose access instantly without manual intervention.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-purple">📊</div>
+            <h4>SIEM integration</h4>
+          </div>
+          <p>Forward all platform audit logs to your SIEM (Splunk, Datadog, Microsoft Sentinel, etc.) in real time via webhook, S3 export, or direct API integration.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-card-header">
+            <div class="feature-icon icon-purple">🌍</div>
+            <h4>Dedicated tenancy option</h4>
+          </div>
+          <p>Deploy the platform in a dedicated AWS account within your own organisation, fully isolated from all other customers, managed by AIFinOps under a shared operations model.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 14. Responsible disclosure -->
+    <section class="sec" id="responsible-disclosure">
+      <div class="sec-header">
+        <div class="sec-icon icon-green">🔎</div>
+        <h2>Responsible disclosure</h2>
+      </div>
+      <p>
+        We believe security researchers play a vital role in keeping platforms like
+        ours safe. If you discover a vulnerability in our platform, we ask that you
+        report it to us responsibly so we can fix it before it is exploited.
+      </p>
+      <h3>Our commitment to researchers</h3>
+      <ul class="policy-list">
+        <li>We will acknowledge your report within 1 business day.</li>
+        <li>We will provide an initial assessment of severity and timeline within 5 business days.</li>
+        <li>We will not pursue legal action against researchers who discover and report vulnerabilities in good faith and in accordance with this policy.</li>
+        <li>We will credit researchers in our security acknowledgements page (with permission) when their finding results in a confirmed fix.</li>
+        <li>Rewards are available through our private bug bounty programme for qualifying vulnerabilities. Contact security@aifinops.com to request an invitation.</li>
+      </ul>
+      <h3>Scope</h3>
+      <ul class="policy-list">
+        <li>In scope: aifinops.com web application, API (api.aifinops.com), the AIFinOps Agent binary, and the aifinops.com marketing site.</li>
+        <li>Out of scope: third-party services we use (AWS, Stripe, Intercom), social engineering attacks targeting our employees, physical security testing, and denial-of-service attacks.</li>
+      </ul>
+      <div class="callout green">
+        <p>
+          Report vulnerabilities to security@aifinops.com. Please encrypt your report
+          using our PGP key, available at aifinops.com/security/pgp.asc. Do not disclose
+          the vulnerability publicly until we have confirmed a fix is in place.
+        </p>
+      </div>
+    </section>
+
+    <!-- 15. Security contact -->
+    <section class="sec" id="contact">
+      <div class="sec-header">
+        <div class="sec-icon icon-blue">📬</div>
+        <h2>Security contact</h2>
+      </div>
+      <p>
+        For any security enquiry, vulnerability report, or to request security
+        documentation (SOC 2 report, penetration test executive summary, SBOM),
+        contact our security team:
+      </p>
+      <table class="data-table">
+        <tbody>
+          <tr><td style="font-weight:500; width:200px;">Security vulnerabilities</td><td><a href="mailto:security@aifinops.com" style="color:#185FA5;">security@aifinops.com</a></td></tr>
+          <tr><td style="font-weight:500;">Security documentation requests</td><td><a href="mailto:security@aifinops.com" style="color:#185FA5;">security@aifinops.com</a> (include your company name and NDA status)</td></tr>
+          <tr><td style="font-weight:500;">Platform status</td><td><a href="https://status.aifinops.com" style="color:#185FA5;">status.aifinops.com</a></td></tr>
+          <tr><td style="font-weight:500;">Bug bounty</td><td>Private programme — contact security@aifinops.com to request access</td></tr>
+          <tr><td style="font-weight:500;">PGP key</td><td><a href="#" style="color:#185FA5;">aifinops.com/security/pgp.asc</a></td></tr>
+          <tr><td style="font-weight:500;">Response time</td><td>All security enquiries acknowledged within 1 business day</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<!-- ── CTA band ── -->
+<section class="cta-band" role="complementary">
+  <h2>Security questions before you sign up?</h2>
+  <p>
+    Our security team is happy to walk you through our controls, share documentation,
+    or complete your vendor security questionnaire.
+  </p>
+  <div class="cta-buttons">
+    <a href="#" class="btn-light">Talk to our security team</a>
+    <a href="#" class="btn-ghost">Download security overview</a>
+  </div>
+</section>
+
+<script>
+  const sections = document.querySelectorAll('.sec');
+  const links = document.querySelectorAll('.sidebar-nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector('.sidebar-nav a[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

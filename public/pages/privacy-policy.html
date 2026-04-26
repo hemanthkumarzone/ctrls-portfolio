@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — AI FinOps Platform</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f9f9f7;
+      color: #1a1a18;
+      line-height: 1.75;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      background: #ffffff;
+      border-bottom: 0.5px solid rgba(26,26,24,0.1);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .topbar-brand {
+      font-size: 15px;
+      font-weight: 500;
+      color: #1a1a18;
+      text-decoration: none;
+    }
+    .topbar-brand span { color: #185FA5; }
+    .topbar-meta { font-size: 12px; color: #888780; }
+
+    /* ── Layout ── */
+    .page-wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    @media (max-width: 700px) {
+      .page-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .sidebar { display: none; }
+    }
+
+    /* ── Sidebar nav ── */
+    .sidebar { position: sticky; top: 2rem; }
+    .sidebar-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #888780;
+      margin-bottom: 0.75rem;
+    }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+    .sidebar-nav a {
+      font-size: 13px;
+      color: #5f5e5a;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      transition: background 0.12s, color 0.12s;
+      border-left: 2px solid transparent;
+    }
+    .sidebar-nav a:hover {
+      background: rgba(26,26,24,0.05);
+      color: #1a1a18;
+    }
+    .sidebar-nav a.active {
+      color: #185FA5;
+      border-left-color: #185FA5;
+      background: #E6F1FB;
+    }
+    .sidebar-contact {
+      margin-top: 1.5rem;
+      background: #ffffff;
+      border: 0.5px solid rgba(26,26,24,0.1);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    .sidebar-contact p { font-size: 12px; color: #5f5e5a; line-height: 1.6; margin-bottom: 8px; }
+    .sidebar-contact a { font-size: 12px; color: #185FA5; text-decoration: none; font-weight: 500; }
+
+    /* ── Main content ── */
+    .content {}
+
+    /* Page header */
+    .page-header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 0.5px solid rgba(26,26,24,0.1); }
+    .page-header-eyebrow {
+      display: inline-block;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.07em;
+      text-transform: uppercase; color: #185FA5;
+      background: #E6F1FB; padding: 3px 12px; border-radius: 20px;
+      margin-bottom: 1rem;
+    }
+    .page-header h1 { font-size: 32px; font-weight: 500; color: #1a1a18; margin-bottom: 0.75rem; line-height: 1.2; }
+    .page-header p { font-size: 15px; color: #5f5e5a; line-height: 1.75; max-width: 580px; }
+
+    /* Summary cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-bottom: 3rem;
+    }
+    .summary-card {
+      background: #ffffff;
+      border: 0.5px solid rgba(26,26,24,0.1);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    .summary-card-icon { font-size: 18px; margin-bottom: 8px; }
+    .summary-card h4 { font-size: 13px; font-weight: 500; color: #1a1a18; margin-bottom: 4px; }
+    .summary-card p { font-size: 12px; color: #5f5e5a; line-height: 1.55; }
+
+    /* Policy sections */
+    .policy-section {
+      margin-bottom: 3rem;
+      scroll-margin-top: 2rem;
+    }
+    .policy-section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 0.5px solid rgba(26,26,24,0.08);
+    }
+    .section-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #1a1a18;
+      color: #f9f9f7;
+      font-size: 12px; font-weight: 500;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .policy-section h2 { font-size: 18px; font-weight: 500; color: #1a1a18; }
+    .policy-section p { font-size: 14px; color: #3a3a38; line-height: 1.8; margin-bottom: 1rem; }
+    .policy-section p:last-child { margin-bottom: 0; }
+
+    .policy-section h3 {
+      font-size: 14px; font-weight: 500; color: #1a1a18;
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    /* Data tables */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 1rem 0 1.5rem;
+    }
+    .data-table th {
+      text-align: left;
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #888780;
+      padding: 8px 12px;
+      background: #f1efe8;
+      border-bottom: 0.5px solid rgba(26,26,24,0.1);
+    }
+    .data-table th:first-child { border-radius: 6px 0 0 0; }
+    .data-table th:last-child  { border-radius: 0 6px 0 0; }
+    .data-table td {
+      padding: 10px 12px;
+      border-bottom: 0.5px solid rgba(26,26,24,0.07);
+      color: #3a3a38;
+      vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:nth-child(even) td { background: rgba(26,26,24,0.02); }
+
+    /* Inline lists */
+    .policy-list {
+      margin: 0.5rem 0 1rem 0;
+      padding-left: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .policy-list li {
+      font-size: 14px;
+      color: #3a3a38;
+      line-height: 1.65;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .policy-list li::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #185FA5;
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+
+    /* Highlight callout */
+    .callout {
+      border-left: 3px solid #185FA5;
+      background: #E6F1FB;
+      border-radius: 0 8px 8px 0;
+      padding: 0.875rem 1rem;
+      margin: 1rem 0;
+    }
+    .callout p { font-size: 13px; color: #0C447C; margin: 0; line-height: 1.65; }
+    .callout.amber {
+      border-left-color: #BA7517;
+      background: #FAEEDA;
+    }
+    .callout.amber p { color: #633806; }
+    .callout.green {
+      border-left-color: #3B6D11;
+      background: #EAF3DE;
+    }
+    .callout.green p { color: #27500A; }
+
+    /* Rights grid */
+    .rights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 1rem 0 1.5rem;
+    }
+    .right-card {
+      background: #ffffff;
+      border: 0.5px solid rgba(26,26,24,0.1);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    .right-card h4 { font-size: 13px; font-weight: 500; color: #1a1a18; margin-bottom: 4px; }
+    .right-card p  { font-size: 12px; color: #5f5e5a; line-height: 1.55; }
+
+    /* Last updated badge */
+    .last-updated {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #5f5e5a;
+      background: #f1efe8;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-top: 0.5rem;
+    }
+
+    /* Divider */
+    .divider { border: none; border-top: 0.5px solid rgba(26,26,24,0.08); margin: 2rem 0; }
+
+    /* ── Dark mode ── */
+    @media (prefers-color-scheme: dark) {
+      body { background: #1a1a18; color: #f1efe8; }
+      .topbar { background: #2c2c2a; border-bottom-color: rgba(241,239,232,0.08); }
+      .topbar-brand { color: #f1efe8; }
+      .page-header { border-bottom-color: rgba(241,239,232,0.08); }
+      .page-header h1 { color: #f1efe8; }
+      .page-header p { color: #b4b2a9; }
+      .page-header-eyebrow { background: #0C447C; color: #B5D4F4; }
+      .last-updated { background: #2c2c2a; color: #888780; }
+      .summary-card { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
+      .summary-card h4 { color: #f1efe8; }
+      .summary-card p { color: #b4b2a9; }
+      .policy-section h2 { color: #f1efe8; }
+      .policy-section h3 { color: #f1efe8; }
+      .policy-section p { color: #d3d1c7; }
+      .policy-section-header { border-bottom-color: rgba(241,239,232,0.08); }
+      .section-num { background: #f1efe8; color: #1a1a18; }
+      .data-table th { background: #2c2c2a; color: #888780; border-bottom-color: rgba(241,239,232,0.1); }
+      .data-table td { color: #d3d1c7; border-bottom-color: rgba(241,239,232,0.06); }
+      .data-table tr:nth-child(even) td { background: rgba(241,239,232,0.03); }
+      .policy-list li { color: #d3d1c7; }
+      .policy-list li::before { background: #85B7EB; }
+      .callout { background: #0C447C; border-left-color: #85B7EB; }
+      .callout p { color: #B5D4F4; }
+      .callout.amber { background: #633806; border-left-color: #FAC775; }
+      .callout.amber p { color: #FAC775; }
+      .callout.green { background: #27500A; border-left-color: #C0DD97; }
+      .callout.green p { color: #C0DD97; }
+      .right-card { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
+      .right-card h4 { color: #f1efe8; }
+      .right-card p { color: #b4b2a9; }
+      .divider { border-top-color: rgba(241,239,232,0.08); }
+      .sidebar-nav a { color: #888780; }
+      .sidebar-nav a:hover { background: rgba(241,239,232,0.06); color: #f1efe8; }
+      .sidebar-nav a.active { background: #0C447C; color: #B5D4F4; border-left-color: #85B7EB; }
+      .sidebar-contact { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
+      .sidebar-contact p { color: #b4b2a9; }
+      .sidebar-contact a { color: #85B7EB; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Top bar ── -->
+<div class="topbar">
+  <a href="#" class="topbar-brand">AI<span>FinOps</span></a>
+  <span class="topbar-meta">Legal · Privacy Policy</span>
+</div>
+
+<!-- ── Page layout ── -->
+<div class="page-wrap">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar" aria-label="Page navigation">
+    <p class="sidebar-label">On this page</p>
+    <nav class="sidebar-nav">
+      <a href="#overview">Overview</a>
+      <a href="#data-we-collect">Data we collect</a>
+      <a href="#how-we-use">How we use your data</a>
+      <a href="#monitoring">Monitoring data</a>
+      <a href="#optimization">Optimization data</a>
+      <a href="#orchestration">Orchestration data</a>
+      <a href="#waste">Waste elimination data</a>
+      <a href="#sharing">Sharing &amp; disclosure</a>
+      <a href="#retention">Data retention</a>
+      <a href="#security">Security</a>
+      <a href="#rights">Your rights</a>
+      <a href="#cookies">Cookies</a>
+      <a href="#children">Children's privacy</a>
+      <a href="#international">International transfers</a>
+      <a href="#changes">Policy changes</a>
+      <a href="#contact">Contact us</a>
+    </nav>
+    <div class="sidebar-contact">
+      <p>Questions about this policy or your data?</p>
+      <a href="mailto:privacy@aifinops.com">privacy@aifinops.com</a>
+    </div>
+  </aside>
+
+  <!-- ── Main content ── -->
+  <main class="content">
+
+    <!-- Page header -->
+    <div class="page-header">
+      <span class="page-header-eyebrow">Legal</span>
+      <h1>Privacy Policy</h1>
+      <p>
+        This policy explains what data we collect when you use our AI FinOps platform,
+        how we use it to power monitoring, optimization, orchestration, and waste
+        elimination — and the rights you have over that data.
+      </p>
+      <span class="last-updated">Last updated: April 18, 2026 · Version 3.2</span>
+    </div>
+
+    <!-- At-a-glance summary -->
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-card-icon">🔒</div>
+        <h4>Your data stays yours</h4>
+        <p>We never sell or use your infrastructure data to train models or benchmark against other customers.</p>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-icon">🌍</div>
+        <h4>GDPR &amp; DPDPA ready</h4>
+        <p>Full compliance with EU GDPR, India DPDPA, CCPA, and SOC 2 Type II standards.</p>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-icon">🗑️</div>
+        <h4>Delete on request</h4>
+        <p>Request deletion of all your data at any time. We action it within 30 days.</p>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-icon">📍</div>
+        <h4>Data residency options</h4>
+        <p>Choose where your data is stored — US, EU, APAC, or in your own cloud account.</p>
+      </div>
+    </div>
+
+    <!-- 1. Overview -->
+    <section class="policy-section" id="overview">
+      <div class="policy-section-header">
+        <div class="section-num">1</div>
+        <h2>Overview and scope</h2>
+      </div>
+      <p>
+        AIFinOps, Inc. ("we", "our", or "the Company") operates an AI financial operations
+        platform that provides monitoring, optimization, orchestration, and waste elimination
+        services for AI workloads across cloud, on-premises, and hybrid environments
+        ("the Platform"). This Privacy Policy applies to all users of the Platform,
+        including customers, administrators, and end users whose data may be processed
+        through the Platform.
+      </p>
+      <p>
+        This policy applies to data collected through our web application, APIs, command-line
+        tools, integrations with third-party cloud providers, and any other service that
+        links to this policy. It does not apply to third-party services you connect to the
+        Platform — those are governed by their own privacy policies.
+      </p>
+      <div class="callout">
+        <p>
+          If you are a business customer using the Platform on behalf of your organisation,
+          our Data Processing Agreement (DPA) governs the processing of your customers' or
+          employees' personal data. Contact privacy@aifinops.com to obtain or review your DPA.
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. Data we collect -->
+    <section class="policy-section" id="data-we-collect">
+      <div class="policy-section-header">
+        <div class="section-num">2</div>
+        <h2>Data we collect</h2>
+      </div>
+      <p>
+        We collect data in two categories: data you provide directly when creating and
+        managing your account, and data generated automatically when the Platform connects
+        to and analyses your AI infrastructure.
+      </p>
+
+      <h3>Account and identity data</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Data type</th>
+            <th>Examples</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Contact information</td>
+            <td>Name, email address, job title</td>
+            <td>Account creation, communications, billing</td>
+          </tr>
+          <tr>
+            <td>Organisation details</td>
+            <td>Company name, industry, size, billing address</td>
+            <td>Account setup, invoicing, support triage</td>
+          </tr>
+          <tr>
+            <td>Authentication data</td>
+            <td>Hashed passwords, SSO tokens, MFA settings</td>
+            <td>Secure access to the Platform</td>
+          </tr>
+          <tr>
+            <td>Payment information</td>
+            <td>Card last four digits, billing email (full card data held by Stripe)</td>
+            <td>Subscription billing and invoicing</td>
+          </tr>
+          <tr>
+            <td>Support communications</td>
+            <td>Tickets, chat logs, email correspondence</td>
+            <td>Issue resolution and product improvement</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Infrastructure and workload data</h3>
+      <p>
+        When you connect your cloud accounts, on-premises infrastructure, or AI model
+        providers to the Platform, we ingest technical telemetry to power our core
+        capabilities. This data is infrastructure metadata — it does not include the
+        content of your AI model inputs, outputs, or training datasets unless you
+        explicitly configure the Platform to collect it for cost attribution purposes.
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Data type</th>
+            <th>Examples</th>
+            <th>Capability</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Cloud billing data</td>
+            <td>Cost and usage reports, invoice line items, reserved instance data</td>
+            <td>Monitoring, Optimization</td>
+          </tr>
+          <tr>
+            <td>Compute telemetry</td>
+            <td>GPU utilisation, CPU/memory metrics, instance types, job durations</td>
+            <td>Monitoring, Orchestration</td>
+          </tr>
+          <tr>
+            <td>AI model usage</td>
+            <td>API call counts, token volumes, model names, latency, error rates</td>
+            <td>Monitoring, Optimization, Waste elimination</td>
+          </tr>
+          <tr>
+            <td>Resource metadata</td>
+            <td>Resource IDs, tags, labels, project names, team assignments</td>
+            <td>Cost attribution, Governance</td>
+          </tr>
+          <tr>
+            <td>Job and pipeline metadata</td>
+            <td>Job names, durations, schedules, completion status, queue times</td>
+            <td>Orchestration, Waste elimination</td>
+          </tr>
+          <tr>
+            <td>Network and storage metrics</td>
+            <td>Egress volumes, storage class usage, data transfer costs</td>
+            <td>Monitoring, Optimization</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Platform usage data</h3>
+      <ul class="policy-list">
+        <li>Log data including IP addresses, browser type, pages visited, and feature interactions — used to improve platform reliability and user experience.</li>
+        <li>Feature usage analytics such as which dashboards, reports, and automation rules are used most — aggregated and anonymised, used for product development.</li>
+        <li>Error and crash reports used to diagnose and fix platform issues, containing no personal infrastructure data.</li>
+      </ul>
+    </section>
+
+    <!-- 3. How we use data -->
+    <section class="policy-section" id="how-we-use">
+      <div class="policy-section-header">
+        <div class="section-num">3</div>
+        <h2>How we use your data</h2>
+      </div>
+      <p>
+        We use data solely to deliver, operate, and improve the Platform. The lawful
+        bases for processing under GDPR are: contract performance (delivering the service
+        you purchased), legitimate interests (platform security and reliability), legal
+        obligation (compliance with applicable law), and consent where explicitly obtained.
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Purpose</th><th>Legal basis</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Providing monitoring, optimization, orchestration, and waste elimination services</td><td>Contract performance</td></tr>
+          <tr><td>Generating cost allocation reports and governance dashboards</td><td>Contract performance</td></tr>
+          <tr><td>Sending product alerts, anomaly notifications, and usage summaries</td><td>Contract performance</td></tr>
+          <tr><td>Processing payments and managing subscriptions</td><td>Contract performance</td></tr>
+          <tr><td>Detecting and preventing fraud, abuse, and security threats</td><td>Legitimate interests</td></tr>
+          <tr><td>Improving platform reliability, performance, and features</td><td>Legitimate interests</td></tr>
+          <tr><td>Complying with legal obligations, court orders, or regulatory requests</td><td>Legal obligation</td></tr>
+          <tr><td>Sending marketing communications about new features or products</td><td>Consent (opt-in)</td></tr>
+        </tbody>
+      </table>
+      <div class="callout amber">
+        <p>
+          We do not use your infrastructure data, billing data, or AI workload telemetry
+          to train machine learning models, benchmark your performance against other
+          customers, or generate industry reports without your explicit written consent.
+        </p>
+      </div>
+    </section>
+
+    <!-- 4. Monitoring data -->
+    <section class="policy-section" id="monitoring">
+      <div class="policy-section-header">
+        <div class="section-num">4</div>
+        <h2>Data collected for monitoring</h2>
+      </div>
+      <p>
+        Our monitoring capability ingests real-time and historical telemetry from your
+        connected cloud accounts, AI model providers, and on-premises infrastructure.
+        This data is used exclusively to generate the dashboards, alerts, anomaly
+        detections, and cost attribution reports visible in your account.
+      </p>
+      <ul class="policy-list">
+        <li>Cloud provider cost and usage reports (AWS CUR, Azure Cost Management exports, GCP Billing exports) are ingested via read-only IAM roles and stored encrypted in your designated data residency region.</li>
+        <li>AI model provider usage data (token counts, API call volumes, latency) is collected via read-only API keys that you provide. We do not store the content of prompts or completions unless you explicitly enable prompt logging for cost attribution.</li>
+        <li>Hardware telemetry from on-premises infrastructure (GPU utilisation, node health) is collected via a lightweight agent installed in your environment. The agent transmits metrics over TLS and stores no data locally beyond a 60-second buffer.</li>
+        <li>Monitoring data is retained for the duration of your subscription plus 90 days, after which it is permanently deleted from all systems unless you request an earlier deletion.</li>
+      </ul>
+    </section>
+
+    <!-- 5. Optimization data -->
+    <section class="policy-section" id="optimization">
+      <div class="policy-section-header">
+        <div class="section-num">5</div>
+        <h2>Data collected for optimization</h2>
+      </div>
+      <p>
+        Our optimization engine analyses your historical usage patterns, resource
+        configurations, and cost data to generate right-sizing recommendations,
+        model routing suggestions, and reserved capacity guidance. This analysis
+        is performed within your data residency boundary and uses only your own data.
+      </p>
+      <ul class="policy-list">
+        <li>Historical compute utilisation patterns are analysed to identify over-provisioned resources. This data never leaves your designated storage region.</li>
+        <li>Model usage patterns (which models are called, at what frequency, with what latency requirements) are analysed to generate routing recommendations. No prompt content is used in this analysis.</li>
+        <li>Cost efficiency scores are calculated using only your own billing and usage data — they are not compared to other customers' data without your explicit opt-in to benchmarking features.</li>
+        <li>Optimization recommendations are generated by models running within our platform infrastructure. Your workload metadata is not shared with any third-party AI provider to generate these recommendations.</li>
+      </ul>
+      <div class="callout green">
+        <p>
+          All optimization recommendations are advisory by default. Automated actions
+          (such as auto-scaling or instance termination) only occur within the explicit
+          permissions and guardrails you configure in your account settings.
+        </p>
+      </div>
+    </section>
+
+    <!-- 6. Orchestration data -->
+    <section class="policy-section" id="orchestration">
+      <div class="policy-section-header">
+        <div class="section-num">6</div>
+        <h2>Data collected for orchestration</h2>
+      </div>
+      <p>
+        Our orchestration capability schedules, routes, and manages AI workloads across
+        your infrastructure. To do this effectively, the Platform collects and processes
+        job metadata, resource availability signals, and scheduling configurations.
+      </p>
+      <ul class="policy-list">
+        <li>Job metadata including job names, owner tags, priority levels, duration estimates, and completion status is stored to enable scheduling decisions and audit trails.</li>
+        <li>Resource availability data (which compute nodes or cloud regions have capacity) is polled continuously from connected environments using read-only API access.</li>
+        <li>Scheduling policies and routing rules you define are stored in encrypted configuration storage and applied only within your account context.</li>
+        <li>Workload execution logs (start time, end time, resource consumed, exit status) are retained for 12 months to support chargebacks, compliance reporting, and scheduling optimisation.</li>
+        <li>Data residency tags attached to your jobs are strictly respected — jobs tagged for specific regions will never be routed outside those regions by our orchestration engine.</li>
+      </ul>
+    </section>
+
+    <!-- 7. Waste elimination data -->
+    <section class="policy-section" id="waste">
+      <div class="policy-section-header">
+        <div class="section-num">7</div>
+        <h2>Data collected for waste elimination</h2>
+      </div>
+      <p>
+        Our waste elimination module identifies idle resources, stalled jobs, orphaned
+        storage, and unsanctioned AI tool usage within your connected environments.
+        The data collected for this purpose is limited to what is necessary to detect
+        and act on waste.
+      </p>
+      <ul class="policy-list">
+        <li>Resource activity signals (last accessed time, CPU/GPU utilisation thresholds, network activity) are used to identify idle or abandoned resources. No data content is accessed — only activity metadata.</li>
+        <li>SaaS spend discovery works by analysing invoice line items and expense reports you choose to upload. The Platform identifies AI-related vendor charges but does not store financial data beyond the detection analysis window of 30 days.</li>
+        <li>Automated waste actions (suspending idle environments, terminating zombie jobs) are logged with a full audit trail that includes who authorised the policy, when the action was triggered, and what resource was affected.</li>
+        <li>Shadow AI tool discovery is performed by scanning connected expense management and procurement systems using read-only access. No employee personal financial data is retained — only vendor names, spend categories, and aggregate amounts.</li>
+      </ul>
+    </section>
+
+    <!-- 8. Sharing -->
+    <section class="policy-section" id="sharing">
+      <div class="policy-section-header">
+        <div class="section-num">8</div>
+        <h2>Sharing and disclosure</h2>
+      </div>
+      <p>
+        We do not sell your personal data or infrastructure data to any third party.
+        We share data only in the following circumstances:
+      </p>
+
+      <h3>Service providers (sub-processors)</h3>
+      <p>
+        We use a limited set of trusted third-party service providers to operate the
+        Platform. All sub-processors are contractually bound to process data only on
+        our instructions and to the same security standards we apply.
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Sub-processor</th><th>Purpose</th><th>Data shared</th><th>Location</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Amazon Web Services</td><td>Cloud infrastructure &amp; storage</td><td>Encrypted platform data</td><td>US, EU, APAC (your choice)</td></tr>
+          <tr><td>Stripe</td><td>Payment processing</td><td>Billing &amp; payment info</td><td>US, EU</td></tr>
+          <tr><td>Datadog</td><td>Platform observability</td><td>Anonymised platform logs</td><td>US</td></tr>
+          <tr><td>Intercom</td><td>Customer support</td><td>Name, email, support tickets</td><td>US</td></tr>
+          <tr><td>SendGrid</td><td>Transactional email</td><td>Email address, notification content</td><td>US</td></tr>
+        </tbody>
+      </table>
+      <p>A full and current list of sub-processors is available at aifinops.com/legal/sub-processors and is updated whenever a sub-processor is added or changed.</p>
+
+      <h3>Legal and regulatory disclosure</h3>
+      <ul class="policy-list">
+        <li>We may disclose data if required by applicable law, court order, or regulatory requirement — and will notify you in advance where legally permitted.</li>
+        <li>In the event of a merger, acquisition, or asset sale, your data may be transferred to the acquiring entity subject to the same privacy protections described in this policy.</li>
+      </ul>
+    </section>
+
+    <!-- 9. Retention -->
+    <section class="policy-section" id="retention">
+      <div class="policy-section-header">
+        <div class="section-num">9</div>
+        <h2>Data retention</h2>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Data category</th><th>Retention period</th><th>Basis</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Account and identity data</td><td>Duration of account + 90 days after closure</td><td>Contract, legal obligation</td></tr>
+          <tr><td>Monitoring telemetry (cost &amp; usage)</td><td>Subscription duration + 90 days</td><td>Contract performance</td></tr>
+          <tr><td>Orchestration execution logs</td><td>12 months rolling</td><td>Compliance, audit</td></tr>
+          <tr><td>Waste elimination audit trail</td><td>24 months rolling</td><td>Compliance, dispute resolution</td></tr>
+          <tr><td>SaaS spend discovery data</td><td>30 days from analysis</td><td>Minimum necessary</td></tr>
+          <tr><td>Support communications</td><td>3 years from ticket closure</td><td>Legal obligation</td></tr>
+          <tr><td>Payment records</td><td>7 years</td><td>Financial regulation</td></tr>
+          <tr><td>Anonymised platform analytics</td><td>Indefinite (no personal data)</td><td>Product improvement</td></tr>
+        </tbody>
+      </table>
+      <p>
+        On account closure, all personal and infrastructure data is deleted within 90 days
+        of account termination. You may request expedited deletion at any time by contacting
+        privacy@aifinops.com.
+      </p>
+    </section>
+
+    <!-- 10. Security -->
+    <section class="policy-section" id="security">
+      <div class="policy-section-header">
+        <div class="section-num">10</div>
+        <h2>Security</h2>
+      </div>
+      <p>
+        We apply industry-standard and enterprise-grade security controls to protect
+        your data at every layer of the Platform.
+      </p>
+      <ul class="policy-list">
+        <li><strong>Encryption in transit:</strong> All data transmitted between your infrastructure and our Platform is encrypted using TLS 1.2 or higher. We do not support legacy TLS 1.0 or 1.1.</li>
+        <li><strong>Encryption at rest:</strong> All stored data is encrypted using AES-256. Encryption keys are managed using AWS KMS or your own customer-managed keys (CMK) if you use the BYOK option.</li>
+        <li><strong>Access control:</strong> Access to customer data within our systems is restricted to authorised personnel on a least-privilege, need-to-know basis, enforced via RBAC and logged in immutable audit trails.</li>
+        <li><strong>SOC 2 Type II:</strong> We maintain a current SOC 2 Type II attestation covering Security, Availability, and Confidentiality trust service criteria. Reports are available to customers under NDA.</li>
+        <li><strong>Penetration testing:</strong> We commission independent penetration tests at least annually and after significant platform changes. Findings are remediated within defined SLAs.</li>
+        <li><strong>Incident response:</strong> We maintain a documented incident response plan. In the event of a breach affecting your data, we will notify you within 72 hours in line with GDPR Article 33 requirements.</li>
+        <li><strong>Agent security:</strong> Our on-premises monitoring agent operates with read-only system permissions, transmits only metric data (no file contents or network payloads), and can be audited or removed at any time.</li>
+      </ul>
+    </section>
+
+    <!-- 11. Your rights -->
+    <section class="policy-section" id="rights">
+      <div class="policy-section-header">
+        <div class="section-num">11</div>
+        <h2>Your rights</h2>
+      </div>
+      <p>
+        Depending on your location, you have specific legal rights over your personal data.
+        We honour all of the following rights regardless of your jurisdiction.
+      </p>
+      <div class="rights-grid">
+        <div class="right-card">
+          <h4>Right to access</h4>
+          <p>Request a copy of all personal data we hold about you, including what was collected and how it was used.</p>
+        </div>
+        <div class="right-card">
+          <h4>Right to rectification</h4>
+          <p>Request correction of inaccurate or incomplete personal data held in your account at any time.</p>
+        </div>
+        <div class="right-card">
+          <h4>Right to erasure</h4>
+          <p>Request deletion of your personal data. We will action this within 30 days and confirm in writing.</p>
+        </div>
+        <div class="right-card">
+          <h4>Right to portability</h4>
+          <p>Request an export of your data in a structured, machine-readable format (JSON or CSV).</p>
+        </div>
+        <div class="right-card">
+          <h4>Right to restrict processing</h4>
+          <p>Ask us to pause processing of your data while a dispute or complaint is being resolved.</p>
+        </div>
+        <div class="right-card">
+          <h4>Right to object</h4>
+          <p>Object to processing based on legitimate interests, including direct marketing at any time.</p>
+        </div>
+        <div class="right-card">
+          <h4>Right to withdraw consent</h4>
+          <p>Withdraw consent for any processing based on consent (such as marketing emails) at any time.</p>
+        </div>
+        <div class="right-card">
+          <h4>Right not to be profiled</h4>
+          <p>Opt out of any automated profiling or decision-making that produces legal or significant effects.</p>
+        </div>
+      </div>
+      <p>
+        To exercise any of these rights, email <a href="mailto:privacy@aifinops.com" style="color:#185FA5;">privacy@aifinops.com</a> or use the Data &amp; Privacy section within your account settings. We respond to all requests within 30 days and will never charge a fee for exercising your rights.
+      </p>
+    </section>
+
+    <!-- 12. Cookies -->
+    <section class="policy-section" id="cookies">
+      <div class="policy-section-header">
+        <div class="section-num">12</div>
+        <h2>Cookies and tracking</h2>
+      </div>
+      <p>
+        We use a minimal set of cookies to operate the Platform. We do not use
+        third-party advertising cookies or cross-site tracking technologies.
+      </p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Cookie</th><th>Type</th><th>Purpose</th><th>Expiry</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>session_id</td><td>Strictly necessary</td><td>Maintains your authenticated session</td><td>Session</td></tr>
+          <tr><td>csrf_token</td><td>Strictly necessary</td><td>Prevents cross-site request forgery</td><td>Session</td></tr>
+          <tr><td>preferences</td><td>Functional</td><td>Stores UI preferences (theme, language, timezone)</td><td>1 year</td></tr>
+          <tr><td>_analytics</td><td>Analytics (opt-in)</td><td>Aggregate product usage analytics (no personal data)</td><td>90 days</td></tr>
+        </tbody>
+      </table>
+      <p>
+        You can manage cookie preferences at any time from the Cookie Settings link in
+        the Platform footer. Strictly necessary cookies cannot be disabled as they are
+        required for the Platform to function securely.
+      </p>
+    </section>
+
+    <!-- 13. Children -->
+    <section class="policy-section" id="children">
+      <div class="policy-section-header">
+        <div class="section-num">13</div>
+        <h2>Children's privacy</h2>
+      </div>
+      <p>
+        The Platform is intended for use by businesses and professionals and is not
+        directed at individuals under the age of 18. We do not knowingly collect
+        personal data from anyone under 18. If you believe a minor has provided us
+        with personal data, please contact privacy@aifinops.com and we will delete
+        it promptly.
+      </p>
+    </section>
+
+    <!-- 14. International transfers -->
+    <section class="policy-section" id="international">
+      <div class="policy-section-header">
+        <div class="section-num">14</div>
+        <h2>International data transfers</h2>
+      </div>
+      <p>
+        Our infrastructure is globally distributed. If you select a data residency
+        region at account setup, your infrastructure and billing data is stored and
+        processed within that region. Account and identity data may be processed in
+        the United States where our primary operations are based.
+      </p>
+      <p>
+        For transfers of personal data from the European Economic Area (EEA) to countries
+        without an adequacy decision, we rely on Standard Contractual Clauses (SCCs)
+        approved by the European Commission. Our Data Processing Agreement incorporates
+        the applicable SCCs and is available on request.
+      </p>
+      <p>
+        For Indian customers, we comply with the Digital Personal Data Protection Act 2023
+        (DPDPA) including requirements around cross-border data transfers and data
+        fiduciary obligations.
+      </p>
+    </section>
+
+    <!-- 15. Changes -->
+    <section class="policy-section" id="changes">
+      <div class="policy-section-header">
+        <div class="section-num">15</div>
+        <h2>Changes to this policy</h2>
+      </div>
+      <p>
+        We may update this Privacy Policy to reflect changes in our practices,
+        technology, legal requirements, or for other operational reasons. When we make
+        material changes, we will:
+      </p>
+      <ul class="policy-list">
+        <li>Post the updated policy at aifinops.com/legal/privacy with a new "Last updated" date.</li>
+        <li>Send an email notification to the registered account administrator at least 14 days before the changes take effect.</li>
+        <li>Display an in-platform banner for 30 days after the policy change goes live.</li>
+      </ul>
+      <p>
+        Your continued use of the Platform after the effective date of any update
+        constitutes your acceptance of the revised policy. If you do not agree with
+        the changes, you may close your account and request data deletion before the
+        effective date.
+      </p>
+    </section>
+
+    <!-- 16. Contact -->
+    <section class="policy-section" id="contact">
+      <div class="policy-section-header">
+        <div class="section-num">16</div>
+        <h2>Contact us</h2>
+      </div>
+      <p>
+        If you have any questions about this Privacy Policy, wish to exercise your
+        data rights, or want to report a privacy concern, please contact our Data
+        Protection team:
+      </p>
+      <table class="data-table">
+        <tbody>
+          <tr><td style="font-weight:500; width:160px;">Email</td><td><a href="mailto:privacy@aifinops.com" style="color:#185FA5;">privacy@aifinops.com</a></td></tr>
+          <tr><td style="font-weight:500;">Data Protection Officer</td><td>dpo@aifinops.com</td></tr>
+          <tr><td style="font-weight:500;">Postal address</td><td>AIFinOps, Inc., Privacy Team, 100 Technology Drive, Suite 400, San Francisco, CA 94105, USA</td></tr>
+          <tr><td style="font-weight:500;">EU Representative</td><td>AIFinOps EU Ltd., 1 Grand Canal Square, Dublin 2, Ireland</td></tr>
+          <tr><td style="font-weight:500;">Response time</td><td>We aim to respond to all privacy enquiries within 5 business days.</td></tr>
+        </tbody>
+      </table>
+      <p>
+        If you are located in the EEA and are unsatisfied with our response, you have the
+        right to lodge a complaint with your local supervisory authority. In Ireland,
+        this is the Data Protection Commission (dataprotection.ie). In India, matters
+        may be referred to the Data Protection Board under the DPDPA 2023.
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.policy-section');
+  const links = document.querySelectorAll('.sidebar-nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector('.sidebar-nav a[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

@@ -63,7 +63,7 @@ const CompanyPage = () => {
 
   return (
     <div className="w-full min-h-screen bg-[#0B1200] text-white">
-      <div className="max-w-[1400px] mx-auto px-6 py-16">
+      <div className="w-full px-6 py-16">
 
         {sections.map((section, index) => (
           <div key={index} className="mb-20">
@@ -74,11 +74,11 @@ const CompanyPage = () => {
 />
 
            <div
-  className="text-white/70 mt-5 text-lg max-w-3xl"
+  className="text-white/70 mt-5 text-lg w-full leading-relaxed"
   dangerouslySetInnerHTML={{ __html: section.description as string }}
 />
 
-            <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-14 grid gap-8 grid-cols-1">
               {section.cards?.length > 0 ? (
                 section.cards.map((card: any, i: number) => (
                   <ResourceCard

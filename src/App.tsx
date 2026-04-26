@@ -12,10 +12,19 @@ import ServicesSection from "./components/sections/ServicesSection";
 
 import ResourcesPage from "./pages/resources/ResourcesPage";
 import PlatformPage from "./pages/platform/PlatformPage";
-import CompanyPage from "./pages/company/CompanyPage";
+
+import HtmlViewer from "./pages/company/HtmlViewer";
+import AboutPage from "./pages/company/AboutPage";
+import Customers from "./pages/company/Customers";
+import PrivacyPolicy from "./pages/company/PrivacyPolicy";
+import GovernancePage from "./pages/company/governancepage";
+import BlogPage from "./pages/resources/BlogPage";
+import BlogDetails from "./pages/resources/BlogDetails";
+import Blogcloud from "./pages/resources/BlogCloud";
+import BlogDevops from "./pages/resources/BlogDevops";
 
 // 🔥 IMPORTANT IMPORT (DETAIL PAGE)
-import ServiceDetailsPage from "./pages/service/ServiceDetailsPage";
+
 
 function App() {
   return (
@@ -69,7 +78,7 @@ function App() {
               />
 
               {/* 🔥 SERVICE DETAIL PAGE (DYNAMIC) */}
-              <Route path="/services/:type" element={<ServiceDetailsPage />} />
+        
 
               {/* RESOURCES */}
               <Route path="/resources/:type" element={<ResourcesPage />} />
@@ -78,8 +87,19 @@ function App() {
               <Route path="/platform/:type" element={<PlatformPage />} />
 
               {/* COMPANY */}
-              <Route path="/company/:type" element={<CompanyPage />} />
+              
+              <Route path="/services/:type" element={<HtmlViewer />} />
 
+              <Route path="/company/about" element={<AboutPage />} />
+
+              <Route path="/company/customers" element={<Customers />} />
+              <Route path="/company/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/company/governance" element={<GovernancePage />} />
+              <Route path="/company/:type" element={<HtmlViewer />} />
+              <Route path="/resources/blog" element={<BlogPage />} />
+              <Route path="/blog/:id" element={<BlogDetails />} />
+              <Route path="/blog/cloud" element={<Blogcloud />} />
+              <Route path="/blog/devops" element={<BlogDevops />} />
             </Routes>
           </main>
 

@@ -29,8 +29,35 @@ export default function KoreValueSection() {
 
   // ✅ BACKEND → FRONTEND MAPPING
   const sections = data.sections || [];
+ const getCorrectPath = (section: string, item: any): string => {
+  const name = item.name.toLowerCase().trim();
 
+  if (section === "company") {
+    if (name.includes("about")) return "/company/about";
+    if (name.includes("customer")) return "/company/customers";
+    if (name.includes("governance")) return "/company/governance";
+    if (name.includes("privacy")) return "/company/privacy-policy";
+    if (name.includes("security")) return "/company/security";
+    if (name.includes("terms")) return "/company/terms-of-use";
+    return "/";
+  }
+
+  if (section === "services") {
+    if (name.includes("cost analyzer")) return "/services/cost-analyzer";
+    if (name.includes("category")) return "/services/category-views";
+    if (name.includes("k8s")) return "/services/k8s-cost-observability-attribution";
+    if (name.includes("recommend")) return "/services/right-size-recommendations";
+    if (name.includes("anomaly")) return "/services/anomaly-detection-circuit-breakers";
+    if (name.includes("report")) return "/services/reporting";
+
+    // 🔥 IMPORTANT FALLBACK
+    return `/services/${name.replace(/\s+/g, "-")}`;
+  }
+
+  return "/";
+};
   const getSection = (name: string) => {
+    
     return (
       sections.find(
         (s: any) => s.title?.toLowerCase() === name.toLowerCase()
@@ -58,7 +85,12 @@ export default function KoreValueSection() {
     followText: "Follow us on", // ✅ FIXED
     copyright: data.copyright || ""
   };
+  const platformItems = safeData.platform.items || [];
 
+const midPlatform = Math.ceil(platformItems.length / 2);
+
+const businessRequirements = platformItems.slice(0, midPlatform);
+const supportedPlatforms = platformItems.slice(midPlatform);
   return (
     <section className="w-full flex justify-center">
 
@@ -120,18 +152,53 @@ export default function KoreValueSection() {
             </div>
           </div>
 
+          
           {/* PLATFORM */}
-          <div>
-            <h3 className="text-[#77B900] text-[18px] font-medium mb-2">
-              {safeData.platform.title}
-            </h3>
+<div className="absolute" style={{ top: "125px", left: "1016px" }}>
 
-            <div className="text-[#7E7E7E] text-[14px] leading-[24px]">
-              {safeData.platform.items?.map((item: any, i: number) => (
-                <div key={i}>{item.name}</div>
-              ))}
+  {/* TITLE */}
+  <h3 className="text-[#77B900] text-[32px] font-medium mb-4">
+    {safeData.platform.title}
+  </h3>
+
+  <div className="flex gap-16">
+
+    {/* LEFT COLUMN */}
+    <div>
+      <h4 className="text-white text-[20px] mb-3">
+        Business Requirement
+      </h4>
+
+      <div className="text-[#7E7E7E] text-[18px] leading-[32px]">
+        {businessRequirements.map((item: any, i: number) => (
+          <Link key={i} to={item.path || "/"}>
+            <div className="hover:text-[#9fdc00] cursor-pointer transition">
+              {item.name}
             </div>
-          </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+
+    {/* RIGHT COLUMN */}
+    <div>
+      <h4 className="text-white text-[20px] mb-3">
+        Supported Platforms
+      </h4>
+
+      <div className="text-[#7E7E7E] text-[18px] leading-[32px]">
+        {supportedPlatforms.map((item: any, i: number) => (
+          <Link key={i} to={item.path || "/"}>
+            <div className="hover:text-[#9fdc00] cursor-pointer transition">
+              {item.name}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</div>
 
         </div>
 
@@ -171,7 +238,7 @@ export default function KoreValueSection() {
           >
 
             {/* ✅ FIXED HEIGHT */}
-            <div className="relative w-[1728px] min-h-[600px]">
+            <div className="relative w-[1728px] min-h-[440px]">
 
               {/* LOGO */}
               <img
@@ -194,7 +261,7 @@ export default function KoreValueSection() {
 
                 <div className="text-[#7E7E7E] text-[18px] mt-4 leading-[32px]">
                   {safeData.services.left.map((item: any, i: number) => (
-                    <Link key={i} to={item.path || "/"}>
+                    <Link key={i} to={getCorrectPath("services", item)}>
   <div className="hover:text-[#9fdc00] cursor-pointer transition">
     {item.name}
   </div>
@@ -207,7 +274,7 @@ export default function KoreValueSection() {
                   style={{ top: "48px", left: "240px" }}
                 >
                   {safeData.services.right.map((item: any, i: number) => (
-                    <Link key={i} to={item.path || "/"}>
+                    <Link key={i} to={getCorrectPath("services", item)}>
   <div className="hover:text-[#9fdc00] cursor-pointer transition">
     {item.name}
   </div>
@@ -241,7 +308,7 @@ export default function KoreValueSection() {
 
                 <div className="text-[#7E7E7E] text-[18px] mt-4 leading-[32px]">
                   {safeData.company.items?.map((item: any, i: number) => (
-                    <Link key={i} to={item.path || "/"}>
+                    <Link key={i} to={getCorrectPath("company", item)}>
   <div className="hover:text-[#9fdc00] cursor-pointer transition">
     {item.name}
   </div>
@@ -249,47 +316,79 @@ export default function KoreValueSection() {
                   ))}
                 </div>
               </div>
-
               {/* PLATFORM */}
-              <div className="absolute" style={{ top: "125px", left: "1016px" }}>
-                <h3 className="text-[#77B900] text-[32px] font-medium">
-                  {safeData.platform.title}
-                </h3>
+<div className="absolute" style={{ top: "125px", left: "1016px" }}>
 
-                <div className="text-[#7E7E7E] text-[18px] mt-4 leading-[32px]">
-                  {safeData.platform.items?.map((item: any, i: number) => (
-                    <Link key={i} to={item.path || "/"}>
-  <div className="hover:text-[#9fdc00] cursor-pointer transition">
-    {item.name}
+  {/* TITLE */}
+  <h3 className="text-[#77B900] text-[32px] font-medium">
+    {safeData.platform.title}
+  </h3>
+
+  <div className="flex gap-20 mt-4">
+
+    {/* LEFT COLUMN */}
+    <div>
+      <h4 className="text-white text-[20px] mb-2">
+        Business Requirement
+      </h4>
+
+      <div className="text-[#7E7E7E] text-[18px] leading-[32px]">
+        {businessRequirements.map((item: any, i: number) => (
+          <Link key={i} to={item.path || "/"}>
+            <div className="hover:text-[#9fdc00] cursor-pointer transition">
+              {item.name}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+
+    {/* RIGHT COLUMN */}
+    <div>
+      <h4 className="text-white text-[20px] mb-2">
+        Supported Platforms
+      </h4>
+
+      <div className="text-[#7E7E7E] text-[18px] leading-[32px]">
+        {supportedPlatforms.map((item: any, i: number) => (
+          <Link key={i} to={item.path || "/"}>
+            <div className="hover:text-[#9fdc00] cursor-pointer transition">
+              {item.name}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+
   </div>
-</Link>
-                  ))}
-                </div>
-              </div>
+
+</div>
+              
+              
 
               {/* LINE */}
               <div
                 className="absolute w-[1728px] border-t-[3px] border-[#77B900]"
-                style={{ top: "650px" }}
+                style={{ top: "480px" }}
               />
 
               {/* FOLLOW */}
               <div
                 className="absolute text-[#77B900] text-[22px]"
-                style={{ top: "680px", left: "74px" }}
+                style={{ top: "510px", left: "74px" }}
               >
                 {safeData.followText}
               </div>
 
               {/* ICONS */}
-              <img src="/Insta.svg" className="absolute" style={{ top: "684px", left: "229px", width: "20px" }} />
-              <img src="/Linkedin.svg" className="absolute" style={{ top: "685px", left: "273px", width: "20px" }} />
-              <img src="/twitter.svg" className="absolute" style={{ top: "686px", left: "313px", width: "22px" }} />
+              <img src="/Insta.svg" className="absolute" style={{ top: "518px", left: "229px", width: "20px" }} />
+              <img src="/Linkedin.svg" className="absolute" style={{ top: "518px", left: "273px", width: "20px" }} />
+              <img src="/twitter.svg" className="absolute" style={{ top: "518px", left: "313px", width: "22px" }} />
 
               {/* COPYRIGHT */}
               <div
                 className="absolute text-center w-full text-[#7E7E7E] text-[14px]"
-                style={{ top: "730px" }}
+                style={{ top: "540px" }}
               >
                 {safeData.copyright}
               </div>

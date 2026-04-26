@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cost Analyzer — AI FinOps Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:       #0e0f0d;
+      --ink-soft:  #3a3b38;
+      --ink-mute:  #6b6c68;
+      --ink-faint: #9a9b97;
+      --paper:     #f7f6f2;
+      --surface:   #ffffff;
+      --rule:      rgba(14,15,13,0.09);
+      --rule-md:   rgba(14,15,13,0.14);
+      --accent:    #1a56db;
+      --accent-lt: #e8effe;
+      --accent-dk: #0f35a3;
+      --teal:      #0d8a6a;
+      --teal-lt:   #e0f5ee;
+      --amber:     #b45309;
+      --amber-lt:  #fef3c7;
+      --green:     #2d6a25;
+      --green-lt:  #e8f5e4;
+      --coral:     #c0392b;
+      --coral-lt:  #fdecea;
+      --r-sm: 6px;
+      --r-md: 10px;
+      --r-lg: 16px;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans:  'DM Sans', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(247,246,242,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .nav-brand { font-family: var(--serif); font-size: 20px; color: var(--ink); text-decoration: none; }
+    .nav-brand em { color: var(--accent); font-style: normal; }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-links a {
+      font-size: 13px; color: var(--ink-mute); text-decoration: none;
+      padding: 5px 12px; border-radius: var(--r-sm);
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-links a:hover { background: var(--rule); color: var(--ink); }
+    .nav-links a.active { color: var(--accent); background: var(--accent-lt); }
+    .nav-cta {
+      font-size: 13px; font-weight: 500; color: var(--surface);
+      background: var(--ink); padding: 7px 18px; border-radius: var(--r-sm);
+      text-decoration: none; transition: background 0.15s;
+    }
+    .nav-cta:hover { background: var(--ink-soft); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--ink);
+      padding: 6rem 2rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--rule-md) 1px, transparent 1px),
+        linear-gradient(90deg, var(--rule-md) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.18;
+    }
+    .hero-inner {
+      max-width: 900px; margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    .hero-breadcrumb {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; color: var(--ink-faint);
+      margin-bottom: 2rem;
+    }
+    .hero-breadcrumb span { color: var(--ink-mute); }
+    .hero-breadcrumb .sep { color: var(--ink-soft); }
+    .hero-label {
+      display: inline-block;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      background: rgba(26,86,219,0.15);
+      border: 1px solid rgba(26,86,219,0.3);
+      padding: 4px 14px; border-radius: 20px; margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(36px, 6vw, 60px);
+      font-weight: 400;
+      color: var(--paper);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      max-width: 720px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: #7ba7f5;
+    }
+    .hero-sub {
+      font-size: 17px; color: #9a9b97;
+      max-width: 560px; line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .btn-primary {
+      font-size: 14px; font-weight: 500; color: var(--ink);
+      background: var(--paper); padding: 11px 24px;
+      border-radius: var(--r-sm); text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: #ffffff; }
+    .btn-ghost {
+      font-size: 14px; font-weight: 400; color: #9a9b97;
+      background: transparent; padding: 11px 24px;
+      border-radius: var(--r-sm); text-decoration: none;
+      border: 1px solid rgba(241,239,232,0.15);
+      transition: all 0.15s;
+    }
+    .btn-ghost:hover { color: var(--paper); border-color: rgba(241,239,232,0.35); }
+
+    /* ── METRICS STRIP ── */
+    .metrics-strip {
+      background: var(--surface);
+      border-bottom: 1px solid var(--rule);
+    }
+    .metrics-inner {
+      max-width: 960px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      divide: 1px solid var(--rule);
+    }
+    .metric-cell {
+      padding: 1.75rem 1.5rem;
+      border-right: 1px solid var(--rule);
+      text-align: center;
+    }
+    .metric-cell:last-child { border-right: none; }
+    .metric-num {
+      font-family: var(--serif);
+      font-size: 36px; font-weight: 400; line-height: 1;
+      color: var(--ink); margin-bottom: 6px;
+    }
+    .metric-num em { font-style: normal; color: var(--accent); }
+    .metric-label { font-size: 12px; color: var(--ink-mute); line-height: 1.4; }
+
+    /* ── SECTION WRAPPER ── */
+    .section { max-width: 960px; margin: 0 auto; padding: 5rem 2rem; }
+    .section + .section { padding-top: 0; }
+    .eyebrow {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 0.75rem; display: block;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(26px, 4vw, 40px); font-weight: 400;
+      color: var(--ink); line-height: 1.2; margin-bottom: 0.75rem;
+    }
+    .section-lead {
+      font-size: 16px; color: var(--ink-soft);
+      max-width: 560px; line-height: 1.75; margin-bottom: 3rem;
+    }
+    .section-divider {
+      border: none; border-top: 1px solid var(--rule);
+      max-width: 960px; margin: 0 auto;
+    }
+
+    /* ── FEATURE SHOWCASE ── */
+    .showcase {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; align-items: start;
+    }
+    @media (max-width: 680px) { .showcase { grid-template-columns: 1fr; } }
+    .showcase-text {}
+    .showcase-text h3 {
+      font-family: var(--serif); font-size: 24px; font-weight: 400;
+      color: var(--ink); line-height: 1.3; margin-bottom: 0.75rem;
+    }
+    .showcase-text p { font-size: 14px; color: var(--ink-soft); line-height: 1.8; margin-bottom: 1.25rem; }
+    .showcase-checks { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+    .check-item { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--ink-soft); line-height: 1.55; }
+    .check-dot { width: 18px; height: 18px; border-radius: 50%; background: var(--teal-lt); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .check-dot::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); }
+    .showcase-visual {
+      background: var(--ink);
+      border-radius: var(--r-lg);
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .showcase-visual-bg {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(var(--rule-md) 1px, transparent 1px), linear-gradient(90deg, var(--rule-md) 1px, transparent 1px);
+      background-size: 32px 32px; opacity: 0.12;
+    }
+    .vis-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.25rem; position: relative; z-index: 1;
+    }
+    .vis-title { font-size: 12px; font-weight: 500; color: #9a9b97; letter-spacing: 0.05em; text-transform: uppercase; }
+    .vis-badge { font-size: 10px; padding: 3px 10px; border-radius: 20px; background: rgba(13,138,106,0.2); color: #5DCAA5; }
+    .vis-chart { display: flex; gap: 6px; align-items: flex-end; height: 80px; margin-bottom: 1.25rem; position: relative; z-index: 1; }
+    .vis-bar {
+      flex: 1; border-radius: 3px 3px 0 0;
+      transition: opacity 0.2s;
+    }
+    .vis-bar:hover { opacity: 0.8; }
+    .vis-rows { display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 1; }
+    .vis-row { display: flex; align-items: center; gap: 10px; }
+    .vis-row-label { font-size: 11px; color: #6b6c68; width: 90px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .vis-row-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; }
+    .vis-row-bar { height: 100%; border-radius: 3px; }
+    .vis-row-val { font-size: 11px; color: #9a9b97; width: 40px; text-align: right; }
+
+    /* ── CAPABILITIES GRID ── */
+    .cap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .cap-card {
+      background: var(--surface); border: 1px solid var(--rule);
+      border-radius: var(--r-lg); padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .cap-card:hover { border-color: var(--rule-md); transform: translateY(-2px); }
+    .cap-icon {
+      width: 42px; height: 42px; border-radius: var(--r-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 14px;
+    }
+    .cap-card h4 { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 6px; line-height: 1.3; }
+    .cap-card p { font-size: 13px; color: var(--ink-soft); line-height: 1.65; margin-bottom: 12px; }
+    .cap-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .cap-tag { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; }
+
+    /* ── HOW IT WORKS ── */
+    .how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; }
+    .how-step {
+      padding: 2rem 1.5rem;
+      border-right: 1px solid var(--rule);
+      position: relative;
+    }
+    .how-step:last-child { border-right: none; }
+    .how-step::before {
+      content: '';
+      position: absolute; top: 2rem; right: -1px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--paper); border: 1px solid var(--rule);
+      transform: translateX(50%);
+      z-index: 1;
+    }
+    .how-step:last-child::before { display: none; }
+    .how-num {
+      font-family: var(--serif); font-size: 40px; font-weight: 400;
+      color: var(--rule-md); line-height: 1; margin-bottom: 12px;
+    }
+    .how-step h4 { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+    .how-step p { font-size: 13px; color: var(--ink-mute); line-height: 1.65; }
+    @media (max-width: 680px) {
+      .how-grid { grid-template-columns: 1fr; }
+      .how-step { border-right: none; border-bottom: 1px solid var(--rule); padding: 1.5rem 0; }
+      .how-step::before { display: none; }
+      .how-step:last-child { border-bottom: none; }
+    }
+
+    /* ── INTEGRATIONS ── */
+    .integ-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+    .integ-card {
+      background: var(--surface); border: 1px solid var(--rule);
+      border-radius: var(--r-md); padding: 1rem;
+      text-align: center; transition: border-color 0.15s;
+    }
+    .integ-card:hover { border-color: var(--rule-md); }
+    .integ-icon { font-size: 22px; margin-bottom: 6px; }
+    .integ-name { font-size: 12px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+    .integ-type { font-size: 10px; color: var(--ink-faint); }
+
+    /* ── PILLARS TABLE ── */
+    .pillars-table { width: 100%; border-collapse: collapse; }
+    .pillars-table thead th {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--ink-faint);
+      padding: 10px 16px; border-bottom: 1px solid var(--rule);
+      text-align: left;
+    }
+    .pillars-table tbody tr { border-bottom: 1px solid var(--rule); transition: background 0.12s; }
+    .pillars-table tbody tr:last-child { border-bottom: none; }
+    .pillars-table tbody tr:hover { background: rgba(14,15,13,0.02); }
+    .pillars-table tbody td { padding: 14px 16px; font-size: 13px; color: var(--ink-soft); vertical-align: top; }
+    .pillars-table tbody td:first-child { font-weight: 500; color: var(--ink); white-space: nowrap; }
+    .pill-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 20px; }
+
+    /* ── TESTIMONIALS ── */
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .testi-card {
+      background: var(--surface); border: 1px solid var(--rule);
+      border-radius: var(--r-lg); padding: 1.5rem;
+    }
+    .testi-quote {
+      font-family: var(--serif); font-size: 16px; font-weight: 400;
+      color: var(--ink); line-height: 1.65; margin-bottom: 1.25rem;
+      font-style: italic;
+    }
+    .testi-quote::before { content: '\201C'; color: var(--accent); margin-right: 2px; }
+    .testi-meta { display: flex; align-items: center; gap: 12px; }
+    .testi-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 500; flex-shrink: 0;
+    }
+    .testi-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+    .testi-role { font-size: 11px; color: var(--ink-faint); }
+
+    /* ── PRICING TIERS ── */
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+    .pricing-card {
+      background: var(--surface); border: 1px solid var(--rule);
+      border-radius: var(--r-lg); padding: 1.75rem 1.5rem;
+      position: relative; transition: border-color 0.2s;
+    }
+    .pricing-card:hover { border-color: var(--rule-md); }
+    .pricing-card.featured {
+      background: var(--ink); border-color: var(--ink);
+    }
+    .pricing-tag {
+      display: inline-block; font-size: 10px; font-weight: 500;
+      padding: 3px 10px; border-radius: 20px; margin-bottom: 1rem;
+    }
+    .pricing-card h4 { font-size: 18px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+    .pricing-card.featured h4 { color: var(--paper); }
+    .pricing-price { font-family: var(--serif); font-size: 32px; font-weight: 400; color: var(--ink); margin: 0.75rem 0 0.25rem; }
+    .pricing-card.featured .pricing-price { color: var(--paper); }
+    .pricing-period { font-size: 12px; color: var(--ink-faint); margin-bottom: 1.25rem; }
+    .pricing-card.featured .pricing-period { color: #6b6c68; }
+    .pricing-divider { border: none; border-top: 1px solid var(--rule); margin-bottom: 1.25rem; }
+    .pricing-card.featured .pricing-divider { border-top-color: rgba(241,239,232,0.12); }
+    .pricing-features { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+    .pricing-feat { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; color: var(--ink-soft); line-height: 1.45; }
+    .pricing-card.featured .pricing-feat { color: #9a9b97; }
+    .pricing-feat::before { content: '—'; color: var(--ink-faint); flex-shrink: 0; }
+    .pricing-card.featured .pricing-feat::before { color: #6b6c68; }
+    .pricing-btn {
+      display: block; text-align: center; font-size: 14px; font-weight: 500;
+      padding: 10px; border-radius: var(--r-sm); text-decoration: none;
+      border: 1px solid var(--rule-md); color: var(--ink);
+      transition: all 0.15s;
+    }
+    .pricing-btn:hover { background: var(--paper); }
+    .pricing-card.featured .pricing-btn { background: var(--paper); border-color: transparent; color: var(--ink); }
+    .pricing-card.featured .pricing-btn:hover { background: #ffffff; }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; }
+    .faq-item { border-bottom: 1px solid var(--rule); }
+    .faq-item:first-child { border-top: 1px solid var(--rule); }
+    .faq-q {
+      width: 100%; text-align: left; background: transparent; border: none;
+      padding: 1.25rem 0; display: flex; justify-content: space-between;
+      align-items: center; gap: 1rem; cursor: pointer;
+      font-family: var(--sans); font-size: 15px; font-weight: 500;
+      color: var(--ink); line-height: 1.4;
+    }
+    .faq-q:hover { color: var(--accent); }
+    .faq-icon { width: 20px; height: 20px; border-radius: 50%; background: var(--rule); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; color: var(--ink-mute); transition: transform 0.2s, background 0.2s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); background: var(--accent-lt); color: var(--accent); }
+    .faq-a { display: none; padding: 0 0 1.25rem; font-size: 14px; color: var(--ink-soft); line-height: 1.8; max-width: 600px; }
+    .faq-item.open .faq-a { display: block; }
+
+    /* ── CTA BAND ── */
+    .cta-band {
+      background: var(--ink); padding: 5rem 2rem;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-band-bg {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .cta-band-inner { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+    .cta-band h2 {
+      font-family: var(--serif); font-size: clamp(28px, 4vw, 42px);
+      font-weight: 400; color: var(--paper);
+      line-height: 1.2; margin-bottom: 1rem;
+    }
+    .cta-band p { font-size: 16px; color: #6b6c68; line-height: 1.7; margin-bottom: 2.5rem; }
+    .cta-band-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── CALLOUT ── */
+    .callout {
+      border-left: 3px solid var(--accent); background: var(--accent-lt);
+      border-radius: 0 var(--r-md) var(--r-md) 0;
+      padding: 0.875rem 1.125rem; margin: 1.25rem 0;
+    }
+    .callout p { font-size: 13px; color: var(--accent-dk); line-height: 1.65; margin: 0; }
+    .callout.teal { border-left-color: var(--teal); background: var(--teal-lt); }
+    .callout.teal p { color: var(--teal); }
+    .callout.amber { border-left-color: var(--amber); background: var(--amber-lt); }
+    .callout.amber p { color: var(--amber); }
+
+    /* ── DARK MODE ── */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:       #f0efe9;
+        --ink-soft:  #c8c7be;
+        --ink-mute:  #888780;
+        --ink-faint: #5f5e5a;
+        --paper:     #111210;
+        --surface:   #1c1d1a;
+        --rule:      rgba(240,239,233,0.08);
+        --rule-md:   rgba(240,239,233,0.14);
+        --accent:    #4d7ef7;
+        --accent-lt: rgba(77,126,247,0.12);
+        --accent-dk: #7ba7f5;
+        --teal:      #3ecaa0;
+        --teal-lt:   rgba(62,202,160,0.12);
+        --amber:     #fbbf24;
+        --amber-lt:  rgba(251,191,36,0.1);
+        --green:     #6abf62;
+        --green-lt:  rgba(106,191,98,0.1);
+        --coral:     #f87171;
+        --coral-lt:  rgba(248,113,113,0.1);
+      }
+      .hero { background: #0b0c0a; }
+      .metrics-strip { background: var(--surface); }
+      .nav { background: rgba(17,18,16,0.92); }
+      .cap-card { background: var(--surface); }
+      .testi-card { background: var(--surface); }
+      .pricing-card { background: var(--surface); }
+      .pricing-card.featured { background: #2a2b28; border-color: rgba(240,239,233,0.2); }
+      .pricing-card.featured h4 { color: var(--ink); }
+      .pricing-card.featured .pricing-price { color: var(--ink); }
+      .pricing-card.featured .pricing-period { color: var(--ink-mute); }
+      .pricing-card.featured .pricing-feat { color: var(--ink-soft); }
+      .pricing-card.featured .pricing-btn { background: var(--ink); color: var(--paper); }
+      .integ-card { background: var(--surface); }
+      .how-step:hover { background: var(--surface); }
+      .showcase-visual { background: #0b0c0a; }
+      .callout { background: rgba(77,126,247,0.12); }
+      .callout p { color: #7ba7f5; }
+      .callout.teal { background: rgba(62,202,160,0.1); }
+      .callout.teal p { color: #3ecaa0; }
+      .callout.amber { background: rgba(251,191,36,0.1); }
+      .callout.amber p { color: #fbbf24; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav" role="navigation">
+  <a href="#" class="nav-brand">AI<em>FinOps</em></a>
+  <div class="nav-links">
+    <a href="#">Services</a>
+    <a href="#" class="active">Cost Analyzer</a>
+    <a href="#">Governance</a>
+    <a href="#">Customers</a>
+    <a href="#">Docs</a>
+  </div>
+  <a href="#" class="nav-cta">Get started</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-breadcrumb">
+      <span>Services</span>
+      <span class="sep">/</span>
+      <span>Cost Analyzer</span>
+    </div>
+    <div class="hero-label">Service — Cost Analyzer</div>
+    <h1>Know exactly where every AI dollar goes — <em>before it's spent</em></h1>
+    <p class="hero-sub">
+      Cost Analyzer gives your engineering, finance, and FinOps teams a single,
+      real-time source of truth for every token, GPU hour, model call, and pipeline
+      run across your entire AI infrastructure.
+    </p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Start analysing free</a>
+      <a href="#" class="btn-ghost">Watch a 3-min demo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── METRICS STRIP ── -->
+<div class="metrics-strip" role="region" aria-label="Platform impact">
+  <div class="metrics-inner">
+    <div class="metric-cell">
+      <div class="metric-num"><em>40</em>%</div>
+      <div class="metric-label">Average AI cost reduction within 30 days</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-num"><em>$2</em>B+</div>
+      <div class="metric-label">AI spend analysed across customer accounts</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-num"><em>3</em> days</div>
+      <div class="metric-label">Median time to first cost insight</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-num"><em>50</em>+</div>
+      <div class="metric-label">AI providers and cloud sources supported</div>
+    </div>
+    <div class="metric-cell">
+      <div class="metric-num"><em>99.9</em>%</div>
+      <div class="metric-label">Data freshness — updated every 15 minutes</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WHAT IS IT ── -->
+<div class="section" id="overview">
+  <span class="eyebrow">What is Cost Analyzer</span>
+  <h2 class="section-title">AI cost intelligence,<br>not just cost reporting</h2>
+  <p class="section-lead">
+    Most cloud billing dashboards tell you what you spent. Cost Analyzer tells you
+    why you spent it, what drove the change, which team owns it, and what to do
+    about it — automatically.
+  </p>
+
+  <div class="showcase">
+    <div class="showcase-text">
+      <h3>From raw billing data to actionable intelligence</h3>
+      <p>
+        Cost Analyzer ingests billing exports, API usage logs, and hardware telemetry
+        from every connected source — then normalises, attributes, and enriches the
+        data into a unified cost model your entire organisation can act on.
+      </p>
+      <p>
+        Unlike generic cloud cost tools, Cost Analyzer understands the economics of
+        AI workloads specifically — token-based billing, GPU-hour pricing, fine-tuning
+        vs inference cost profiles, model routing decisions, and dataset storage costs.
+      </p>
+      <div class="showcase-checks">
+        <div class="check-item"><div class="check-dot"></div><span>Token-level cost attribution per API call, model, and team</span></div>
+        <div class="check-item"><div class="check-dot"></div><span>GPU utilisation efficiency scoring per workload</span></div>
+        <div class="check-item"><div class="check-dot"></div><span>Anomaly detection on spend patterns within 15 minutes</span></div>
+        <div class="check-item"><div class="check-dot"></div><span>Cost forecasting with 90-day predictive horizon</span></div>
+        <div class="check-item"><div class="check-dot"></div><span>Automatic tagging enrichment to fill attribution gaps</span></div>
+      </div>
+    </div>
+
+    <!-- Live-looking cost breakdown visual -->
+    <div class="showcase-visual">
+      <div class="showcase-visual-bg"></div>
+      <div class="vis-header">
+        <span class="vis-title">Cost breakdown · This month</span>
+        <span class="vis-badge">Live</span>
+      </div>
+      <div class="vis-chart">
+        <div class="vis-bar" style="height:45%; background:#1a56db; border-radius:3px 3px 0 0;" title="GPT-4 Turbo"></div>
+        <div class="vis-bar" style="height:28%; background:#185FA5;" title="Claude 3"></div>
+        <div class="vis-bar" style="height:62%; background:#1a56db;" title="GPU Training"></div>
+        <div class="vis-bar" style="height:35%; background:#185FA5;" title="Embeddings"></div>
+        <div class="vis-bar" style="height:20%; background:#0d8a6a;" title="Storage"></div>
+        <div class="vis-bar" style="height:48%; background:#1a56db;" title="Inference"></div>
+        <div class="vis-bar" style="height:30%; background:#185FA5;" title="Fine-tune"></div>
+        <div class="vis-bar" style="height:15%; background:#0d8a6a;" title="Vector DB"></div>
+      </div>
+      <div class="vis-rows">
+        <div class="vis-row">
+          <span class="vis-row-label" style="color:#9a9b97;">GPT-4 Turbo</span>
+          <div class="vis-row-bar-wrap"><div class="vis-row-bar" style="width:72%; background:#1a56db;"></div></div>
+          <span class="vis-row-val" style="color:#9a9b97;">$4,821</span>
+        </div>
+        <div class="vis-row">
+          <span class="vis-row-label" style="color:#9a9b97;">GPU training</span>
+          <div class="vis-row-bar-wrap"><div class="vis-row-bar" style="width:55%; background:#1a56db;"></div></div>
+          <span class="vis-row-val" style="color:#9a9b97;">$3,690</span>
+        </div>
+        <div class="vis-row">
+          <span class="vis-row-label" style="color:#9a9b97;">Claude 3 Sonnet</span>
+          <div class="vis-row-bar-wrap"><div class="vis-row-bar" style="width:38%; background:#185FA5;"></div></div>
+          <span class="vis-row-val" style="color:#9a9b97;">$2,540</span>
+        </div>
+        <div class="vis-row">
+          <span class="vis-row-label" style="color:#9a9b97;">Embeddings</span>
+          <div class="vis-row-bar-wrap"><div class="vis-row-bar" style="width:24%; background:#0d8a6a;"></div></div>
+          <span class="vis-row-val" style="color:#9a9b97;">$1,120</span>
+        </div>
+        <div class="vis-row">
+          <span class="vis-row-label" style="color:#9a9b97;">Storage &amp; egress</span>
+          <div class="vis-row-bar-wrap"><div class="vis-row-bar" style="width:14%; background:#888780;"></div></div>
+          <span class="vis-row-val" style="color:#9a9b97;">$640</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider" />
+
+<!-- ── CAPABILITIES ── -->
+<div class="section" id="capabilities">
+  <span class="eyebrow">Core capabilities</span>
+  <h2 class="section-title">Everything your team needs<br>to master AI costs</h2>
+  <p class="section-lead">
+    Cost Analyzer is not a single dashboard. It is a suite of tightly integrated
+    capabilities that work across all four platform pillars.
+  </p>
+
+  <div class="cap-grid">
+
+    <div class="cap-card">
+      <div class="cap-icon" style="background:#e8effe;">📊</div>
+      <h4>Unified cost dashboard</h4>
+      <p>One view of all AI spend — across AWS Bedrock, Azure OpenAI, GCP Vertex, self-hosted models, and on-prem GPU clusters. Filter by team, project, model, or time period in seconds.</p>
+      <div class="cap-tags">
+        <span class="cap-tag" style="background:#e8effe; color:#0f35a3;">Multi-cloud</span>
+        <span class="cap-tag" style="background:#e8effe; color:#0f35a3;">Real-time</span>
+      </div>
+    </div>
+
+    <div class="cap-card">
+      <div class="cap-icon" style="background:#e0f5ee;">🔬</div>
+      <h4>Token-level attribution</h4>
+      <p>Break AI API costs down to the individual token, request, and model call. Know precisely which product feature, team, or customer is driving every line of your bill.</p>
+      <div class="cap-tags">
+        <span class="cap-tag" style="background:#e0f5ee; color:#085041;">LLM-native</span>
+        <span class="cap-tag" style="background:#e0f5ee; color:#085041;">Per-request</span>
+      </div>
+    </div>
+
+    <div class="cap-card">
+      <div class="cap-icon" style="background:#fef3c7;">📈</div>
+      <h4>Cost forecasting</h4>
+      <p>Predictive 90-day cost models built on your actual usage patterns. Forecast accurately across different growth scenarios and flag budget overruns before they happen.</p>
+      <div class="cap-tags">
+        <span class="cap-tag" style="background:#fef3c7; color:#92400e;">90-day horizon</span>
+        <span class="cap-tag" style="background:#fef3c7; color:#92400e;">Scenario modelling</span>
+      </div>
+    </div>
+
+    <div class="cap-card">
+      <div class="cap-icon" style="background:#e8f5e4;">🚨</div>
+      <h4>Anomaly detection</h4>
+      <p>ML-powered spend anomaly detection that learns your usage patterns and fires alerts the moment something unusual appears — not at the end of the billing cycle.</p>
+      <div class="cap-tags">
+        <span class="cap-tag" style="background:#e8f5e4; color:#2d6a25;">15-min latency</span>
+        <span class="cap-tag" style="background:#e8f5e4; color:#2d6a25;">Auto-baseline</span>
+      </div>
+    </div>
+
+    <div class="cap-card">
+      <div class="cap-icon" style="background:#fdecea;">🏷️</div>
+      <h4>Smart tagging &amp; attribution</h4>
+      <p>Automatically infer missing tags from resource names, deployment patterns, and team ownership signals. Fill attribution gaps without requiring engineers to re-tag everything.</p>
+      <div class="cap-tags">
+        <span class="cap-tag" style="background:#fdecea; color:#922b21;">Auto-enrichment</span>
+        <span class="cap-tag" style="background:#fdecea; color:#922b21;">Gap detection</span>
+      </div>
+    </div>
+
+    <div class="cap-card">
+      <div class="cap-icon" style="background:#EEEDFE;">💰</div>
+      <h4>Chargeback &amp; showback</h4>
+      <p>Allocate AI costs to business units, teams, products, and cost centres with full audit trails. Generate finance-ready reports with one click — no more manual spreadsheets.</p>
+      <div class="cap-tags">
+        <span class="cap-tag" style="background:#EEEDFE; color:#3C3489;">Finance-ready</span>
+        <span class="cap-tag" style="background:#EEEDFE; color:#3C3489;">Audit trails</span>
+      </div>
+    </div>
+
+    <div class="cap-card">
+      <div class="cap-icon" style="background:#e8effe;">📉</div>
+      <h4>Cost efficiency scoring</h4>
+      <p>Score every AI workload, model, and team on cost efficiency relative to their output value. Identify which investments deliver ROI and which are simply expensive.</p>
+      <div class="cap-tags">
+        <span class="cap-tag" style="background:#e8effe; color:#0f35a3;">ROI visibility</span>
+        <span class="cap-tag" style="background:#e8effe; color:#0f35a3;">Per-workload</span>
+      </div>
+    </div>
+
+    <div class="cap-card">
+      <div class="cap-icon" style="background:#e0f5ee;">📋</div>
+      <h4>Executive reporting</h4>
+      <p>Board-ready AI cost reports — cost-to-revenue ratio, trend analysis, savings achieved, waste eliminated, and forecast vs actual — scheduled and delivered automatically.</p>
+      <div class="cap-tags">
+        <span class="cap-tag" style="background:#e0f5ee; color:#085041;">Scheduled reports</span>
+        <span class="cap-tag" style="background:#e0f5ee; color:#085041;">Export to PDF/CSV</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="section-divider" />
+
+<!-- ── COST BY PILLAR ── -->
+<div class="section" id="pillars">
+  <span class="eyebrow">Analysis by platform pillar</span>
+  <h2 class="section-title">Cost visibility built into<br>every capability</h2>
+  <p class="section-lead">
+    Cost Analyzer surfaces financial intelligence inside each of the four platform
+    pillars — so cost context is always present when decisions are made.
+  </p>
+
+  <table class="pillars-table">
+    <thead>
+      <tr>
+        <th>Capability</th>
+        <th>What Cost Analyzer surfaces</th>
+        <th>Business outcome</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="pill-label" style="background:#e8effe; color:#0f35a3;">📡 Monitoring</span></td>
+        <td>Real-time spend per model, team, and cloud source. Anomaly alerts within 15 minutes. Cost attribution for every API call and GPU-hour consumed.</td>
+        <td>Zero surprise bills. Finance and engineering always aligned on current spend.</td>
+      </tr>
+      <tr>
+        <td><span class="pill-label" style="background:#e0f5ee; color:#085041;">⚙️ Optimization</span></td>
+        <td>Cost-performance ratio per model route. Savings estimates for each recommendation. Before/after cost comparison for every automated or manual action taken.</td>
+        <td>Optimization decisions backed by financial data, not just performance metrics.</td>
+      </tr>
+      <tr>
+        <td><span class="pill-label" style="background:#fef3c7; color:#92400e;">🔀 Orchestration</span></td>
+        <td>Cost per job across compute types. Spot vs on-demand cost comparison. Cross-region and cross-cloud cost arbitrage opportunities identified automatically.</td>
+        <td>Every scheduling decision accounts for both cost and latency — not one or the other.</td>
+      </tr>
+      <tr>
+        <td><span class="pill-label" style="background:#e8f5e4; color:#2d6a25;">🗑️ Waste elimination</span></td>
+        <td>Dollar value of idle resources identified. Shadow AI spend uncovered. Monthly savings achieved through automated waste remediation actions with full audit trail.</td>
+        <td>Measurable, auditable savings — not projected efficiency gains.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="section-divider" />
+
+<!-- ── HOW IT WORKS ── -->
+<div class="section" id="how-it-works">
+  <span class="eyebrow">How it works</span>
+  <h2 class="section-title">Up and running in minutes,<br>insights within hours</h2>
+  <p class="section-lead">
+    No lengthy onboarding. No data warehousing project. No professional services required.
+    Connect your accounts and Cost Analyzer starts working immediately.
+  </p>
+
+  <div class="how-grid">
+    <div class="how-step">
+      <div class="how-num">01</div>
+      <h4>Connect your sources</h4>
+      <p>Link AWS, Azure, GCP, OpenAI, Anthropic, Bedrock, Vertex AI, Hugging Face, and on-prem clusters via read-only API keys or IAM roles. Takes under 10 minutes per source.</p>
+    </div>
+    <div class="how-step">
+      <div class="how-num">02</div>
+      <h4>Ingest and normalise</h4>
+      <p>Cost Analyzer pulls billing exports, usage logs, and hardware telemetry and normalises everything into a unified cost model — regardless of how each provider structures its billing.</p>
+    </div>
+    <div class="how-step">
+      <div class="how-num">03</div>
+      <h4>Attribute and enrich</h4>
+      <p>Costs are automatically attributed to teams, projects, and cost centres using existing tags, enriched with inferred ownership signals where tags are missing.</p>
+    </div>
+    <div class="how-step">
+      <div class="how-num">04</div>
+      <h4>Analyse and alert</h4>
+      <p>Dashboards, anomaly alerts, efficiency scores, and forecasts are immediately available. Set budget thresholds and receive Slack or email alerts the moment spend deviates.</p>
+    </div>
+    <div class="how-step">
+      <div class="how-num">05</div>
+      <h4>Act and measure</h4>
+      <p>Cost insights flow directly into the Optimization, Orchestration, and Waste Elimination capabilities — so savings aren't just identified, they're executed and measured.</p>
+    </div>
+  </div>
+
+  <div class="callout teal" style="margin-top: 2rem;">
+    <p>
+      Cost Analyzer is read-only by default. It never modifies, scales, or terminates any
+      resource in your environment unless you explicitly connect it to our Optimization or
+      Waste Elimination capabilities and configure automation permissions.
+    </p>
+  </div>
+</div>
+
+<hr class="section-divider" />
+
+<!-- ── INTEGRATIONS ── -->
+<div class="section" id="integrations">
+  <span class="eyebrow">Integrations</span>
+  <h2 class="section-title">Works with your entire<br>AI stack, out of the box</h2>
+  <p class="section-lead">
+    Cost Analyzer connects natively to 50+ AI providers, cloud platforms, BI tools,
+    and alerting systems — with more added every month.
+  </p>
+
+  <div class="integ-grid">
+    <div class="integ-card"><div class="integ-icon">🟠</div><div class="integ-name">AWS Bedrock</div><div class="integ-type">AI / Cloud</div></div>
+    <div class="integ-card"><div class="integ-icon">🔵</div><div class="integ-name">Azure OpenAI</div><div class="integ-type">AI / Cloud</div></div>
+    <div class="integ-card"><div class="integ-icon">🟢</div><div class="integ-name">GCP Vertex AI</div><div class="integ-type">AI / Cloud</div></div>
+    <div class="integ-card"><div class="integ-icon">⚫</div><div class="integ-name">OpenAI</div><div class="integ-type">AI Provider</div></div>
+    <div class="integ-card"><div class="integ-icon">🟤</div><div class="integ-name">Anthropic</div><div class="integ-type">AI Provider</div></div>
+    <div class="integ-card"><div class="integ-icon">🟡</div><div class="integ-name">Hugging Face</div><div class="integ-type">AI Provider</div></div>
+    <div class="integ-card"><div class="integ-icon">🔴</div><div class="integ-name">Cohere</div><div class="integ-type">AI Provider</div></div>
+    <div class="integ-card"><div class="integ-icon">🟣</div><div class="integ-name">Mistral AI</div><div class="integ-type">AI Provider</div></div>
+    <div class="integ-card"><div class="integ-icon">📊</div><div class="integ-name">Snowflake</div><div class="integ-type">Data Platform</div></div>
+    <div class="integ-card"><div class="integ-icon">🧱</div><div class="integ-name">Databricks</div><div class="integ-type">Data Platform</div></div>
+    <div class="integ-card"><div class="integ-icon">📈</div><div class="integ-name">Grafana</div><div class="integ-type">Observability</div></div>
+    <div class="integ-card"><div class="integ-icon">🐕</div><div class="integ-name">Datadog</div><div class="integ-type">Observability</div></div>
+    <div class="integ-card"><div class="integ-icon">💬</div><div class="integ-name">Slack</div><div class="integ-type">Alerts</div></div>
+    <div class="integ-card"><div class="integ-icon">🔔</div><div class="integ-name">PagerDuty</div><div class="integ-type">Alerts</div></div>
+    <div class="integ-card"><div class="integ-icon">📧</div><div class="integ-name">Email / Webhook</div><div class="integ-type">Alerts</div></div>
+    <div class="integ-card"><div class="integ-icon">🔷</div><div class="integ-name">Microsoft Teams</div><div class="integ-type">Alerts</div></div>
+    <div class="integ-card"><div class="integ-icon">📉</div><div class="integ-name">Looker</div><div class="integ-type">BI / Reporting</div></div>
+    <div class="integ-card"><div class="integ-icon">📊</div><div class="integ-name">Tableau</div><div class="integ-type">BI / Reporting</div></div>
+    <div class="integ-card"><div class="integ-icon">🧮</div><div class="integ-name">Power BI</div><div class="integ-type">BI / Reporting</div></div>
+    <div class="integ-card"><div class="integ-icon">🔌</div><div class="integ-name">REST API</div><div class="integ-type">Custom</div></div>
+  </div>
+</div>
+
+<hr class="section-divider" />
+
+<!-- ── TESTIMONIALS ── -->
+<div class="section" id="testimonials">
+  <span class="eyebrow">Customer stories</span>
+  <h2 class="section-title">What teams say about<br>Cost Analyzer</h2>
+  <p class="section-lead">
+    From startups watching every dollar to enterprises governing thousands of workloads —
+    Cost Analyzer changes how teams relate to their AI spend.
+  </p>
+
+  <div class="testi-grid">
+    <div class="testi-card">
+      <p class="testi-quote">We were spending $60K a month on AI APIs with zero visibility into which features were responsible. Cost Analyzer gave us per-endpoint attribution in under a day. We cut $22K in a week just by turning off features nobody was using.</p>
+      <div class="testi-meta">
+        <div class="testi-avatar" style="background:#e8effe; color:#0f35a3;">KS</div>
+        <div>
+          <div class="testi-name">Kavya Subramanian</div>
+          <div class="testi-role">CTO, Nexus AI (Series B, Chennai)</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <p class="testi-quote">The forecasting model is genuinely impressive. It predicted our usage spike during a product launch within 8% — three weeks in advance. We pre-purchased reserved capacity and saved $180K compared to on-demand pricing.</p>
+      <div class="testi-meta">
+        <div class="testi-avatar" style="background:#e0f5ee; color:#085041;">RB</div>
+        <div>
+          <div class="testi-name">Rahul Bose</div>
+          <div class="testi-role">Head of FinOps, Meridian Financial Group</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <p class="testi-quote">Our finance team used to spend four days every month reconciling AI spend across 11 cloud accounts. Cost Analyzer reduced that to a 20-minute review of the auto-generated report. It's transformed how we do month-end close.</p>
+      <div class="testi-meta">
+        <div class="testi-avatar" style="background:#fef3c7; color:#92400e;">PS</div>
+        <div>
+          <div class="testi-name">Preethi Suresh</div>
+          <div class="testi-role">VP Finance, Vantage Cloud Corp</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider" />
+
+<!-- ── PRICING ── -->
+<div class="section" id="pricing">
+  <span class="eyebrow">Pricing</span>
+  <h2 class="section-title">Simple pricing that scales<br>with your AI spend</h2>
+  <p class="section-lead">
+    Cost Analyzer is included across all platform plans. No per-seat fees. No
+    data volume charges. Pricing is based on connected AI spend under management.
+  </p>
+
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <span class="pricing-tag" style="background:#f1efe8; color:#6b6c68;">Free</span>
+      <h4>Starter</h4>
+      <div class="pricing-price">$0</div>
+      <div class="pricing-period">Up to $10K AI spend/month</div>
+      <hr class="pricing-divider" />
+      <div class="pricing-features">
+        <div class="pricing-feat">3 connected cloud or AI accounts</div>
+        <div class="pricing-feat">Unified cost dashboard</div>
+        <div class="pricing-feat">7-day cost history</div>
+        <div class="pricing-feat">Basic anomaly alerts (email)</div>
+        <div class="pricing-feat">Manual CSV export</div>
+      </div>
+      <a href="#" class="pricing-btn">Start free</a>
+    </div>
+
+    <div class="pricing-card featured">
+      <span class="pricing-tag" style="background:rgba(26,86,219,0.2); color:#7ba7f5;">Most popular</span>
+      <h4>Growth</h4>
+      <div class="pricing-price">$299</div>
+      <div class="pricing-period">per month · up to $500K spend/month</div>
+      <hr class="pricing-divider" />
+      <div class="pricing-features">
+        <div class="pricing-feat">Unlimited connected sources</div>
+        <div class="pricing-feat">Token-level attribution</div>
+        <div class="pricing-feat">90-day cost forecasting</div>
+        <div class="pricing-feat">ML anomaly detection (Slack + email)</div>
+        <div class="pricing-feat">Chargeback &amp; showback reports</div>
+        <div class="pricing-feat">Smart tagging enrichment</div>
+        <div class="pricing-feat">Scheduled executive reports</div>
+      </div>
+      <a href="#" class="pricing-btn">Start 14-day trial</a>
+    </div>
+
+    <div class="pricing-card">
+      <span class="pricing-tag" style="background:#EEEDFE; color:#3C3489;">Enterprise</span>
+      <h4>Enterprise</h4>
+      <div class="pricing-price">Custom</div>
+      <div class="pricing-period">Unlimited AI spend · Custom SLA</div>
+      <hr class="pricing-divider" />
+      <div class="pricing-features">
+        <div class="pricing-feat">Everything in Growth</div>
+        <div class="pricing-feat">BYOK encryption for cost data</div>
+        <div class="pricing-feat">SIEM / BI tool integration</div>
+        <div class="pricing-feat">Custom retention periods</div>
+        <div class="pricing-feat">Dedicated customer success manager</div>
+        <div class="pricing-feat">99.99% SLA + priority support</div>
+        <div class="pricing-feat">SOC 2 report &amp; DPA on request</div>
+      </div>
+      <a href="#" class="pricing-btn">Talk to sales</a>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider" />
+
+<!-- ── FAQ ── -->
+<div class="section" id="faq">
+  <span class="eyebrow">FAQ</span>
+  <h2 class="section-title">Common questions</h2>
+  <p class="section-lead">Everything you need to know before connecting your first account.</p>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Does Cost Analyzer need write access to my cloud accounts?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">No. Cost Analyzer operates exclusively with read-only permissions on all connected accounts. It ingests billing data, usage logs, and telemetry — but cannot modify, create, or delete any resource in your environment. Write permissions are only requested if you choose to connect our Optimization or Waste Elimination capabilities and explicitly configure automation.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How does token-level attribution work for LLM API costs?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Cost Analyzer ingests usage logs from your AI provider accounts (OpenAI, Anthropic, Cohere, etc.) alongside the request metadata you tag at the application level. Where request-level tagging is not in place, we infer attribution from deployment names, API key ownership, and usage patterns. We also offer a lightweight SDK that adds automatic cost attribution headers to every API call without modifying your model logic.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How fresh is the cost data?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Data freshness depends on the source. AI API usage data (token counts, call volumes) is updated every 15 minutes via direct provider API polling. Cloud billing data (AWS CUR, Azure Cost Management) is refreshed every 4–24 hours depending on how frequently your cloud provider publishes billing exports — typically every 4 hours for AWS and every 8 hours for Azure. Hardware telemetry from the on-premises agent is real-time with a 60-second resolution.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Can Cost Analyzer see the content of our AI model prompts or completions?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">No. By default, Cost Analyzer only ingests cost and usage metadata — token counts, model names, latency, error rates, and cost figures. It never accesses or stores the content of your prompts, completions, embeddings, or training data. An optional prompt logging feature is available for customers who want to correlate costs with specific prompt patterns, but this must be explicitly enabled, operates on your own infrastructure, and requires a DPA.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        We have missing or inconsistent tagging. Can Cost Analyzer still attribute costs?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Yes — this is one of the most common challenges we solve. Cost Analyzer's smart tagging engine analyses resource naming conventions, deployment patterns, API key ownership, team membership data from your identity provider, and historical attribution patterns to infer ownership for untagged resources. Typically, customers with 40–60% tagging coverage achieve 85%+ attribution accuracy within the first two weeks without changing any infrastructure.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How does Cost Analyzer handle multi-currency and international billing?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Cost Analyzer normalises all costs to your preferred reporting currency using daily exchange rates from a reliable financial data source. All original billing amounts in native currencies are preserved and visible alongside converted figures. Tax handling (GST, VAT, etc.) is configurable — you can include or exclude tax from all reporting views depending on your finance team's requirements.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Can we export cost data into our own data warehouse or BI tool?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Yes. Cost Analyzer supports CSV, JSON, and Parquet exports for all cost data. On the Growth and Enterprise plans, you can set up automated exports to S3, Azure Blob, or GCS on a schedule. We also offer native connectors for Looker, Tableau, Power BI, and Metabase. Enterprise customers can use the full REST API to pull raw and aggregated cost data in real time into any destination.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA BAND ── -->
+<section class="cta-band">
+  <div class="cta-band-bg"></div>
+  <div class="cta-band-inner">
+    <h2>Start analysing your AI costs today</h2>
+    <p>Connect your first account in under 10 minutes. No credit card required. Full monitoring and anomaly alerts included on the free plan — forever.</p>
+    <div class="cta-band-btns">
+      <a href="#" class="btn-primary">Get started free</a>
+      <a href="#" class="btn-ghost">Talk to an expert</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  const sections = document.querySelectorAll('[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
