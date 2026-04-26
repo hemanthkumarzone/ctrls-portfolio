@@ -4,7 +4,12 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   server: {
-    allowedHosts: ['ctrls.co','www.ctrls.co']
-  }
+    allowedHosts: ['ctrls.co', 'www.ctrls.co'],
+  },
 })
