@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Savings Acquisition Cost — CtrlS AI FinOps</title>
+
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0a0a0;
+
+  --color-background-primary: #0B1200;
+  --color-background-secondary: #101a08;
+
+  --color-border-tertiary: rgba(119,185,0,0.2);
+
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: monospace;
+
+  --border-radius-lg: 16px;
+  --border-radius-md: 10px;
+}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:var(--font-sans);
+  background:#0B1200;
+  color:var(--color-text-primary);
+}
+
+/* ===== PAGE LAYOUT FIX ===== */
+.page-container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:110px 1.5rem 2rem;
+}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  .pg{padding:2rem 1rem;max-width:860px;margin:0 auto;font-family:var(--font-sans)}
+
+  .hero{text-align:center;padding:2.5rem 1.5rem;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);margin-bottom:2.5rem;position:relative;overflow:hidden}
+  .hero::after{content:'SAC';position:absolute;font-size:140px;font-weight:800;color:var(--color-border-tertiary);bottom:-30px;right:-10px;pointer-events:none;line-height:1;letter-spacing:-4px}
+  .badge{display:inline-block;background:#E6F1FB;color:#0C447C;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:30px;font-weight:700;color:var(--color-text-primary);line-height:1.25;margin-bottom:.75rem}
+  .hero h1 em{font-style:normal;color:#185FA5}
+  .hero p{font-size:14px;color:var(--color-text-secondary);max-width:500px;margin:0 auto 1.5rem;line-height:1.7}
+  .kpi-row{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap}
+  .kpi{text-align:center}
+  .kpi .v{font-size:26px;font-weight:700;color:#185FA5;font-family:var(--font-mono)}
+  .kpi .l{font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+
+  .sec{margin-bottom:3rem}
+  .sec-eyebrow{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:.5rem}
+  .sec-title{font-size:20px;font-weight:600;color:var(--color-text-primary);margin-bottom:.4rem}
+  .sec-sub{font-size:13px;color:var(--color-text-secondary);margin-bottom:1.25rem;line-height:1.65}
+
+  .card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem}
+  .card+.card{margin-top:1rem}
+
+  .g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+  .g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem}
+  .g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.75rem}
+
+  .mc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem 1.25rem}
+  .mc .ml{font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+  .mc .mv{font-size:24px;font-weight:700;font-family:var(--font-mono);color:var(--color-text-primary)}
+  .mc .md{font-size:12px;margin-top:3px}
+  .up{color:#0F6E56}.dn{color:#A32D2D}
+
+  .uc{border-left:3px solid #185FA5;padding:.9rem 1.1rem;background:var(--color-background-primary);border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;border-top:0.5px solid var(--color-border-tertiary);border-right:0.5px solid var(--color-border-tertiary);border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:.6rem}
+  .uc.am{border-left-color:#BA7517}
+  .uc.gr{border-left-color:#3B6D11}
+  .uc.pu{border-left-color:#534AB7}
+  .uc.rd{border-left-color:#A32D2D}
+  .uc h3{font-size:13px;font-weight:600;color:var(--color-text-primary);margin-bottom:3px}
+  .uc p{font-size:12px;color:var(--color-text-secondary);line-height:1.55}
+  .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500;margin:5px 3px 0 0}
+  .tb{background:#E6F1FB;color:#0C447C}
+  .tg{background:#E1F5EE;color:#085041}
+  .ta{background:#FAEEDA;color:#633806}
+  .tr{background:#FCEBEB;color:#791F1F}
+  .tp{background:#EEEDFE;color:#3C3489}
+
+  .rr{display:flex;align-items:flex-start;gap:12px;padding:.8rem 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .rr:last-child{border-bottom:none}
+  .rn{width:26px;height:26px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--font-mono)}
+  .rn.bl{background:#E6F1FB;color:#0C447C}
+  .rn.am{background:#FAEEDA;color:#633806}
+  .rn.gr{background:#E1F5EE;color:#085041}
+  .rn.pu{background:#EEEDFE;color:#3C3489}
+  .rn.rd{background:#FCEBEB;color:#791F1F}
+  .rc h4{font-size:13px;font-weight:600;color:var(--color-text-primary);margin-bottom:2px}
+  .rc p{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+
+  .wb{margin-bottom:.7rem}
+  .wl{display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+  .wl span:last-child{color:var(--color-text-primary);font-weight:600;font-family:var(--font-mono)}
+  .wt{background:var(--color-background-secondary);border-radius:4px;height:8px;overflow:hidden}
+  .wf{height:100%;border-radius:4px}
+  .fb{background:#185FA5}.fa{background:#BA7517}.fg{background:#3B6D11}.fr{background:#A32D2D}.fp{background:#534AB7}
+
+  .sac-funnel{display:flex;flex-direction:column;gap:.5rem}
+  .funnel-row{display:flex;align-items:center;gap:12px}
+  .funnel-bar-wrap{flex:1;height:36px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);overflow:hidden;position:relative}
+  .funnel-bar{height:100%;display:flex;align-items:center;padding:0 12px;font-size:12px;font-weight:600}
+  .funnel-label{font-size:12px;color:var(--color-text-secondary);min-width:130px;text-align:right}
+  .funnel-val{font-size:12px;font-family:var(--font-mono);color:var(--color-text-primary);min-width:70px}
+
+  .faq-item{border-bottom:0.5px solid var(--color-border-tertiary)}
+  .faq-q{display:flex;justify-content:space-between;align-items:center;padding:.9rem 0;cursor:pointer}
+  .faq-q span{font-size:13px;font-weight:500;color:var(--color-text-primary);flex:1;padding-right:12px}
+  .faq-icon{font-size:16px;color:var(--color-text-secondary);transition:transform .2s;flex-shrink:0}
+  .faq-a{font-size:12px;color:var(--color-text-secondary);line-height:1.7;padding-bottom:.9rem;display:none}
+  .open .faq-a{display:block}
+  .open .faq-icon{transform:rotate(45deg)}
+
+  .demo-wrap{background:#185FA5;border-radius:var(--border-radius-lg);padding:2rem;color:#fff;text-align:center}
+  .demo-wrap h2{font-size:20px;font-weight:700;color:#fff;margin-bottom:.5rem}
+  .demo-wrap p{font-size:13px;color:rgba(255,255,255,.8);margin-bottom:1.25rem;line-height:1.65;max-width:420px;margin-left:auto;margin-right:auto}
+  .dform{display:flex;flex-direction:column;gap:9px;max-width:380px;margin:0 auto}
+  .dform input,.dform select{padding:9px 12px;border-radius:var(--border-radius-md);border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:12px;font-family:var(--font-sans);outline:none}
+  .dform input::placeholder{color:rgba(255,255,255,.6)}
+  .dform select option{color:#333;background:#fff}
+  .dbtn{background:#fff;color:#185FA5;font-weight:700;font-size:13px;padding:11px;border-radius:var(--border-radius-md);border:none;cursor:pointer;font-family:var(--font-sans);margin-top:4px}
+  .dsuc{display:none;background:rgba(255,255,255,.15);border-radius:var(--border-radius-md);padding:.85rem;margin-top:.5rem;font-size:13px;color:#fff}
+
+  .nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2rem}
+  .nb{font-size:11px;padding:5px 13px;border-radius:20px;border:0.5px solid var(--color-border-tertiary);background:transparent;cursor:pointer;color:var(--color-text-secondary);font-family:var(--font-sans);transition:all .15s}
+  .nb:hover,.nb.act{background:#E6F1FB;color:#0C447C;border-color:#185FA5}
+
+  .factor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+  .factor{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1.1rem}
+  .factor-dot{width:10px;height:10px;border-radius:50%;margin-bottom:8px}
+  .factor h3{font-size:13px;font-weight:600;color:var(--color-text-primary);margin-bottom:3px}
+  .factor p{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+
+  .tl{position:relative;padding-left:1.75rem}
+  .tl::before{content:'';position:absolute;left:8px;top:6px;bottom:6px;width:1px;background:var(--color-border-tertiary)}
+  .tli{position:relative;margin-bottom:1.1rem}
+  .tld{position:absolute;left:-1.75rem;top:4px;width:9px;height:9px;border-radius:50%;border:2px solid #185FA5;background:var(--color-background-primary)}
+  .tlp{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#185FA5;margin-bottom:1px}
+  .tlt{font-size:13px;font-weight:600;color:var(--color-text-primary)}
+  .tls{font-size:12px;color:var(--color-text-secondary);line-height:1.5;margin-top:2px}
+
+  .sac-formula{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1.5rem;text-align:center;margin-bottom:1.25rem}
+  .sac-formula .formula{font-size:18px;font-family:var(--font-mono);color:var(--color-text-primary);margin:0.5rem 0}
+  .sac-formula .fdesc{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+
+  .bench-row{display:flex;align-items:center;gap:10px;padding:.7rem 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .bench-row:last-child{border-bottom:none}
+  .bench-tier{font-size:12px;font-weight:600;color:var(--color-text-primary);min-width:130px}
+  .bench-bar-wrap{flex:1;height:10px;background:var(--color-background-secondary);border-radius:5px;overflow:hidden}
+  .bench-bar{height:100%;border-radius:5px}
+  .bench-val{font-size:12px;font-family:var(--font-mono);color:var(--color-text-primary);min-width:60px;text-align:right}
+
+  .cta-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.25rem}
+  .cta-btn{font-size:12px;padding:8px 16px;border-radius:var(--border-radius-md);border:0.5px solid #185FA5;background:transparent;cursor:pointer;color:#185FA5;font-family:var(--font-sans)}
+</style>
+</head>
+<body>
+<div class="page-container">
+<div class="pg">
+<h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Savings Acquisition Cost (SAC) for AI FinOps — Use Case and Business Requirements Dashboard</h2>
+
+<div class="hero">
+  <div class="badge">Savings Acquisition Cost — AI FinOps</div>
+  <h1>Every dollar you save<br>has a <em>cost to acquire</em>.</h1>
+  <p>SAC measures how efficiently your AI FinOps platform converts investment in monitoring, optimization, and orchestration into realized AI cost savings — your definitive ROI metric.</p>
+  <div class="kpi-row">
+    <div class="kpi"><div class="v">$0.08</div><div class="l">Avg SAC (best-in-class)</div></div>
+    <div class="kpi"><div class="v">12:1</div><div class="l">Savings-to-cost ratio</div></div>
+    <div class="kpi"><div class="v">34 days</div><div class="l">Avg payback period</div></div>
+    <div class="kpi"><div class="v">$1.9M</div><div class="l">Median yr-1 net savings</div></div>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nb act" onclick="smoothTo('definition')">SAC Definition</button>
+  <button class="nb" onclick="smoothTo('use-cases')">Use Cases</button>
+  <button class="nb" onclick="smoothTo('brd')">Requirements</button>
+  <button class="nb" onclick="smoothTo('factors')">Key Factors</button>
+  <button class="nb" onclick="smoothTo('benchmarks')">Benchmarks</button>
+  <button class="nb" onclick="smoothTo('charts')">Charts</button>
+  <button class="nb" onclick="smoothTo('roi')">SAC Calculator</button>
+  <button class="nb" onclick="smoothTo('roadmap')">Roadmap</button>
+  <button class="nb" onclick="smoothTo('faq')">FAQs</button>
+  <button class="nb" onclick="smoothTo('demo')">Demo</button>
+</div>
+
+<div class="sec" id="definition">
+  <div class="sec-eyebrow">Core Concept</div>
+  <div class="sec-title">What is Savings Acquisition Cost?</div>
+  <div class="sec-sub">SAC is the AI FinOps equivalent of Customer Acquisition Cost. It answers the question: "How much do we spend on our FinOps platform, tooling, and team effort to generate one dollar of confirmed AI cost savings?"</div>
+
+  <div class="sac-formula">
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px">The SAC formula</div>
+    <div class="formula">SAC = Total FinOps Investment ÷ Total Confirmed AI Savings</div>
+    <div class="fdesc" style="margin-top:8px">A SAC of $0.10 means you spend 10 cents to generate one dollar of AI savings. Lower is better. Best-in-class organizations achieve SAC of $0.05–$0.12. A SAC above $0.40 signals the FinOps program is not generating adequate return and requires strategic review.</div>
+  </div>
+
+  <div class="g3">
+    <div class="mc"><div class="ml">FinOps investment includes</div><div style="font-size:12px;color:var(--color-text-secondary);margin-top:6px;line-height:1.55">Platform license, engineering effort, tooling, training, and FinOps team headcount cost.</div></div>
+    <div class="mc"><div class="ml">Confirmed savings includes</div><div style="font-size:12px;color:var(--color-text-secondary);margin-top:6px;line-height:1.55">Eliminated idle compute, model rightsizing gains, cache hit savings, budget enforcement avoidance, and vendor negotiation wins.</div></div>
+    <div class="mc"><div class="ml">Excluded from savings</div><div style="font-size:12px;color:var(--color-text-secondary);margin-top:6px;line-height:1.55">Projected or forecast savings, one-time infrastructure changes unrelated to FinOps, and organic cost reductions from usage decline.</div></div>
+  </div>
+</div>
+
+<div class="sec" id="use-cases">
+  <div class="sec-eyebrow">Use Cases</div>
+  <div class="sec-title">Where SAC drives FinOps decisions</div>
+  <div class="sec-sub">SAC reframes AI cost management from a technical exercise into a financial discipline — enabling CFOs, FinOps teams, and platform engineers to justify, scale, and optimize their savings programs.</div>
+
+  <div class="uc">
+    <h3>UC-SAC-01 — FinOps program investment justification</h3>
+    <p>CFOs and finance leaders need to approve annual FinOps platform budgets. SAC provides a single, auditable metric that proves the program generates more savings than it costs — making budget renewals and expansions defensible at board level.</p>
+    <div><span class="tag tb">Owner: CFO / Finance</span><span class="tag tg">Value: Budget approval</span><span class="tag ta">Trigger: Annual planning cycle</span></div>
+  </div>
+  <div class="uc am">
+    <h3>UC-SAC-02 — Optimization initiative prioritization</h3>
+    <p>When multiple optimization levers are available (model routing, caching, idle compute), teams must decide where to invest effort first. SAC-per-initiative ranks them by cost-efficiency of savings generation, surfacing highest-ROI actions.</p>
+    <div><span class="tag tb">Owner: FinOps Lead</span><span class="tag tg">Value: Effort allocation</span><span class="tag ta">Trigger: Quarterly planning</span></div>
+  </div>
+  <div class="uc gr">
+    <h3>UC-SAC-03 — Vendor and platform benchmarking</h3>
+    <p>Organizations evaluating AI FinOps platforms (Apptio Cloudability, CloudZero, Finout, Kubecost) use SAC as the primary comparison metric — normalizing across different pricing models and feature sets to identify the most cost-efficient platform.</p>
+    <div><span class="tag tb">Owner: Procurement / CTO</span><span class="tag tg">Value: Vendor selection</span><span class="tag ta">Trigger: Contract renewal</span></div>
+  </div>
+  <div class="uc pu">
+    <h3>UC-SAC-04 — FinOps team headcount justification</h3>
+    <p>Hiring a dedicated AI FinOps engineer costs $180K–$250K/year fully loaded. SAC modeling quantifies the savings throughput each additional FTE generates, enabling data-driven headcount decisions with explicit payback period projections.</p>
+    <div><span class="tag tp">Owner: Engineering VP / HR</span><span class="tag tg">Value: Headcount ROI</span><span class="tag ta">Trigger: Hiring cycles</span></div>
+  </div>
+  <div class="uc rd">
+    <h3>UC-SAC-05 — Savings program health monitoring</h3>
+    <p>As AI infrastructure matures, the "easy wins" are captured early and marginal savings become harder to find. Tracking SAC over time signals when a program is plateau-ing, prompting investment in new optimization categories before savings decay.</p>
+    <div><span class="tag tr">Owner: FinOps Team</span><span class="tag tg">Value: Program sustainability</span><span class="tag ta">Trigger: Monthly review</span></div>
+  </div>
+  <div class="uc">
+    <h3>UC-SAC-06 — Multi-team savings attribution governance</h3>
+    <p>When multiple teams contribute to AI savings (platform, ML ops, product), SAC-per-team measures each team's cost efficiency — enabling fair attribution, performance reviews, and incentive design tied to savings generation efficiency.</p>
+    <div><span class="tag tb">Owner: FinOps + HRBP</span><span class="tag tg">Value: Attribution clarity</span><span class="tag ta">Trigger: Performance reviews</span></div>
+  </div>
+  <div class="uc am">
+    <h3>UC-SAC-07 — Automated savings opportunity scoring</h3>
+    <p>The AI FinOps platform scores every identified waste item by its projected SAC — automatically prioritizing high-savings, low-effort opportunities and suppressing low-value alerts that consume engineering time without meaningful savings yield.</p>
+    <div><span class="tag ta">Owner: Platform / ML Ops</span><span class="tag tg">Value: Alert quality</span><span class="tag ta">Trigger: Continuous</span></div>
+  </div>
+</div>
+
+<div class="sec" id="brd">
+  <div class="sec-eyebrow">Business Requirements</div>
+  <div class="sec-title">SAC-focused platform requirements</div>
+  <div class="sec-sub">Requirements for an AI FinOps platform specifically designed to minimize SAC — ensuring every capability directly contributes to reducing the cost of savings generation.</div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;font-weight:600;color:#185FA5;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem">Measurement & attribution requirements</div>
+    <div class="rr"><div class="rn bl">M1</div><div class="rc"><h4>SAC dashboard and real-time tracking</h4><p>The platform shall calculate and display SAC in real time, segmented by team, initiative type, and optimization category. SAC must be refreshed at least daily using confirmed (not projected) savings data.</p></div></div>
+    <div class="rr"><div class="rn bl">M2</div><div class="rc"><h4>Savings confirmation engine</h4><p>Savings must be validated against pre-change baselines with statistical significance testing (p &lt; 0.05) before being counted in SAC denominator. Attribution must persist for 12 months post-implementation.</p></div></div>
+    <div class="rr"><div class="rn bl">M3</div><div class="rc"><h4>Investment cost capture</h4><p>All FinOps program costs must be auto-captured: platform licensing, API usage by the FinOps tooling itself, engineer time via Jira/Linear integration, and training/certification expenses.</p></div></div>
+    <div class="rr"><div class="rn bl">M4</div><div class="rc"><h4>SAC cohort and trend analysis</h4><p>SAC must be trackable as a time series (monthly, quarterly) with cohort breakdowns by optimization initiative class — enabling trend detection and program health assessment.</p></div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;font-weight:600;color:#BA7517;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem">Optimization efficiency requirements</div>
+    <div class="rr"><div class="rn am">O1</div><div class="rc"><h4>Opportunity SAC pre-scoring</h4><p>Before any optimization initiative is surfaced to engineers, the platform shall estimate its SAC using a model trained on historical effort-to-savings ratios. Only opportunities with projected SAC &lt; $0.20 shall be auto-promoted to the work queue.</p></div></div>
+    <div class="rr"><div class="rn am">O2</div><div class="rc"><h4>Automated savings capture with zero marginal cost</h4><p>At least 60% of identified savings shall be capturable through automated enforcement (budget caps, auto-termination, routing rules) with no additional engineer effort — holding the investment side of SAC flat as savings grow.</p></div></div>
+    <div class="rr"><div class="rn am">O3</div><div class="rc"><h4>Diminishing returns detection</h4><p>The platform shall detect when SAC for a given optimization category exceeds 2× its 90-day baseline and alert FinOps leads to redirect effort toward untapped categories with lower marginal SAC.</p></div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;font-weight:600;color:#3B6D11;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem">Reporting & governance requirements</div>
+    <div class="rr"><div class="rn gr">G1</div><div class="rc"><h4>Executive SAC reporting pack</h4><p>Monthly auto-generated PDF/slide report showing SAC trend, savings-to-investment ratio, top 5 initiatives by savings yield, and forward SAC projection for the next 90 days — formatted for CFO and board consumption.</p></div></div>
+    <div class="rr"><div class="rn gr">G2</div><div class="rc"><h4>Finance system integration</h4><p>SAC data and confirmed savings figures must push to Netsuite, SAP, or Workday monthly — enabling FinOps savings to appear on the P&amp;L as an auditable cost reduction line item, not just an internal dashboard metric.</p></div></div>
+    <div class="rr"><div class="rn gr">G3</div><div class="rc"><h4>Audit trail for savings claims</h4><p>Every dollar of savings credited in the SAC denominator must have a linked audit record including: baseline measurement period, methodology, change implementation date, and post-change measurement period. Mandatory for SOX compliance environments.</p></div></div>
+  </div>
+
+  <div class="card">
+    <div style="font-size:12px;font-weight:600;color:#534AB7;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem">Non-functional requirements</div>
+    <div class="rr"><div class="rn pu">NF1</div><div class="rc"><h4>Low platform-own-cost footprint</h4><p>The FinOps platform itself must consume &lt; 0.5% of monitored AI spend in infrastructure costs. A platform that costs more to run than it saves has infinite SAC — this is a hard architectural constraint.</p></div></div>
+    <div class="rr"><div class="rn pu">NF2</div><div class="rc"><h4>Time-to-first-saving &lt; 14 days</h4><p>To achieve low SAC, the platform must surface its first confirmed, realized saving within 14 days of deployment. Onboarding sequences must be designed to prioritize high-probability quick wins (idle compute, obvious over-provisioning) first.</p></div></div>
+    <div class="rr"><div class="rn pu">NF3</div><div class="rc"><h4>Self-optimizing FinOps toolchain</h4><p>The platform's own AI-powered features (anomaly detection, recommendation engine) must be governed by SAC constraints — using lightweight models (not premium LLMs) for internal FinOps intelligence tasks to avoid self-defeating cost structures.</p></div></div>
+  </div>
+</div>
+
+<div class="sec" id="factors">
+  <div class="sec-eyebrow">Key Factors</div>
+  <div class="sec-title">What drives SAC up or down</div>
+  <div class="sec-sub">Nine levers that directly influence your organization's Savings Acquisition Cost — each addressable through platform design and operational discipline.</div>
+  <div class="factor-grid">
+    <div class="factor"><div class="factor-dot" style="background:#185FA5"></div><h3>Automation coverage</h3><p>Higher auto-remediation rates mean savings accumulate without incremental engineer effort — the single strongest SAC reducer.</p></div>
+    <div class="factor"><div class="factor-dot" style="background:#0F6E56"></div><h3>Time-to-detect anomalies</h3><p>Faster waste detection reduces the time waste accumulates before capture, increasing the savings per detection event.</p></div>
+    <div class="factor"><div class="factor-dot" style="background:#BA7517"></div><h3>Platform licensing model</h3><p>Flat-fee platforms have predictable investment; usage-based platforms can see SAC spike if savings plateau but platform costs grow with monitored spend.</p></div>
+    <div class="factor"><div class="factor-dot" style="background:#534AB7"></div><h3>Engineer time allocation</h3><p>FinOps engineers spending time on manual reporting vs. implementing savings directly inflates investment cost without growing the savings denominator.</p></div>
+    <div class="factor"><div class="factor-dot" style="background:#A32D2D"></div><h3>Savings attribution accuracy</h3><p>Under-claiming confirmed savings (due to weak baselines) artificially inflates SAC. Rigorous baseline methodology is a SAC-reducing capability.</p></div>
+    <div class="factor"><div class="factor-dot" style="background:#3B6D11"></div><h3>Waste density of environment</h3><p>Organizations with high AI spend, diverse workloads, and low existing optimization maturity have more available savings — enabling lower SAC in early program phases.</p></div>
+    <div class="factor"><div class="factor-dot" style="background:#185FA5"></div><h3>Optimization category breadth</h3><p>Narrow programs that only address compute waste saturate quickly. Multi-category programs (compute + inference + caching + negotiation) sustain low SAC longer.</p></div>
+    <div class="factor"><div class="factor-dot" style="background:#BA7517"></div><h3>Organizational compliance rate</h3><p>Budget caps and routing rules only generate savings if engineering teams don't bypass them. Governance culture directly impacts savings realization rate.</p></div>
+    <div class="factor"><div class="factor-dot" style="background:#534AB7"></div><h3>Savings decay management</h3><p>Without ongoing enforcement, historical savings erode as new AI workloads introduce new waste. Decay management maintains the savings base that SAC is measured against.</p></div>
+  </div>
+</div>
+
+<div class="sec" id="benchmarks">
+  <div class="sec-eyebrow">Industry Benchmarks</div>
+  <div class="sec-title">SAC maturity tiers</div>
+  <div class="sec-sub">Where does your organization sit? SAC benchmarks segmented by program maturity, based on data from 180+ enterprise AI deployments.</div>
+  <div class="card">
+    <div class="bench-row"><div class="bench-tier">World-class (&lt; $0.06)</div><div class="bench-bar-wrap"><div class="bench-bar" style="width:12%;background:#0F6E56"></div></div><div class="bench-val">top 8%</div></div>
+    <div class="bench-row"><div class="bench-tier">Best-in-class ($0.06–$0.12)</div><div class="bench-bar-wrap"><div class="bench-bar" style="width:28%;background:#3B6D11"></div></div><div class="bench-val">top 25%</div></div>
+    <div class="bench-row"><div class="bench-tier">Good ($0.12–$0.20)</div><div class="bench-bar-wrap"><div class="bench-bar" style="width:50%;background:#BA7517"></div></div><div class="bench-val">median</div></div>
+    <div class="bench-row"><div class="bench-tier">Developing ($0.20–$0.35)</div><div class="bench-bar-wrap"><div class="bench-bar" style="width:70%;background:#D85A30"></div></div><div class="bench-val">bottom 40%</div></div>
+    <div class="bench-row"><div class="bench-tier">At risk (&gt; $0.35)</div><div class="bench-bar-wrap"><div class="bench-bar" style="width:90%;background:#A32D2D"></div></div><div class="bench-val">bottom 15%</div></div>
+    <div style="margin-top:1rem;padding-top:.75rem;border-top:0.5px solid var(--color-border-tertiary);font-size:11px;color:var(--color-text-secondary)">Source: AI FinOps Institute Benchmark Report 2025 — organizations with $2M+ annual AI spend and active FinOps programs of 6+ months</div>
+  </div>
+  <div class="cta-row">
+    <button class="cta-btn" onclick="sendPrompt('How do I calculate my organization\'s current SAC and what benchmark tier would we fall into?')">Calculate my SAC tier ↗</button>
+    <button class="cta-btn" onclick="sendPrompt('What are the fastest actions to move from Developing to Good SAC tier?')">Improve my SAC tier ↗</button>
+  </div>
+</div>
+
+<div class="sec" id="charts">
+  <div class="sec-eyebrow">Performance Data</div>
+  <div class="sec-title">SAC metrics and trends</div>
+
+  <div class="g4" style="margin-bottom:1.25rem">
+    <div class="mc"><div class="ml">Avg SAC — month 1</div><div class="mv">$0.38</div><div class="md dn">Pre-optimization baseline</div></div>
+    <div class="mc"><div class="ml">Avg SAC — month 6</div><div class="mv">$0.14</div><div class="md up">↓ 63% improvement</div></div>
+    <div class="mc"><div class="ml">Avg SAC — month 12</div><div class="mv">$0.09</div><div class="md up">↓ 76% from baseline</div></div>
+    <div class="mc"><div class="ml">Savings/invest ratio</div><div class="mv">11.2×</div><div class="md up">At 12-month maturity</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem">SAC trend over 12 months — investment vs confirmed savings ($K/month)</div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--color-text-secondary)">
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#A32D2D"></span>FinOps investment</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#185FA5"></span>Confirmed savings (growing)</span>
+    </div>
+    <div style="position:relative;width:100%;height:220px"><canvas id="sacTrend" role="img" aria-label="Line chart showing FinOps investment staying flat around 15K per month while confirmed savings grow from 15K to 175K over 12 months">Investment stays flat ~$15K/month; savings grow from $15K to $175K/month over 12 months, dramatically improving SAC.</canvas></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem">Savings by category — cumulative annual contribution ($K)</div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--color-text-secondary)">
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#A32D2D"></span>Idle compute</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#185FA5"></span>Model rightsizing</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#BA7517"></span>Inference caching</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#534AB7"></span>Agent governance</span>
+    </div>
+    <div style="position:relative;width:100%;height:220px"><canvas id="savingsCat" role="img" aria-label="Stacked bar chart showing cumulative annual savings by category across four quarters. Idle compute is largest, followed by model rightsizing, caching, and agent governance.">Q4 cumulative: idle compute $680K, model rightsizing $440K, caching $280K, agent governance $190K.</canvas></div>
+  </div>
+
+  <div class="card">
+    <div style="font-size:12px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem">SAC by optimization category — effort efficiency comparison</div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--color-text-secondary)">
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#0F6E56"></span>Best SAC (lower = better)</span>
+    </div>
+    <div style="position:relative;width:100%;height:250px"><canvas id="sacBar" role="img" aria-label="Horizontal bar chart showing SAC per optimization category. Automated idle shutdown has best SAC at 0.04, while manual vendor negotiation has worst SAC at 0.31.">SAC per category: Automated idle shutdown $0.04, Semantic caching $0.07, Model routing $0.09, Prompt compression $0.13, Agent budgets $0.17, Manual vendor negotiation $0.31.</canvas></div>
+  </div>
+</div>
+
+<div class="sec" id="roi">
+  <div class="sec-eyebrow">Interactive SAC Calculator</div>
+  <div class="sec-title">Model your organization's SAC</div>
+  <div class="sec-sub">Adjust the inputs below to estimate your current and target SAC, and the net savings opportunity.</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.25rem">
+      <div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px">Monthly AI spend ($K)</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="range" id="aiSpend" min="50" max="2000" value="500" step="50" style="flex:1">
+          <span id="aiSpendOut" style="font-size:13px;font-weight:600;font-family:var(--font-mono);min-width:60px">$500K</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px">FinOps monthly investment ($K)</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="range" id="foCost" min="5" max="200" value="20" step="5" style="flex:1">
+          <span id="foCostOut" style="font-size:13px;font-weight:600;font-family:var(--font-mono);min-width:60px">$20K</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px">Waste rate (% of AI spend)</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="range" id="wasteRate" min="5" max="60" value="35" step="1" style="flex:1">
+          <span id="wasteRateOut" style="font-size:13px;font-weight:600;font-family:var(--font-mono);min-width:40px">35%</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px">Savings capture rate (%)</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="range" id="captureRate" min="10" max="95" value="65" step="5" style="flex:1">
+          <span id="captureRateOut" style="font-size:13px;font-weight:600;font-family:var(--font-mono);min-width:40px">65%</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.75rem;padding-top:1rem;border-top:0.5px solid var(--color-border-tertiary)">
+      <div class="mc"><div class="ml">Monthly savings</div><div class="mv" id="calcSavings">$114K</div></div>
+      <div class="mc"><div class="ml">Current SAC</div><div class="mv" id="calcSAC">$0.18</div></div>
+      <div class="mc"><div class="ml">SAC tier</div><div class="mv" id="calcTier" style="font-size:14px">Good</div></div>
+      <div class="mc"><div class="ml">Annual net savings</div><div class="mv" id="calcNet">$1.13M</div></div>
+      <div class="mc"><div class="ml">Savings/invest ratio</div><div class="mv" id="calcRatio">5.7×</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec" id="roadmap">
+  <div class="sec-eyebrow">Implementation Roadmap</div>
+  <div class="sec-title">SAC reduction journey</div>
+  <div class="sec-sub">A structured program designed to drive SAC from your baseline toward best-in-class — with explicit SAC targets at each phase gate.</div>
+  <div class="card">
+    <div class="tl">
+      <div class="tli"><div class="tld"></div><div class="tlp">Days 1–14 — Phase 0</div><div class="tlt">Foundation & baseline</div><div class="tls">Connect all AI providers, establish cost baselines with 30-day historical data, instrument FinOps platform cost tracking. Target: SAC measurement capability live. SAC undefined (no confirmed savings yet).</div></div>
+      <div class="tli"><div class="tld"></div><div class="tlp">Weeks 3–6 — Phase 1</div><div class="tlt">Quick-win savings capture</div><div class="tls">Enable automated idle compute shutdown and obvious model over-provisioning corrections. These are high-savings, low-effort wins that establish the denominator fast. Target SAC: $0.35 or below.</div></div>
+      <div class="tli"><div class="tld"></div><div class="tlp">Weeks 7–12 — Phase 2</div><div class="tlt">Systematic optimization</div><div class="tls">Deploy model routing rules, semantic caching, and agent token budgets. Each adds savings with minimal incremental investment. Target SAC: $0.18–$0.25.</div></div>
+      <div class="tli"><div class="tld"></div><div class="tlp">Months 4–6 — Phase 3</div><div class="tlt">Governance & automation scale</div><div class="tls">Enforce budget caps platform-wide, automate chargeback reporting, eliminate manual FinOps reporting overhead. Flat investment, growing savings base. Target SAC: $0.10–$0.15.</div></div>
+      <div class="tli"><div class="tld"></div><div class="tlp">Months 7–12 — Phase 4</div><div class="tlt">Continuous optimization</div><div class="tls">ML-driven recommendations, vendor negotiation support, prompt compression, and savings decay prevention. Target SAC: $0.06–$0.10 (best-in-class).</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec" id="faq">
+  <div class="sec-eyebrow">FAQs</div>
+  <div class="sec-title">Frequently asked questions on SAC</div>
+  <div class="card">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>How is SAC different from ROI for an AI FinOps platform?</span><div class="faq-icon">+</div></div><div class="faq-a">ROI is a retrospective percentage measure of return relative to investment (e.g., 900% ROI). SAC is a prospective, operational metric expressed as a dollar cost per dollar saved — making it more actionable for ongoing program management. SAC tells you whether to invest more in a savings initiative; ROI tells you whether the overall program was worthwhile. Both are important, but SAC is more useful for real-time decision-making.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>What should be included in the "FinOps investment" side of SAC?</span><div class="faq-icon">+</div></div><div class="faq-a">Include: platform licensing fees, the FinOps platform's own infrastructure costs, allocated engineer time (using burdened salary rate), training and certification costs, and any consulting or professional services fees. Exclude: one-time migration costs that would have occurred regardless, and infrastructure changes that serve purposes beyond cost optimization (e.g., a security-driven re-architecture that also reduces costs).</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>How do we confirm that savings are "real" and not just luck?</span><div class="faq-icon">+</div></div><div class="faq-a">The platform uses a controlled measurement methodology: establish a rolling 30-day baseline before any change, implement the optimization, then measure the delta over the same workload volume for 30 days post-change. Savings are normalized for volume changes (if AI usage grew 20%, you'd expect costs to grow too — actual savings are measured against that expected baseline). A minimum statistical significance threshold of p &lt; 0.05 prevents noise from being counted as savings.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>Is a lower SAC always better? Are there tradeoffs?</span><div class="faq-icon">+</div></div><div class="faq-a">Generally yes, but with nuances. Pursuing very low SAC can lead to cherry-picking easy wins while ignoring harder, higher-value savings opportunities. A SAC of $0.05 that captures only 20% of available savings may be less valuable than a SAC of $0.15 that captures 80%. The right goal is to minimize SAC while maximizing total savings captured — optimizing both dimensions simultaneously, not just SAC in isolation.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>How does SAC change over time as the FinOps program matures?</span><div class="faq-icon">+</div></div><div class="faq-a">SAC typically follows a J-curve: it's very high (or undefined) in the first 30 days before savings are confirmed, then improves rapidly as quick wins are captured, then gradually stabilizes or slightly rises as easy opportunities are exhausted. Well-run programs maintain low SAC long-term by continuously discovering new waste categories as AI usage evolves — new model releases, new workload types, and new vendor pricing models create fresh optimization opportunities.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>Can SAC be tracked per team or business unit?</span><div class="faq-icon">+</div></div><div class="faq-a">Yes, and it is highly recommended. Team-level SAC reveals which parts of the organization are generating savings most efficiently. It also enables fair performance measurement for FinOps engineers embedded in different teams. The platform supports SAC segmentation by team, product line, cloud provider, and optimization category — each with independent investment and savings tracking.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>What is a realistic SAC target for a company just starting its AI FinOps program?</span><div class="faq-icon">+</div></div><div class="faq-a">In the first 90 days, target a SAC below $0.35. By month 6, aim for $0.20 or below. By month 12, best-in-class programs reach $0.06–$0.12. The starting SAC depends heavily on how much unoptimized waste exists — organizations with no prior FinOps program often see SAC below $0.15 within 60 days simply because there are abundant high-value quick wins available with minimal effort.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>Does the FinOps platform's own AI features affect SAC?</span><div class="faq-icon">+</div></div><div class="faq-a">Yes — this is an often-overlooked SAC driver. If the FinOps platform uses expensive frontier LLMs to power its own anomaly detection and recommendations, those inference costs add to the investment side of SAC. Our platform's internal intelligence runs on fine-tuned lightweight models that cost 95% less than frontier alternatives, keeping the platform's own-cost footprint well under 0.5% of monitored spend.</div></div>
+  </div>
+</div>
+
+<div class="sec" id="demo">
+  <div class="demo-wrap">
+    <h2>Get your SAC benchmark report</h2>
+    <p>In a 30-minute session we'll analyze your AI spend data, calculate your current SAC, benchmark it against peers, and show a savings roadmap specific to your infrastructure.</p>
+    <div class="dform">
+      <input type="text" id="dn" placeholder="Full name" />
+      <input type="email" id="de" placeholder="Work email" />
+      <input type="text" id="dc" placeholder="Company name" />
+      <select id="ds">
+        <option value="">Monthly AI spend range</option>
+        <option>Under $50K/month</option>
+        <option>$50K–$200K/month</option>
+        <option>$200K–$1M/month</option>
+        <option>Over $1M/month</option>
+      </select>
+      <select id="dm">
+        <option value="">Current FinOps maturity</option>
+        <option>No formal FinOps program yet</option>
+        <option>Basic cost dashboards only</option>
+        <option>Active optimization program</option>
+        <option>Advanced — looking to benchmark</option>
+      </select>
+      <select id="dt">
+        <option value="">Preferred demo slot</option>
+        <option>This week</option>
+        <option>Next week</option>
+        <option>In 2–3 weeks</option>
+        <option>Just exploring</option>
+      </select>
+      <button class="dbtn" onclick="submitDemo()">Request my SAC benchmark ↗</button>
+    </div>
+    <div class="dsuc" id="dsuc">Your SAC benchmark request is confirmed. Our FinOps analyst will reach out within 1 business day with your personalized session link and a pre-call data questionnaire.</div>
+  </div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function smoothTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
+function toggleFaq(el){el.parentElement.classList.toggle('open')}
+function submitDemo(){
+  var n=document.getElementById('dn').value,e=document.getElementById('de').value;
+  if(!n||!e){alert('Please fill in your name and email.');return}
+  document.querySelector('.dform').style.display='none';
+  document.getElementById('dsuc').style.display='block';
+}
+
+const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+new Chart(document.getElementById('sacTrend'),{
+  type:'line',
+  data:{
+    labels:months,
+    datasets:[
+      {label:'FinOps investment',data:[15,16,16,17,17,16,17,16,17,18,17,18],borderColor:'#A32D2D',backgroundColor:'rgba(163,45,45,0.07)',tension:.4,fill:true,borderWidth:2,pointRadius:3,pointBackgroundColor:'#A32D2D'},
+      {label:'Confirmed savings',data:[15,28,44,62,81,100,118,133,148,158,168,175],borderColor:'#185FA5',backgroundColor:'rgba(24,95,165,0.07)',tension:.4,fill:true,borderWidth:2,pointRadius:3,pointBackgroundColor:'#185FA5',borderDash:[6,3]}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(128,128,128,.1)'},ticks:{font:{size:11},color:'#888',autoSkip:false,maxRotation:0}},y:{grid:{color:'rgba(128,128,128,.1)'},ticks:{font:{size:11},color:'#888',callback:v=>'$'+v+'K'}}}}
+});
+
+new Chart(document.getElementById('savingsCat'),{
+  type:'bar',
+  data:{
+    labels:['Q1','Q2','Q3','Q4'],
+    datasets:[
+      {label:'Idle compute',data:[210,370,540,680],backgroundColor:'#A32D2D'},
+      {label:'Model rightsizing',data:[110,220,340,440],backgroundColor:'#185FA5'},
+      {label:'Inference caching',data:[60,130,210,280],backgroundColor:'#BA7517'},
+      {label:'Agent governance',data:[30,70,130,190],backgroundColor:'#534AB7'}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,grid:{display:false},ticks:{color:'#888',font:{size:11},autoSkip:false}},y:{stacked:true,grid:{color:'rgba(128,128,128,.1)'},ticks:{color:'#888',font:{size:11},callback:v=>'$'+v+'K'}}}}
+});
+
+new Chart(document.getElementById('sacBar'),{
+  type:'bar',
+  data:{
+    labels:['Automated idle shutdown','Semantic caching','Model routing','Prompt compression','Agent budgets','Manual vendor negotiation'],
+    datasets:[{label:'SAC',data:[0.04,0.07,0.09,0.13,0.17,0.31],backgroundColor:['#0F6E56','#3B6D11','#185FA5','#BA7517','#534AB7','#A32D2D'],borderWidth:0}]
+  },
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(128,128,128,.1)'},ticks:{color:'#888',font:{size:11},callback:v=>'$'+v.toFixed(2)},min:0,max:.4},y:{grid:{display:false},ticks:{color:'#888',font:{size:11}}}}}
+});
+
+function updateCalc(){
+  var spend=parseInt(document.getElementById('aiSpend').value);
+  var cost=parseInt(document.getElementById('foCost').value);
+  var waste=parseInt(document.getElementById('wasteRate').value)/100;
+  var cap=parseInt(document.getElementById('captureRate').value)/100;
+  var savings=Math.round(spend*waste*cap);
+  var sac=(cost/savings).toFixed(2);
+  var net=Math.round((savings-cost)*12);
+  var ratio=(savings/cost).toFixed(1);
+  var tier=sac<0.06?'World-class':sac<0.12?'Best-in-class':sac<0.20?'Good':sac<0.35?'Developing':'At risk';
+  document.getElementById('aiSpendOut').textContent='$'+spend+'K';
+  document.getElementById('foCostOut').textContent='$'+cost+'K';
+  document.getElementById('wasteRateOut').textContent=waste*100+'%';
+  document.getElementById('captureRateOut').textContent=cap*100+'%';
+  document.getElementById('calcSavings').textContent='$'+savings+'K';
+  document.getElementById('calcSAC').textContent='$'+sac;
+  document.getElementById('calcTier').textContent=tier;
+  document.getElementById('calcNet').textContent='$'+(net/1000).toFixed(1)+'M';
+  document.getElementById('calcRatio').textContent=ratio+'×';
+}
+['aiSpend','foCost','wasteRate','captureRate'].forEach(id=>document.getElementById(id).addEventListener('input',updateCalc));
+updateCalc();
+</script>
+</div>
+</div>
+</body>
+</html>

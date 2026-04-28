@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>AI FinOps Platform</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    /* KEEP YOUR ORIGINAL CSS BELOW (unchanged) */
+
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700&display=swap');
+
+  :root {
+  --color-background-primary: #0B1200;
+  --color-background-secondary: #111a05;
+
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255,255,255,0.6);
+
+  --color-border-tertiary: rgba(255,255,255,0.1);
+
+  --border-radius-lg: 16px;
+  --border-radius-md: 10px;
+
+  --brand: #0F6E56;
+  --brand-light: #1D9E75;
+  --brand-pale: #E1F5EE;
+  --accent: #BA7517;
+  --accent-pale: #FAEEDA;
+  --danger: #A32D2D;
+  --danger-pale: #FCEBEB;
+  --info: #185FA5;
+  --info-pale: #E6F1FB;
+  --purple: #534AB7;
+  --purple-pale: #EEEDFE;
+}
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { font-family: 'Syne', sans-serif; }
+
+  .page { padding: 2rem 1rem; max-width: 860px; margin: 0 auto; }
+
+  .hero { text-align: center; margin-bottom: 3rem; padding: 2.5rem 1.5rem; background: var(--color-background-secondary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); position: relative; overflow: hidden; }
+  .hero::before { content: 'FINOPS'; position: absolute; font-size: 120px; font-weight: 700; color: var(--color-border-tertiary); top: -20px; left: 50%; transform: translateX(-50%); letter-spacing: 10px; pointer-events: none; }
+  .hero-badge { display: inline-block; background: var(--brand-pale); color: var(--brand); font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1rem; }
+  .hero h1 { font-size: 32px; font-weight: 700; color: var(--color-text-primary); line-height: 1.2; margin-bottom: 0.75rem; }
+  .hero h1 span { color: var(--brand); }
+  .hero p { font-size: 15px; color: var(--color-text-secondary); max-width: 520px; margin: 0 auto 1.5rem; line-height: 1.7; }
+  .hero-stats { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .hero-stat { text-align: center; }
+  .hero-stat .val { font-size: 28px; font-weight: 700; color: var(--brand); font-family: 'DM Mono', monospace; }
+  .hero-stat .lbl { font-size: 11px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+  .section-label { font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
+  .section-title { font-size: 20px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 0.5rem; }
+  .section-sub { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 1.5rem; line-height: 1.6; }
+
+  .section { margin-bottom: 3rem; }
+
+  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; }
+
+  .metric-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem 1.25rem; }
+  .metric-card .m-label { font-size: 11px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .metric-card .m-val { font-size: 26px; font-weight: 700; font-family: 'DM Mono', monospace; color: var(--color-text-primary); }
+  .metric-card .m-delta { font-size: 12px; margin-top: 4px; }
+  .m-up { color: var(--brand); }
+  .m-down { color: var(--danger); }
+
+  .use-case-card { border-left: 3px solid var(--brand); padding: 1rem 1.25rem; background: var(--color-background-primary); border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0; border-top: 0.5px solid var(--color-border-tertiary); border-right: 0.5px solid var(--color-border-tertiary); border-bottom: 0.5px solid var(--color-border-tertiary); margin-bottom: 0.75rem; }
+  .use-case-card.accent { border-left-color: var(--accent); }
+  .use-case-card.danger { border-left-color: var(--danger); }
+  .use-case-card.purple { border-left-color: var(--purple); }
+  .use-case-card h3 { font-size: 14px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 4px; }
+  .use-case-card p { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+
+  .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 500; margin-right: 4px; margin-top: 6px; }
+  .tag-green { background: var(--brand-pale); color: var(--brand); }
+  .tag-amber { background: var(--accent-pale); color: var(--accent); }
+  .tag-red { background: var(--danger-pale); color: var(--danger); }
+  .tag-blue { background: var(--info-pale); color: var(--info); }
+  .tag-purple { background: var(--purple-pale); color: var(--purple); }
+
+  .req-row { display: flex; align-items: flex-start; gap: 12px; padding: 0.85rem 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .req-row:last-child { border-bottom: none; }
+  .req-num { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-pale); color: var(--brand); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'DM Mono', monospace; }
+  .req-num.a { background: var(--accent-pale); color: var(--accent); }
+  .req-num.d { background: var(--danger-pale); color: var(--danger); }
+  .req-num.p { background: var(--purple-pale); color: var(--purple); }
+  .req-content h4 { font-size: 13px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 2px; }
+  .req-content p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+
+  .chart-wrap { position: relative; width: 100%; }
+
+  .faq-item { border-bottom: 0.5px solid var(--color-border-tertiary); overflow: hidden; }
+  .faq-q { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; cursor: pointer; }
+  .faq-q span { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+  .faq-icon { font-size: 16px; color: var(--color-text-secondary); transition: transform 0.2s; min-width: 20px; text-align: center; }
+  .faq-a { font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; padding-bottom: 1rem; display: none; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+  .demo-card { background: var(--brand); border-radius: var(--border-radius-lg); padding: 2rem; color: white; text-align: center; }
+  .demo-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 0.5rem; color: white; }
+  .demo-card p { font-size: 14px; color: rgba(255,255,255,0.8); margin-bottom: 1.5rem; line-height: 1.6; }
+  .demo-form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: 0 auto; }
+  .demo-form input, .demo-form select { padding: 10px 14px; border-radius: var(--border-radius-md); border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.12); color: white; font-size: 13px; font-family: 'Syne', sans-serif; outline: none; }
+  .demo-form input::placeholder { color: rgba(255,255,255,0.6); }
+  .demo-form select option { color: #333; background: white; }
+  .demo-btn { background: white; color: var(--brand); font-weight: 700; font-size: 14px; padding: 12px; border-radius: var(--border-radius-md); border: none; cursor: pointer; font-family: 'Syne', sans-serif; transition: opacity 0.2s; }
+  .demo-btn:hover { opacity: 0.9; }
+  .demo-success { display: none; background: rgba(255,255,255,0.15); border-radius: var(--border-radius-md); padding: 1rem; margin-top: 0.5rem; font-size: 14px; color: white; }
+
+  .pillar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+  .pillar { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1.25rem; text-align: center; }
+  .pillar-icon { width: 44px; height: 44px; border-radius: 12px; margin: 0 auto 0.75rem; display: flex; align-items: center; justify-content: center; }
+  .pillar-icon svg { width: 22px; height: 22px; }
+  .pillar h3 { font-size: 13px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 4px; }
+  .pillar p { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before { content: ''; position: absolute; left: 9px; top: 8px; bottom: 8px; width: 1px; background: var(--color-border-tertiary); }
+  .tl-item { position: relative; margin-bottom: 1.25rem; }
+  .tl-dot { position: absolute; left: -2rem; top: 4px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--brand); background: var(--color-background-primary); }
+  .tl-phase { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--brand); margin-bottom: 2px; }
+  .tl-title { font-size: 13px; font-weight: 600; color: var(--color-text-primary); }
+  .tl-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; margin-top: 2px; }
+
+  .waste-bar-wrap { margin-bottom: 0.75rem; }
+  .waste-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .waste-bar-label span:last-child { color: var(--color-text-primary); font-weight: 600; font-family: 'DM Mono', monospace; }
+  .waste-bar-track { background: var(--color-background-secondary); border-radius: 4px; height: 8px; overflow: hidden; }
+  .waste-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+  .fill-red { background: var(--danger); }
+  .fill-amber { background: var(--accent); }
+  .fill-green { background: var(--brand); }
+  .fill-blue { background: var(--info); }
+  .fill-purple { background: var(--purple); }
+
+  .roi-table { width: 100%; font-size: 13px; border-collapse: collapse; }
+  .roi-table th { text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-secondary); border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .roi-table td { padding: 10px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); }
+  .roi-table tr:last-child td { border-bottom: none; }
+  .roi-table .positive { color: var(--brand); font-weight: 600; font-family: 'DM Mono', monospace; }
+  .roi-table .negative { color: var(--danger); font-weight: 600; font-family: 'DM Mono', monospace; }
+
+  .nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2rem; }
+  .nav-btn { font-size: 12px; padding: 6px 14px; border-radius: 20px; border: 0.5px solid var(--color-border-tertiary); background: transparent; cursor: pointer; color: var(--color-text-secondary); font-family: 'Syne', sans-serif; transition: all 0.15s; }
+  .nav-btn:hover, .nav-btn.active { background: var(--brand-pale); color: var(--brand); border-color: var(--brand); }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">AI FinOps Platform — Use Case and Business Requirements Dashboard</h2>
+
+  <div class="hero">
+    <div class="hero-badge">AI FinOps Intelligence Platform</div>
+    <h1>Stop <span>Wasting</span> AI Spend.<br>Start Maximizing ROI.</h1>
+    <p>End-to-end visibility, optimization, and orchestration across your entire AI infrastructure — from model inference costs to agent runtime sprawl.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="val">42%</div><div class="lbl">Avg AI Cost Reduction</div></div>
+      <div class="hero-stat"><div class="val">$2.3M</div><div class="lbl">Avg Annual Savings</div></div>
+      <div class="hero-stat"><div class="val">6wk</div><div class="lbl">Time to Value</div></div>
+      <div class="hero-stat"><div class="val">98%</div><div class="lbl">Budget Accuracy</div></div>
+    </div>
+  </div>
+
+  <div class="nav" id="nav">
+    <button class="nav-btn active" onclick="scrollTo('use-cases')">Use Cases</button>
+    <button class="nav-btn" onclick="scrollTo('brd')">Business Requirements</button>
+    <button class="nav-btn" onclick="scrollTo('pillars')">Platform Pillars</button>
+    <button class="nav-btn" onclick="scrollTo('waste')">Waste Analysis</button>
+    <button class="nav-btn" onclick="scrollTo('charts')">Key Metrics</button>
+    <button class="nav-btn" onclick="scrollTo('roi')">ROI Model</button>
+    <button class="nav-btn" onclick="scrollTo('roadmap')">Roadmap</button>
+    <button class="nav-btn" onclick="scrollTo('faq')">FAQs</button>
+    <button class="nav-btn" onclick="scrollTo('demo')">Schedule Demo</button>
+  </div>
+
+  <div class="section" id="use-cases">
+    <div class="section-label">Use Cases</div>
+    <div class="section-title">Where AI FinOps Creates Value</div>
+    <div class="section-sub">Concrete scenarios where uncontrolled AI spend causes operational and financial pain — and how FinOps resolves each one.</div>
+
+    <div class="use-case-card">
+      <h3>UC-01 — Real-Time Cost Attribution & Chargeback</h3>
+      <p>Engineering teams run hundreds of LLM API calls with no department-level visibility. FinOps platform tags every token consumed to team, product, and workload — enabling accurate chargeback to BUs.</p>
+      <div><span class="tag tag-red">Pain: Shadow AI Spend</span><span class="tag tag-green">Value: Cost Accountability</span><span class="tag tag-blue">Owner: Finance + Platform Eng</span></div>
+    </div>
+    <div class="use-case-card accent">
+      <h3>UC-02 — Model Selection Optimization</h3>
+      <p>Teams default to GPT-4 or Claude Opus for every task, including simple classification. Intelligent routing recommends cheaper models (GPT-3.5, Haiku) for low-complexity tasks, saving 60–80% per call.</p>
+      <div><span class="tag tag-amber">Pain: Over-Engineering</span><span class="tag tag-green">Value: 60–80% Cost/Call Reduction</span><span class="tag tag-blue">Owner: ML Ops</span></div>
+    </div>
+    <div class="use-case-card danger">
+      <h3>UC-03 — Idle GPU & Compute Termination</h3>
+      <p>Fine-tuning jobs complete but GPU instances remain running. FinOps monitors utilization in real-time and triggers auto-termination policies, eliminating idle compute waste.</p>
+      <div><span class="tag tag-red">Pain: GPU Sprawl</span><span class="tag tag-green">Value: Eliminate Idle Cost</span><span class="tag tag-blue">Owner: Infra / DevOps</span></div>
+    </div>
+    <div class="use-case-card purple">
+      <h3>UC-04 — Agentic Workflow Cost Governance</h3>
+      <p>Multi-step AI agents with tool-use loops can consume 10–50× more tokens than expected due to retry storms and redundant tool calls. FinOps enforces token budgets and circuit breakers per agent run.</p>
+      <div><span class="tag tag-purple">Pain: Agent Runaway Cost</span><span class="tag tag-green">Value: Predictable Agent Spend</span><span class="tag tag-blue">Owner: AI Product Teams</span></div>
+    </div>
+    <div class="use-case-card">
+      <h3>UC-05 — Inference Caching & Deduplication</h3>
+      <p>Repeated identical prompts (FAQ chatbots, document summaries) hit live LLM APIs every time. Semantic caching reduces redundant inference by 30–55%, dramatically lowering token bills.</p>
+      <div><span class="tag tag-red">Pain: Redundant API Calls</span><span class="tag tag-green">Value: 30–55% Token Reduction</span><span class="tag tag-blue">Owner: Platform Eng</span></div>
+    </div>
+    <div class="use-case-card accent">
+      <h3>UC-06 — Multi-Cloud AI Spend Consolidation</h3>
+      <p>Organizations use AWS Bedrock, Azure OpenAI, GCP Vertex, and direct API providers simultaneously with no unified cost view. FinOps provides a single-pane-of-glass across all providers.</p>
+      <div><span class="tag tag-amber">Pain: Fragmented Visibility</span><span class="tag tag-green">Value: Unified Cost Intelligence</span><span class="tag tag-blue">Owner: FinOps + CTO</span></div>
+    </div>
+  </div>
+
+  <div class="section" id="brd">
+    <div class="section-label">Business Requirements</div>
+    <div class="section-title">Platform Requirements Document</div>
+    <div class="section-sub">Structured requirements across functional domains — from cost observability to compliance and forecasting.</div>
+
+    <div class="card" style="margin-bottom: 1rem;">
+      <div style="font-size: 12px; font-weight: 600; color: var(--brand); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Functional Requirements — Cost Management</div>
+      <div class="req-row"><div class="req-num">F1</div><div class="req-content"><h4>Real-Time Cost Telemetry</h4><p>The platform shall ingest and display AI spend data with latency no greater than 60 seconds across all connected providers and cloud environments.</p></div></div>
+      <div class="req-row"><div class="req-num">F2</div><div class="req-content"><h4>Granular Attribution Engine</h4><p>Costs must be attributable to team, project, environment (dev/staging/prod), model, and individual API key with drill-down to individual request level.</p></div></div>
+      <div class="req-row"><div class="req-num">F3</div><div class="req-content"><h4>Budget Alerts & Policy Enforcement</h4><p>Configurable thresholds (50%, 80%, 100%) with automated Slack/email/PagerDuty alerts. Hard budget caps must be enforceable via API gateway proxy.</p></div></div>
+      <div class="req-row"><div class="req-num">F4</div><div class="req-content"><h4>Anomaly Detection</h4><p>ML-based detection of spend spikes, unusual token consumption patterns, and cost outliers with root-cause attribution within 5 minutes of detection.</p></div></div>
+    </div>
+
+    <div class="card" style="margin-bottom: 1rem;">
+      <div style="font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Functional Requirements — Optimization</div>
+      <div class="req-row"><div class="req-num a">O1</div><div class="req-content"><h4>Intelligent Model Routing</h4><p>The system shall analyze prompt complexity, latency SLA, and cost targets to route requests to the optimal model with a configurable cost-quality tradeoff parameter.</p></div></div>
+      <div class="req-row"><div class="req-num a">O2</div><div class="req-content"><h4>Prompt Compression & Optimization</h4><p>Automated prompt compression using LLMLingua or equivalent to reduce input token count by 2–5× without measurable quality degradation (&lt;2% ROUGE score delta).</p></div></div>
+      <div class="req-row"><div class="req-num a">O3</div><div class="req-content"><h4>Semantic Response Caching</h4><p>Cache layer with configurable semantic similarity threshold (default: cosine similarity ≥ 0.95) for deduplicating inference across identical or near-identical prompts.</p></div></div>
+      <div class="req-row"><div class="req-num a">O4</div><div class="req-content"><h4>Batch vs. Real-Time Classification</h4><p>Automatically identify workloads suitable for batch processing (lower priority queues, 50–80% cheaper) vs. those requiring synchronous real-time inference.</p></div></div>
+    </div>
+
+    <div class="card" style="margin-bottom: 1rem;">
+      <div style="font-size: 12px; font-weight: 600; color: var(--purple); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Functional Requirements — Orchestration</div>
+      <div class="req-row"><div class="req-num p">OR1</div><div class="req-content"><h4>Multi-Provider Orchestration Layer</h4><p>Abstract all AI provider SDKs behind a single API interface supporting OpenAI, Anthropic, Cohere, AWS Bedrock, Azure OpenAI, and GCP Vertex AI with unified request/response schema.</p></div></div>
+      <div class="req-row"><div class="req-num p">OR2</div><div class="req-content"><h4>Agent Token Budget Enforcement</h4><p>Per-agent-run token budgets with mid-run enforcement via circuit breakers. Agents exceeding 80% of budget receive a soft warning; at 100% the run is gracefully terminated with state saved.</p></div></div>
+      <div class="req-row"><div class="req-num p">OR3</div><div class="req-content"><h4>Workflow Cost Simulation</h4><p>Pre-run cost estimation for agentic pipelines based on workflow graph topology and historical token consumption per step, with 85% accuracy target.</p></div></div>
+    </div>
+
+    <div class="card">
+      <div style="font-size: 12px; font-weight: 600; color: var(--danger); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Non-Functional Requirements</div>
+      <div class="req-row"><div class="req-num d">NF1</div><div class="req-content"><h4>Availability</h4><p>99.9% uptime SLA with &lt;500ms p95 latency overhead added by the FinOps proxy layer. Platform must not become a single point of failure in the AI request path.</p></div></div>
+      <div class="req-row"><div class="req-num d">NF2</div><div class="req-content"><h4>Data Residency & Privacy</h4><p>No prompt/response payload logging by default. Cost metadata only. SOC 2 Type II and ISO 27001 certification required. Support for VPC deployment with private data planes.</p></div></div>
+      <div class="req-row"><div class="req-num d">NF3</div><div class="req-content"><h4>Integration</h4><p>REST + GraphQL APIs, Terraform provider, Kubernetes operator, native connectors for Datadog, Grafana, Looker, and Snowflake for cost analytics export.</p></div></div>
+      <div class="req-row"><div class="req-num d">NF4</div><div class="req-content"><h4>Scalability</h4><p>Handle 10M+ API calls/day per tenant with horizontal scaling. Cost attribution pipeline must process events within 60 seconds at peak load with no data loss.</p></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="pillars">
+    <div class="section-label">Platform Architecture</div>
+    <div class="section-title">Four Core Pillars</div>
+    <div class="section-sub">The platform is organized around four interdependent capability pillars, each addressing a distinct dimension of AI financial operations.</div>
+    <div class="pillar-grid">
+      <div class="pillar">
+        <div class="pillar-icon" style="background: var(--brand-pale);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0F6E56" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <h3>Monitoring</h3>
+        <p>Real-time telemetry, cost attribution, anomaly detection, and spend dashboards across all AI layers.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon" style="background: var(--accent-pale);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Optimization</h3>
+        <p>Intelligent model routing, prompt compression, semantic caching, and batch scheduling to reduce cost per outcome.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon" style="background: var(--purple-pale);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#534AB7" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Orchestration</h3>
+        <p>Multi-provider abstraction, agent token governance, workflow cost simulation, and policy enforcement.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon" style="background: var(--danger-pale);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#A32D2D" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        </div>
+        <h3>Waste Elimination</h3>
+        <p>Idle compute detection, zombie resource cleanup, redundant inference blocking, and right-sizing recommendations.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="waste">
+    <div class="section-label">Waste Analysis</div>
+    <div class="section-title">Where AI Budgets Leak</div>
+    <div class="section-sub">Industry analysis of 250+ enterprise AI deployments shows these are the primary sources of preventable waste.</div>
+    <div class="card">
+      <div class="waste-bar-wrap"><div class="waste-bar-label"><span>Idle GPU / Compute Instances</span><span>34%</span></div><div class="waste-bar-track"><div class="waste-bar-fill fill-red" style="width: 34%;"></div></div></div>
+      <div class="waste-bar-wrap"><div class="waste-bar-label"><span>Over-provisioned Model Tier</span><span>26%</span></div><div class="waste-bar-track"><div class="waste-bar-fill fill-amber" style="width: 26%;"></div></div></div>
+      <div class="waste-bar-wrap"><div class="waste-bar-label"><span>Redundant / Duplicate Inference</span><span>18%</span></div><div class="waste-bar-track"><div class="waste-bar-fill fill-blue" style="width: 18%;"></div></div></div>
+      <div class="waste-bar-wrap"><div class="waste-bar-label"><span>Agent Retry Storms & Loops</span><span>12%</span></div><div class="waste-bar-track"><div class="waste-bar-fill fill-purple" style="width: 12%;"></div></div></div>
+      <div class="waste-bar-wrap"><div class="waste-bar-label"><span>Unoptimized Prompt Token Bloat</span><span>10%</span></div><div class="waste-bar-track"><div class="waste-bar-fill fill-green" style="width: 10%;"></div></div></div>
+      <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 0.5px solid var(--color-border-tertiary); font-size: 12px; color: var(--color-text-secondary);">Source: AI FinOps Institute Benchmark Report 2025 — median enterprise, $5M+ annual AI spend</div>
+    </div>
+  </div>
+
+  <div class="section" id="charts">
+    <div class="section-label">Key Performance Metrics</div>
+    <div class="section-title">Platform Impact Data</div>
+    <div class="section-sub">Pre/post metrics from enterprises adopting AI FinOps practices. Charts reflect median outcomes across tracked deployments.</div>
+
+    <div class="grid-2" style="margin-bottom: 1.5rem;">
+      <div class="metric-card"><div class="m-label">Cost Per AI Interaction</div><div class="m-val">$0.0023</div><div class="m-delta m-up">↓ 61% from $0.0059 baseline</div></div>
+      <div class="metric-card"><div class="m-label">Monthly Wasted Spend</div><div class="m-val">$12,400</div><div class="m-delta m-up">↓ 78% from $56,000 pre-FinOps</div></div>
+      <div class="metric-card"><div class="m-label">Budget Forecast Accuracy</div><div class="m-val">96.2%</div><div class="m-delta m-up">↑ from 61% (pre-platform)</div></div>
+      <div class="metric-card"><div class="m-label">Time to Detect Anomaly</div><div class="m-val">3.8 min</div><div class="m-delta m-up">↓ from 4.2 hours manual detection</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom: 1rem;">
+      <div style="font-size: 12px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Monthly AI Spend Trend — Pre vs Post FinOps Adoption</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary);">
+        <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #A32D2D;"></span>Pre-FinOps Spend</span>
+        <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #0F6E56;"></span>Post-FinOps Spend</span>
+      </div>
+      <div class="chart-wrap" style="height: 220px;">
+        <canvas id="trendChart" role="img" aria-label="Line chart showing monthly AI spend before and after FinOps adoption across 12 months, with significant reduction post-adoption">Pre-FinOps spend peaks at $156K/month; post-FinOps spend stabilizes around $68K/month by month 12.</canvas>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 1rem;">
+      <div style="font-size: 12px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">AI Spend by Category — Post-Optimization Breakdown</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary);">
+        <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #185FA5;"></span>LLM API Calls 41%</span>
+        <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #0F6E56;"></span>GPU Compute 28%</span>
+        <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #BA7517;"></span>Embedding / Vector 16%</span>
+        <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #534AB7;"></span>Fine-tuning 10%</span>
+        <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #888780;"></span>Other 5%</span>
+      </div>
+      <div class="chart-wrap" style="height: 220px;">
+        <canvas id="donutChart" role="img" aria-label="Donut chart showing AI spend breakdown: LLM API 41%, GPU Compute 28%, Embedding 16%, Fine-tuning 10%, Other 5%">Spend breakdown: LLM API Calls 41%, GPU Compute 28%, Embedding/Vector 16%, Fine-tuning 10%, Other 5%.</canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size: 12px; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Waste Eliminated Per Quarter ($ Thousands)</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 8px; font-size: 12px; color: var(--color-text-secondary);">
+        <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #A32D2D;"></span>Idle Compute</span>
+        <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #BA7517;"></span>Model Rightsizing</span>
+        <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #185FA5;"></span>Cache Savings</span>
+      </div>
+      <div class="chart-wrap" style="height: 220px;">
+        <canvas id="wasteChart" role="img" aria-label="Stacked bar chart showing quarterly waste eliminated across three categories from Q1 to Q4, growing each quarter">Cumulative waste elimination grows from ~$180K in Q1 to ~$620K in Q4, with idle compute being the largest category.</canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="roi">
+    <div class="section-label">Business Case</div>
+    <div class="section-title">ROI Model — 12-Month Projection</div>
+    <div class="section-sub">Indicative financial model for a $5M/year AI spend organization. Adjust inputs for your specific context.</div>
+    <div class="card">
+      <table class="roi-table">
+        <thead><tr><th>Category</th><th>Before FinOps</th><th>After FinOps</th><th>Annual Impact</th></tr></thead>
+        <tbody>
+          <tr><td>Annual AI Spend</td><td>$5,000,000</td><td>$2,900,000</td><td class="positive">+$2,100,000</td></tr>
+          <tr><td>Idle Compute Waste</td><td>$1,700,000</td><td>$120,000</td><td class="positive">+$1,580,000</td></tr>
+          <tr><td>Redundant Inference</td><td>$900,000</td><td>$180,000</td><td class="positive">+$720,000</td></tr>
+          <tr><td>Model Tier Waste</td><td>$1,300,000</td><td>$400,000</td><td class="positive">+$900,000</td></tr>
+          <tr><td>Platform License Fee</td><td>—</td><td>$180,000</td><td class="negative">-$180,000</td></tr>
+          <tr><td>Implementation Cost</td><td>—</td><td>$60,000 (one-time)</td><td class="negative">-$60,000</td></tr>
+          <tr style="font-weight: 600; border-top: 1px solid var(--color-border-secondary);"><td>Net Annual Savings</td><td>—</td><td>—</td><td class="positive" style="font-size: 15px;">+$1,860,000</td></tr>
+          <tr><td>Payback Period</td><td>—</td><td>—</td><td class="positive">~7 weeks</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section" id="roadmap">
+    <div class="section-label">Implementation</div>
+    <div class="section-title">Deployment Roadmap</div>
+    <div class="section-sub">A structured six-month onboarding journey from observability to full optimization and governance maturity.</div>
+    <div class="card">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-phase">Weeks 1–2</div><div class="tl-title">Discovery & Integration</div><div class="tl-desc">Connect all AI provider accounts, configure API proxy, begin cost data ingestion. Establish baseline spend fingerprint.</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-phase">Weeks 3–4</div><div class="tl-title">Observability Layer Live</div><div class="tl-desc">Dashboards active. Cost attribution by team/product/environment. First anomaly alerts configured. Waste hotspots identified.</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-phase">Weeks 5–8</div><div class="tl-title">Quick Win Optimization</div><div class="tl-desc">Idle compute auto-termination enabled. Semantic caching deployed. Model routing rules configured for top 5 workloads.</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-phase">Weeks 9–16</div><div class="tl-title">Budget Governance</div><div class="tl-desc">Per-team and per-product budget caps enforced. Agent token budgets configured. Chargeback reporting integrated with finance systems.</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-phase">Months 5–6</div><div class="tl-title">Continuous Optimization</div><div class="tl-desc">ML-driven recommendations, automated rightsizing, quarterly business reviews with benchmarks. Full ROI realized.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="faq">
+    <div class="section-label">FAQs</div>
+    <div class="section-title">Frequently Asked Questions</div>
+    <div class="section-sub">Answers to the most common questions from enterprise AI and finance teams evaluating FinOps platforms.</div>
+    <div class="card">
+      <div id="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>What AI providers and platforms does the FinOps platform support?</span><div class="faq-icon">+</div></div>
+          <div class="faq-a">The platform natively supports OpenAI (GPT-3.5 through GPT-4o), Anthropic (all Claude models), AWS Bedrock (all hosted models), Azure OpenAI Service, Google Vertex AI/Gemini, Cohere, Mistral API, Replicate, Together AI, and self-hosted open-source models via OpenTelemetry hooks. Custom providers can be integrated via the REST connector SDK.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>Does the platform have access to our prompt or response data?</span><div class="faq-icon">+</div></div>
+          <div class="faq-a">By default, no. The platform operates in metadata-only mode — it captures token counts, model IDs, latency, cost, and attribution tags, but never stores prompt or response payloads. For caching features, payloads can optionally be processed in-memory within your private VPC without egress to our servers. We are SOC 2 Type II certified and support GDPR data processing agreements.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>How does intelligent model routing work without degrading output quality?</span><div class="faq-icon">+</div></div>
+          <div class="faq-a">The routing engine evaluates each incoming request using a complexity classifier trained on prompt structure, length, and semantic features. Simple tasks (classification, extraction, summarization of short text) are routed to cost-efficient models. Complex reasoning tasks are kept on premium models. Teams configure a minimum quality bar (measured by automated eval scores on a sample set), and the router respects this floor. Typically, 30–60% of requests can be downtiered with no user-detectable quality loss.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>How long does full integration take for a large enterprise?</span><div class="faq-icon">+</div></div>
+          <div class="faq-a">Basic observability (cost dashboards, attribution) is typically live within 2–5 business days. Full integration including budget enforcement, agent governance, and finance system connectivity takes 4–8 weeks for most enterprises. Our professional services team provides a dedicated FinOps engineer for the first 90 days to accelerate time-to-value.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>What is the latency overhead of routing requests through the FinOps proxy?</span><div class="faq-icon">+</div></div>
+          <div class="faq-a">Our proxy adds a median of 8ms and p99 of 28ms latency overhead, well under our contractual SLA of 50ms p99. The proxy runs regionally co-located with major cloud providers (us-east-1, eu-west-1, ap-southeast-1) to minimize network hops. For latency-critical applications, we offer a sidecar deployment model with &lt;2ms overhead.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>How are AI agent costs tracked differently from standard API calls?</span><div class="faq-icon">+</div></div>
+          <div class="faq-a">Agent runs are tracked as a correlated trace — all LLM calls, tool invocations, and sub-agent calls within a single agent execution are grouped under a parent run ID. This gives you full per-run cost attribution including tool use overhead. You can set token and dollar budgets per agent type, and configure graceful termination policies when limits are approached. The platform also identifies and alerts on agent retry storms and infinite loops in real time.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>Does the platform support on-premise or private cloud deployments?</span><div class="faq-icon">+</div></div>
+          <div class="faq-a">Yes. We offer three deployment models: SaaS (multi-tenant), dedicated cloud (single-tenant in our infrastructure), and bring-your-own-cloud (deploy into your own AWS, Azure, or GCP account). On-premise bare-metal deployment is available for regulated industries (FSI, healthcare, defense) via our Enterprise Plus tier. All deployment models support the same feature set.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)"><span>How does the platform handle chargebacks for shared AI infrastructure?</span><div class="faq-icon">+</div></div>
+          <div class="faq-a">The chargeback engine allocates shared infrastructure costs (shared GPU clusters, foundational model subscriptions) using configurable allocation methods: equal split, usage-proportional, or fixed percentage. Reports are generated monthly in CSV/Excel format or pushed to your ERP/billing system via API. We support Netsuite, SAP, and Workday integrations natively, with custom webhook-based export for others.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="demo">
+    <div class="demo-card">
+      <h2>See the Platform in Action</h2>
+      <p>Get a 30-minute personalized demo tailored to your AI infrastructure. We'll show you a live cost analysis of a deployment similar to yours — and estimate your potential savings before we finish the call.</p>
+      <div class="demo-form">
+        <input type="text" id="dName" placeholder="Full name" />
+        <input type="email" id="dEmail" placeholder="Work email" />
+        <input type="text" id="dCompany" placeholder="Company name" />
+        <select id="dSpend">
+          <option value="">Monthly AI spend range</option>
+          <option>Under $10K/month</option>
+          <option>$10K – $100K/month</option>
+          <option>$100K – $500K/month</option>
+          <option>$500K+/month</option>
+        </select>
+        <select id="dTime">
+          <option value="">Preferred demo time</option>
+          <option>This week (ASAP)</option>
+          <option>Next week</option>
+          <option>In 2–3 weeks</option>
+          <option>Just exploring for now</option>
+        </select>
+        <button class="demo-btn" onclick="submitDemo()">Request Demo ↗</button>
+      </div>
+      <div class="demo-success" id="demoSuccess">
+        Your demo request has been received. Our team will reach out within 1 business day to confirm your slot. Check your inbox for a calendar invitation.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function toggleFaq(el) {
+  el.parentElement.classList.toggle('open');
+}
+
+function submitDemo() {
+  const n = document.getElementById('dName').value;
+  const e = document.getElementById('dEmail').value;
+  if (!n || !e) { alert('Please fill in your name and email.'); return; }
+  document.querySelector('.demo-form').style.display = 'none';
+  document.getElementById('demoSuccess').style.display = 'block';
+}
+
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+new Chart(document.getElementById('trendChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Pre-FinOps Spend', data: [118,124,131,141,148,156,152,149,144,140,138,134], borderColor: '#A32D2D', backgroundColor: 'rgba(163,45,45,0.08)', tension: 0.4, fill: true, borderWidth: 2, pointRadius: 3, pointBackgroundColor: '#A32D2D' },
+      { label: 'Post-FinOps Spend', data: [118,108,96,87,80,76,73,71,70,69,68,68], borderColor: '#0F6E56', backgroundColor: 'rgba(15,110,86,0.08)', tension: 0.4, fill: true, borderWidth: 2, pointRadius: 3, pointBackgroundColor: '#0F6E56', borderDash: [6,3] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: 'rgba(128,128,128,0.1)' }, ticks: { font: { size: 11 }, color: '#888' } },
+      y: { grid: { color: 'rgba(128,128,128,0.1)' }, ticks: { font: { size: 11 }, color: '#888', callback: v => '$' + v + 'K' } }
+    }
+  }
+});
+
+new Chart(document.getElementById('donutChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['LLM API Calls', 'GPU Compute', 'Embedding / Vector', 'Fine-tuning', 'Other'],
+    datasets: [{ data: [41, 28, 16, 10, 5], backgroundColor: ['#185FA5','#0F6E56','#BA7517','#534AB7','#888780'], borderWidth: 0 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '65%',
+    plugins: { legend: { display: false } }
+  }
+});
+
+new Chart(document.getElementById('wasteChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Q1','Q2','Q3','Q4'],
+    datasets: [
+      { label: 'Idle Compute', data: [82, 145, 198, 265], backgroundColor: '#A32D2D' },
+      { label: 'Model Rightsizing', data: [54, 88, 122, 180], backgroundColor: '#BA7517' },
+      { label: 'Cache Savings', data: [44, 72, 95, 175], backgroundColor: '#185FA5' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { color: '#888', font: { size: 11 }, autoSkip: false } },
+      y: { stacked: true, grid: { color: 'rgba(128,128,128,0.1)' }, ticks: { color: '#888', font: { size: 11 }, callback: v => '$' + v + 'K' } }
+    }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,3 +1,23 @@
+const dummyEbooks = [
+  {
+    id: 1,
+    title: "FinOps Guide 2026",
+    description: "This is sample content. Real data will come from backend later.",
+    file: "#",
+  },
+  {
+    id: 2,
+    title: "Cloud Cost Mastery",
+    description: "This is sample content. Real data will come from backend later.",
+    file: "#",
+  },
+  {
+    id: 3,
+    title: "AI Infrastructure Optimization",
+    description: "This is sample content. Real data will come from backend later.",
+    file: "#",
+  },
+];
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -58,9 +78,9 @@ const ResourcesPage = () => {
     return <div className="text-white p-10">Loading...</div>;
   }
 
-  if (!section) {
-    return <div className="text-white p-10">No data found</div>;
-  }
+  if (!section && type !== "ebooks") {
+  return <div className="text-white p-10">No data found</div>;
+}
 
   return (
     <div className="w-full min-h-screen bg-[#0B1200] text-white">
@@ -70,12 +90,18 @@ const ResourcesPage = () => {
         <div className="max-w-3xl">
           <h1
             className="text-4xl md:text-5xl font-bold text-[#9fdc00]"
-            dangerouslySetInnerHTML={{ __html: section.title as string }}
+            dangerouslySetInnerHTML={{
+  __html: section?.title || "Download E-Books",
+}}
           />
 
           <div
             className="text-white/70 mt-5 text-lg"
-            dangerouslySetInnerHTML={{ __html: section.description as string }}
+            dangerouslySetInnerHTML={{
+  __html:
+    section?.description ||
+    "Get in-depth guides on cost management and cloud optimization.",
+}}
           />
         </div>
 
@@ -156,18 +182,19 @@ const ResourcesPage = () => {
           // ✅ ONLY UPDATED THIS PART (EBOOKS + RELEASE NOTES)
           <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 
-            {cards.map((card) => (
+            {(type === "ebooks" && cards.length === 0 ? dummyEbooks : cards).map((card) => (
               <div
-                key={card.id}
-                className="
-                  p-6 rounded-2xl
-                  bg-[#0F1800]
-                  border border-[#436900]
-                  transition-all duration-300
-                  hover:shadow-[0_0_25px_rgba(119,185,0,0.25)]
-                  hover:-translate-y-1
-                "
-              >
+  key={card.id}
+  className="
+    p-8
+    rounded-[22px]
+    bg-[#0F1800]
+    border border-[#436900]
+    transition-all duration-300
+    hover:shadow-[0_0_40px_rgba(119,185,0,0.35)]
+    hover:-translate-y-2
+  "
+>
 
                 {/* TITLE */}
                 <h3
@@ -190,7 +217,11 @@ const ResourcesPage = () => {
                 {type === "ebooks" && card.file && (
   <div className="mt-5">
     <a
-      href={card.file}
+      href={
+  card.file?.startsWith("http")
+    ? card.file
+    : `http://127.0.0.1:8000${card.file}`
+}
       download
       target="_blank"
       rel="noopener noreferrer"

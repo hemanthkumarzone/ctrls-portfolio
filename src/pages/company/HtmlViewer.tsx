@@ -4,22 +4,32 @@ const HtmlViewer = () => {
   const { type } = useParams();
   const location = useLocation();
 
-  // 🔥 Detect route type
-  const isCompany = location.pathname.startsWith("/company");
+  const safeType = (type || "").toLowerCase().trim();
 
-  // 🔥 Set correct folder
-  const filePath = isCompany
-    ? `/pages/${type}.html`              // company files
-    : `/pages/services/${type}.html`;   // services files
+  let filePath = "";
 
-  console.log("Loading file:", filePath);
+  if (location.pathname.startsWith("/company")) {
+    filePath = `/pages/${safeType}.html`;
+  } else if (location.pathname.startsWith("/services")) {
+    filePath = `/pages/services/${safeType}.html`;
+  } else if (location.pathname.startsWith("/platform")) {
+    filePath = `/pages/platform/${safeType}.html`;
+  } else if (location.pathname.startsWith("/pricing")) {
+    filePath = `/pages/platform/pricing.html`;
+  }
 
   return (
-    <iframe
-      src={filePath}
-      className="w-full h-screen border-none"
-      title={type}
-    />
+    <div className="w-full h-screen">
+      {filePath ? (
+        <iframe
+          src={filePath}
+          className="w-full h-full border-none"
+          title="html-view"
+        />
+      ) : (
+        <div className="text-white p-10">Page not found</div>
+      )}
+    </div>
   );
 };
 

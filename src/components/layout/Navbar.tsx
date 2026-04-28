@@ -1,7 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getNavbar } from "../../services/navbarApi";
-import ContactForm from "../requirements/ContactForm";
+
 import ForgotPassword from "../requirements/ForgotPassword";
 import VerificationForm from "../requirements/VerificationForm";
 
@@ -32,6 +33,7 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const location = useLocation();
+  const navigate = useNavigate();
   
    const handleLogout = () => {
     localStorage.removeItem("token");
@@ -71,18 +73,7 @@ const Navbar = () => {
   setIsLoggedIn(!!token);
 }, []);
 
-  useEffect(() => {
-  const openContactPopup = () => {
-    console.log("Contact event received ✅");
-    setActiveForm("contact");
-  };
-
-  window.addEventListener("openContact", openContactPopup);
-
-  return () => {
-    window.removeEventListener("openContact", openContactPopup);
-  };
-}, []);
+ 
 
 
   
@@ -221,21 +212,29 @@ const companyItems =
             <div className="w-[90vw] max-w-[550px] lg:max-w-[600px] min-h-[270px] bg-[#0F1800]/95 backdrop-blur-xl rounded-[20px] px-8 py-7">
               
               <div className="grid grid-cols-2 gap-y-10 gap-x-16">
-                {resources.map((res: any, i: number) => (
-                  <Link key={i} to={res.path}>
-                    <div className="group cursor-pointer p-3 rounded-xl transition-all duration-300 hover:bg-gradient-to-br hover:from-[#77B900]/10 hover:shadow-[0_0_20px_rgba(119,185,0,0.15)]">
-                      
-                      <p className="text-[#9fdc00] font-semibold text-[18px] group-hover:text-[#baff2a]">
-                        {res.title}
-                      </p>
+                {resources.map((res: any, i: number) => {
+  const slug = res.path
+    ?.split("/")
+    .pop()
+    ?.replace(".html", "")
+    ?.toLowerCase();
 
-                      <p className="text-[14px] text-white/60 mt-1 group-hover:text-white/80">
-                        {res.description} 
-                      </p>
+  return (
+    <Link key={i} to={`/resources/${slug}`}>
+      <div className="group cursor-pointer p-3 rounded-xl transition-all duration-300 hover:bg-gradient-to-br hover:from-[#77B900]/10 hover:shadow-[0_0_20px_rgba(119,185,0,0.15)]">
+        
+        <p className="text-[#9fdc00] font-semibold text-[18px] group-hover:text-[#baff2a]">
+          {res.title}
+        </p>
 
-                    </div>
-                  </Link>
-                ))}
+        <p className="text-[14px] text-white/60 mt-1 group-hover:text-white/80">
+          {res.description}
+        </p>
+
+      </div>
+    </Link>
+  );
+})}
               </div>
 
             </div>
@@ -266,37 +265,63 @@ const companyItems =
 
       {showPlatform && (
   <div className="absolute top-full mt-4 left-1/2 -translate-x-1/2 z-50">
-    
+
+    {/* OUTER BORDER GLOW (same as before) */}
     <div className="p-[2px] rounded-[26px] bg-gradient-to-br from-[#0F1800] to-[#77B900] shadow-[0_0_50px_rgba(119,185,0,0.3)]">
 
-      <div className="bg-[#0F1800]/95 backdrop-blur-xl rounded-[24px] px-12 py-10 w-[820px]">
+      {/* INNER BOX (reduced size ONLY) */}
+      <div className="bg-[#0F1800]/95 backdrop-blur-xl rounded-[24px] px-8 py-6 w-[700px]">
 
-        <div className="grid grid-cols-2 gap-20">
+        <div className="grid grid-cols-2 gap-12">
 
           {/* ================= LEFT ================= */}
           <div>
-            
+
             {/* TITLE */}
-            <div className="mb-6">
-              <h3 className="text-white text-[24px] font-semibold">
+            <div className="mb-5">
+              <h3 className="text-white text-[22px] font-semibold">
                 Business Requirement
               </h3>
 
-              <div className="relative mt-2 h-[2px] w-[220px]">
+              <div className="relative mt-2 h-[2px] w-[180px]">
                 <div className="absolute inset-0 bg-gradient-to-r from-[#77B900] to-transparent rounded-full" />
                 <div className="absolute inset-0 blur-sm bg-[#77B900]/60 rounded-full" />
               </div>
             </div>
 
             {/* ITEMS */}
-            <div className="flex flex-col gap-4">
-              {businessItems.map((item: any, i: number) => (
-                <Link key={i} to={item.path}>
-                  <div className="text-white/70 hover:text-[#9fdc00] transition duration-300 cursor-pointer">
-                    {item.title}
-                  </div>
-                </Link>
-              ))}
+            <div className="flex flex-col gap-2">
+             {businessItems.map((item: any, i: number) => {
+  const slug = item.path
+    ?.split("/")
+    .pop()
+    ?.replace(".html", "")
+    ?.toLowerCase();
+
+  if (!slug) return null; // ✅ prevent bad links
+
+  return (
+    <Link key={i} to={`/platform/${slug}`}>
+      <div className="
+        group cursor-pointer p-2 rounded-xl
+        transition-all duration-300
+        hover:bg-gradient-to-br
+        hover:from-[#77B900]/10
+        hover:shadow-[0_0_20px_rgba(119,185,0,0.15)]
+      ">
+        <p className="text-white/70 group-hover:text-[#9fdc00] font-medium text-[14px]">
+          {item.title}
+        </p>
+
+        {item.description && (
+          <p className="text-[12px] text-white/40 mt-1 group-hover:text-white/70">
+            {item.description}
+          </p>
+        )}
+      </div>
+    </Link>
+  );
+})}
             </div>
 
           </div>
@@ -305,26 +330,48 @@ const companyItems =
           <div>
 
             {/* TITLE */}
-            <div className="mb-6">
-              <h3 className="text-white text-[24px] font-semibold">
+            <div className="mb-5">
+              <h3 className="text-white text-[22px] font-semibold">
                 Supported Platforms
               </h3>
 
-              <div className="relative mt-2 h-[2px] w-[240px]">
+              <div className="relative mt-2 h-[2px] w-[200px]">
                 <div className="absolute inset-0 bg-gradient-to-r from-[#77B900] to-transparent rounded-full" />
                 <div className="absolute inset-0 blur-sm bg-[#77B900]/60 rounded-full" />
               </div>
             </div>
 
             {/* ITEMS */}
-            <div className="flex flex-col gap-4">
-              {platformList.map((item: any, i: number) => (
-                <Link key={i} to={item.path}>
-                  <div className="text-white/70 hover:text-[#9fdc00] transition duration-300 cursor-pointer">
-                    {item.title}
-                  </div>
-                </Link>
-              ))}
+            <div className="flex flex-col gap-2">
+              {platformList.map((item: any, i: number) => {
+  const slug = item.path
+    ?.split("/")
+    .pop()
+    ?.replace(".html", "")
+    ?.toLowerCase();
+
+  return (
+    <Link key={i} to={`/platform/${slug}`}>
+      <div className="
+        group cursor-pointer p-2 rounded-xl
+        transition-all duration-300
+        hover:bg-gradient-to-br
+        hover:from-[#77B900]/10
+        hover:shadow-[0_0_20px_rgba(119,185,0,0.15)]
+      ">
+        <p className="text-white/70 group-hover:text-[#9fdc00] font-medium text-[14px]">
+          {item.title}
+        </p>
+
+        {item.description && (
+          <p className="text-[12px] text-white/40 mt-1 group-hover:text-white/70">
+            {item.description}
+          </p>
+        )}
+      </div>
+    </Link>
+  );
+})}
             </div>
 
           </div>
@@ -356,43 +403,55 @@ const companyItems =
       {MenuItem}
 
       {showCompany && (
-        <div
-          className="absolute top-full mt-3 left-1/2 -translate-x-1/2 z-50"
-          onMouseEnter={() => {
-            if (companyTimeout.current) clearTimeout(companyTimeout.current);
-          }}
-          onMouseLeave={() => {
-            companyTimeout.current = setTimeout(() => {
-              setShowCompany(false);
-            }, 50);
-          }}
-        >
-          <div className="p-[2px] rounded-[22px] bg-gradient-to-br from-[#0F1800] to-[#77B900] shadow-[0_0_30px_rgba(119,185,0,0.25)]">
-            
-            <div className="w-[200px] md:w-[230px] lg:w-[260px] bg-[#0F1800]/95 backdrop-blur-xl rounded-[20px] p-4">
-              
-              <div className="flex flex-col gap-2">
-                {companyItems.map((c: any, i: number) => (
-                  <Link key={i} to={c.path}>
-                    <div
-                      className="
-                        px-3 py-2 rounded-lg cursor-pointer
-                        text-white/80 hover:text-[#9fdc00]
-                        transition-all duration-300
-                        hover:bg-[#77B900]/10
-                      "
-                    >
-                      {c.title}
-                    </div>
-                  </Link>
-                ))}
-              </div>
+  <div
+    className="absolute top-full mt-3 left-1/2 -translate-x-1/2 z-50"
+    onMouseEnter={() => {
+      if (companyTimeout.current) clearTimeout(companyTimeout.current);
+    }}
+    onMouseLeave={() => {
+      companyTimeout.current = setTimeout(() => {
+        setShowCompany(false);
+      }, 50);
+    }}
+  >
+    {/* OUTER GLOW (same style as Platform) */}
+    <div className="p-[2px] rounded-[22px] bg-gradient-to-br from-[#0F1800] to-[#77B900] shadow-[0_0_30px_rgba(119,185,0,0.25)]">
 
-            </div>
+      {/* INNER BOX (size unchanged) */}
+      <div className="w-[200px] md:w-[230px] lg:w-[260px] bg-[#0F1800]/95 backdrop-blur-xl rounded-[20px] p-4">
 
-          </div>
+        <div className="flex flex-col gap-2">
+          {companyItems.map((c: any, i: number) => {
+  const slug = c.path
+    ?.split("/")
+    .pop()
+    ?.replace(".html", "")
+    ?.toLowerCase();
+
+  return (
+    <Link key={i} to={`/company/${slug}`}>
+      <div
+        className="
+          group px-3 py-2 rounded-lg cursor-pointer
+          transition-all duration-300
+          hover:bg-gradient-to-br
+          hover:from-[#77B900]/10
+          hover:shadow-[0_0_20px_rgba(119,185,0,0.15)]
+        "
+      >
+        <p className="text-white/80 group-hover:text-[#9fdc00]">
+          {c.title}
+        </p>
+      </div>
+    </Link>
+  );
+})}
         </div>
-      )}
+
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 }
@@ -497,8 +556,8 @@ const companyItems =
   Get Demo
 </div>
 
-            <div
-  onClick={() => setActiveForm("contact")}
+           <div
+  onClick={() => navigate("/contact")}
   className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition cursor-pointer"
 >
   Contact us
@@ -544,18 +603,26 @@ const companyItems =
 
                     {mobileResourcesOpen && (
                       <div className="mt-3 ml-3 border-l border-[#436900] pl-3 flex flex-col gap-3">
-                        {resources.map((res: any, i: number) => (
-                          <Link key={i} to={res?.path || "/"}>
-                            <div className="group cursor-pointer p-2 rounded-lg transition-all duration-300 hover:bg-gradient-to-br hover:from-[#77B900]/10">
-                              <p className="text-[#9fdc00] text-sm group-hover:text-[#baff2a]">
-                                {res.title}
-                              </p>
-                              <p className="text-white/60 text-xs">
-                                {res.description}
-                              </p>
-                            </div>
-                          </Link>
-                        ))}
+                        {resources.map((res: any, i: number) => {
+  const slug = res.path
+    ?.split("/")
+    .pop()
+    ?.replace(".html", "")
+    ?.toLowerCase();
+
+  return (
+    <Link key={i} to={`/resources/${slug}`}>
+      <div className="group cursor-pointer p-2 rounded-lg transition-all duration-300 hover:bg-gradient-to-br hover:from-[#77B900]/10">
+        <p className="text-[#9fdc00] text-sm group-hover:text-[#baff2a]">
+          {res.title}
+        </p>
+        <p className="text-white/60 text-xs">
+          {res.description}
+        </p>
+      </div>
+    </Link>
+  );
+})}
                       </div>
                     )}
                   </div>
@@ -575,11 +642,21 @@ const companyItems =
 
                     {mobilePlatformOpen && (
                       <div className="mt-3 ml-3 border-l border-[#436900] pl-3 flex flex-col gap-2">
-                        {platformItems.map((p: any, i: number) => (
-                          <div key={i} className="px-3 py-2 text-white/80">
-                            {p.title}
-                          </div>
-                        ))}
+                       {platformItems.map((p: any, i: number) => {
+  const slug = p.path
+    ?.split("/")
+    .pop()
+    ?.replace(".html", "")
+    ?.toLowerCase();
+
+  return (
+    <Link key={i} to={`/platform/${slug}`}>
+      <div className="px-3 py-2 text-white/80">
+        {p.title}
+      </div>
+    </Link>
+  );
+})}
                       </div>
                     )}
                   </div>
@@ -599,13 +676,21 @@ const companyItems =
 
                     {mobileCompanyOpen && (
                       <div className="mt-3 ml-3 border-l border-[#436900] pl-3 flex flex-col gap-2">
-                        {companyItems.map((c: any, i: number) => (
-                          <Link key={i} to={c?.path || "/"}>
-                            <div className="px-3 py-2 text-white/80">
-                              {c.title}
-                            </div>
-                          </Link>
-                        ))}
+                        {companyItems.map((c: any, i: number) => {
+  const slug = c.path
+    ?.split("/")
+    .pop()
+    ?.replace(".html", "")
+    ?.toLowerCase();
+
+  return (
+    <Link key={i} to={`/company/${slug}`}>
+      <div className="px-3 py-2 text-white/80">
+        {c.title}
+      </div>
+    </Link>
+  );
+})}
                       </div>
                     )}
                   </div>
@@ -710,9 +795,9 @@ const companyItems =
 
           <div
   onClick={() => {
-    setActiveForm("contact");
-    setMenuOpen(false);
-  }}
+  navigate("/contact");
+  setMenuOpen(false);
+}}
   className="border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px]"
 >
   Contact us
@@ -739,9 +824,7 @@ const companyItems =
   )}
 
    
-   {activeForm === "contact" && (
-  <ContactForm setActiveForm={setActiveForm} />
-    )}
+   
     {activeForm === "forgot" && (
   <ForgotPassword setActiveForm={setActiveForm} />
     )}

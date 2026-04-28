@@ -5,26 +5,38 @@ type Props = {
   emoji?: string;
   title: string;
   description: string;
+  basePath?: string; // services | platform
 };
 
-const ServiceCard = ({ icon, emoji, title, description }: Props) => {
+const ServiceCard = ({
+  icon,
+  emoji,
+  title,
+  description,
+  basePath = "services",
+}: Props) => {
 
-  // ✅ MANUAL MAP (for special cases)
   const slugMap: Record<string, string> = {
     "Category Views": "category-views",
     "Reporting": "reporting",
     "Cost Analyzer": "cost-analyzer",
-    "Forecasting": "predictive-cost-forecasting ",
+    "Forecasting": "predictive-cost-forecasting",
     "K8s Cost Observability": "k8s-cost-observability-attribution",
     "Budgeting": "budgeting",
     "Recommendations": "right-size-recommendations",
     "Anomaly Detection": "anomaly-detection-circuit-breakers",
     "Virtual Tags": "virtual-tags-smart-tagging",
     "Cost Allocation": "cost-allocation",
-    "Unit Economics" : "unit-economics"
+    "Unit Economics": "unit-economics",
+
+    // 🔥 PLATFORM (IMPORTANT)
+    "AI Financial Management": "ai-financial-management",
+    "Savings Acquisition Cost": "savings-acquisition-cost",
+    "Cost per Result": "cost-per-result",
+    "GPU Cost Attribution": "gpu-cost-attribution",
+    "Unified Billing": "unified-billing",
   };
 
-  // ✅ FALLBACK SLUG (for safety)
   const generateSlug = (text: string) =>
     text
       .toLowerCase()
@@ -37,7 +49,7 @@ const ServiceCard = ({ icon, emoji, title, description }: Props) => {
   const slug = slugMap[title] || generateSlug(title);
 
   return (
-    <Link to={`/services/${slug}`}>
+    <Link to={`/${basePath}/${slug}`}>
       <div className="w-full max-w-[290px] h-[224px] bg-[#0F1A12] border border-[#77B900]/30 rounded-[20px] flex flex-col items-center justify-center text-center transition duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(119,185,0,0.4)] cursor-pointer">
 
         {icon ? (

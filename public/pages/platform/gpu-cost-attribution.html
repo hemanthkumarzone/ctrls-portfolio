@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>GPU Cost Attribution</title>
+
+  <style>
+    :root {
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255,255,255,0.7);
+
+  --color-background-primary: #0B1200;
+  --color-background-secondary: #111a05;
+
+  --color-border-tertiary: rgba(255,255,255,0.1);
+
+  --border-radius-lg: 16px;
+  --border-radius-md: 10px;
+}
+    html, body {
+  font-family: 'Inter', sans-serif;
+  color: var(--color-text-primary);
+  background: #0B1200;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--color-text-primary);
+  background: #0B1200;
+}
+.hero{padding:2rem 0 1rem;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:1.5rem}
+.hero h1{font-size:22px;font-weight:500;margin-bottom:6px}
+.hero p{font-size:14px;color:var(--color-text-secondary);line-height:1.6;max-width:600px}
+.badge{display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;margin-right:6px;margin-top:6px}
+.badge-gpu{background:#E6F1FB;color:#0C447C}
+.badge-tpu{background:#E1F5EE;color:#085041}
+.badge-lpu{background:#EEEDFE;color:#3C3489}
+.section{margin-bottom:2rem}
+.section-title{font-size:16px;font-weight:500;margin-bottom:1rem;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.5rem}
+.metric-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:0.9rem 1rem}
+.metric-label{font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+.metric-value{font-size:22px;font-weight:500}
+.metric-sub{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.metric-up{color:#0F6E56}
+.metric-down{color:#993C1D}
+.chart-wrap{position:relative;width:100%}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:1.5rem}
+.chart-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem}
+.chart-box h3{font-size:13px;font-weight:500;color:var(--color-text-secondary);margin-bottom:12px}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;font-size:11px;color:var(--color-text-secondary)}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend-dot{width:10px;height:10px;border-radius:2px}
+.use-case-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:1.5rem}
+.use-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem}
+.use-card-icon{font-size:18px;margin-bottom:8px}
+.use-card h3{font-size:13px;font-weight:500;margin-bottom:6px}
+.use-card p{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;margin-top:6px}
+.tag-monitor{background:#E6F1FB;color:#0C447C}
+.tag-opt{background:#E1F5EE;color:#085041}
+.tag-orch{background:#EEEDFE;color:#3C3489}
+.tag-waste{background:#FAECE7;color:#993C1D}
+.factors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:1.5rem}
+.factor-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem}
+.factor-card h3{font-size:13px;font-weight:500;margin-bottom:6px}
+.factor-card ul{font-size:12px;color:var(--color-text-secondary);padding-left:14px;line-height:1.8}
+.faq-item{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:8px;overflow:hidden}
+.faq-q{padding:0.75rem 1rem;cursor:pointer;font-size:13px;font-weight:500;display:flex;justify-content:space-between;align-items:center;background:var(--color-background-secondary)}
+.faq-a{padding:0.75rem 1rem;font-size:12px;color:var(--color-text-secondary);line-height:1.6;display:none;border-top:0.5px solid var(--color-border-tertiary)}
+.faq-a.open{display:block}
+.demo-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.5rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.demo-form h3{font-size:15px;font-weight:500;margin-bottom:1rem}
+.form-group{margin-bottom:10px}
+.form-group label{font-size:12px;color:var(--color-text-secondary);display:block;margin-bottom:4px}
+.form-group input,.form-group select{width:100%;padding:7px 10px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary)}
+.demo-btn{width:100%;padding:10px;font-size:14px;font-weight:500;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-info);color:var(--color-text-info);cursor:pointer;margin-top:8px}
+.demo-info h3{font-size:15px;font-weight:500;margin-bottom:1rem}
+.demo-info ul{font-size:13px;color:var(--color-text-secondary);padding-left:16px;line-height:2}
+.success-msg{display:none;background:var(--color-background-success);border:0.5px solid var(--color-border-success);color:var(--color-text-success);padding:10px 14px;border-radius:var(--border-radius-md);font-size:13px;margin-top:8px}
+.tab-bar{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+.tab-btn{font-size:12px;padding:5px 14px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);cursor:pointer}
+.tab-btn.active{background:var(--color-background-info);color:var(--color-text-info);border-color:transparent}
+.roi-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.roi-table th{font-weight:500;padding:6px 10px;text-align:left;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+.roi-table td{padding:6px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)}
+.roi-table tr:last-child td{border-bottom:none}
+.highlight-row td{color:var(--color-text-success);font-weight:500}
+.pipeline-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:1.5rem}
+.pipe-step{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:0.75rem;text-align:center;position:relative}
+.pipe-step:not(:last-child)::after{content:"→";position:absolute;right:-8px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--color-text-tertiary)}
+.pipe-num{font-size:18px;font-weight:500;color:var(--color-text-info);margin-bottom:4px}
+.pipe-label{font-size:11px;color:var(--color-text-secondary)}
+/* ========================= */
+/* PAGE LAYOUT FIX */
+/* ========================= */
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 1.5rem 2rem; /* top space for navbar */
+}
+
+/* Improve spacing */
+.section {
+  margin-bottom: 3rem;
+}
+
+.metrics-grid {
+  gap: 16px;
+}
+
+.hero {
+  padding: 3rem 0 2rem;
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+
+<div class="page-container">
+  <h2 class="sr-only">GPU Cost Attrition — AI FinOps platform use case and business requirements dashboard</h2>
+  <div class="hero">
+    <h1>GPU Cost Attrition — AI FinOps Platform</h1>
+    <p>Business requirements, use cases, and ROI intelligence for organizations running AI workloads on GPU, TPU, and LPU infrastructure.</p>
+    <div style="margin-top:8px">
+      <span class="badge badge-gpu">GPU</span>
+      <span class="badge badge-tpu">TPU</span>
+      <span class="badge badge-lpu">LPU</span>
+      <span class="badge" style="background:#FAEEDA;color:#633806">FinOps</span>
+      <span class="badge" style="background:#FBEAF0;color:#72243E">Cost Attrition</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Key performance metrics</div>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">Avg GPU waste rate</div>
+      <div class="metric-value metric-down">34%</div>
+      <div class="metric-sub">Industry average</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Cost saved post-optimization</div>
+      <div class="metric-value metric-up">42%</div>
+      <div class="metric-sub">After FinOps adoption</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Idle GPU hours/month</div>
+      <div class="metric-value metric-down">2,400h</div>
+      <div class="metric-sub">Per 100-GPU cluster</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Avg H100 cost/hr</div>
+      <div class="metric-value">$4.10</div>
+      <div class="metric-sub">On-demand cloud</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Wasted spend/month</div>
+      <div class="metric-value metric-down">$9.8K</div>
+      <div class="metric-sub">Per 100-GPU cluster</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Orchestration pipeline</div>
+  <div class="pipeline-steps">
+    <div class="pipe-step"><div class="pipe-num">01</div><div class="pipe-label">Ingest telemetry</div></div>
+    <div class="pipe-step"><div class="pipe-num">02</div><div class="pipe-label">Detect waste patterns</div></div>
+    <div class="pipe-step"><div class="pipe-num">03</div><div class="pipe-label">Score & prioritize</div></div>
+    <div class="pipe-step"><div class="pipe-num">04</div><div class="pipe-label">Auto-optimize</div></div>
+    <div class="pipe-step"><div class="pipe-num">05</div><div class="pipe-label">Report & forecast</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Cost attrition breakdown — charts</div>
+  <div class="chart-row">
+    <div class="chart-box">
+      <h3>Monthly GPU wastage by category ($K)</h3>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#378ADD"></span>Idle compute</span>
+        <span><span class="legend-dot" style="background:#D85A30"></span>Over-provisioning</span>
+        <span><span class="legend-dot" style="background:#1D9E75"></span>Orphaned jobs</span>
+      </div>
+      <div class="chart-wrap" style="height:220px"><canvas id="c1" role="img" aria-label="Monthly GPU wastage by category showing idle compute, over-provisioning, and orphaned jobs costs from Jan to Jun">Monthly GPU wastage: idle compute peaks in March, over-provisioning highest in Q1, orphaned jobs steady.</canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>Hardware type cost distribution</h3>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#378ADD"></span>GPU 68%</span>
+        <span><span class="legend-dot" style="background:#1D9E75"></span>TPU 21%</span>
+        <span><span class="legend-dot" style="background:#EEEDFE;border:1px solid #534AB7"></span>LPU 11%</span>
+      </div>
+      <div class="chart-wrap" style="height:220px"><canvas id="c2" role="img" aria-label="Donut chart showing GPU at 68%, TPU at 21%, LPU at 11% of total AI hardware spend">GPU 68%, TPU 21%, LPU 11% of total spend.</canvas></div>
+    </div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-box">
+      <h3>Cost attrition trend — before vs after FinOps</h3>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#E24B4A"></span>Before</span>
+        <span><span class="legend-dot" style="background:#1D9E75"></span>After</span>
+      </div>
+      <div class="chart-wrap" style="height:220px"><canvas id="c3" role="img" aria-label="Line chart comparing monthly AI compute spend before and after FinOps adoption over 6 months">Spend before FinOps steady high; after FinOps adoption spend drops significantly from month 2 onward.</canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>Optimization savings by action type ($K)</h3>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#534AB7"></span>Savings achieved</span>
+      </div>
+      <div class="chart-wrap" style="height:220px"><canvas id="c4" role="img" aria-label="Horizontal bar chart showing savings from rightsizing, spot usage, idle shutdown, and scheduling actions">Rightsizing yields highest savings, followed by spot instance usage, idle shutdown, and intelligent scheduling.</canvas></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Core use cases</div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="filterUC('all')">All</button>
+    <button class="tab-btn" onclick="filterUC('monitor')">Monitoring</button>
+    <button class="tab-btn" onclick="filterUC('opt')">Optimization</button>
+    <button class="tab-btn" onclick="filterUC('orch')">Orchestration</button>
+    <button class="tab-btn" onclick="filterUC('waste')">Waste elimination</button>
+  </div>
+  <div class="use-case-grid" id="ucGrid">
+    <div class="use-card" data-tag="monitor">
+      <h3>Real-time GPU utilization monitoring</h3>
+      <p>Track GPU, TPU, LPU utilization at job, team, and cluster level with sub-minute telemetry granularity.</p>
+      <span class="tag tag-monitor">Monitoring</span>
+    </div>
+    <div class="use-card" data-tag="waste">
+      <h3>Idle compute detection & auto-shutdown</h3>
+      <p>Automatically detect idle GPUs sitting above cost threshold and trigger shutdown or pause workflows.</p>
+      <span class="tag tag-waste">Waste elimination</span>
+    </div>
+    <div class="use-card" data-tag="opt">
+      <h3>Rightsizing AI workloads</h3>
+      <p>Recommend optimal GPU instance size for training and inference — avoid over-provisioned clusters burning capital.</p>
+      <span class="tag tag-opt">Optimization</span>
+    </div>
+    <div class="use-card" data-tag="orch">
+      <h3>Intelligent job scheduling</h3>
+      <p>Orchestrate AI training jobs during off-peak pricing windows using spot and preemptible instance pools.</p>
+      <span class="tag tag-orch">Orchestration</span>
+    </div>
+    <div class="use-card" data-tag="opt">
+      <h3>Spot & reserved instance blending</h3>
+      <p>Dynamically blend on-demand, spot, and reserved GPU capacity for optimal cost-to-reliability ratio.</p>
+      <span class="tag tag-opt">Optimization</span>
+    </div>
+    <div class="use-card" data-tag="waste">
+      <h3>Orphaned resource cleanup</h3>
+      <p>Detect and reclaim GPU storage volumes, snapshots, and checkpoints no longer attached to active jobs.</p>
+      <span class="tag tag-waste">Waste elimination</span>
+    </div>
+    <div class="use-card" data-tag="monitor">
+      <h3>Team-level chargeback & showback</h3>
+      <p>Allocate AI compute costs accurately across ML teams, projects, and cost centers with fine-grained tagging.</p>
+      <span class="tag tag-monitor">Monitoring</span>
+    </div>
+    <div class="use-card" data-tag="orch">
+      <h3>Multi-cloud GPU arbitrage</h3>
+      <p>Route training and inference workloads across AWS, GCP, Azure, and bare-metal based on live pricing signals.</p>
+      <span class="tag tag-orch">Orchestration</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Key factors driving GPU cost attrition</div>
+  <div class="factors-grid">
+    <div class="factor-card">
+      <h3>Infrastructure factors</h3>
+      <ul>
+        <li>Over-provisioned cluster sizes</li>
+        <li>No spot/preemptible usage</li>
+        <li>Single-cloud lock-in</li>
+        <li>Lack of auto-scaling policies</li>
+      </ul>
+    </div>
+    <div class="factor-card">
+      <h3>Workload factors</h3>
+      <ul>
+        <li>Poorly batched inference calls</li>
+        <li>Unoptimized model checkpointing</li>
+        <li>Runaway training jobs</li>
+        <li>No experiment deduplication</li>
+      </ul>
+    </div>
+    <div class="factor-card">
+      <h3>Organizational factors</h3>
+      <ul>
+        <li>No GPU cost ownership culture</li>
+        <li>Missing tagging & attribution</li>
+        <li>Siloed ML team budgets</li>
+        <li>No FinOps governance policy</li>
+      </ul>
+    </div>
+    <div class="factor-card">
+      <h3>Tooling gaps</h3>
+      <ul>
+        <li>No real-time utilization alerts</li>
+        <li>Manual cost review processes</li>
+        <li>No cross-cloud visibility</li>
+        <li>Missing anomaly detection</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">ROI model — cost attrition reduction</div>
+  <table class="roi-table">
+    <thead>
+      <tr><th>Scenario</th><th>Monthly GPU spend</th><th>Waste %</th><th>Wasted $</th><th>Savings after FinOps</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Startup (10 GPUs)</td><td>$12,000</td><td>38%</td><td>$4,560</td><td>$1,900/mo</td></tr>
+      <tr><td>Scale-up (50 GPUs)</td><td>$60,000</td><td>35%</td><td>$21,000</td><td>$8,800/mo</td></tr>
+      <tr class="highlight-row"><td>Enterprise (200 GPUs)</td><td>$240,000</td><td>32%</td><td>$76,800</td><td>$32,000/mo</td></tr>
+      <tr class="highlight-row"><td>Hyperscale (1000+ GPUs)</td><td>$1.2M+</td><td>28%</td><td>$336,000+</td><td>$140,000+/mo</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-title">Frequently asked questions</div>
+  <div id="faqList">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is GPU cost attrition in AI FinOps? <span>+</span></div>
+      <div class="faq-a">GPU cost attrition refers to the gradual or sudden loss of financial value from AI hardware spend due to idle compute, over-provisioning, orphaned jobs, and unoptimized workload scheduling. AI FinOps platforms measure, monitor, and systematically reduce this attrition.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How is GPU utilization different from CPU utilization monitoring? <span>+</span></div>
+      <div class="faq-a">GPU utilization tracks VRAM usage, CUDA core saturation, memory bandwidth, and tensor core efficiency — far more granular than CPU monitoring. AI FinOps platforms must correlate these metrics with job-level cost attribution to surface actionable waste signals.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Does this platform support TPU and LPU in addition to GPU? <span>+</span></div>
+      <div class="faq-a">Yes. The platform ingests telemetry from Google TPUs, Groq LPUs, and all major GPU families (NVIDIA H100/A100/L40S, AMD MI300X). Cost normalization is done in unified FinOps units regardless of hardware type.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How quickly can we see ROI after deployment? <span>+</span></div>
+      <div class="faq-a">Most organizations see measurable cost reduction within 2–4 weeks of deployment. Quick wins like idle GPU shutdown and orphaned resource cleanup typically recover 15–20% of spend in the first month alone.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Does the platform integrate with Kubernetes and MLOps tools? <span>+</span></div>
+      <div class="faq-a">Yes. Native integrations exist for Kubernetes (GPU node pools), Kubeflow, MLflow, Weights & Biases, Ray, and all major cloud providers (AWS SageMaker, GCP Vertex AI, Azure ML). Data is pulled via API and agents with no code changes required.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is the difference between showback and chargeback in AI FinOps? <span>+</span></div>
+      <div class="faq-a">Showback surfaces GPU cost visibility to teams without financial consequences — used to build cost awareness culture. Chargeback actually allocates and bills GPU costs to respective teams or projects, creating direct financial accountability.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can the platform help with compliance and carbon footprint reporting? <span>+</span></div>
+      <div class="faq-a">Yes. The platform tracks energy consumption per GPU job and maps it to carbon emission estimates using datacenter PUE data. Reports can be exported for ESG, SOC 2, and internal sustainability governance requirements.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Schedule a demo</div>
+  <div class="demo-box">
+    <div class="demo-form">
+      <h3>Book your personalized demo</h3>
+      <div class="form-group"><label>Full name</label><input type="text" placeholder="Your name" id="dName"/></div>
+      <div class="form-group"><label>Work email</label><input type="email" placeholder="you@company.com" id="dEmail"/></div>
+      <div class="form-group"><label>Company</label><input type="text" placeholder="Company name" id="dCompany"/></div>
+      <div class="form-group"><label>GPU cluster size</label>
+        <select id="dSize">
+          <option>1–10 GPUs</option>
+          <option>11–50 GPUs</option>
+          <option>51–200 GPUs</option>
+          <option>200+ GPUs</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Primary interest</label>
+        <select id="dInterest">
+          <option>Cost monitoring & visibility</option>
+          <option>Waste elimination</option>
+          <option>Workload optimization</option>
+          <option>Multi-cloud orchestration</option>
+          <option>Chargeback & attribution</option>
+        </select>
+      </div>
+      <button class="demo-btn" onclick="submitDemo()">Request demo ↗</button>
+      <div class="success-msg" id="successMsg">Demo request submitted! Our team will reach out within 1 business day.</div>
+    </div>
+    <div class="demo-info">
+      <h3>What to expect</h3>
+      <ul>
+        <li>45-minute live walkthrough</li>
+        <li>Custom ROI estimate for your cluster</li>
+        <li>Live waste audit on sample data</li>
+        <li>Multi-cloud cost comparison</li>
+        <li>Q&A with FinOps engineers</li>
+        <li>Free 14-day trial offer</li>
+      </ul>
+      <div style="margin-top:1.5rem;padding:0.75rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md)">
+        <div style="font-size:12px;font-weight:500;margin-bottom:4px">Average demo outcome</div>
+        <div style="font-size:22px;font-weight:500;color:var(--color-text-success)">$28,000</div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">identified in recoverable GPU waste per session</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const months = ['Jan','Feb','Mar','Apr','May','Jun'];
+
+new Chart(document.getElementById('c1'),{
+  type:'bar',
+  data:{
+    labels:months,
+    datasets:[
+      {label:'Idle compute',data:[18,22,28,24,20,17],backgroundColor:'#378ADD'},
+      {label:'Over-provisioning',data:[14,16,14,12,11,10],backgroundColor:'#D85A30'},
+      {label:'Orphaned jobs',data:[6,7,8,7,6,5],backgroundColor:'#1D9E75'}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,ticks:{autoSkip:false}},y:{stacked:true,ticks:{callback:v=>'$'+v+'K'}}}}
+});
+
+new Chart(document.getElementById('c2'),{
+  type:'doughnut',
+  data:{
+    labels:['GPU','TPU','LPU'],
+    datasets:[{data:[68,21,11],backgroundColor:['#378ADD','#1D9E75','#7F77DD'],borderWidth:0}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'65%'}
+});
+
+new Chart(document.getElementById('c3'),{
+  type:'line',
+  data:{
+    labels:months,
+    datasets:[
+      {label:'Before FinOps',data:[95,98,102,100,97,99],borderColor:'#E24B4A',backgroundColor:'rgba(226,75,74,0.08)',tension:0.3,borderDash:[5,3],pointRadius:3},
+      {label:'After FinOps',data:[95,88,74,62,54,51],borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.08)',tension:0.3,pointRadius:3}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+v+'K'}}}}
+});
+
+new Chart(document.getElementById('c4'),{
+  type:'bar',
+  data:{
+    labels:['Rightsizing','Spot usage','Idle shutdown','Smart scheduling','Orphan cleanup'],
+    datasets:[{label:'Savings ($K)',data:[38,27,19,14,9],backgroundColor:'#534AB7',borderRadius:4}]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{x:{ticks:{callback:v=>'$'+v+'K'}},y:{ticks:{autoSkip:false}}}
+  }
+});
+
+function toggleFaq(el){
+  const ans=el.nextElementSibling;
+  const isOpen=ans.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(a=>{a.classList.remove('open')});
+  document.querySelectorAll('.faq-q span').forEach(s=>{s.textContent='+'});
+  if(!isOpen){ans.classList.add('open');el.querySelector('span').textContent='−';}
+}
+
+function filterUC(tag){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.use-card').forEach(c=>{
+    c.style.display=(tag==='all'||c.dataset.tag===tag)?'block':'none';
+  });
+}
+
+function submitDemo(){
+  const n=document.getElementById('dName').value;
+  const e=document.getElementById('dEmail').value;
+  if(!n||!e){alert('Please enter your name and email.');return;}
+  document.getElementById('successMsg').style.display='block';
+  sendPrompt('I just submitted a demo request for the GPU Cost Attrition FinOps platform. Can you tell me what I should prepare before the demo session?');
+}
+</script>
+</div>
+</body>
+</html>
