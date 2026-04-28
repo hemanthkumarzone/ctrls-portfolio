@@ -2,7 +2,7 @@ type CardProps = {
   icon: string
   title: string
   description: string
-  className?: string // ✅ reusable extension
+  className?: string
 }
 
 export default function VisibilityCard({
@@ -15,17 +15,20 @@ export default function VisibilityCard({
     <div
       className={`
         w-full
-        max-w-[340px] sm:max-w-[360px] lg:max-w-[386px]
-        min-h-[280px] sm:min-h-[300px] lg:min-h-[332px]
-        bg-[#131814]
-        rounded-[30px] sm:rounded-[35px] lg:rounded-[45px]
-        border border-[#283E00]
+        max-w-[260px] sm:max-w-[280px] lg:max-w-[300px]
+        min-h-[190px] sm:min-h-[210px] lg:min-h-[230px]
+        bg-[#0f1412]
+        rounded-[18px] sm:rounded-[20px] lg:rounded-[22px]
+        border border-[#1f2a10]
         flex flex-col items-center text-center
-        px-5 sm:px-6 lg:px-6
-        pt-8 sm:pt-9 lg:pt-10
-        transition-all duration-300
+        px-4 lg:px-5
+        pt-6
+        transition-all duration-300 ease-in-out
+
         hover:border-[#77B900]
-        hover:shadow-[0_0_25px_rgba(119,185,0,0.2)]
+        hover:shadow-[0_0_20px_rgba(119,185,0,0.25)]
+        hover:scale-[1.03]
+
         ${className}
       `}
     >
@@ -34,19 +37,20 @@ export default function VisibilityCard({
       <img
         src={icon}
         alt={title}
-        className="w-[45px] h-[40px] sm:w-[55px] sm:h-[45px] lg:w-[60px] lg:h-[50px] mb-5 lg:mb-6"
+        className="w-[36px] h-[36px] sm:w-[40px] sm:h-[40px] lg:w-[44px] lg:h-[44px] mb-3"
       />
 
       {/* 🔹 TITLE */}
-     <h3
-  className="text-white text-[18px] sm:text-[20px] lg:text-[22px] font-semibold mb-3 lg:mb-4"
-  dangerouslySetInnerHTML={{ __html: title as string }}
-/>
+      <h3
+        className="text-white text-[15px] sm:text-[16px] lg:text-[17px] font-semibold mb-2"
+        dangerouslySetInnerHTML={{ __html: title as string }}
+      />
 
+      {/* 🔹 DESCRIPTION */}
       <div
-  className="text-[#929292] text-[13px] sm:text-[14px] lg:text-[15px] leading-[22px] sm:leading-[26px] lg:leading-[32px]"
-  dangerouslySetInnerHTML={{ __html: description as string }}
-/>
+        className="text-[#a0a0a0] text-[12px] sm:text-[13px] leading-[20px] sm:leading-[24px]"
+        dangerouslySetInnerHTML={{ __html: description as string }}
+      />
 
     </div>
   )

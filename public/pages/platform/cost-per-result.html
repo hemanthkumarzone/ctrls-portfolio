@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cost Per Result</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root {
+  --color-background-primary: #0b0f0c;
+  --color-background-secondary: #101a14;
+  --color-border-tertiary: rgba(255,255,255,0.1);
+  --color-text-primary: #e6ffe6;
+  --color-text-secondary: #9fdc00;
+
+  --font-sans: Arial, sans-serif;
+  --font-mono: monospace;
+
+  --border-radius-lg: 16px;
+  --border-radius-md: 10px;
+}
+.pg{padding:2rem 1rem;max-width:860px;margin:0 auto;font-family:var(--font-sans)}
+
+.hero{text-align:center;padding:2.5rem 1.5rem 2rem;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);margin-bottom:2.5rem;position:relative;overflow:hidden}
+.hero::after{content:'CPR';position:absolute;font-size:150px;font-weight:800;color:var(--color-border-tertiary);bottom:-35px;right:-15px;pointer-events:none;line-height:1;letter-spacing:-6px}
+.badge{display:inline-block;background:#EEEDFE;color:#3C3489;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.9rem}
+.hero h1{font-size:30px;font-weight:700;color:var(--color-text-primary);line-height:1.25;margin-bottom:.7rem}
+.hero h1 em{font-style:normal;color:#534AB7}
+.hero p{font-size:14px;color:var(--color-text-secondary);max-width:510px;margin:0 auto 1.5rem;line-height:1.7}
+.kpi-row{display:flex;justify-content:center;gap:2.2rem;flex-wrap:wrap}
+.kpi .v{font-size:26px;font-weight:700;color:#534AB7;font-family:var(--font-mono)}
+.kpi .l{font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+
+.sec{margin-bottom:3rem}
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:.5rem}
+.sec-title{font-size:20px;font-weight:600;color:var(--color-text-primary);margin-bottom:.4rem}
+.sec-sub{font-size:13px;color:var(--color-text-secondary);margin-bottom:1.25rem;line-height:1.65}
+
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem}
+
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.75rem}
+
+.mc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem 1.1rem}
+.mc .ml{font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.mc .mv{font-size:23px;font-weight:700;font-family:var(--font-mono);color:var(--color-text-primary)}
+.mc .md{font-size:12px;margin-top:3px}
+.up{color:#3B6D11}.dn{color:#A32D2D}
+
+.uc{border-left:3px solid #534AB7;padding:.9rem 1.1rem;background:var(--color-background-primary);border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;border-top:0.5px solid var(--color-border-tertiary);border-right:0.5px solid var(--color-border-tertiary);border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:.65rem}
+.uc.tl{border-left-color:#0F6E56}
+.uc.am{border-left-color:#BA7517}
+.uc.cr{border-left-color:#993C1D}
+.uc.rd{border-left-color:#A32D2D}
+.uc.bl{border-left-color:#185FA5}
+.uc h3{font-size:13px;font-weight:600;color:var(--color-text-primary);margin-bottom:3px}
+.uc p{font-size:12px;color:var(--color-text-secondary);line-height:1.55}
+
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:500;margin:5px 3px 0 0}
+.tpu{background:#EEEDFE;color:#3C3489}
+.ttl{background:#E1F5EE;color:#085041}
+.tam{background:#FAEEDA;color:#633806}
+.tbl{background:#E6F1FB;color:#0C447C}
+.trd{background:#FCEBEB;color:#791F1F}
+.tcr{background:#FAECE7;color:#712B13}
+
+.rr{display:flex;align-items:flex-start;gap:12px;padding:.8rem 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.rr:last-child{border-bottom:none}
+.rn{width:26px;height:26px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--font-mono)}
+.rn.pu{background:#EEEDFE;color:#3C3489}
+.rn.tl{background:#E1F5EE;color:#085041}
+.rn.am{background:#FAEEDA;color:#633806}
+.rn.bl{background:#E6F1FB;color:#0C447C}
+.rn.rd{background:#FCEBEB;color:#791F1F}
+.rc h4{font-size:13px;font-weight:600;color:var(--color-text-primary);margin-bottom:2px}
+.rc p{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+
+.formula-box{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1.5rem;text-align:center;margin-bottom:1.25rem;border:0.5px solid var(--color-border-tertiary)}
+.formula-box .fml{font-size:17px;font-family:var(--font-mono);color:var(--color-text-primary);margin:.5rem 0;line-height:1.5}
+.formula-box .fdesc{font-size:12px;color:var(--color-text-secondary);line-height:1.55;max-width:520px;margin:0 auto}
+
+.result-type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:.85rem}
+.rt{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1rem}
+.rt-dot{width:8px;height:8px;border-radius:50%;margin-bottom:8px}
+.rt h4{font-size:12px;font-weight:600;color:var(--color-text-primary);margin-bottom:3px}
+.rt p{font-size:11px;color:var(--color-text-secondary);line-height:1.5}
+.rt .eg{font-size:11px;color:var(--color-text-secondary);font-family:var(--font-mono);margin-top:5px;padding:3px 6px;background:var(--color-background-primary);border-radius:4px;display:inline-block}
+
+.wb{margin-bottom:.7rem}
+.wl{display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+.wl span:last-child{color:var(--color-text-primary);font-weight:600;font-family:var(--font-mono)}
+.wt{background:var(--color-background-secondary);border-radius:4px;height:8px;overflow:hidden}
+.wf{height:100%;border-radius:4px}
+
+.factor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:1rem}
+.factor{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1.1rem}
+.factor-pip{width:10px;height:10px;border-radius:50%;margin-bottom:8px}
+.factor h3{font-size:13px;font-weight:600;color:var(--color-text-primary);margin-bottom:3px}
+.factor p{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+
+.bench-row{display:flex;align-items:center;gap:10px;padding:.7rem 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.bench-row:last-child{border-bottom:none}
+.bench-tier{font-size:12px;font-weight:600;color:var(--color-text-primary);min-width:170px}
+.bench-track{flex:1;height:10px;background:var(--color-background-secondary);border-radius:5px;overflow:hidden}
+.bench-fill{height:100%;border-radius:5px}
+.bench-val{font-size:12px;font-family:var(--font-mono);color:var(--color-text-primary);min-width:65px;text-align:right}
+
+.tl-wrap{position:relative;padding-left:1.75rem}
+.tl-wrap::before{content:'';position:absolute;left:8px;top:6px;bottom:6px;width:1px;background:var(--color-border-tertiary)}
+.tli{position:relative;margin-bottom:1.1rem}
+.tld{position:absolute;left:-1.75rem;top:4px;width:9px;height:9px;border-radius:50%;border:2px solid #534AB7;background:var(--color-background-primary)}
+.tlp{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#534AB7;margin-bottom:2px}
+.tlt{font-size:13px;font-weight:600;color:var(--color-text-primary)}
+.tls{font-size:12px;color:var(--color-text-secondary);line-height:1.5;margin-top:2px}
+
+.faq-item{border-bottom:0.5px solid var(--color-border-tertiary)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:.9rem 0;cursor:pointer}
+.faq-q span{font-size:13px;font-weight:500;color:var(--color-text-primary);flex:1;padding-right:12px}
+.faq-icon{font-size:16px;color:var(--color-text-secondary);transition:transform .2s;flex-shrink:0}
+.faq-a{font-size:12px;color:var(--color-text-secondary);line-height:1.7;padding-bottom:.9rem;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+
+.demo-wrap{background:#534AB7;border-radius:var(--border-radius-lg);padding:2.2rem;text-align:center}
+.demo-wrap h2{font-size:20px;font-weight:700;color:#fff;margin-bottom:.5rem}
+.demo-wrap p{font-size:13px;color:rgba(255,255,255,.82);margin:0 auto 1.25rem;line-height:1.65;max-width:440px}
+.dform{display:flex;flex-direction:column;gap:9px;max-width:380px;margin:0 auto}
+.dform input,.dform select{padding:9px 12px;border-radius:var(--border-radius-md);border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:12px;font-family:var(--font-sans);outline:none}
+.dform input::placeholder{color:rgba(255,255,255,.6)}
+.dform select option{color:#333;background:#fff}
+.dbtn{background:#fff;color:#534AB7;font-weight:700;font-size:13px;padding:11px;border-radius:var(--border-radius-md);border:none;cursor:pointer;font-family:var(--font-sans);margin-top:4px}
+.dsuc{display:none;background:rgba(255,255,255,.15);border-radius:var(--border-radius-md);padding:.85rem;margin-top:.5rem;font-size:13px;color:#fff;line-height:1.5}
+
+.nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2rem}
+.nb{font-size:11px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--color-border-tertiary);background:transparent;cursor:pointer;color:var(--color-text-secondary);font-family:var(--font-sans);transition:all .15s}
+.nb:hover,.nb.act{background:#EEEDFE;color:#3C3489;border-color:#534AB7}
+
+.cta-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.25rem}
+.cta-btn{font-size:12px;padding:8px 16px;border-radius:var(--border-radius-md);border:0.5px solid #534AB7;background:transparent;cursor:pointer;color:#534AB7;font-family:var(--font-sans)}
+
+.waterfall-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px}
+</style>
+</head>
+<body>
+
+<div class="pg">
+<h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Cost-per-Result (CPR) for AI FinOps — Use Cases, Business Requirements, Charts and Benchmarks</h2>
+
+<div class="hero">
+  <div class="badge">Cost-per-Result — AI FinOps</div>
+  <h1>Stop measuring <em>tokens</em>.<br>Start measuring <em>outcomes</em>.</h1>
+  <p>CPR shifts AI cost management from infrastructure metrics to business results — measuring what each AI-generated outcome actually costs, and relentlessly optimising it through monitoring, orchestration, and waste elimination.</p>
+  <div class="kpi-row">
+    <div class="kpi"><div class="v">$0.0031</div><div class="l">Best-in-class CPR</div></div>
+    <div class="kpi"><div class="v">68%</div><div class="l">Avg CPR reduction yr 1</div></div>
+    <div class="kpi"><div class="v">4.2×</div><div class="l">Throughput gain at same spend</div></div>
+    <div class="kpi"><div class="v">22 days</div><div class="l">Time to first CPR improvement</div></div>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nb act" onclick="go('definition')">CPR Definition</button>
+  <button class="nb" onclick="go('result-types')">Result types</button>
+  <button class="nb" onclick="go('use-cases')">Use cases</button>
+  <button class="nb" onclick="go('brd')">Requirements</button>
+  <button class="nb" onclick="go('factors')">Key factors</button>
+  <button class="nb" onclick="go('benchmarks')">Benchmarks</button>
+  <button class="nb" onclick="go('charts')">Charts</button>
+  <button class="nb" onclick="go('calculator')">CPR calculator</button>
+  <button class="nb" onclick="go('roadmap')">Roadmap</button>
+  <button class="nb" onclick="go('faq')">FAQs</button>
+  <button class="nb" onclick="go('demo')">Demo</button>
+</div>
+
+<div class="sec" id="definition">
+  <div class="eyebrow">Core concept</div>
+  <div class="sec-title">What is Cost-per-Result?</div>
+  <div class="sec-sub">CPR is the definitive outcome-oriented efficiency metric for AI workloads. Unlike cost-per-token or cost-per-call — which measure infrastructure consumption — CPR measures how much you spend to produce one unit of business value from AI.</div>
+
+  <div class="formula-box">
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px">The CPR formula</div>
+    <div class="fml">CPR = Total AI Spend ÷ Number of Validated Business Results</div>
+    <div class="fdesc" style="margin-top:8px">A "result" is any discrete, verifiable AI output that delivers business value: a document classified, a ticket resolved, a summary generated, a lead scored, an anomaly flagged. CPR collapses the entire AI cost stack — inference, compute, embedding, orchestration overhead — into a single per-outcome number. Lower CPR means your AI does more for less.</div>
+  </div>
+
+  <div class="g3">
+    <div class="mc"><div class="ml">What CPR replaces</div><div style="font-size:12px;color:var(--color-text-secondary);margin-top:6px;line-height:1.55">Cost-per-token, cost-per-call, cost-per-hour of compute — metrics that measure consumption, not value delivered. CPR re-anchors cost to output.</div></div>
+    <div class="mc"><div class="ml">What counts as a result</div><div style="font-size:12px;color:var(--color-text-secondary);margin-top:6px;line-height:1.55">Any AI output that satisfies a defined quality threshold and delivers measurable business value. Failed or low-quality outputs are excluded from the denominator.</div></div>
+    <div class="mc"><div class="ml">CPR across workloads</div><div style="font-size:12px;color:var(--color-text-secondary);margin-top:6px;line-height:1.55">Each AI workload type has its own CPR. Benchmarking CPR across workloads reveals where AI spend is most and least productive relative to the value generated.</div></div>
+  </div>
+</div>
+
+<div class="sec" id="result-types">
+  <div class="eyebrow">Result taxonomy</div>
+  <div class="sec-title">Defining "results" across AI workload types</div>
+  <div class="sec-sub">CPR requires a clear, workload-specific definition of what constitutes a successful result. These are the eight primary result types tracked on the AI FinOps platform.</div>
+  <div class="result-type-grid">
+    <div class="rt"><div class="rt-dot" style="background:#534AB7"></div><h4>Document processing</h4><p>Extraction, classification, or summarisation of a document meeting quality threshold.</p><div class="eg">CPR: $0.002–$0.018/doc</div></div>
+    <div class="rt"><div class="rt-dot" style="background:#0F6E56"></div><h4>Support resolution</h4><p>Customer query resolved without human escalation, confirmed by CSAT or closure signal.</p><div class="eg">CPR: $0.08–$0.45/ticket</div></div>
+    <div class="rt"><div class="rt-dot" style="background:#BA7517"></div><h4>Code generation</h4><p>Code snippet or function passing automated test suite and accepted by developer.</p><div class="eg">CPR: $0.04–$0.22/acceptance</div></div>
+    <div class="rt"><div class="rt-dot" style="background:#185FA5"></div><h4>Lead scoring</h4><p>Sales lead assigned a qualified score that correlates with pipeline conversion within 90 days.</p><div class="eg">CPR: $0.01–$0.06/score</div></div>
+    <div class="rt"><div class="rt-dot" style="background:#A32D2D"></div><h4>Anomaly detection</h4><p>True-positive anomaly flagged with &lt; 5% false positive rate across monitoring window.</p><div class="eg">CPR: $0.005–$0.03/alert</div></div>
+    <div class="rt"><div class="rt-dot" style="background:#993C1D"></div><h4>Content generation</h4><p>Piece of content published or approved after editorial review without major rework.</p><div class="eg">CPR: $0.15–$1.20/piece</div></div>
+    <div class="rt"><div class="rt-dot" style="background:#534AB7"></div><h4>Data enrichment</h4><p>Record enriched with verified attributes at accuracy &gt; 92% versus ground truth.</p><div class="eg">CPR: $0.001–$0.009/record</div></div>
+    <div class="rt"><div class="rt-dot" style="background:#3B6D11"></div><h4>Recommendation served</h4><p>Personalised recommendation clicked or acted upon by end user (positive engagement signal).</p><div class="eg">CPR: $0.003–$0.025/click</div></div>
+  </div>
+</div>
+
+<div class="sec" id="use-cases">
+  <div class="eyebrow">Use cases</div>
+  <div class="sec-title">Where CPR drives AI FinOps decisions</div>
+  <div class="sec-sub">CPR transforms AI cost conversations from "how much are we spending?" to "how much are we getting?" — enabling product, finance, and platform teams to align on outcome-driven efficiency.</div>
+
+  <div class="uc">
+    <h3>UC-CPR-01 — Product ROI justification for AI features</h3>
+    <p>Product teams building AI-powered features must justify infrastructure spend to finance. CPR provides an auditable cost-per-outcome that links AI spend directly to user-facing value — making the business case for continued AI investment based on delivered results, not token consumption.</p>
+    <div><span class="tag tpu">Owner: Product + Finance</span><span class="tag ttl">Value: Spend justification</span><span class="tag tam">Trigger: Quarterly reviews</span></div>
+  </div>
+  <div class="uc tl">
+    <h3>UC-CPR-02 — Model selection based on outcome efficiency</h3>
+    <p>GPT-4o may produce higher quality outputs than GPT-3.5, but if both meet the quality threshold and GPT-3.5 costs 8× less, the CPR for GPT-3.5 is dramatically superior. CPR-based model selection replaces subjective quality debates with data-driven outcome economics.</p>
+    <div><span class="tag tpu">Owner: ML Ops</span><span class="tag ttl">Value: Model cost efficiency</span><span class="tag tam">Trigger: Model evaluation cycles</span></div>
+  </div>
+  <div class="uc am">
+    <h3>UC-CPR-03 — Prompt engineering ROI measurement</h3>
+    <p>Prompt optimisation efforts (few-shot examples, chain-of-thought, compression) change both token cost and output quality. CPR captures the net effect — a prompt that costs 20% more tokens but produces 50% fewer quality failures has a dramatically lower CPR and should be adopted.</p>
+    <div><span class="tag tpu">Owner: ML / Prompt Eng</span><span class="tag ttl">Value: Prompt investment ROI</span><span class="tag tam">Trigger: Prompt iteration cycles</span></div>
+  </div>
+  <div class="uc cr">
+    <h3>UC-CPR-04 — Agent pipeline outcome costing</h3>
+    <p>Multi-step agentic workflows accumulate cost across tool calls, sub-agents, and retries. CPR measures the total pipeline cost per final deliverable — exposing whether complex orchestration chains are economically justified by the quality of their outputs versus simpler alternatives.</p>
+    <div><span class="tag tcr">Owner: AI Platform Eng</span><span class="tag ttl">Value: Pipeline efficiency</span><span class="tag tam">Trigger: Agent design reviews</span></div>
+  </div>
+  <div class="uc rd">
+    <h3>UC-CPR-05 — Quality-adjusted waste identification</h3>
+    <p>API calls that return outputs failing quality checks (hallucinations, format errors, rejected completions) consume tokens without contributing to the CPR denominator. The FinOps platform identifies these quality-waste patterns and triggers prompt or model changes to recover them.</p>
+    <div><span class="tag trd">Owner: QA + FinOps</span><span class="tag ttl">Value: Waste elimination</span><span class="tag tam">Trigger: Quality monitoring</span></div>
+  </div>
+  <div class="uc bl">
+    <h3>UC-CPR-06 — Vendor SLA negotiation with outcome data</h3>
+    <p>When negotiating AI API contracts, CPR data across providers gives procurement teams concrete outcome-per-dollar benchmarks — enabling volume commitments based on delivered results rather than estimated token consumption, often unlocking 15–30% better commercial terms.</p>
+    <div><span class="tag tbl">Owner: Procurement + FinOps</span><span class="tag ttl">Value: Contract leverage</span><span class="tag tam">Trigger: Contract renewal</span></div>
+  </div>
+  <div class="uc">
+    <h3>UC-CPR-07 — Cross-team AI efficiency benchmarking</h3>
+    <p>When multiple teams run similar AI workloads (e.g., document summarisation across legal, finance, and operations), CPR benchmarking reveals which team's implementation is most cost-efficient — enabling best-practice sharing and highlighting teams that need optimisation support.</p>
+    <div><span class="tag tpu">Owner: FinOps + Engineering</span><span class="tag ttl">Value: Internal benchmarking</span><span class="tag tam">Trigger: Quarterly FinOps reviews</span></div>
+  </div>
+  <div class="uc tl">
+    <h3>UC-CPR-08 — Caching ROI measured at the result level</h3>
+    <p>Semantic caching reduces inference cost per call, but its true value is CPR reduction. The FinOps platform measures cache hit rate impact on CPR — distinguishing caches that reduce CPR (good) from those that cache low-quality outputs and degrade the result quality rate (bad).</p>
+    <div><span class="tag ttl">Owner: Platform Eng</span><span class="tag tpu">Value: Cache value verification</span><span class="tag tam">Trigger: Continuous</span></div>
+  </div>
+</div>
+
+<div class="sec" id="brd">
+  <div class="eyebrow">Business requirements</div>
+  <div class="sec-title">CPR-focused platform requirements</div>
+  <div class="sec-sub">Requirements for an AI FinOps platform designed to track, optimise, and govern Cost-per-Result across every AI workload in the enterprise.</div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;font-weight:600;color:#534AB7;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem">Result measurement requirements</div>
+    <div class="rr"><div class="rn pu">R1</div><div class="rc"><h4>Result definition and schema registry</h4><p>The platform shall maintain a versioned registry of result definitions per workload type, including quality thresholds, validation methodology, and denominator counting rules. Definitions must be editable by authorised FinOps leads without code deployment.</p></div></div>
+    <div class="rr"><div class="rn pu">R2</div><div class="rc"><h4>Quality gate integration</h4><p>CPR calculation must ingest quality signals from existing evaluation pipelines (LLM-as-judge scores, human review labels, downstream action events) to distinguish valid results from failed outputs. Failed outputs must be tracked separately as "quality waste."</p></div></div>
+    <div class="rr"><div class="rn pu">R3</div><div class="rc"><h4>CPR real-time dashboard</h4><p>CPR must be computed and displayed with &lt;2 minute latency per workload, segmented by team, model, prompt version, and environment. Trend view (7d, 30d, 90d) and anomaly markers required. CPR degradation alerts within 15 minutes of threshold breach.</p></div></div>
+    <div class="rr"><div class="rn pu">R4</div><div class="rc"><h4>Cost attribution at result level</h4><p>Every confirmed result must carry a cost attribution including: inference cost, embedding cost, orchestration overhead, and proportional infrastructure cost — enabling full-stack CPR accounting rather than inference-only CPR.</p></div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;font-weight:600;color:#0F6E56;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem">Optimisation requirements</div>
+    <div class="rr"><div class="rn tl">O1</div><div class="rc"><h4>CPR-aware model routing</h4><p>The intelligent routing engine must optimise for CPR, not just cost-per-call. This requires coupling model selection with historical quality rates per model per workload — routing to the model with the lowest expected CPR, not the lowest token price.</p></div></div>
+    <div class="rr"><div class="rn tl">O2</div><div class="rc"><h4>Prompt A/B testing with CPR as primary metric</h4><p>Built-in A/B testing framework for prompt variants must use CPR (not BLEU, ROUGE, or subjective quality) as the default optimisation target. The framework must reach statistical significance (p &lt;0.05) before declaring a winner and auto-promoting the lower-CPR variant.</p></div></div>
+    <div class="rr"><div class="rn tl">O3</div><div class="rc"><h4>Quality-waste auto-remediation</h4><p>When the platform detects a sustained increase in output failure rate for a workload (&gt;10% above baseline), it must auto-trigger: (1) alert to owning team, (2) rollback to last-known good prompt version, and (3) log the quality-waste cost for FinOps reporting.</p></div></div>
+    <div class="rr"><div class="rn tl">O4</div><div class="rc"><h4>Retry cost governance</h4><p>LLM retry logic (on parsing failure, timeout, or quality rejection) must be tracked separately in CPR accounting. The platform shall enforce maximum retry limits per result type and alert when retry spend exceeds 8% of workload total cost.</p></div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;font-weight:600;color:#BA7517;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem">Governance & reporting requirements</div>
+    <div class="rr"><div class="rn am">G1</div><div class="rc"><h4>CPR SLA framework</h4><p>Each production AI workload must have a CPR SLA defined by product and finance jointly — with breach thresholds triggering automated review workflows. CPR SLAs must be version-controlled and linked to product KPIs (e.g., support cost targets, doc processing unit economics).</p></div></div>
+    <div class="rr"><div class="rn am">G2</div><div class="rc"><h4>Board-ready CPR reporting</h4><p>Monthly auto-generated executive report showing: CPR trend by workload, CPR vs industry benchmark, quality-waste as % of total AI spend, and CPR forecast for next quarter based on planned model and prompt changes.</p></div></div>
+    <div class="rr"><div class="rn am">G3</div><div class="rc"><h4>Unit economics integration</h4><p>CPR data must integrate with product unit economics dashboards — enabling product managers to see AI cost as a line item in their per-user or per-transaction cost model, not as a separate IT budget.</p></div></div>
+  </div>
+
+  <div class="card">
+    <div style="font-size:12px;font-weight:600;color:#185FA5;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem">Non-functional requirements</div>
+    <div class="rr"><div class="rn bl">NF1</div><div class="rc"><h4>CPR measurement overhead &lt;0.1%</h4><p>The platform's result tracking instrumentation must add &lt;0.1% to the total AI spend it monitors. Measurement cannot become a material cost in its own CPR calculation — lightweight event streaming architecture required.</p></div></div>
+    <div class="rr"><div class="rn bl">NF2</div><div class="rc"><h4>Quality signal flexibility</h4><p>The platform must support at least five quality signal types: LLM-as-judge (self-hosted and API), downstream event (click, action, conversion), human review label ingestion via API, automated test suite pass/fail, and rule-based schema validation.</p></div></div>
+    <div class="rr"><div class="rn bl">NF3</div><div class="rc"><h4>Historical CPR recomputation</h4><p>When quality thresholds are updated or result definitions change, the platform must recompute historical CPR for the affected workload over the trailing 12 months — ensuring time-series comparisons remain valid after definition changes.</p></div></div>
+  </div>
+</div>
+
+<div class="sec" id="factors">
+  <div class="eyebrow">Key factors</div>
+  <div class="sec-title">What drives CPR up or down</div>
+  <div class="sec-sub">Ten levers that directly determine your Cost-per-Result — spanning model choice, prompt design, quality, infrastructure, and orchestration architecture.</div>
+  <div class="factor-grid">
+    <div class="factor"><div class="factor-pip" style="background:#534AB7"></div><h3>Output quality rate</h3><p>The single biggest CPR driver. A 20% output failure rate means 25% higher CPR with no additional capability. Improving quality pass rate from 80% to 95% cuts CPR by 15%.</p></div>
+    <div class="factor"><div class="factor-pip" style="background:#0F6E56"></div><h3>Model tier selection</h3><p>Using a frontier model for a task a smaller model handles equally well can inflate CPR by 5–20×. CPR-aware routing matches task complexity to model capability at the result level.</p></div>
+    <div class="factor"><div class="factor-pip" style="background:#BA7517"></div><h3>Prompt token efficiency</h3><p>Bloated system prompts and inefficient few-shot examples add input token cost to every call without improving result quality. Prompt compression reduces CPR without quality regression.</p></div>
+    <div class="factor"><div class="factor-pip" style="background:#185FA5"></div><h3>Cache hit rate</h3><p>Semantic caching for repeated or near-identical queries can reduce the inference cost component of CPR by 30–55% for high-repetition workloads like FAQ bots and document classifiers.</p></div>
+    <div class="factor"><div class="factor-pip" style="background:#A32D2D"></div><h3>Retry and error rate</h3><p>Every LLM retry on a parsing failure or quality rejection adds to the spend numerator without adding to the result denominator — directly inflating CPR. Retry storms are a hidden CPR killer.</p></div>
+    <div class="factor"><div class="factor-pip" style="background:#993C1D"></div><h3>Orchestration overhead</h3><p>Multi-step agentic pipelines accumulate cost across every tool call and intermediate LLM step. Unnecessary orchestration hops add cost that must be justified by proportional result quality improvement.</p></div>
+    <div class="factor"><div class="factor-pip" style="background:#534AB7"></div><h3>Result definition rigour</h3><p>Loose result definitions that count low-quality outputs artificially deflate CPR, masking real inefficiency. Tight, validated quality thresholds ensure CPR reflects genuine business value.</p></div>
+    <div class="factor"><div class="factor-pip" style="background:#3B6D11"></div><h3>Batch vs. real-time routing</h3><p>Non-latency-sensitive workloads run in batch at 50–80% lower cost. Routing eligible workloads to batch cuts the cost numerator without reducing result count — direct CPR reduction.</p></div>
+    <div class="factor"><div class="factor-pip" style="background:#BA7517"></div><h3>Infrastructure right-sizing</h3><p>Over-provisioned GPU or serving infrastructure adds fixed cost spread across result volume. Right-sizing compute to actual throughput demand reduces the infrastructure component of CPR.</p></div>
+    <div class="factor"><div class="factor-pip" style="background:#185FA5"></div><h3>Result throughput scaling</h3><p>Holding cost flat while growing result volume through architecture improvements (parallelism, streaming, pipeline optimisation) is mathematically equivalent to a CPR reduction — scale is a CPR lever.</p></div>
+  </div>
+</div>
+
+<div class="sec" id="benchmarks">
+  <div class="eyebrow">Industry benchmarks</div>
+  <div class="sec-title">CPR maturity tiers by workload category</div>
+  <div class="sec-sub">CPR benchmarks vary significantly by workload type. These are industry-median CPR ranges by category, segmented by optimisation maturity.</div>
+  <div class="card">
+    <div class="wb"><div class="wl"><span>Document classification (optimised)</span><span>$0.001–$0.005/doc</span></div><div class="wt"><div class="wf" style="width:15%;background:#3B6D11"></div></div></div>
+    <div class="wb"><div class="wl"><span>Document classification (unoptimised)</span><span>$0.012–$0.035/doc</span></div><div class="wt"><div class="wf" style="width:55%;background:#A32D2D"></div></div></div>
+    <div class="wb"><div class="wl"><span>Support ticket resolution (optimised)</span><span>$0.06–$0.18/ticket</span></div><div class="wt"><div class="wf" style="width:25%;background:#3B6D11"></div></div></div>
+    <div class="wb"><div class="wl"><span>Support ticket resolution (unoptimised)</span><span>$0.35–$0.90/ticket</span></div><div class="wt"><div class="wf" style="width:75%;background:#A32D2D"></div></div></div>
+    <div class="wb"><div class="wl"><span>Code generation acceptance (optimised)</span><span>$0.03–$0.10/acceptance</span></div><div class="wt"><div class="wf" style="width:30%;background:#3B6D11"></div></div></div>
+    <div class="wb"><div class="wl"><span>Code generation acceptance (unoptimised)</span><span>$0.18–$0.55/acceptance</span></div><div class="wt"><div class="wf" style="width:68%;background:#A32D2D"></div></div></div>
+    <div class="wb"><div class="wl"><span>Data record enrichment (optimised)</span><span>$0.0008–$0.004/record</span></div><div class="wt"><div class="wf" style="width:10%;background:#3B6D11"></div></div></div>
+    <div class="wb"><div class="wl"><span>Data record enrichment (unoptimised)</span><span>$0.009–$0.022/record</span></div><div class="wt"><div class="wf" style="width:45%;background:#A32D2D"></div></div></div>
+    <div style="margin-top:.9rem;padding-top:.7rem;border-top:0.5px solid var(--color-border-tertiary);font-size:11px;color:var(--color-text-secondary)">Source: AI FinOps Institute Benchmark Report 2025 — 200+ enterprise deployments with active CPR tracking</div>
+  </div>
+  <div class="cta-row">
+    <button class="cta-btn" onclick="sendPrompt('How do I define and measure Cost-per-Result for a document summarisation workload?')">Define CPR for my workload ↗</button>
+    <button class="cta-btn" onclick="sendPrompt('What are the fastest ways to reduce CPR for a customer support AI bot?')">Reduce my CPR now ↗</button>
+  </div>
+</div>
+
+<div class="sec" id="charts">
+  <div class="eyebrow">Performance data</div>
+  <div class="sec-title">CPR metrics and optimisation impact</div>
+
+  <div class="g4" style="margin-bottom:1.25rem">
+    <div class="mc"><div class="ml">CPR at baseline</div><div class="mv">$0.089</div><div class="md dn">Pre-FinOps (support bot)</div></div>
+    <div class="mc"><div class="ml">CPR at 6 months</div><div class="mv">$0.031</div><div class="md up">↓ 65% reduction</div></div>
+    <div class="mc"><div class="ml">Quality waste as % spend</div><div class="mv">22%</div><div class="md dn">Industry median</div></div>
+    <div class="mc"><div class="ml">Quality waste post-platform</div><div class="mv">4.1%</div><div class="md up">↓ 81% improvement</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem">CPR trend over 12 months — three workload types ($ per result)</div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--color-text-secondary)">
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#534AB7"></span>Support resolution</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#0F6E56"></span>Document classification</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#BA7517"></span>Code generation</span>
+    </div>
+    <div style="position:relative;width:100%;height:230px"><canvas id="cprTrend" role="img" aria-label="Line chart showing CPR reduction across three workload types over 12 months. All three decline significantly, with support resolution dropping from $0.089 to $0.031.">Support: $0.089 to $0.031. Document: $0.028 to $0.006. Code generation: $0.19 to $0.062 over 12 months.</canvas></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem">CPR waterfall — cost reduction by optimisation lever (support bot, $/result)</div>
+    <div style="position:relative;width:100%;height:260px"><canvas id="cprWaterfall" role="img" aria-label="Waterfall bar chart showing CPR reduction components. Baseline $0.089, model routing saves $0.021, prompt compression saves $0.012, caching saves $0.009, quality improvement saves $0.011, retry reduction saves $0.005, final CPR $0.031.">Baseline $0.089 reduced by model routing ($0.021), prompt compression ($0.012), caching ($0.009), quality improvement ($0.011), retry reduction ($0.005) to reach $0.031.</canvas></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem">Quality pass rate vs CPR — inverse relationship across workloads</div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--color-text-secondary)">
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#534AB7"></span>CPR (left axis)</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#0F6E56"></span>Quality pass rate (right axis)</span>
+    </div>
+    <div style="position:relative;width:100%;height:220px"><canvas id="qualityChart" role="img" aria-label="Dual axis chart showing as quality pass rate increases from 70% to 98%, CPR decreases from $0.12 to $0.031, demonstrating the inverse relationship.">As quality improves from 70% to 98% pass rate, CPR falls from $0.12 to $0.031.</canvas></div>
+  </div>
+
+  <div class="card">
+    <div style="font-size:12px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem">CPR by model tier — same workload, different models (support resolution)</div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:8px;font-size:12px;color:var(--color-text-secondary)">
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#534AB7"></span>CPR (lower = better)</span>
+    </div>
+    <div style="position:relative;width:100%;height:300px"><canvas id="modelCPR" role="img" aria-label="Horizontal bar chart comparing CPR across model tiers for support resolution workload. Smaller models have lower CPR despite cheaper inference because of adequate quality rates.">GPT-4o: $0.089, Claude Sonnet: $0.071, GPT-3.5: $0.038, Claude Haiku: $0.031, Fine-tuned small: $0.019, Cached Haiku: $0.014.</canvas></div>
+  </div>
+</div>
+
+<div class="sec" id="calculator">
+  <div class="eyebrow">Interactive CPR calculator</div>
+  <div class="sec-title">Model your workload's Cost-per-Result</div>
+  <div class="sec-sub">Adjust the inputs to calculate current CPR, projected post-optimisation CPR, and the annual savings from closing the gap.</div>
+  <div class="card">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:1rem;margin-bottom:1.25rem">
+      <div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px">Monthly AI spend on workload ($)</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="range" id="spend" min="1000" max="200000" value="50000" step="1000" style="flex:1">
+          <span id="spendOut" style="font-size:13px;font-weight:600;font-family:var(--font-mono);min-width:70px">$50,000</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px">Monthly results produced</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="range" id="results" min="1000" max="5000000" value="500000" step="1000" style="flex:1">
+          <span id="resultsOut" style="font-size:13px;font-weight:600;font-family:var(--font-mono);min-width:70px">500,000</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px">Current quality pass rate (%)</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="range" id="quality" min="50" max="99" value="78" step="1" style="flex:1">
+          <span id="qualityOut" style="font-size:13px;font-weight:600;font-family:var(--font-mono);min-width:40px">78%</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px">Target quality pass rate (%)</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="range" id="targetQ" min="80" max="99" value="95" step="1" style="flex:1">
+          <span id="targetQOut" style="font-size:13px;font-weight:600;font-family:var(--font-mono);min-width:40px">95%</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px">Expected cost reduction (%)</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="range" id="costRed" min="5" max="75" value="40" step="5" style="flex:1">
+          <span id="costRedOut" style="font-size:13px;font-weight:600;font-family:var(--font-mono);min-width:40px">40%</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.75rem;padding-top:1rem;border-top:0.5px solid var(--color-border-tertiary)">
+      <div class="mc"><div class="ml">Current CPR</div><div class="mv" id="calcCPR">$0.128</div></div>
+      <div class="mc"><div class="ml">Valid results/mo</div><div class="mv" id="calcValid">390K</div></div>
+      <div class="mc"><div class="ml">Target CPR</div><div class="mv" id="calcTargetCPR">$0.033</div></div>
+      <div class="mc"><div class="ml">CPR improvement</div><div class="mv up" id="calcImprove">74%</div></div>
+      <div class="mc"><div class="ml">Annual saving</div><div class="mv up" id="calcAnnual">$360K</div></div>
+      <div class="mc"><div class="ml">Results at same spend</div><div class="mv" id="calcMoreResults">3.9×</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec" id="roadmap">
+  <div class="eyebrow">Implementation roadmap</div>
+  <div class="sec-title">CPR reduction journey — 6 phases</div>
+  <div class="sec-sub">A structured programme to instrument, baseline, and systematically reduce Cost-per-Result across your AI workload portfolio.</div>
+  <div class="card">
+    <div class="tl-wrap">
+      <div class="tli"><div class="tld"></div><div class="tlp">Days 1–7 — Phase 0</div><div class="tlt">Result definition workshop</div><div class="tls">Work with product, finance, and ML teams to define "result" for each active AI workload. Establish quality thresholds, counting rules, and CPR SLA targets before any measurement begins.</div></div>
+      <div class="tli"><div class="tld"></div><div class="tlp">Days 8–21 — Phase 1</div><div class="tlt">CPR instrumentation and baseline</div><div class="tls">Instrument result tracking and quality signal ingestion. Establish 14-day CPR baseline per workload. Identify the 3 workloads with the worst CPR for priority treatment. Quality waste as % of spend calculated for the first time.</div></div>
+      <div class="tli"><div class="tld"></div><div class="tlp">Weeks 4–6 — Phase 2</div><div class="tlt">Model and prompt quick wins</div><div class="tls">Run CPR-metric prompt A/B tests. Implement CPR-aware model routing for top 5 workloads. Deploy semantic caching for high-repetition workloads. Target: 25–35% CPR reduction on priority workloads.</div></div>
+      <div class="tli"><div class="tld"></div><div class="tlp">Weeks 7–12 — Phase 3</div><div class="tlt">Quality waste elimination</div><div class="tls">Address root causes of quality failures. Implement retry governance and circuit breakers. Improve output parsing robustness. Target: quality pass rate above 92% on all workloads; quality waste below 8% of AI spend.</div></div>
+      <div class="tli"><div class="tld"></div><div class="tlp">Months 4–6 — Phase 4</div><div class="tlt">Architecture optimisation</div><div class="tls">Batch/real-time routing for eligible workloads. Infrastructure right-sizing. Agent pipeline simplification. Fine-tuning evaluation for highest-volume workloads. Target: CPR at or below industry median benchmark.</div></div>
+      <div class="tli"><div class="tld"></div><div class="tlp">Month 6+ — Phase 5</div><div class="tlt">Continuous CPR governance</div><div class="tls">CPR SLAs enforced in production. Monthly CPR review in product and finance meetings. New workloads require CPR projection before deployment approval. Target: best-in-class CPR across all workload categories.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec" id="faq">
+  <div class="eyebrow">FAQs</div>
+  <div class="sec-title">Frequently asked questions on CPR</div>
+  <div class="card">
+    <div class="faq-item"><div class="faq-q" onclick="tfaq(this)"><span>How is CPR different from cost-per-token or cost-per-call?</span><div class="faq-icon">+</div></div><div class="faq-a">Cost-per-token and cost-per-call measure input consumption — how many tokens you used or how many API calls you made. They are infrastructure metrics. CPR measures output value — how many validated business results you produced per dollar spent. A workload can have a low cost-per-call but a terrible CPR if 40% of its outputs fail quality checks. CPR is the only metric that connects AI infrastructure spend to actual business outcomes.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="tfaq(this)"><span>What if our AI workload doesn't have a clear, countable "result"?</span><div class="faq-icon">+</div></div><div class="faq-a">Every AI workload produces an output — the challenge is defining what constitutes a successful one. For open-ended generation tasks (creative writing, brainstorming), a "result" can be defined as an output that passes a lightweight LLM-as-judge quality check, is published or used downstream, or receives a positive user signal (thumbs up, copy action, continued session). The result definition doesn't need to be perfect to be useful — even a proxy quality signal creates a denominator that makes CPR meaningful and improvable.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="tfaq(this)"><span>How do we handle multi-step agentic pipelines in CPR accounting?</span><div class="faq-icon">+</div></div><div class="faq-a">Agentic pipelines are tracked as a single cost entity per final deliverable. All intermediate LLM calls, tool invocations, and sub-agent runs within a pipeline execution are summed into a single pipeline-run cost. The CPR denominator counts only successful final deliverables — intermediate steps do not count as "results." This ensures that pipelines which consume many intermediate tokens to produce one poor-quality final output are correctly penalised in CPR terms.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="tfaq(this)"><span>Can CPR go up even while our token costs are going down?</span><div class="faq-icon">+</div></div><div class="faq-a">Yes, and this is a critical insight. If you switch to a cheaper model and your quality pass rate drops from 92% to 70%, your cost-per-call decreases but your CPR increases — you're spending less per call but getting fewer valid results per dollar. This is a common failure mode when teams optimise for token cost without tracking output quality. CPR captures this dynamic by putting quality in the denominator, making cost and quality inseparable in the metric.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="tfaq(this)"><span>How do we define quality thresholds for CPR measurement?</span><div class="faq-icon">+</div></div><div class="faq-a">Quality thresholds are defined collaboratively by product and FinOps teams for each workload. Methods include: (1) LLM-as-judge with a rubric scoring outputs on predefined criteria; (2) human review sample sets establishing a minimum score; (3) downstream action signals (e.g., a support ticket is only a "result" if it's marked resolved without escalation); (4) automated schema validation for structured output workloads. Thresholds should be set at the minimum quality level acceptable for production use — not aspirational quality. They are stored in the platform's result schema registry and version-controlled.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="tfaq(this)"><span>Is there a risk that optimising CPR sacrifices output quality?</span><div class="faq-icon">+</div></div><div class="faq-a">Only if quality thresholds are set too low. The CPR denominator counts results that meet a defined quality bar — so optimising CPR means producing more quality-passing results per dollar, not producing cheaper outputs regardless of quality. A correctly designed CPR framework creates strong incentives to improve quality (higher pass rate = more results in denominator = lower CPR) and to reduce costs (lower spend = lower CPR). The risk of gaming exists if teams define quality loosely to inflate their denominator — which is why quality threshold governance is a platform requirement.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="tfaq(this)"><span>How does CPR interact with latency and throughput requirements?</span><div class="faq-icon">+</div></div><div class="faq-a">CPR is a cost-efficiency metric and does not measure latency directly. However, latency constraints affect which cost-reduction options are available — streaming responses, batch processing, and speculative execution all have different latency profiles. The FinOps platform tracks CPR alongside p50/p95 latency per workload so teams can understand the cost/latency tradeoff frontier. For latency-critical workloads, CPR optimisation is constrained to techniques that don't breach SLA latency budgets.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="tfaq(this)"><span>How quickly can we expect CPR to improve after deploying the platform?</span><div class="faq-icon">+</div></div><div class="faq-a">Organisations typically see the first measurable CPR improvement within 14–22 days of instrumentation, driven by identifying and addressing the highest-frequency quality failures and obvious model over-provisioning. A 30–40% CPR reduction is achievable within 60 days on priority workloads. Reaching best-in-class CPR typically takes 4–6 months as prompt optimisation, architecture changes, and fine-tuning opportunities are systematically addressed. CPR improvement rate is fastest in the first 90 days when the largest inefficiencies are addressed, then continues at a slower rate through continuous optimisation.</div></div>
+  </div>
+</div>
+
+<div class="sec" id="demo">
+  <div class="demo-wrap">
+    <h2>Get your CPR baseline report</h2>
+    <p>In a 30-minute session, we'll connect to your AI provider data, calculate CPR for your top workloads, compare against industry benchmarks, and show you a prioritised optimisation roadmap with projected CPR targets.</p>
+    <div class="dform">
+      <input type="text" id="dn" placeholder="Full name" />
+      <input type="email" id="de" placeholder="Work email" />
+      <input type="text" id="dc" placeholder="Company name" />
+      <select id="dw">
+        <option value="">Primary AI workload type</option>
+        <option>Document processing / classification</option>
+        <option>Customer support resolution</option>
+        <option>Code generation / review</option>
+        <option>Data enrichment / extraction</option>
+        <option>Content generation</option>
+        <option>Agentic / multi-step workflows</option>
+        <option>Multiple / mixed workloads</option>
+      </select>
+      <select id="ds">
+        <option value="">Monthly AI spend range</option>
+        <option>Under $20K/month</option>
+        <option>$20K–$100K/month</option>
+        <option>$100K–$500K/month</option>
+        <option>Over $500K/month</option>
+      </select>
+      <select id="dt">
+        <option value="">Preferred session slot</option>
+        <option>This week</option>
+        <option>Next week</option>
+        <option>In 2–3 weeks</option>
+        <option>Just exploring for now</option>
+      </select>
+      <button class="dbtn" onclick="subDemo()">Request my CPR baseline ↗</button>
+    </div>
+    <div class="dsuc" id="dsuc">Your CPR baseline request is confirmed. Our AI FinOps analyst will reach out within 1 business day with your personalised session link and a short pre-call data questionnaire to make the 30 minutes as productive as possible.</div>
+  </div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
+function tfaq(el){el.parentElement.classList.toggle('open')}
+function subDemo(){
+  var n=document.getElementById('dn').value,e=document.getElementById('de').value;
+  if(!n||!e){alert('Please enter your name and work email.');return}
+  document.querySelector('.dform').style.display='none';
+  document.getElementById('dsuc').style.display='block';
+}
+
+const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+new Chart(document.getElementById('cprTrend'),{
+  type:'line',
+  data:{
+    labels:months,
+    datasets:[
+      {label:'Support resolution',data:[0.089,0.081,0.072,0.064,0.056,0.050,0.044,0.040,0.037,0.034,0.032,0.031],borderColor:'#534AB7',backgroundColor:'rgba(83,74,183,0.06)',tension:.4,fill:true,borderWidth:2,pointRadius:3,pointBackgroundColor:'#534AB7'},
+      {label:'Document classification',data:[0.028,0.025,0.022,0.019,0.016,0.013,0.011,0.010,0.009,0.008,0.007,0.006],borderColor:'#0F6E56',backgroundColor:'rgba(15,110,86,0.06)',tension:.4,fill:true,borderWidth:2,pointRadius:3,pointBackgroundColor:'#0F6E56',borderDash:[6,3]},
+      {label:'Code generation',data:[0.190,0.175,0.158,0.141,0.124,0.109,0.096,0.086,0.078,0.071,0.066,0.062],borderColor:'#BA7517',backgroundColor:'rgba(186,117,23,0.06)',tension:.4,fill:true,borderWidth:2,pointRadius:3,pointBackgroundColor:'#BA7517',borderDash:[3,3]}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(128,128,128,.1)'},ticks:{font:{size:11},color:'#888',autoSkip:false,maxRotation:0}},y:{grid:{color:'rgba(128,128,128,.1)'},ticks:{font:{size:11},color:'#888',callback:v=>'$'+v.toFixed(3)}}}}
+});
+
+const wfData={
+  labels:['Baseline','Model routing','Prompt compression','Semantic caching','Quality improvement','Retry reduction','Optimised CPR'],
+  data:[0.089,-0.021,-0.012,-0.009,-0.011,-0.005,0.031]
+};
+const wfColors=['#534AB7','#3B6D11','#3B6D11','#3B6D11','#3B6D11','#3B6D11','#185FA5'];
+const wfDisplayData=[0.089,0.021,0.012,0.009,0.011,0.005,0.031];
+const wfBase=[0,0.068,0.047,0.035,0.024,0.013,0];
+new Chart(document.getElementById('cprWaterfall'),{
+  type:'bar',
+  data:{
+    labels:wfData.labels,
+    datasets:[
+      {label:'Base',data:wfBase,backgroundColor:'rgba(0,0,0,0)',borderWidth:0},
+      {label:'Value',data:wfDisplayData,backgroundColor:wfColors,borderWidth:0}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,grid:{display:false},ticks:{color:'#888',font:{size:10},autoSkip:false}},y:{stacked:true,grid:{color:'rgba(128,128,128,.1)'},ticks:{color:'#888',font:{size:11},callback:v=>'$'+v.toFixed(3)},min:0,max:0.12}}}
+});
+
+const qualityRates=[70,75,80,85,90,95,98];
+const cprVals=[0.120,0.096,0.078,0.063,0.051,0.038,0.031];
+const passRates=[70,75,80,85,90,95,98];
+new Chart(document.getElementById('qualityChart'),{
+  type:'line',
+  data:{
+    labels:qualityRates.map(v=>v+'%'),
+    datasets:[
+      {label:'CPR',data:cprVals,borderColor:'#534AB7',backgroundColor:'rgba(83,74,183,0.07)',tension:.4,fill:true,borderWidth:2,pointRadius:4,pointBackgroundColor:'#534AB7',yAxisID:'y'},
+      {label:'Quality pass rate',data:passRates,borderColor:'#0F6E56',backgroundColor:'rgba(15,110,86,0.07)',tension:.4,fill:true,borderWidth:2,pointRadius:4,pointBackgroundColor:'#0F6E56',borderDash:[6,3],yAxisID:'y2'}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(128,128,128,.1)'},ticks:{color:'#888',font:{size:11},autoSkip:false}},y:{grid:{color:'rgba(128,128,128,.1)'},ticks:{color:'#888',font:{size:11},callback:v=>'$'+v.toFixed(3)},position:'left'},y2:{ticks:{color:'#0F6E56',font:{size:11},callback:v=>v+'%'},position:'right',grid:{display:false}}}}
+});
+
+new Chart(document.getElementById('modelCPR'),{
+  type:'bar',
+  data:{
+    labels:['GPT-4o','Claude Sonnet','GPT-3.5 Turbo','Claude Haiku','Fine-tuned small','Cached Haiku'],
+    datasets:[{label:'CPR',data:[0.089,0.071,0.038,0.031,0.019,0.014],backgroundColor:['#A32D2D','#BA7517','#185FA5','#534AB7','#3B6D11','#0F6E56'],borderWidth:0}]
+  },
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(128,128,128,.1)'},ticks:{color:'#888',font:{size:11},callback:v=>'$'+v.toFixed(3)},min:0,max:0.11},y:{grid:{display:false},ticks:{color:'#888',font:{size:11}}}}}
+});
+
+function calcCPR(){
+  var sp=parseInt(document.getElementById('spend').value);
+  var rs=parseInt(document.getElementById('results').value);
+  var q=parseInt(document.getElementById('quality').value)/100;
+  var tq=parseInt(document.getElementById('targetQ').value)/100;
+  var cr=parseInt(document.getElementById('costRed').value)/100;
+  var validRes=Math.round(rs*q);
+  var cpr=(sp/validRes).toFixed(4);
+  var newSp=sp*(1-cr);
+  var newValid=Math.round(rs*tq);
+  var tCPR=(newSp/newValid).toFixed(4);
+  var improve=Math.round((1-tCPR/cpr)*100);
+  var annualSave=Math.round((sp-newSp)*12);
+  var moreRes=(cpr/tCPR).toFixed(1);
+  document.getElementById('spendOut').textContent='$'+sp.toLocaleString();
+  document.getElementById('resultsOut').textContent=rs.toLocaleString();
+  document.getElementById('qualityOut').textContent=Math.round(q*100)+'%';
+  document.getElementById('targetQOut').textContent=Math.round(tq*100)+'%';
+  document.getElementById('costRedOut').textContent=Math.round(cr*100)+'%';
+  document.getElementById('calcCPR').textContent='$'+parseFloat(cpr).toFixed(4);
+  document.getElementById('calcValid').textContent=(validRes/1000).toFixed(0)+'K';
+  document.getElementById('calcTargetCPR').textContent='$'+parseFloat(tCPR).toFixed(4);
+  document.getElementById('calcImprove').textContent=improve+'%';
+  document.getElementById('calcAnnual').textContent='$'+(annualSave/1000).toFixed(0)+'K';
+  document.getElementById('calcMoreResults').textContent=moreRes+'×';
+}
+['spend','results','quality','targetQ','costRed'].forEach(id=>document.getElementById(id).addEventListener('input',calcCPR));
+calcCPR();
+</script>
+</body>
+</html>

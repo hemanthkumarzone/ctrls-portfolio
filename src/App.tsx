@@ -11,20 +11,21 @@ import KoreValueSection from "./components/sections/KoreValueSection";
 import ServicesSection from "./components/sections/ServicesSection";
 
 import ResourcesPage from "./pages/resources/ResourcesPage";
-import PlatformPage from "./pages/platform/PlatformPage";
-
 import HtmlViewer from "./pages/company/HtmlViewer";
+import PlatformHtmlPage from "./pages/platform/PlatformHtmlPage";
+
+
 import AboutPage from "./pages/company/AboutPage";
 import Customers from "./pages/company/Customers";
 import PrivacyPolicy from "./pages/company/PrivacyPolicy";
 import GovernancePage from "./pages/company/governancepage";
+
 import BlogPage from "./pages/resources/BlogPage";
 import BlogDetails from "./pages/resources/BlogDetails";
 import Blogcloud from "./pages/resources/BlogCloud";
 import BlogDevops from "./pages/resources/BlogDevops";
 
-// 🔥 IMPORTANT IMPORT (DETAIL PAGE)
-
+import Contactpage from "./components/requirements/Contactpage";
 
 function App() {
   return (
@@ -36,7 +37,6 @@ function App() {
 
         {/* CONTENT */}
         <div className="relative z-10">
-
           <Navbar />
 
           <main>
@@ -61,7 +61,7 @@ function App() {
                 }
               />
 
-              {/* SERVICES MAIN PAGE (LIST OF 11 CARDS) */}
+              {/* SERVICES */}
               <Route
                 path="/services"
                 element={
@@ -77,32 +77,37 @@ function App() {
                 }
               />
 
-              {/* 🔥 SERVICE DETAIL PAGE (DYNAMIC) */}
-        
+              {/* SERVICES → HTML */}
+              <Route path="/services/:type" element={<HtmlViewer />} />
+
+              {/* PLATFORM → IFRAME (FIXED) */}
+              <Route path="/platform/:type" element={<HtmlViewer />} />
+
+              {/* COMPANY STATIC */}
+              <Route path="/company/about" element={<AboutPage />} />
+              <Route path="/company/customers" element={<Customers />} />
+              <Route path="/company/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/company/governance" element={<GovernancePage />} />
+
+              {/* COMPANY → HTML */}
+              <Route path="/company/:type" element={<HtmlViewer />} />
 
               {/* RESOURCES */}
               <Route path="/resources/:type" element={<ResourcesPage />} />
 
-              {/* PLATFORM */}
-              <Route path="/platform/:type" element={<PlatformPage />} />
-
-              {/* COMPANY */}
-              
-              <Route path="/services/:type" element={<HtmlViewer />} />
-
-              <Route path="/company/about" element={<AboutPage />} />
-
-              <Route path="/company/customers" element={<Customers />} />
-              <Route path="/company/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/company/governance" element={<GovernancePage />} />
-              <Route path="/company/:type" element={<HtmlViewer />} />
+              {/* BLOG */}
               <Route path="/resources/blog" element={<BlogPage />} />
               <Route path="/blog/:id" element={<BlogDetails />} />
               <Route path="/blog/cloud" element={<Blogcloud />} />
               <Route path="/blog/devops" element={<BlogDevops />} />
+
+              {/* CONTACT */}
+              <Route path="/contact" element={<Contactpage />} />
+              <Route path="/platform/:type" element={<PlatformHtmlPage />} />
+              <Route path="/pricing" element={<HtmlViewer />} />
+
             </Routes>
           </main>
-
         </div>
       </div>
     </BrowserRouter>

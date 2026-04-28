@@ -29,9 +29,9 @@ export default function FinOpsChart() {
       <div className="flex-1 rounded-2xl bg-[#020806] px-3 sm:px-4 py-3 flex items-center overflow-hidden">
 
         <svg
-          viewBox="0 0 520 220"
+          viewBox="0 0 520 180"
           preserveAspectRatio="xMidYMid meet"
-          className="w-full h-[110px] sm:h-[150px] md:h-full"
+          className="w-full h-[90px] sm:h-[110px] md:h-[120px]"
         >
 
           <defs>

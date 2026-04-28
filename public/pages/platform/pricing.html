@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing — AI FinOps Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+
+      :root {
+  /* TEXT */
+  --ink: #ffffff;
+  --ink2: #cccccc;
+  --ink3: #aaaaaa;
+  --ink4: #888888;
+  --ink5: #666666;
+
+  /* BACKGROUND (MATCH YOUR SITE) */
+  --paper: #0A0F0B;
+  --white: #0f1a12;
+  --surf: #0b1200;
+
+  /* BORDER */
+  --rule: rgba(119,185,0,0.1);
+  --rule-md: rgba(119,185,0,0.25);
+
+  /* PRIMARY BRAND (IMPORTANT) */
+  --blue: #77B900;        /* CHANGE FROM BLUE → GREEN */
+  --blue-lt: rgba(119,185,0,0.1);
+  --blue-dk: #4d7c00;
+
+  /* ACCENTS */
+  --teal: #77B900;
+  --gold: #9fdc00;
+  --plum: #77B900;
+  --coral: #ff4d4d;
+
+  /* FONTS */
+  --dm: 'Poppins', sans-serif;
+  --fran: 'Poppins', sans-serif;
+}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--dm);background:transparent;color:var(--ink);line-height:1.7}
+
+    /* NAV */
+    .nav{position:sticky;top:0;z-index:200;background:rgba(246,245,241,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 2.5rem}
+    .nav-brand{font-family:var(--fran);font-size:19px;font-weight:500;color:var(--ink);text-decoration:none}
+    .nav-brand em{font-style:italic;color:var(--blue)}
+    .nav-right{display:flex;align-items:center;gap:10px}
+    .nav-link{font-size:13px;color:var(--ink3);text-decoration:none;padding:5px 12px;border-radius:var(--r);transition:background .15s}
+    .nav-link:hover{background:var(--rule)}
+    .nav-cta{font-size:13px;font-weight:500;color:var(--white);background:var(--ink);padding:8px 20px;border-radius:var(--r);text-decoration:none;transition:background .15s}
+    .nav-cta:hover{background:var(--ink2)}
+
+    /* HERO */
+    .hero{background:transparent;padding:5.5rem 2.5rem 4.5rem;text-align:center;overflow:hidden;position:relative}
+    .hero-dots{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.07) 1px,transparent 1px);background-size:28px 28px}
+    .hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:1}
+    .hero-eyebrow{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink4);margin-bottom:1.5rem;display:block}
+    .hero h1{font-family:var(--fran);font-size:clamp(38px,6vw,64px);font-weight:300;color:var(--ink);line-height:1.08;margin-bottom:1.25rem;letter-spacing:-.02em}
+    .hero h1 em{font-style:italic;color:#9fdc00;font-weight:300}
+    .hero-lead{font-size:16px;color:var(--ink4);line-height:1.8;max-width:520px;margin:0 auto 2.5rem}
+
+    /* toggle */
+    .toggle-row{display:inline-flex;align-items:center;gap:14px}
+    .tog-text{font-size:13px;color:var(--ink4);cursor:pointer;transition:color .15s;user-select:none}
+    .tog-text.on{color:var(--paper);font-weight:500}
+    .tog-track{width:46px;height:26px;border-radius:13px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);cursor:pointer;position:relative;transition:background .2s}
+    .tog-track.active{background:var(--blue);border-color:var(--blue)}
+    .tog-knob{position:absolute;width:20px;height:20px;border-radius:50%;background:var(--paper);top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+    .tog-track.active .tog-knob{transform:translateX(20px)}
+    .save-chip{font-size:10px;font-weight:500;letter-spacing:.05em;padding:2px 9px;border-radius:20px;background:rgba(13,122,94,.25);color:#6adfc0;border:1px solid rgba(13,122,94,.3)}
+
+    /* spend bar */
+    .spend-bar{background:transparent;border-bottom:1px solid rgba(119,185,0,0.1);padding:1.25rem 2.5rem}
+    .spend-bar-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+    .spend-q{font-size:13px;font-weight:500;color:var(--ink3);white-space:nowrap}
+    .spend-pills{display:flex;gap:8px;flex-wrap:wrap}
+    .sp{font-size:12px;font-weight:500;padding:6px 16px;border-radius:20px;border:1px solid var(--rule-md);background:var(--paper);color:var(--ink3);cursor:pointer;transition:all .15s}
+    .sp:hover{border-color:var(--blue);color:var(--blue)}
+    .sp.active{background:var(--blue);border-color:var(--blue);color:var(--white)}
+
+    /* plans wrap */
+    .plans-wrap{padding:3rem 2.5rem 0}
+    .plans-inner{max-width:1080px;margin:0 auto}
+
+    /* tier separator */
+    .tier-sep{display:flex;align-items:center;gap:14px;margin:2.5rem 0 1.25rem}
+    .tier-sep-line{flex:1;height:1px;background:var(--rule)}
+    .tier-sep-lbl{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink5);white-space:nowrap}
+
+    /* plan grid */
+    .pgrid{display:grid;gap:14px;grid-template-columns:repeat(3,1fr)}
+    .pgrid2{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
+    @media(max-width:860px){.pgrid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:680px){.pgrid2{grid-template-columns:1fr}}
+    @media(max-width:540px){.pgrid{grid-template-columns:1fr}}
+
+    /* plan card */
+    .pc{background: rgba(15, 26, 18, 0.7);border: 1px solid rgba(119,185,0,0.2);border-radius:var(--r-xl);padding:1.75rem 1.5rem;display:flex;flex-direction:column;position:relative;transition:border-color .2s,transform .2s}
+    .pc:hover{border-color:var(--rule-md);transform:translateY(-2px)}
+    .pc.feat{background:rgba(15,26,18,0.9);border:1px solid rgba(119,185,0,0.3);transform:translateY(-6px)}
+    .pc.feat:hover{transform:translateY(-9px)}
+    .pc.prem{background:rgba(15, 26, 18, 0.9);border:1px solid rgba(119,185,0,0.3)}
+    .pc.prem:hover{border-color:rgba(119,185,0,0.5)}
+    .pop-chip{position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;background:var(--blue);color:var(--white);padding:3px 14px;border-radius:20px;white-space:nowrap}
+    .new-chip{position:absolute;top:-11px;right:1.5rem;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;background:var(--plum);color:var(--white);padding:3px 12px;border-radius:20px}
+    .pc-tier{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink5);margin-bottom:.4rem}
+    .pc.feat .pc-tier,.pc.prem .pc-tier{color:var(--ink4)}
+    .pc-name{font-family:var(--fran);font-size:22px;font-weight:500;color:var(--ink);letter-spacing:-.02em;margin-bottom:.3rem}
+    .pc.feat .pc-name,.pc.prem .pc-name{color:var(--ink)}
+    .pc-tag{font-size:12px;color:var(--ink4);line-height:1.5;margin-bottom:1.25rem}
+    .pc.feat .pc-tag,.pc.prem .pc-tag{color:var(--ink3)}
+    .pc-price{font-family:var(--fran);font-size:40px;font-weight:500;color:var(--ink);letter-spacing:-.03em;line-height:1}
+    .pc.feat .pc-price,.pc.prem .pc-price{color:var(--ink)}
+    .pc-price-sm{font-size:24px;padding-top:4px}
+    .pc-period{font-size:12px;color:var(--ink5);margin:.3rem 0 .2rem}
+    .pc.feat .pc-period,.pc.prem .pc-period{color:#5a5b58}
+    .pc-note{font-size:11px;min-height:16px;margin-bottom:1.25rem;color:var(--ink5)}
+    .pc.prem .pc-note.sv{color:#6adfc0}
+    .pc-limit{font-size:11px;font-weight:500;padding:4px 12px;border-radius:var(--r);display:inline-block;margin-bottom:1.25rem}
+    .pc-div{border:none;border-top:1px solid var(--rule);margin-bottom:1.25rem}
+    .pc.feat .pc-div,.pc.prem .pc-div{border-top-color:rgba(255,255,255,.08)}
+    .pc-feats{flex:1;display:flex;flex-direction:column;gap:8px;margin-bottom:1.5rem}
+    .pc-feat{display:flex;gap:9px;align-items:flex-start;font-size:12px;color:var(--ink3);line-height:1.45}
+    .pc.feat .pc-feat,.pc.prem .pc-feat{color:#7a7b77}
+    .pc-feat strong{font-weight:500;color:var(--ink)}
+    .pc.feat .pc-feat strong,.pc.prem .pc-feat strong{color:var(--ink)}
+    .ck{width:15px;height:15px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px}
+    .ck svg{width:9px;height:9px}
+    .ck.y{background:#dcf5eb}
+    .ck.y svg{stroke:var(--teal)}
+    .ck.n{background:var(--rule)}
+    .ck.n svg{stroke:var(--ink5)}
+    .pc.feat .ck.y,.pc.prem .ck.y{background:rgba(106,223,192,.12)}
+    .pc.feat .ck.y svg,.pc.prem .ck.y svg{stroke:#6adfc0}
+    .pc.feat .ck.n,.pc.prem .ck.n{background:rgba(255,255,255,.06)}
+    .pc-btn{display:block;text-align:center;font-size:13px;font-weight:500;padding:11px;border-radius:var(--r);text-decoration:none;border:1px solid var(--rule-md);color:var(--ink);transition:all .15s}
+    .pc-btn:hover{background:var(--surf)}
+    .pc.feat .pc-btn{background:var(--paper);border-color:transparent;color:var(--ink)}
+    .pc.feat .pc-btn:hover{background:var(--white)}
+    .pc.prem .pc-btn{background:rgba(90,45,130,.25);border-color:rgba(90,45,130,.4);color:#d4aaff}
+    .pc.prem .pc-btn:hover{background:rgba(90,45,130,.4)}
+    .pc-btn.dk{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    .pc-btn.dk:hover{background:var(--ink2)}
+
+    /* inside strip */
+    .inside-strip{background:var(--surf);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:1.5rem 2.5rem;margin:2.5rem 0 0}
+    .inside-inner{max-width:1080px;margin:0 auto;display:flex;gap:2rem;align-items:flex-start;flex-wrap:wrap}
+    .in-lbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4);flex-shrink:0;padding-top:3px;white-space:nowrap}
+    .in-items{display:flex;gap:1.25rem;flex-wrap:wrap}
+    .in-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink3)}
+    .in-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+    /* utils */
+    .wrap{max-width:1080px;margin:0 auto;padding:0 2.5rem}
+    .sh{margin-bottom:2.5rem}
+    .sh .ey{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:.5rem}
+    .sh h2{font-family:var(--fran);font-size:clamp(24px,3.5vw,36px);font-weight:500;color:var(--ink);letter-spacing:-.02em;line-height:1.2;margin-bottom:.5rem}
+    .sh p{font-size:14px;color:var(--ink3);line-height:1.75;max-width:560px}
+    hr.div{border:none;border-top:1px solid var(--rule);max-width:1080px;margin:4rem auto}
+    .ovf{overflow-x:auto}
+
+    /* comparison table */
+    .cmp{width:100%;border-collapse:collapse;font-size:12px}
+    .cmp thead th{padding:10px 14px;text-align:center;font-family:var(--fran);font-size:13px;font-weight:500;color:var(--ink3);border-bottom:2px solid var(--rule);background:var(--paper)}
+    .cmp thead th:first-child{text-align:left;width:22%}
+    .cmp thead th.hl{background:var(--ink);color:var(--paper);border-radius:8px 8px 0 0}
+    .cmp .gr td{padding:8px 14px 4px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink5);background:var(--paper);border-bottom:1px solid var(--rule)}
+    .cmp .gr td.hb{background:rgba(13,14,12,.03)}
+    .cmp .row{border-bottom:1px solid var(--rule);transition:background .1s}
+    .cmp .row:hover{background:rgba(13,14,12,.02)}
+    .cmp .row td{padding:10px 14px;color:var(--ink3);text-align:center;vertical-align:middle}
+    .cmp .row td:first-child{text-align:left;color:var(--ink2)}
+    .cmp td.hb{background:rgba(13,14,12,.03)}
+    .cy{color:var(--teal);font-weight:600;font-size:13px}
+    .cn{color:var(--ink5);font-size:13px}
+    .cp{font-size:11px;color:var(--ink4);font-style:italic}
+
+    /* add-ons */
+    .ao-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+    .ao{background:var(--white);border:1px solid var(--rule);border-radius:var(--r-lg);padding:1.375rem;transition:border-color .15s}
+    .ao:hover{border-color:var(--rule-md)}
+    .ao-ico{font-size:22px;margin-bottom:8px}
+    .ao h4{font-family:var(--fran);font-size:15px;font-weight:500;color:var(--ink);letter-spacing:-.01em;margin-bottom:5px}
+    .ao p{font-size:12px;color:var(--ink4);line-height:1.65;margin-bottom:12px}
+    .ao-price{font-family:var(--fran);font-size:20px;font-weight:500;color:var(--blue)}
+    .ao-price span{font-size:12px;font-family:var(--dm);color:var(--ink4);font-weight:400}
+
+    /* roi band */
+    .roi-band{background:rgba(15, 26, 18, 0.9);border:1px solid rgba(119,185,0,0.2); border-radius: 16px;padding:3rem;position:relative;overflow:hidden}
+    .roi-band::after{content:'';position:absolute;right:-60px;top:-80px;width:340px;height:340px;border-radius:50%;border:1px solid rgba(255,255,255,.04)}
+    .roi-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;max-width:860px;margin:0 auto}
+    @media(max-width:640px){.roi-grid{grid-template-columns:1fr;gap:2rem}}
+    .roi-text .ey2{color:#8ab4f8;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:.5rem}
+    .roi-text h3{font-family:var(--fran);font-size:clamp(22px,3vw,32px);font-weight:300;color:var(--ink);line-height:1.25;margin-bottom:.75rem;letter-spacing:-.02em}
+    .roi-text h3 em{font-style:italic}
+    .roi-text p{font-size:14px;color:var(--ink3);line-height:1.8}
+    .roi-items{display:flex;flex-direction:column;gap:12px}
+    .roi-item{background:rgba(15, 26, 18, 0.6);border:1px solid rgba(119,185,0,0.2);border-radius:var(--r-lg);padding:1rem 1.25rem}
+    .roi-item-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+    .roi-item h5{font-size:13px;font-weight:500;color:var(--ink)}
+    .roi-item-val{font-family:var(--fran);font-size:18px;font-weight:500;color:#8ab4f8}
+    .roi-item p{font-size:11px;color:var(--ink4);line-height:1.5}
+
+    /* segments */
+    .seg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    @media(max-width:680px){.seg-grid{grid-template-columns:1fr}}
+    .sg{border-radius:var(--r-xl);padding:2rem;position:relative;overflow:hidden}
+    .sg::before{content:'';position:absolute;width:240px;height:240px;border-radius:50%;top:-100px;right:-80px}
+    .sg.s1{background:var(--ink)}
+    .sg.s1::before{background:radial-gradient(circle,rgba(19,80,232,.4) 0%,transparent 70%)}
+    .sg.s2{background:#0b1830}
+    .sg.s2::before{background:radial-gradient(circle,rgba(19,80,232,.3) 0%,transparent 70%)}
+    .sg.s3{background:#0a1c0e}
+    .sg.s3::before{background:radial-gradient(circle,rgba(13,122,94,.4) 0%,transparent 70%)}
+    .sg-badge{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:1rem;position:relative;z-index:1}
+    .sg.s1 .sg-badge,.sg.s2 .sg-badge{background:rgba(19,80,232,.2);color:#8ab4f8}
+    .sg.s3 .sg-badge{background:rgba(13,122,94,.2);color:#6adfc0}
+    .sg h4{font-family:var(--fran);font-size:20px;font-weight:500;color:var(--paper);letter-spacing:-.02em;margin-bottom:.5rem;position:relative;z-index:1}
+    .sg p{font-size:12px;color:#5a5b58;line-height:1.7;margin-bottom:1.25rem;position:relative;z-index:1}
+    .sg-rec{font-size:12px;font-weight:500;color:var(--paper);background:rgba(255,255,255,.1);padding:5px 14px;border-radius:var(--r);display:inline-block;position:relative;z-index:1}
+
+    /* faq */
+    .faq-list{display:flex;flex-direction:column;max-width:700px}
+    .fq{border-bottom:1px solid var(--rule)}
+    .fq:first-child{border-top:1px solid var(--rule)}
+    .fq-q{width:100%;text-align:left;background:transparent;border:none;padding:1.1rem 0;display:flex;justify-content:space-between;align-items:center;gap:1rem;cursor:pointer;font-family:var(--fran);font-size:15px;font-weight:500;color:var(--ink);letter-spacing:-.01em;line-height:1.4}
+    .fq-q:hover{color:var(--blue)}
+    .fq-ico{width:22px;height:22px;border-radius:50%;background:var(--rule);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;color:var(--ink3);line-height:1;transition:transform .2s,background .2s}
+    .fq.open .fq-ico{transform:rotate(45deg);background:var(--blue-lt);color:var(--blue)}
+    .fq-a{display:none;padding:0 0 1.1rem;font-size:13px;color:var(--ink3);line-height:1.8}
+    .fq.open .fq-a{display:block}
+
+    /* cta */
+    .cta-band{background:rgba(10, 15, 11, 0.95);border-top: 1px solid rgba(119,185,0,0.2);padding:5rem 2.5rem;text-align:center;position:relative;overflow:hidden;margin-top:4rem}
+    .cta-band::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 60px,rgba(255,255,255,.012) 60px,rgba(255,255,255,.012) 61px)}
+    .cta-inner{position:relative;z-index:1;max-width:580px;margin:0 auto}
+    .cta-band h2{font-family:var(--fran);font-size:clamp(28px,4vw,44px);font-weight:300;color: #ffffff;line-height:1.2;margin-bottom:1rem;letter-spacing:-.02em}
+    .cta-band h2 em{font-style:italic}
+    .cta-band p{font-size:15px;color:#9aa09a;line-height:1.75;margin-bottom:2.5rem}
+    .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn-paper{font-size:14px;font-weight:600;color: #0A0F0B;background:#77B900;;padding:12px 28px;border-radius:var(--r);text-decoration:none;transition:background .15s}
+    .btn-paper:hover{background:var(--white)}
+    .btn-ghost-w{font-size:14px;font-weight:400;color:#9aa09a;background:transparent;padding:12px 28px;border-radius:var(--r);border:1px solid rgba(255,255,255,0.15);text-decoration:none;transition:all .15s}
+    .btn-ghost-w:hover{color: #ffffff;border-color:#77B900}
+
+    /* dark */
+    @media(prefers-color-scheme:dark){
+      :root{--ink:#f0efe9;--ink2:#d0cfc6;--ink3:#a0a19c;--ink4:#6b6c68;--ink5:#4a4b47;--paper:#111210;--white:#1c1d1a;--surf:#181917;--rule:rgba(240,239,233,.08);--rule-md:rgba(240,239,233,.14);--blue:#4d7ef7;--blue-lt:rgba(77,126,247,.14);--blue-dk:#7ba7f5;--teal:#3ecaa0;--teal-lt:rgba(62,202,160,.12);--gold:#fbbf24;--gold-lt:rgba(251,191,36,.1);--plum:#b47cff;--plum-lt:rgba(180,124,255,.1)}
+      .nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(10,15,11,0.9);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(119,185,0,0.2);
+}
+      .pc{background:var(--white)}
+      .pc.feat{background:#2a2b28}
+      .pc.prem{background:#15101e;border-color:rgba(180,124,255,.3)}
+      .ao{background:var(--white)}
+      .spend-bar{background:var(--white)}
+      .sp{background:var(--paper)}
+      .cmp thead th{background:var(--white)}
+      .cmp thead th.hl{background:#2a2b28}
+      .cmp .gr td{background:var(--paper)}
+      .cmp .gr td.hb,.cmp td.hb{background:rgba(240,239,233,.03)}
+      .cmp .row:hover{background:rgba(240,239,233,.03)}
+      .inside-strip{background:var(--white)}
+      .roi-band{background:#1a1b18}
+      .sg.s1{background:#1c1d1a}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-brand">AI<em>FinOps</em></a>
+  <div class="nav-right">
+    <a href="#" class="nav-link">Platform</a>
+    <a href="#" class="nav-link">Services</a>
+    <a href="#" class="nav-cta">Get started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-dots"></div>
+  <div class="hero-inner">
+    <span class="hero-eyebrow">Pricing</span>
+    <h1>The right level of<br><em>support</em> for every team</h1>
+    <p class="hero-lead">
+      From self-serve cost visibility to a fully operated AI FinOps programme — every plan includes
+      Monitoring, Optimization, Orchestration, and Waste Elimination. Choose how much you want us involved.
+    </p>
+    <div class="toggle-row">
+      <span class="tog-text on" id="lbl-mo" onclick="setBilling('monthly')">Monthly</span>
+      <div class="tog-track" id="tog" onclick="flipBilling()" role="switch" aria-checked="false">
+        <div class="tog-knob"></div>
+      </div>
+      <span class="tog-text" id="lbl-an" onclick="setBilling('annual')">Annual</span>
+      <span class="save-chip">Save 20%</span>
+    </div>
+  </div>
+</section>
+
+<!-- SPEND SELECTOR -->
+<div class="spend-bar">
+  <div class="spend-bar-inner">
+    <span class="spend-q">Monthly AI spend:</span>
+    <div class="spend-pills">
+      <div class="sp active" onclick="pickSpend(this,'free')">&lt; $10K</div>
+      <div class="sp" onclick="pickSpend(this,'growth')">$10K – $100K</div>
+      <div class="sp" onclick="pickSpend(this,'scale')">$100K – $500K</div>
+      <div class="sp" onclick="pickSpend(this,'enterprise')">$500K+</div>
+      <div class="sp" onclick="pickSpend(this,'concierge')">Need a team to run it for us</div>
+    </div>
+  </div>
+</div>
+
+<div class="plans-wrap">
+  <div class="plans-inner">
+
+    <!--
+    ═══════════════════════════════════════════════════════════════
+    INTERNAL BUSINESS NOTES — TIER ARCHITECTURE
+    ═══════════════════════════════════════════════════════════════
+    TIER 1  (Free)       → Pure product / PLG. Zero COGS. ~12% convert to Growth in 60 days.
+    TIER 2  (Platform)   → Pure SaaS product. Target gross margin 81%. Recover CAC in <3 months.
+    TIER 3  (Platform+)  → SaaS + ~10 hrs CS/yr baked in. Blended margin ~74%.
+    TIER 4  (Enterprise) → Platform licence + implementation project fee + optional governance retainer.
+                           Revenue split Y1: ~65% licence / 35% services. Blended margin ~62%.
+    TIER 5  (Data Center)→ Platform licence (GPU-node pricing) + deployment engagement + tenant billing ops.
+                           Revenue split: ~55% licence / 45% services. Margin ~58%. High expansion.
+    TIER 6  (Operated)   → Pure managed service. Retainer + 12–18% shared savings above baseline.
+                           Avg savings generated: $2M–$12M/yr. Our share = $300K–$1.8M upside.
+                           Highest LTV segment. Services margin ~48–55%.
+    ═══════════════════════════════════════════════════════════════
+    -->
+
+    <!-- SELF-SERVE PLANS -->
+    <div class="tier-sep">
+      <div class="tier-sep-line"></div>
+      <div class="tier-sep-lbl">Use the platform yourself</div>
+      <div class="tier-sep-line"></div>
+    </div>
+
+    <div class="pgrid">
+
+      <!-- FREE | PLG lead-gen. No margin target. -->
+      <div class="pc" id="pc-free">
+        <div class="pc-tier">Starter</div>
+        <div class="pc-name">Free</div>
+        <div class="pc-tag">Get visibility into your AI costs in minutes — no commitment.</div>
+        <div class="pc-price">$<span class="v-free">0</span></div>
+        <div class="pc-period">forever free</div>
+        <div class="pc-note">No credit card required</div>
+        <span class="pc-limit" style="background:var(--surf);color:var(--ink4);">Up to $10K AI spend / mo</span>
+        <div class="pc-div"></div>
+        <div class="pc-feats">
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>3 connected accounts</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Unified cost dashboard</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>7-day cost history</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Basic anomaly alerts</div>
+          <div class="pc-feat"><div class="ck n"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round"><line x1="1.5" y1="4.5" x2="7.5" y2="4.5"/></svg></div>Optimization &amp; orchestration</div>
+          <div class="pc-feat"><div class="ck n"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round"><line x1="1.5" y1="4.5" x2="7.5" y2="4.5"/></svg></div>Waste elimination</div>
+        </div>
+        <a href="#" class="pc-btn">Start free</a>
+      </div>
+
+      <!-- PLATFORM (GROWTH) | Pure SaaS. Margin ~81%. -->
+      <div class="pc" id="pc-growth">
+        <div class="pc-tier">Growth</div>
+        <div class="pc-name">Platform</div>
+        <div class="pc-tag">Full platform access for teams managing their own AI operations.</div>
+        <div class="pc-price">$<span class="v-growth">299</span></div>
+        <div class="pc-period">per month, billed <span class="bp">monthly</span></div>
+        <div class="pc-note sv an-note" style="display:none;color:var(--teal)">Save $718 / year on annual</div>
+        <div class="pc-note mo-note">14-day free trial · no card needed</div>
+        <span class="pc-limit" style="background:var(--blue-lt);color:var(--blue);">$10K – $100K AI spend / mo</span>
+        <div class="pc-div"></div>
+        <div class="pc-feats">
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Unlimited connected accounts</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Token-level cost attribution</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>90-day history + forecasting</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>ML anomaly detection</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Advisory optimization &amp; orchestration</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Idle resource detection + alerts</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Budget guardrails</div>
+        </div>
+        <a href="#" class="pc-btn">Start 14-day trial</a>
+      </div>
+
+      <!-- PLATFORM+ (SCALE) | SaaS + CS hours baked in. Blended margin ~74%. -->
+      <div class="pc feat" id="pc-scale">
+        <div class="pop-chip">Most popular</div>
+        <div class="pc-tier">Scale</div>
+        <div class="pc-name">Platform+</div>
+        <div class="pc-tag">Full automation for high-growth operations — with guided setup included.</div>
+        <div class="pc-price">$<span class="v-scale">999</span></div>
+        <div class="pc-period">per month, billed <span class="bp">monthly</span></div>
+        <div class="pc-note sv an-note" style="display:none;color:#6adfc0">Save $2,398 / year on annual</div>
+        <div class="pc-note mo-note">Includes onboarding session</div>
+        <span class="pc-limit" style="background:rgba(19,80,232,.18);color:#8ab4f8;">$100K – $500K AI spend / mo</span>
+        <div class="pc-div"></div>
+        <div class="pc-feats">
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Everything in Platform</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div><span><strong>Automated</strong> optimization actions</span></div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Full multi-cloud orchestration</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div><span><strong>Automated</strong> waste elimination</span></div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Shadow AI discovery</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Chargeback + showback reports</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>RBAC + SSO + quarterly reviews</div>
+        </div>
+        <a href="#" class="pc-btn">Start 14-day trial</a>
+      </div>
+    </div>
+
+    <!-- CO-MANAGED PLANS -->
+    <!--
+    SERVICE LAYER NOTE: Tiers 4–5 blend platform licence + scoped professional services.
+    Annual contracts. Sales-led motion. Delivery team involved from day one.
+    T&M services invoiced separately above platform fee. ACV range: $36K–$300K.
+    -->
+    <div class="tier-sep" style="margin-top:3rem">
+      <div class="tier-sep-line"></div>
+      <div class="tier-sep-lbl">We configure and co-manage it with you</div>
+      <div class="tier-sep-line"></div>
+    </div>
+
+    <div class="pgrid2">
+
+      <!-- ENTERPRISE | Licence + implementation + governance retainer. Margin ~62%. -->
+      <div class="pc" id="pc-enterprise">
+        <div class="pc-tier">Enterprise</div>
+        <div class="pc-name">Enterprise</div>
+        <div class="pc-tag">Platform licence + implementation, governance setup, and ongoing co-management for large organisations.</div>
+        <div class="pc-price pc-price-sm">From $3,000</div>
+        <div class="pc-period">/ month · annual contract</div>
+        <div class="pc-note" style="color:var(--ink4);">+ one-time implementation from $15K</div>
+        <span class="pc-limit" style="background:var(--gold-lt);color:var(--gold);">$500K+ AI spend / mo</span>
+        <div class="pc-div"></div>
+        <div class="pc-feats">
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Everything in Platform+</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div><span><strong>White-glove implementation</strong> — we connect, configure, and validate everything</span></div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Governance framework setup — policies, RBAC, audit trails</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Monthly savings review with your team</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>BYOK + Private Link + SCIM + SIEM</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Dedicated CSM + 2-hr support SLA</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>99.99% SLA · SOC 2 report · DPA</div>
+        </div>
+        <a href="#" class="pc-btn dk">Talk to sales</a>
+      </div>
+
+      <!-- DATA CENTER | Licence (GPU-node) + deployment + tenant billing ops. Margin ~58%. -->
+      <div class="pc" id="pc-datacenter">
+        <div class="pc-tier">Infrastructure</div>
+        <div class="pc-name">Data Center</div>
+        <div class="pc-tag">Platform licence + deployment services and tenant billing operations for colocation and AI cloud operators.</div>
+        <div class="pc-price pc-price-sm">From $5,000</div>
+        <div class="pc-period">/ month · GPU-node based pricing</div>
+        <div class="pc-note" style="color:var(--ink4);">+ deployment engagement from $20K</div>
+        <span class="pc-limit" style="background:var(--teal-lt);color:var(--teal);">Per GPU node pricing available</span>
+        <div class="pc-div"></div>
+        <div class="pc-feats">
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Everything in Enterprise</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div><span><strong>Agent deployment</strong> across all racks — our team handles the rollout</span></div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Per-rack, per-tenant hardware telemetry</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div><strong>Tenant billing automation</strong> — we operate the chargeback cycle</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Cooling-aware workload consolidation</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>GPU utilisation reports for tenants</div>
+          <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Energy + carbon tracking · idle recovery ops</div>
+        </div>
+        <a href="#" class="pc-btn dk">Talk to our team</a>
+      </div>
+    </div>
+
+    <!-- FULLY OPERATED TIER -->
+    <!--
+    OPERATED TIER INTERNAL NOTE:
+    Pure managed service. No self-service component required on the customer side.
+    Commercial model: base retainer ($8K–$25K/mo) + performance share (12–18% of verified
+    net savings above agreed baseline). Baseline set in first 30 days.
+    Avg savings generated: $2M–$12M/yr. Our 15% = $300K–$1.8M upside annually.
+    Services margin target: 48–55%. Highest LTV segment.
+    Named "Operated" deliberately — avoids outsourcing connotation. Positions us as an
+    embedded team, not a vendor. Expansion motion: start Operated, land Platform licence
+    for self-serve teams alongside.
+    -->
+    <div class="tier-sep" style="margin-top:3rem">
+      <div class="tier-sep-line"></div>
+      <div class="tier-sep-lbl">We run your AI FinOps programme end-to-end</div>
+      <div class="tier-sep-line"></div>
+    </div>
+
+    <div id="pc-concierge" style="max-width:860px;margin:0 auto">
+      <div class="pc prem" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
+        <div class="new-chip">Operated</div>
+        <div>
+          <div class="pc-tier">Fully managed</div>
+          <div class="pc-name">Operated</div>
+          <div class="pc-tag">Your dedicated AI FinOps team — we monitor, optimise, orchestrate, and eliminate waste on your behalf. You see the results.</div>
+          <div class="pc-price pc-price-sm" style="margin-top:.75rem">From $8,000</div>
+          <div class="pc-period">/ month retainer + performance share</div>
+          <div class="pc-note sv" style="display:block;margin-top:.25rem">Shared savings model available — we earn when you save</div>
+          <span class="pc-limit" style="background:rgba(90,45,130,.2);color:#d4aaff;margin-top:.75rem;display:inline-block">Any spend level · custom scoped</span>
+          <div style="margin-top:1.5rem"><a href="#" class="pc-btn" style="max-width:200px">Book a scoping call</a></div>
+        </div>
+        <div>
+          <div class="pc-div" style="margin-top:0"></div>
+          <div class="pc-feats">
+            <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div><span><strong>Dedicated AI FinOps analyst</strong> — named resource, embedded in your workflows</span></div>
+            <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div><span><strong>Weekly cost reviews</strong> — we surface findings, explain changes, and drive actions</span></div>
+            <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div><span><strong>Active optimisation management</strong> — we implement and tune, not just advise</span></div>
+            <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div><span><strong>Orchestration operations</strong> — scheduling policies, spot routing, queue management handled</span></div>
+            <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div><span><strong>Waste elimination sprints</strong> — quarterly deep-dives with committed savings targets</span></div>
+            <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div><span><strong>Board-ready reporting</strong> — monthly AI cost report prepared for your CFO / CIO</span></div>
+            <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Full platform access included for your team</div>
+            <div class="pc-feat"><div class="ck y"><svg viewBox="0 0 9 9" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4.5 3.5,7 8,2"/></svg></div>Performance guarantee — agreed savings baseline, quarterly reconciliation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- WHAT'S IN EVERY PLAN -->
+<div class="inside-strip" style="margin-top:3rem">
+  <div class="inside-inner">
+    <span class="in-lbl">Included in every paid plan</span>
+    <div class="in-items">
+      <div class="in-item"><div class="in-dot" style="background:var(--blue)"></div>📡 Monitoring</div>
+      <div class="in-item"><div class="in-dot" style="background:var(--teal)"></div>⚙️ Optimization</div>
+      <div class="in-item"><div class="in-dot" style="background:var(--gold)"></div>🔀 Orchestration</div>
+      <div class="in-item"><div class="in-dot" style="background:var(--coral)"></div>🗑️ Waste Elimination</div>
+      <div class="in-item"><div class="in-dot" style="background:var(--plum)"></div>🛡️ Governance</div>
+      <div class="in-item"><div class="in-dot" style="background:var(--ink4)"></div>🔒 SOC 2 security</div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- COMPARISON TABLE -->
+<div class="wrap">
+  <div class="sh">
+    <span class="ey">Full comparison</span>
+    <h2>Every capability, every plan</h2>
+    <p>Features, automation levels, and engagement depth — across all six tiers.</p>
+  </div>
+  <div class="ovf">
+  <table class="cmp">
+    <thead>
+      <tr>
+        <th></th><th>Free</th><th>Platform</th><th class="hl">Platform+</th>
+        <th>Enterprise</th><th>Data Center</th><th>Operated</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="gr"><td colspan="2">📡 Monitoring</td><td></td><td class="hb"></td><td></td><td></td><td></td></tr>
+      <tr class="row"><td>Connected accounts</td><td>3</td><td>Unlimited</td><td class="hb">Unlimited</td><td>Unlimited</td><td>Unlimited</td><td>Unlimited</td></tr>
+      <tr class="row"><td>Data freshness</td><td>Daily</td><td>15 min</td><td class="hb">15 min</td><td>Real-time</td><td>Real-time</td><td>Real-time</td></tr>
+      <tr class="row"><td>Cost history</td><td>7 days</td><td>90 days</td><td class="hb">12 months</td><td>Unlimited</td><td>Unlimited</td><td>Unlimited</td></tr>
+      <tr class="row"><td>Token-level attribution</td><td><span class="cn">—</span></td><td><span class="cy">✓</span></td><td class="hb"><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span> Managed</td></tr>
+      <tr class="row"><td>Anomaly detection</td><td><span class="cp">Basic</span></td><td><span class="cy">✓</span> ML</td><td class="hb"><span class="cy">✓</span> ML</td><td><span class="cy">✓</span> Custom</td><td><span class="cy">✓</span> Custom</td><td><span class="cy">✓</span> Operated</td></tr>
+      <tr class="row"><td>Cost forecasting</td><td><span class="cn">—</span></td><td><span class="cy">✓</span></td><td class="hb"><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span> + modelled</td></tr>
+      <tr class="row"><td>GPU / hardware telemetry</td><td><span class="cn">—</span></td><td><span class="cn">—</span></td><td class="hb"><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span> Per-rack</td><td><span class="cy">✓</span></td></tr>
+      <tr class="gr"><td colspan="2">⚙️ Optimization</td><td></td><td class="hb"></td><td></td><td></td><td></td></tr>
+      <tr class="row"><td>Recommendations</td><td><span class="cn">—</span></td><td><span class="cy">✓</span> Advisory</td><td class="hb"><span class="cy">✓</span> Automated</td><td><span class="cy">✓</span> Automated</td><td><span class="cy">✓</span> Automated</td><td><span class="cy">✓</span> We implement</td></tr>
+      <tr class="row"><td>Model routing</td><td><span class="cn">—</span></td><td><span class="cy">✓</span></td><td class="hb"><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span> Managed</td></tr>
+      <tr class="row"><td>Auto right-sizing</td><td><span class="cn">—</span></td><td><span class="cn">—</span></td><td class="hb"><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td></tr>
+      <tr class="row"><td>Reserved capacity</td><td><span class="cn">—</span></td><td><span class="cy">✓</span> Guided</td><td class="hb"><span class="cy">✓</span> Guided</td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span> We negotiate</td></tr>
+      <tr class="gr"><td colspan="2">🔀 Orchestration</td><td></td><td class="hb"></td><td></td><td></td><td></td></tr>
+      <tr class="row"><td>Workload scheduling</td><td><span class="cn">—</span></td><td><span class="cp">Single cloud</span></td><td class="hb"><span class="cy">✓</span> Multi-cloud</td><td><span class="cy">✓</span></td><td><span class="cy">✓</span> Bare-metal</td><td><span class="cy">✓</span> Operated</td></tr>
+      <tr class="row"><td>Spot / preemptible routing</td><td><span class="cn">—</span></td><td><span class="cy">✓</span></td><td class="hb"><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span> Managed</td></tr>
+      <tr class="row"><td>Cross-cloud arbitrage</td><td><span class="cn">—</span></td><td><span class="cn">—</span></td><td class="hb"><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td></tr>
+      <tr class="row"><td>Data residency enforcement</td><td><span class="cn">—</span></td><td><span class="cy">✓</span></td><td class="hb"><span class="cy">✓</span></td><td><span class="cy">✓</span> Cryptographic</td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td></tr>
+      <tr class="gr"><td colspan="2">🗑️ Waste elimination</td><td></td><td class="hb"></td><td></td><td></td><td></td></tr>
+      <tr class="row"><td>Idle resource detection</td><td><span class="cn">—</span></td><td><span class="cy">✓</span> Alerts</td><td class="hb"><span class="cy">✓</span> Automated</td><td><span class="cy">✓</span> Automated</td><td><span class="cy">✓</span></td><td><span class="cy">✓</span> Operated</td></tr>
+      <tr class="row"><td>Zombie job termination</td><td><span class="cn">—</span></td><td><span class="cn">—</span></td><td class="hb"><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td></tr>
+      <tr class="row"><td>Shadow AI discovery</td><td><span class="cn">—</span></td><td><span class="cp">Basic</span></td><td class="hb"><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span> Managed</td></tr>
+      <tr class="row"><td>Waste elimination sprints</td><td><span class="cn">—</span></td><td><span class="cn">—</span></td><td class="hb"><span class="cn">—</span></td><td><span class="cp">Add-on</span></td><td><span class="cp">Add-on</span></td><td><span class="cy">✓</span> Quarterly</td></tr>
+      <tr class="gr"><td colspan="2">👥 Engagement model</td><td></td><td class="hb"></td><td></td><td></td><td></td></tr>
+      <tr class="row"><td>Onboarding</td><td>Self-serve</td><td>Guided docs</td><td class="hb">Onboarding call</td><td>White-glove</td><td>Full deployment</td><td>We run it</td></tr>
+      <tr class="row"><td>Ongoing reviews</td><td><span class="cn">—</span></td><td><span class="cn">—</span></td><td class="hb">Quarterly</td><td>Monthly</td><td>Monthly</td><td>Weekly</td></tr>
+      <tr class="row"><td>Dedicated resource</td><td><span class="cn">—</span></td><td><span class="cn">—</span></td><td class="hb"><span class="cn">—</span></td><td>CSM</td><td>CSM + engineer</td><td>Named analyst</td></tr>
+      <tr class="row"><td>Performance guarantee</td><td><span class="cn">—</span></td><td><span class="cn">—</span></td><td class="hb"><span class="cn">—</span></td><td><span class="cn">—</span></td><td><span class="cn">—</span></td><td><span class="cy">✓</span> Savings SLA</td></tr>
+      <tr class="row"><td>Board / CFO reporting</td><td><span class="cn">—</span></td><td><span class="cn">—</span></td><td class="hb"><span class="cn">—</span></td><td><span class="cy">✓</span> Self-serve</td><td><span class="cy">✓</span></td><td><span class="cy">✓</span> We prepare it</td></tr>
+      <tr class="gr"><td colspan="2">🛡️ Security &amp; governance</td><td></td><td class="hb"></td><td></td><td></td><td></td></tr>
+      <tr class="row"><td>RBAC + SSO</td><td><span class="cn">—</span></td><td><span class="cp">Basic RBAC</span></td><td class="hb"><span class="cy">✓</span> Full</td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td></tr>
+      <tr class="row"><td>Audit log retention</td><td>7 days</td><td>90 days</td><td class="hb">12 months</td><td>Custom</td><td>Custom</td><td>Custom</td></tr>
+      <tr class="row"><td>BYOK encryption</td><td><span class="cn">—</span></td><td><span class="cn">—</span></td><td class="hb"><span class="cn">—</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td></tr>
+      <tr class="row"><td>SOC 2 report + DPA</td><td><span class="cn">—</span></td><td><span class="cy">✓</span> DPA only</td><td class="hb"><span class="cy">✓</span> DPA only</td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td><td><span class="cy">✓</span></td></tr>
+      <tr class="row"><td>Uptime SLA</td><td>Best effort</td><td>99.9%</td><td class="hb">99.9%</td><td>99.99%</td><td>99.99%</td><td>99.99%</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ROI BAND -->
+<div class="wrap">
+  <div class="roi-band">
+    <div class="roi-grid">
+      <div class="roi-text">
+        <span class="ey2">Why it pays for itself</span>
+        <h3>The platform pays back<br><em>within weeks,</em> not quarters</h3>
+        <p style="margin-top:.75rem">Whether you run it yourself or we run it for you, customers consistently recover the platform cost in the first billing cycle. On the Operated tier, we commit to a savings baseline and take a share only when we beat it.</p>
+      </div>
+      <div class="roi-items">
+        <div class="roi-item">
+          <div class="roi-item-top"><h5>Average payback period</h5><span class="roi-item-val">&lt; 30 days</span></div>
+          <p>Median time to recover full platform cost in identified savings across all paid tiers.</p>
+        </div>
+        <div class="roi-item">
+          <div class="roi-item-top"><h5>Average AI cost reduction</h5><span class="roi-item-val">40%</span></div>
+          <p>Across monitoring, optimization, orchestration, and waste elimination combined.</p>
+        </div>
+        <div class="roi-item">
+          <div class="roi-item-top"><h5>Operated tier savings range</h5><span class="roi-item-val">$2M – $12M/yr</span></div>
+          <p>Typical annual savings generated for enterprise customers on the fully operated programme.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- ADD-ONS -->
+<div class="wrap">
+  <div class="sh">
+    <span class="ey">Add-ons</span>
+    <h2>Extend any plan</h2>
+    <p>Optional capabilities available on Platform and above.</p>
+  </div>
+  <div class="ao-grid">
+    <div class="ao"><div class="ao-ico">🔬</div><h4>Prompt cost analytics</h4><p>Correlate LLM API costs with product features and user surfaces. Identify your most and least cost-efficient experiences.</p><div class="ao-price">$199 <span>/ month</span></div></div>
+    <div class="ao"><div class="ao-ico">🧪</div><h4>Advanced forecasting</h4><p>12-month cost modelling with scenario analysis, capacity planning, and reserved instance optimisation recommendations.</p><div class="ao-price">$149 <span>/ month</span></div></div>
+    <div class="ao"><div class="ao-ico">🌿</div><h4>Carbon &amp; energy tracking</h4><p>Per-workload energy and CO₂ tracking, PUE monitoring, and GHG Protocol Scope 3 sustainability reporting.</p><div class="ao-price">$99 <span>/ month</span></div></div>
+    <div class="ao"><div class="ao-ico">📊</div><h4>BI connector pack</h4><p>Native connectors for Looker, Tableau, Power BI, and Metabase with pre-built dashboards and data models.</p><div class="ao-price">$149 <span>/ month</span></div></div>
+    <div class="ao"><div class="ao-ico">🏛️</div><h4>Compliance pack</h4><p>HIPAA BAA, FedRAMP pre-auth support, SOX-ready audit trails, and a dedicated compliance dashboard.</p><div class="ao-price">$299 <span>/ month</span></div></div>
+    <div class="ao"><div class="ao-ico">⚡</div><h4>Waste elimination sprint</h4><p>A 30-day intensive engagement — our team identifies and eliminates waste with committed savings targets. Available as a one-time project on Enterprise and above.</p><div class="ao-price">From $20,000 <span>/ project</span></div></div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- SEGMENTS -->
+<div class="wrap">
+  <div class="sh">
+    <span class="ey">Find your fit</span>
+    <h2>Which plan is right for you?</h2>
+    <p>Our recommendation by team type and how much involvement you want from us.</p>
+  </div>
+  <div class="seg-grid">
+    <div class="sg s1">
+      <span class="sg-badge">🚀 Startups</span>
+      <h4>Platform plan</h4>
+      <p>Full visibility, spot routing, idle detection, and budget guardrails. Run it yourself and get instant ROI without enterprise complexity.</p>
+      <span class="sg-rec">Platform · $299/mo</span>
+    </div>
+    <div class="sg s2">
+      <span class="sg-badge">🏢 Enterprise</span>
+      <h4>Platform+ → Operated</h4>
+      <p>Start with Platform+ for full automation. Add Enterprise for implementation and co-management, or move to Operated for maximum savings.</p>
+      <span class="sg-rec">Platform+ · $999 or Enterprise+</span>
+    </div>
+    <div class="sg s3">
+      <span class="sg-badge">🏗️ Data Centers</span>
+      <h4>Data Center plan</h4>
+      <p>Hardware telemetry, per-rack billing, tenant isolation, and GPU utilisation maximisation — deployed and operated by our team.</p>
+      <span class="sg-rec">Data Center · from $5,000/mo</span>
+    </div>
+  </div>
+</div>
+
+<hr class="div" />
+
+<!-- FAQ -->
+<div class="wrap">
+  <div class="sh">
+    <span class="ey">FAQ</span>
+    <h2>Common questions</h2>
+  </div>
+  <div class="faq-list">
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How is AI spend under management calculated?<span class="fq-ico">+</span></button>
+      <div class="fq-a">We count the total monthly AI spend visible across all connected accounts — cloud provider costs, direct AI API costs, and on-premises GPU infrastructure. You are billed for the tier covering your highest month in a 3-month rolling window, so one spike doesn't permanently upgrade your tier.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">What is the difference between Platform+ and the Operated tier?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Platform+ gives your team all the tools to run AI FinOps yourselves — automation handles the heavy lifting. The Operated tier means our team runs the programme on your behalf: we review, act, report, and deliver savings. You see results without needing dedicated internal AI FinOps headcount.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">How does the shared savings model work on the Operated tier?<span class="fq-ico">+</span></button>
+      <div class="fq-a">We establish a verified baseline of your current AI spend in the first 30 days. We charge a monthly retainer to run the programme plus an optional performance share of 12–18% of net savings generated above the baseline, measured quarterly. There is no performance charge in months where savings don't exceed the baseline — our incentives are fully aligned with yours.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">What does the Enterprise implementation fee cover?<span class="fq-ico">+</span></button>
+      <div class="fq-a">The one-time implementation fee (from $15K) covers scoping and discovery, connecting all cloud and AI accounts, configuring RBAC, governance policies and audit trails, integrating with your identity provider and SIEM, an onboarding training session for your team, and a full configuration runbook. The fee scales with account complexity and is scoped during the sales process.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Can I start on Platform and upgrade to Operated later?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes — many customers start on Platform or Platform+ to get initial visibility, then upgrade to Operated once they see the scale of the opportunity. Existing configuration, integrations, and history carry over fully. Upgrades to Operated require a scoping call to agree the baseline and engagement scope.</div>
+    </div>
+    <div class="fq">
+      <button class="fq-q" onclick="tfq(this)">Do you offer startup or non-profit discounts?<span class="fq-ico">+</span></button>
+      <div class="fq-a">Yes — 50% off Platform and Platform+ for registered non-profits and academic institutions. 40% off for 12 months for pre-Series A startups under $1M ARR through our Startup Programme. Contact pricing@aifinops.com with a brief description of your organisation.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-band">
+  <div class="cta-inner">
+    <h2>Start saving on<br><em>AI costs</em> today</h2>
+    <p>Join 500+ teams using our platform to monitor, optimise, orchestrate, and eliminate waste — at whatever level of involvement works for you.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-paper">Start free — no card needed</a>
+      <a href="#" class="btn-ghost-w">Book a scoping call</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  let annual=false;
+  const P={growth:[299,239],scale:[999,799]};
+  function flipBilling(){annual=!annual;render()}
+  function setBilling(m){annual=m==='annual';render()}
+  function render(){
+    const t=document.getElementById('tog');
+    t.classList.toggle('active',annual);
+    t.setAttribute('aria-checked',annual);
+    document.getElementById('lbl-mo').classList.toggle('on',!annual);
+    document.getElementById('lbl-an').classList.toggle('on',annual);
+    document.querySelectorAll('.bp').forEach(e=>e.textContent=annual?'annually':'monthly');
+    document.querySelectorAll('.an-note').forEach(e=>e.style.display=annual?'block':'none');
+    document.querySelectorAll('.mo-note').forEach(e=>e.style.display=annual?'none':'block');
+    document.querySelector('.v-growth').textContent=annual?P.growth[1]:P.growth[0];
+    document.querySelector('.v-scale').textContent=annual?P.scale[1]:P.scale[0];
+  }
+  function pickSpend(el,tier){
+    document.querySelectorAll('.sp').forEach(p=>p.classList.remove('active'));
+    el.classList.add('active');
+    const map={free:'pc-free',growth:'pc-growth',scale:'pc-scale',enterprise:'pc-enterprise',datacenter:'pc-datacenter',concierge:'pc-concierge'};
+    document.querySelectorAll('.pc').forEach(c=>{c.style.outline='none'});
+    const t=document.getElementById(map[tier]);
+    if(t){
+      const card=t.classList.contains('pc')?t:t.querySelector('.pc');
+      if(card){card.style.outline='2px solid var(--blue)';card.style.outlineOffset='3px'}
+      t.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }
+  }
+  function tfq(btn){
+    const item=btn.closest('.fq');
+    const open=item.classList.contains('open');
+    document.querySelectorAll('.fq.open').forEach(i=>i.classList.remove('open'));
+    if(!open)item.classList.add('open');
+  }
+</script>
+</body>
+</html>
