@@ -3,6 +3,7 @@ import { getFooter } from "../../services/footerApi";
 import { Link } from "react-router-dom";
 
 
+
 export default function KoreValueSection() {
 
   // ✅ STATE
@@ -85,6 +86,7 @@ export default function KoreValueSection() {
     followText: "Follow us on", // ✅ FIXED
     copyright: data.copyright || ""
   };
+  const showSocial = false; 
   const platformItems = safeData.platform.items || [];
 
 const midPlatform = Math.ceil(platformItems.length / 2);
@@ -204,15 +206,17 @@ const supportedPlatforms = platformItems.slice(midPlatform);
 
         <div className="w-full h-[1px] bg-[#77B900] my-8" />
 
-        <div className="flex items-center gap-4 mb-4">
-          <span className="text-[#77B900] text-[16px]">
-            {safeData.followText}
-          </span>
+        {showSocial && (
+  <div className="flex items-center gap-4 mb-4">
+    <span className="text-[#77B900] text-[16px]">
+      {safeData.followText}
+    </span>
 
-          <img src="/Insta.svg" className="w-4" />
-          <img src="/Linkedin.svg" className="w-4" />
-          <img src="/twitter.svg" className="w-5" />
-        </div>
+    <img src="/Insta.svg" className="w-4" />
+    <img src="/Linkedin.svg" className="w-4" />
+    <img src="/twitter.svg" className="w-5" />
+  </div>
+)}
 
         <div className="text-[#7E7E7E] text-[12px] text-center">
           {safeData.copyright}
@@ -373,17 +377,17 @@ const supportedPlatforms = platformItems.slice(midPlatform);
               />
 
               {/* FOLLOW */}
-              <div
-                className="absolute text-[#77B900] text-[22px]"
-                style={{ top: "510px", left: "74px" }}
-              >
-                {safeData.followText}
-              </div>
+             {showSocial && (
+  <div className="flex items-center gap-4 mb-4">
+    <span className="text-[#77B900] text-[16px]">
+      {safeData.followText}
+    </span>
 
-              {/* ICONS */}
-              <img src="/Insta.svg" className="absolute" style={{ top: "518px", left: "229px", width: "20px" }} />
-              <img src="/Linkedin.svg" className="absolute" style={{ top: "518px", left: "273px", width: "20px" }} />
-              <img src="/twitter.svg" className="absolute" style={{ top: "518px", left: "313px", width: "22px" }} />
+    <img src="/Insta.svg" className="w-4" />
+    <img src="/Linkedin.svg" className="w-4" />
+    <img src="/twitter.svg" className="w-5" />
+  </div>
+)}
 
               {/* COPYRIGHT */}
               <div
