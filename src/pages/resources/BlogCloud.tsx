@@ -66,7 +66,7 @@ const BlogCloud = () => {
     
 
     {/* RIGHT SIDEBAR */}
-    <div className="w-[430px]">
+    <div className="w-[330px]">
       <div className="rounded-[10px] border border-[#77B900] p-5  relative overflow-hidden">
 
   {/* GLOW */}

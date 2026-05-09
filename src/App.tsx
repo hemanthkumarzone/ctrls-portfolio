@@ -12,8 +12,6 @@ import ServicesSection from "./components/sections/ServicesSection";
 
 import ResourcesPage from "./pages/resources/ResourcesPage";
 import HtmlViewer from "./pages/company/HtmlViewer";
-import PlatformHtmlPage from "./pages/platform/PlatformHtmlPage";
-
 
 import AboutPage from "./pages/company/AboutPage";
 import Customers from "./pages/company/Customers";
@@ -22,8 +20,8 @@ import GovernancePage from "./pages/company/governancepage";
 
 import BlogPage from "./pages/resources/BlogPage";
 import BlogDetails from "./pages/resources/BlogDetails";
-import Blogcloud from "./pages/resources/BlogCloud";
-import BlogDevops from "./pages/resources/BlogDevops";
+import BookDemo from "./pages/BookDemo";
+import PricingPage from "./pages/PricingPage";
 
 import Contactpage from "./components/requirements/Contactpage";
 
@@ -98,13 +96,14 @@ function App() {
               {/* BLOG */}
               <Route path="/resources/blog" element={<BlogPage />} />
               <Route path="/blog/:id" element={<BlogDetails />} />
-              <Route path="/blog/cloud" element={<Blogcloud />} />
-              <Route path="/blog/devops" element={<BlogDevops />} />
+              
 
               {/* CONTACT */}
               <Route path="/contact" element={<Contactpage />} />
-              <Route path="/platform/:type" element={<PlatformHtmlPage />} />
-              <Route path="/pricing" element={<HtmlViewer />} />
+              
+              
+              <Route path="/book-demo" element={<BookDemo />} />
+              <Route path="/pricing" element={<PricingPage />} />
 
             </Routes>
           </main>

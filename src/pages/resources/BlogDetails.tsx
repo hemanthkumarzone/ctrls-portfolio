@@ -1,9 +1,15 @@
+import { blogDetails } from "../../content/blogDetails";
 import { useParams } from "react-router-dom";
 
 import KoreValueSection from "../../components/sections/KoreValueSection";
 
 const BlogDetails = () => {
   const { id } = useParams();
+  const blog = blogDetails.find((b) => b.id === id);
+
+if (!blog) {
+  return <div className="text-white p-10">Blog not found</div>;
+}
 
   return (
     <div className="w-full min-h-screen text-white">
@@ -27,12 +33,12 @@ const BlogDetails = () => {
   <div className="relative max-w-[1200px] mx-auto px-6 py-4">
 
     <h1 className="text-[#9FEF00] text-[30px] font-semibold leading-[1.3] mb-5 max-w-[450px]">
-      It’s Here: Meet the New IBM CtrlS Report Studio – A Faster, More Intuitive Approach to Reporting
-    </h1>
+  {blog.title}
+</h1>
 
-    <p className="text-[#D9D9D9] text-[18px] leading-[1.6] max-w-[800px]">
-      A fully modernized reporting experience that makes report creation faster, simpler, and more flexible, enabling teams to clearly communicate and demonstrate IT value.
-    </p>
+<p className="text-[#D9D9D9] text-[18px] leading-[1.6] max-w-[800px]">
+  {blog.subtitle}
+</p>
 
   </div>
 
@@ -49,12 +55,35 @@ const BlogDetails = () => {
   {/* BACKGROUND (same as your theme) */}
   <div className="absolute inset-0 " />
 
-  {/* GRID DOT PATTERN (optional but matches design) */}
-  <div className="absolute inset-0 opacity-20 
-    bg-[radial-gradient(#77B900_1px,transparent_1px)]
-    [background-size:16px_16px]"
-  />
+  
 
+ {/* ===== BLOG CONTENT ===== */}
+<div className="relative z-10 p-8 space-y-4">
+
+  {blog.content.map((section, index) => (
+    <div key={index}>
+
+      {/* HEADING */}
+      <h2 className="text-[#9fdc00] text-[20px] font-semibold mb-3">
+        {section.heading}
+      </h2>
+
+      {/* TEXT */}
+      <div className="space-y-3 mt-4">
+        {section.text.split("\n\n").map((para, i) => (
+          <p
+            key={i}
+            className="text-white/80 text-[14px] leading-[1.5]"
+          >
+            {para}
+          </p>
+        ))}
+      </div>
+
+    </div>
+  ))}
+
+</div>
   {/* GREEN GLOW (bottom) */}
   <div className="absolute bottom-0 left-0 w-full h-[200px]
     bg-gradient-to-t from-[#77B900]/30 to-transparent"
@@ -65,7 +94,7 @@ const BlogDetails = () => {
     
 
     {/* RIGHT SIDEBAR */}
-    <div className="w-[430px]">
+    <div className="w-[330px]">
       <div className="rounded-[10px] border border-[#77B900] p-5  relative overflow-hidden">
 
   {/* GLOW */}
@@ -78,24 +107,24 @@ const BlogDetails = () => {
     <h3 className="text-white text-[18px] font-semibold mb-4">
       Article contents
     </h3>
-
-    <ul className="space-y-3 text-[#A3A3A3] text-[13px]">
-      <li>A Faster, More Streamlined Reporting Experience</li>
-      <li>Built for Broader Adoption and Scale</li>
-      <li>Richer Visualizations and More Interactive Insight</li>
-      <li>A Foundation for What’s Next</li>
-      <li>Getting Started and Migrating to the New Report Studio</li>
-      <li>Looking Ahead</li>
-    </ul>
+<ul className="space-y-3 text-[#A3A3A3] text-[13px]">
+  {blog.sidebar.articles.map((item, index) => (
+    <li key={index}>{item}</li>
+  ))}
+</ul>
 
     <div className="mt-6">
       <p className="text-white text-[14px] mb-2">Categories</p>
-      <p className="text-[#A3A3A3] text-[13px]">IT Finance</p>
+      <p className="text-[#A3A3A3] text-[13px]">
+  {blog.sidebar.category}
+</p>
     </div>
 
     <div className="mt-4">
       <p className="text-white text-[14px] mb-2">Tags</p>
-      <p className="text-[#A3A3A3] text-[13px]">Product Updates</p>
+      <p className="text-[#A3A3A3] text-[13px]">
+  {blog.sidebar.tags}
+</p>
     </div>
 
     <button className="mt-6 w-full bg-[#77B900] text-black py-2 rounded-[8px] font-medium">

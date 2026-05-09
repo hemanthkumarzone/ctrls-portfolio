@@ -562,6 +562,25 @@ const companyItems =
 >
   Contact us
 </div>
+<div
+  onClick={() => {
+  const section = document.getElementById("video-section");
+    
+
+if (section) {
+  const yOffset = -110; // adjust if needed
+  const y =
+    section.getBoundingClientRect().top +
+    window.pageYOffset +
+    yOffset;
+
+  window.scrollTo({ top: y, behavior: "smooth" });
+}
+  }}
+  className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition cursor-pointer"
+>
+  How it works
+</div>
           </div>
         </div>
 

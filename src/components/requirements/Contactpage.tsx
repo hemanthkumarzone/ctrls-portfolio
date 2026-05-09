@@ -1,23 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { submitContactForm } from "../../services/contactApi";
 
 export default function ContactPage() {
 
   const [form, setForm] = useState({
-  first_name: "",
-  last_name: "",
-  email: "",
-  phone: "",
-  company: "",
-  position: "",
-  location: "",
-  city: "",
-  message: "",
-  inquiry_type: "",
-  source: "",
-  consent: false,
-  subscribe: false,
-});
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+    company: "",
+    position: "",
+    location: "",
+    city: "",
+    message: "",
+    inquiry_type: "",
+    source: "",
+    consent: false,
+    subscribe: false,
+  });
+
+  const [popup, setPopup] = useState({
+    show: false,
+    type: "", // success | error
+    message: "",
+  });
+
+  // AUTO CLOSE POPUP
+  useEffect(() => {
+    if (popup.show) {
+      const timer = setTimeout(() => {
+        setPopup((prev) => ({ ...prev, show: false }));
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [popup.show]);
 
   const handleChange = (e: any) => {
     setForm({
@@ -27,33 +43,44 @@ export default function ContactPage() {
   };
 
   const handleSubmit = async (e: any) => {
-  e.preventDefault();
-  try {
-    await submitContactForm(form);
-    alert("Form submitted successfully ✅");
+    e.preventDefault();
 
-    setForm({
-      first_name: "",
-      last_name: "",
-      email: "",
-      phone: "",
-      company: "",
-      position: "",
-      location: "",
-      city: "",
-      message: "",
-      inquiry_type: "",
-      source: "",
-      consent: false,
-      subscribe: false,
-    });
+    try {
+      await submitContactForm(form);
 
-  } catch (error) {
-    console.error(error);
-    alert("Submission failed ❌");
-  }
-};
-  
+      setPopup({
+        show: true,
+        type: "success",
+        message: "Your request has been submitted successfully. Our team will contact you shortly.",
+      });
+
+      setForm({
+        first_name: "",
+        last_name: "",
+        email: "",
+        phone: "",
+        company: "",
+        position: "",
+        location: "",
+        city: "",
+        message: "",
+        inquiry_type: "",
+        source: "",
+        consent: false,
+        subscribe: false,
+      });
+
+    } catch (error) {
+      console.error(error);
+
+      setPopup({
+        show: true,
+        type: "error",
+        message: "Something went wrong. Please try again later.",
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen px-6 md:px-16 pt-24 pb-16 text-white">
 
@@ -73,32 +100,25 @@ export default function ContactPage() {
           General Information Request
         </p>
 
-        
+        {/* DROPDOWN */}
+        <div className="mt-6 mb-12">
+          <select
+            name="inquiry_type"
+            value={form.inquiry_type}
+            onChange={handleChange}
+            className="w-full bg-transparent border-b border-gray-500 py-3 text-sm text-gray-300 focus:outline-none focus:border-[#77B900]"
+          >
+            <option value="" disabled hidden>
+              Select the Reason for Your Inquiry*
+            </option>
+            <option value="General Inquiry" className="bg-black">General Inquiry</option>
+            <option value="Sales" className="bg-black">Sales</option>
+            <option value="Support" className="bg-black">Support</option>
+            <option value="Partnership" className="bg-black">Partnership</option>
+          </select>
+        </div>
 
-        {/* 🔥 REASON DROPDOWN (FIGMA STYLE) */}
-<div className="mt-6 mb-12">
-
-  <select
-    name="inquiry_type"
-    value={form.inquiry_type}
-    onChange={handleChange}
-    className="w-full bg-transparent border-0 border-b border-gray-500 py-3 text-sm text-gray-300 
-               focus:outline-none focus:border-[#77B900] appearance-none"
-  >
-    <option value="" disabled hidden>
-      Select the Reason for Your Inquiry*
-    </option>
-    <option value="General Inquiry" className="bg-black">General Inquiry</option>
-    <option value="Sales" className="bg-black">Sales</option>
-    <option value="Support" className="bg-black">Support</option>
-    <option value="Partnership" className="bg-black">Partnership</option>
-  </select>
-
-</div>
-
-        
-
-        {/* FORM GRID */}
+        {/* FORM */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10">
 
           <Input name="first_name" placeholder="First Name*" value={form.first_name} onChange={handleChange} />
@@ -109,7 +129,6 @@ export default function ContactPage() {
 
           <Input name="company" placeholder="Company" value={form.company} onChange={handleChange} />
 
-          {/* 🔥 POSITION DROPDOWN */}
           <select
             name="position"
             value={form.position}
@@ -123,7 +142,6 @@ export default function ContactPage() {
             <option value="Other" className="bg-black">Other</option>
           </select>
 
-          {/* 🔥 LOCATION DROPDOWN */}
           <select
             name="location"
             value={form.location}
@@ -152,7 +170,7 @@ export default function ContactPage() {
           />
         </div>
 
-        {/* 🔥 SOURCE DROPDOWN */}
+        {/* SOURCE */}
         <div className="mt-10">
           <select
             name="source"
@@ -171,35 +189,26 @@ export default function ContactPage() {
         {/* CHECKBOXES */}
         <div className="mt-8 flex flex-col gap-6 text-xs text-gray-400">
 
-          <label className="flex items-start gap-3">
+          <label className="flex gap-3">
             <input
-  type="checkbox"
-  name="consent"
-  checked={form.consent}
-  onChange={(e) =>
-    setForm({ ...form, consent: e.target.checked })
-  }
-  className="mt-1 accent-[#77B900]"
-/>
-            <span>
-              I Consent to CtrlS Systems, Inc. processing my data as per{" "}
-              <span className="text-[#77B900]">Privacy Policy</span>.
-            </span>
+              type="checkbox"
+              name="consent"
+              checked={form.consent}
+              onChange={(e) => setForm({ ...form, consent: e.target.checked })}
+              className="accent-[#77B900]"
+            />
+            I Consent to CtrlS Systems processing my data.
           </label>
 
-          <label className="flex items-start gap-3">
+          <label className="flex gap-3">
             <input
-  type="checkbox"
-  name="subscribe"
-  checked={form.subscribe}
-  onChange={(e) =>
-    setForm({ ...form, subscribe: e.target.checked })
-  }
-  className="mt-1 accent-[#77B900]"
-/>
-            <span>
-              Subscribe to updates and notifications.
-            </span>
+              type="checkbox"
+              name="subscribe"
+              checked={form.subscribe}
+              onChange={(e) => setForm({ ...form, subscribe: e.target.checked })}
+              className="accent-[#77B900]"
+            />
+            Subscribe to updates.
           </label>
 
         </div>
@@ -207,22 +216,49 @@ export default function ContactPage() {
         {/* BUTTON */}
         <div className="mt-10">
           <button
-  onClick={handleSubmit}
-  className="bg-[#77B900] text-black px-8 py-2 rounded-full text-sm font-medium hover:scale-105 transition"
->
-  Submit
-</button>
+            onClick={handleSubmit}
+            className="bg-[#77B900] text-black px-8 py-2 rounded-full text-sm font-medium hover:scale-105 transition"
+          >
+            Submit
+          </button>
         </div>
 
       </div>
+
+      {/* POPUP */}
+      {popup.show && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/70 z-50">
+          <div className="bg-[#0b1605] border border-[#77B900]/30 rounded-xl p-6 w-[90%] max-w-md text-center">
+
+            <div className="text-3xl mb-4">
+              {popup.type === "success" ? " " : " "}
+            </div>
+
+            <h2 className="text-white text-lg font-semibold mb-2">
+              {popup.type === "success" ? "Success" : "Error"}
+            </h2>
+
+            <p className="text-gray-400 text-sm mb-6">
+              {popup.message}
+            </p>
+
+            <button
+              onClick={() => setPopup({ ...popup, show: false })}
+              className="bg-[#77B900] text-black px-6 py-2 rounded-lg"
+            >
+              OK
+            </button>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
 
-
-/* INPUT COMPONENT */
+/* INPUT */
 function Input({ name, placeholder, value, onChange }: any) {
-  
   return (
     <input
       name={name}

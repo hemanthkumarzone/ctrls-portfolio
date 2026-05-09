@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ ADD THIS
+
 import VisibilityCard from "../ui/VisibilityCard";
 import { getVisibility } from "../../services/visibilityApi";
 import demoVideo from "../../assets/demo.mp4";
@@ -23,26 +25,9 @@ export default function VisibilitySection() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const [isPlaying, setIsPlaying] = useState(false);
+  const navigate = useNavigate(); // ✅ ADD THIS
 
-  // 🎯 PLAY / PAUSE ON CLICK (WITH SOUND)
-  const handlePlayPause = async () => {
-    if (!videoRef.current) return;
-
-    try {
-      if (videoRef.current.paused) {
-        await videoRef.current.play(); // 🔊 plays with sound
-        setIsPlaying(true);
-      } else {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      }
-    } catch (err) {
-      console.error("Play error:", err);
-    }
-  };
-
-  // 🎯 SCROLL → AUTO PAUSE
+  // 🎯 SCROLL → AUTO PAUSE VIDEO
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -50,7 +35,6 @@ export default function VisibilitySection() {
 
         if (!entry.isIntersecting) {
           videoRef.current.pause();
-          setIsPlaying(false);
         }
       },
       { threshold: 0.4 }
@@ -67,7 +51,7 @@ export default function VisibilitySection() {
     };
   }, []);
 
-  // 🎯 API CALL (FIXES LOADING ISSUE)
+  // 🎯 API CALL
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -83,9 +67,9 @@ export default function VisibilitySection() {
     fetchData();
   }, []);
 
-  // 🎯 CONTACT BUTTON
+  // ✅ FIXED: CONTACT BUTTON → ROUTE NAVIGATION
   const handleContactClick = () => {
-    window.dispatchEvent(new Event("openContact"));
+    navigate("/contact");
   };
 
   // 🎯 DEMO SCROLL
@@ -94,7 +78,7 @@ export default function VisibilitySection() {
     section?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // 🎯 LOADING STATE
+  // 🎯 LOADING
   if (loading) {
     return (
       <div className="text-white text-center mt-10">
@@ -112,35 +96,30 @@ export default function VisibilitySection() {
   }
 
   return (
-    <section className="relative w-full flex flex-col items-center py-16 lg:py-20">
+    <section
+      ref={containerRef}
+      id="video-section"
+      className="relative w-full flex flex-col items-center py-16 lg:py-20"
+    >
 
-      {/* 🎥 VIDEO CONTAINER */}
-      <div className="w-full flex justify-center -mt-16 md:-mt-32 lg:-mt-40 mb-10 px-4">
-        <div className="w-full max-w-[700px] aspect-[988/556] relative">
-          <div className="absolute inset-0 rounded-[70px] p-[3px] bg-gradient-to-r from-[#0F1800] to-[#77B900]">
-            
-            <div
-              ref={containerRef}
-              onClick={handlePlayPause}
-              className="w-full h-full rounded-[67px] bg-[#131814] overflow-hidden relative cursor-pointer"
-            >
-              <video
-                ref={videoRef}
-                src={demoVideo}
-                loop
-                playsInline
-                muted={false}   // 🔊 SOUND ENABLED
-                className="w-full h-full object-cover"
-              />
+      {/* 🎥 VIDEO */}
+      <div className="w-full flex justify-center -mt-16 md:-mt-24 lg:-mt-28 mb-12 px-4">
+        <div className="w-full max-w-[740px] relative">
+          <div className="relative w-full pb-[56%]">
 
-              {/* ▶ PLAY ICON */}
-              {!isPlaying && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                  <div className="w-16 h-16 bg-[#77B900] rounded-full flex items-center justify-center text-black text-2xl">
-                    ▶
-                  </div>
-                </div>
-              )}
+            <div className="absolute inset-0 rounded-[60px] p-[2px] bg-gradient-to-r from-[#0F1800] to-[#77B900]">
+              <div className="w-full h-full rounded-[58px] bg-[#131814] overflow-hidden">
+
+                <video
+                  ref={videoRef}
+                  src={demoVideo}
+                  
+                  playsInline
+                  controls
+                  className="w-full h-full object-cover"
+                />
+
+              </div>
             </div>
 
           </div>
@@ -151,20 +130,20 @@ export default function VisibilitySection() {
       <div className="flex flex-wrap justify-center gap-6 mb-10 px-4">
         <button
           onClick={handleContactClick}
-          className="w-[176px] h-[48px] text-[#77B900] border border-[#77B900] rounded-lg"
+          className="w-[176px] h-[48px] text-[#77B900] border border-[#77B900] rounded-lg hover:bg-[#77B900] hover:text-black transition"
         >
           Contact Us
         </button>
 
         <button
           onClick={handleDemoClick}
-          className="w-[176px] h-[48px] bg-[#77B900] text-black rounded-lg"
+          className="w-[176px] h-[48px] bg-[#77B900] text-black rounded-lg hover:opacity-90 transition"
         >
           Get Demo
         </button>
       </div>
 
-      {/* 🔲 MAIN CONTENT */}
+      {/* 🔲 CONTENT */}
       <div className="relative w-full max-w-[1600px] px-4 md:px-6 lg:px-8">
 
         {/* TITLE */}

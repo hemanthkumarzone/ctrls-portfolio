@@ -8,6 +8,18 @@ const HtmlViewer = () => {
 
   let filePath = "";
 
+  // ✅ ONLY THESE HAVE HTML FILES (EDIT THIS LIST)
+  const validPlatformPages = [
+    "ai-financial-management",
+    "savings-acquisition-cost",
+    "cost-per-result",
+    "tco-hybrid-systems",
+    "gpu-cost-attribution",
+    "kubernetes-roi-tracking",
+    "unified-billing",
+    "pricing"
+  ];
+
   if (location.pathname.startsWith("/company")) {
     filePath = `/pages/${safeType}.html`;
   } else if (location.pathname.startsWith("/services")) {
@@ -18,16 +30,21 @@ const HtmlViewer = () => {
     filePath = `/pages/platform/pricing.html`;
   }
 
+  // ✅ ONLY LOAD IFRAME IF PAGE EXISTS IN LIST
+  const shouldRenderIframe =
+    !location.pathname.startsWith("/platform") ||
+    validPlatformPages.includes(safeType);
+
   return (
     <div className="w-full h-screen">
-      {filePath ? (
+      {shouldRenderIframe ? (
         <iframe
           src={filePath}
           className="w-full h-full border-none"
           title="html-view"
         />
       ) : (
-        <div className="text-white p-10">Page not found</div>
+        <div className="w-full h-full" /> // ✅ BLANK PAGE
       )}
     </div>
   );
