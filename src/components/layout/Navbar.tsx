@@ -140,15 +140,23 @@ const companyItems =
           <div className="flex items-center justify-between h-[70px] md:h-[85px] lg:h-[95px] x1:h-[105px]">
 
             {/* LEFT */}
-            <div className="flex justify-start">
-              <Link to="/" className="flex items-center justify-center">
-                <img
-                  src="/CtrlS.png"
-                  alt="logo"
-                  className="w-[120px] sm:w-[140px] md:w-[160px] lg:w-[180px] xl:w-[200px] object-contain"
-                />
-              </Link>
-            </div>
+            <div className="flex justify-start items-center h-full">
+  <Link to="/" className="flex items-center h-full">
+    <img
+      src="/Kore Value Logo.png"
+      alt="logo"
+      className="
+        h-[42px]
+        sm:h-[48px]
+        md:h-[54px]
+        lg:h-[60px]
+        xl:h-[64px]
+        w-auto
+        object-contain
+      "
+    />
+  </Link>
+</div>
 
             {/* CENTER */}
             <div className="hidden lg:flex flex-1 justify-center">
@@ -263,125 +271,157 @@ const companyItems =
     >
       {MenuItem}
 
-      {showPlatform && (
-  <div className="absolute top-full mt-4 left-1/2 -translate-x-1/2 z-50">
+      {/* PLATFORM DROPDOWN */}
+      <div
+        className={`
+          absolute top-full mt-4 left-1/2 -translate-x-1/2 z-50
+          transition-all duration-300 ease-out
 
-    {/* OUTER BORDER GLOW (same as before) */}
-    <div className="p-[2px] rounded-[26px] bg-gradient-to-br from-[#0F1800] to-[#77B900] shadow-[0_0_50px_rgba(119,185,0,0.3)]">
+          ${
+            showPlatform
+              ? "opacity-100 visible translate-y-0"
+              : "opacity-0 invisible -translate-y-2"
+          }
+        `}
+      >
 
-      {/* INNER BOX (reduced size ONLY) */}
-      <div className="bg-[#0F1800]/95 backdrop-blur-xl rounded-[24px] px-8 py-6 w-[700px]">
+        {/* OUTER BORDER */}
+        <div className="p-[2px] rounded-[26px] bg-gradient-to-br from-[#0F1800] to-[#77B900] shadow-[0_0_50px_rgba(119,185,0,0.3)]">
 
-        <div className="grid grid-cols-2 gap-12">
+          {/* INNER BOX */}
+          <div className="bg-[#0F1800]/95 backdrop-blur-xl rounded-[24px] px-8 py-6 w-[700px]">
 
-          {/* ================= LEFT ================= */}
-          <div>
+            <div className="grid grid-cols-2 gap-12">
 
-            {/* TITLE */}
-            <div className="mb-5">
-              <h3 className="text-white text-[22px] font-semibold">
-                Business Requirement
-              </h3>
+              {/* ================= LEFT ================= */}
+              <div>
 
-              <div className="relative mt-2 h-[2px] w-[180px]">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#77B900] to-transparent rounded-full" />
-                <div className="absolute inset-0 blur-sm bg-[#77B900]/60 rounded-full" />
+                {/* TITLE */}
+                <div className="mb-5">
+                  <h3 className="text-white text-[22px] font-semibold">
+                    Business Requirement
+                  </h3>
+
+                  <div className="relative mt-2 h-[2px] w-[180px]">
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#77B900] to-transparent rounded-full" />
+                    <div className="absolute inset-0 blur-sm bg-[#77B900]/60 rounded-full" />
+                  </div>
+                </div>
+
+                {/* ITEMS */}
+                <div className="flex flex-col gap-2">
+                  {businessItems.map((item: any, i: number) => {
+                    const slug = item.path
+                      ?.split("/")
+                      .pop()
+                      ?.replace(".html", "")
+                      ?.toLowerCase();
+
+                    if (!slug) return null;
+
+                    return (
+                      <Link key={i} to={`/platform/${slug}`}>
+                        <div
+                          className="
+                            group cursor-pointer p-2 rounded-xl
+                            transition-all duration-300
+                            hover:bg-gradient-to-br
+                            hover:from-[#77B900]/10
+                            hover:shadow-[0_0_20px_rgba(119,185,0,0.15)]
+                          "
+                        >
+                          <p className="text-white/70 group-hover:text-[#9fdc00] font-medium text-[14px]">
+                            {item.title}
+                          </p>
+
+                          {item.description && (
+                            <p className="text-[12px] text-white/40 mt-1 group-hover:text-white/70">
+                              {item.description}
+                            </p>
+                          )}
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+
               </div>
-            </div>
 
-            {/* ITEMS */}
-            <div className="flex flex-col gap-2">
-             {businessItems.map((item: any, i: number) => {
-  const slug = item.path
-    ?.split("/")
-    .pop()
-    ?.replace(".html", "")
-    ?.toLowerCase();
+              {/* ================= RIGHT ================= */}
+              <div>
 
-  if (!slug) return null; // ✅ prevent bad links
+                {/* TITLE */}
+                <div className="mb-5">
+                  <h3 className="text-white text-[22px] font-semibold">
+                    Supported Platforms
+                  </h3>
 
-  return (
-    <Link key={i} to={`/platform/${slug}`}>
-      <div className="
-        group cursor-pointer p-2 rounded-xl
-        transition-all duration-300
-        hover:bg-gradient-to-br
-        hover:from-[#77B900]/10
-        hover:shadow-[0_0_20px_rgba(119,185,0,0.15)]
-      ">
-        <p className="text-white/70 group-hover:text-[#9fdc00] font-medium text-[14px]">
-          {item.title}
-        </p>
+                  <div className="relative mt-2 h-[2px] w-[200px]">
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#77B900] to-transparent rounded-full" />
+                    <div className="absolute inset-0 blur-sm bg-[#77B900]/60 rounded-full" />
+                  </div>
+                </div>
 
-        {item.description && (
-          <p className="text-[12px] text-white/40 mt-1 group-hover:text-white/70">
-            {item.description}
-          </p>
-        )}
-      </div>
-    </Link>
-  );
-})}
+                {/* ANIMATED ITEMS */}
+                <div className="flex flex-col gap-2">
+                  {platformList.map((item: any, i: number) => {
+                    const slug = item.path
+                      ?.split("/")
+                      .pop()
+                      ?.replace(".html", "")
+                      ?.toLowerCase();
+
+                    return (
+                      <Link key={i} to={`/platform/${slug}`}>
+                        <div
+                          className={`
+                            group cursor-pointer p-2 rounded-xl
+                            transition-all duration-[1400ms] ease-out
+                            hover:bg-gradient-to-br
+                            hover:from-[#77B900]/10
+                            hover:shadow-[0_0_20px_rgba(119,185,0,0.15)]
+
+                            ${
+                              showPlatform
+                                ? "opacity-100 translate-x-0"
+                                : "opacity-0 translate-x-10"
+                            }
+                          `}
+                          style={{
+                            transitionDelay: `${i * 250}ms`
+                          }}
+                        >
+                          <p
+                            className="
+                              text-white/70
+                              group-hover:text-[#9fdc00]
+                              font-medium
+                              text-[14px]
+                              transition-all duration-300
+                            "
+                          >
+                            {item.title}
+                          </p>
+
+                          {item.description && (
+                            <p className="text-[12px] text-white/40 mt-1 group-hover:text-white/70">
+                              {item.description}
+                            </p>
+                          )}
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+
+              </div>
+
             </div>
 
           </div>
-
-          {/* ================= RIGHT ================= */}
-          <div>
-
-            {/* TITLE */}
-            <div className="mb-5">
-              <h3 className="text-white text-[22px] font-semibold">
-                Supported Platforms
-              </h3>
-
-              <div className="relative mt-2 h-[2px] w-[200px]">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#77B900] to-transparent rounded-full" />
-                <div className="absolute inset-0 blur-sm bg-[#77B900]/60 rounded-full" />
-              </div>
-            </div>
-
-            {/* ITEMS */}
-            <div className="flex flex-col gap-2">
-              {platformList.map((item: any, i: number) => {
-  const slug = item.path
-    ?.split("/")
-    .pop()
-    ?.replace(".html", "")
-    ?.toLowerCase();
-
-  return (
-    <Link key={i} to={`/platform/${slug}`}>
-      <div className="
-        group cursor-pointer p-2 rounded-xl
-        transition-all duration-300
-        hover:bg-gradient-to-br
-        hover:from-[#77B900]/10
-        hover:shadow-[0_0_20px_rgba(119,185,0,0.15)]
-      ">
-        <p className="text-white/70 group-hover:text-[#9fdc00] font-medium text-[14px]">
-          {item.title}
-        </p>
-
-        {item.description && (
-          <p className="text-[12px] text-white/40 mt-1 group-hover:text-white/70">
-            {item.description}
-          </p>
-        )}
-      </div>
-    </Link>
-  );
-})}
-            </div>
-
-          </div>
-
         </div>
 
       </div>
-    </div>
-  </div>
-)}
     </div>
   );
 }

@@ -3,179 +3,344 @@ import { useEffect, useState } from "react";
 
 const bars = [
   { label: "AWS", value: 220 },
-  { label: "AZURE", value: 150 },
-  { label: "GCP", value: 100 },
+  { label: "AZURE", value: 145 },
+  { label: "GCP", value: 85 },
 ];
 
 const max = 240;
 
 export default function FinOpsChart() {
-  const [key, setKey] = useState(0);
+  const [animateKey, setAnimateKey] = useState(0);
 
   useEffect(() => {
-    const i = setInterval(() => setKey((p) => p + 1), 4500);
-    return () => clearInterval(i);
+    const interval = setInterval(() => {
+      setAnimateKey((p) => p + 1);
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col justify-between">
+    <div className="w-full h-full flex flex-col">
 
-      {/* TITLE */}
-      <div className="text-white text-xs sm:text-sm md:text-base font-medium mb-2">
-        FinOps Autopilot
+      {/* HEADER */}
+      <div className="flex items-center justify-between mb-2 px-1">
+
+        <div className="flex items-center gap-2">
+
+          {/* GLOW DOT */}
+          <motion.div
+            className="w-2 h-2 rounded-full bg-[#84cc16]"
+            animate={{
+              boxShadow: [
+                "0 0 5px #84cc16",
+                "0 0 18px #84cc16",
+                "0 0 5px #84cc16",
+              ],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+            }}
+          />
+
+          <div className="text-white text-[10px] sm:text-xs font-medium tracking-wide">
+            FinOps Autopilot
+          </div>
+
+        </div>
+
+        {/* LIVE BADGE */}
+        <div
+          className="
+            px-2 py-[2px]
+
+            rounded-full
+
+            border border-[#84cc16]/30
+
+            bg-[#84cc16]/10
+
+            text-[#84cc16]
+
+            text-[8px]
+
+            font-medium
+          "
+        >
+          LIVE
+        </div>
+
       </div>
 
-      {/* CHART BOX */}
-      <div className="flex-1 rounded-2xl bg-[#020806] px-3 sm:px-4 py-3 flex items-center overflow-hidden">
+      {/* MAIN CHART CARD */}
+      <div
+        className="
+          relative
 
+          flex-1
+
+          rounded-[18px]
+
+          overflow-hidden
+
+          bg-[linear-gradient(180deg,#06110A_0%,#020806_100%)]
+
+          border border-[#84cc16]/10
+
+          shadow-[0_0_35px_rgba(132,204,22,0.08)]
+
+          px-3
+          py-3
+        "
+      >
+
+        {/* BACKGROUND GLOW */}
+        <div
+          className="
+            absolute
+            inset-0
+
+            bg-[radial-gradient(circle_at_top_right,rgba(132,204,22,0.08),transparent_45%)]
+
+            pointer-events-none
+          "
+        />
+
+        {/* SVG */}
         <svg
-          viewBox="0 0 520 180"
+          viewBox="0 0 500 150"
           preserveAspectRatio="xMidYMid meet"
-          className="w-full h-[90px] sm:h-[110px] md:h-[120px]"
+          className="w-full h-full relative z-10"
         >
 
+          {/* DEFINITIONS */}
           <defs>
-            <linearGradient id="barGradient" x1="0" y1="0" x2="1" y2="0">
+
+            {/* PREMIUM GREEN */}
+            <linearGradient
+              id="premiumGreen"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="0%"
+            >
               <stop offset="0%" stopColor="#84cc16" />
-              <stop offset="50%" stopColor="#a3e635" />
-              <stop offset="100%" stopColor="#84cc16" />
+              <stop offset="45%" stopColor="#a3e635" />
+              <stop offset="100%" stopColor="#65a30d" />
             </linearGradient>
 
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="3" result="blur" />
+            {/* BAR GLOW */}
+            <filter id="premiumGlow">
+              <feGaussianBlur stdDeviation="5" result="blur" />
+
               <feMerge>
                 <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
+
           </defs>
 
-          {/* AXIS */}
-          <motion.g
-            stroke="#6b7280"
-            strokeWidth="1"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-          >
-            <line x1="60" y1="20" x2="60" y2="190" />
-            <line x1="60" y1="190" x2="500" y2="190" />
-          </motion.g>
+          {/* GRID LINES */}
+          {[0, 1, 2].map((_, i) => {
+            const y = 36 + i * 34;
 
-          {/* TICKS */}
-          {[0, 50, 100, 150, 200].map((v, i) => {
-            const x = 60 + (v / max) * 440;
+            return (
+              <motion.line
+                key={i}
+                x1="70"
+                y1={y + 8}
+                x2="470"
+                y2={y + 8}
+                stroke="rgba(255,255,255,0.05)"
+                strokeDasharray="4 6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 1,
+                  delay: i * 0.2,
+                }}
+              />
+            );
+          })}
+
+          {/* AXIS */}
+          <g stroke="#3F4A45" strokeWidth="1">
+
+            {/* Y */}
+            <line x1="70" y1="20" x2="70" y2="118" />
+
+            {/* X */}
+            <line x1="70" y1="118" x2="470" y2="118" />
+
+          </g>
+
+          {/* X TICKS */}
+          {[0, 50, 100, 150, 200].map((tick, i) => {
+            const x = 70 + (tick / max) * 400;
 
             return (
               <g key={i}>
-                <line x1={x} y1="190" x2={x} y2="195" stroke="#6b7280" />
+                <line
+                  x1={x}
+                  y1="118"
+                  x2={x}
+                  y2="122"
+                  stroke="#3F4A45"
+                />
+
                 <text
                   x={x}
-                  y="205"
-                  className="text-[7px] sm:text-[10px]"
-                  fill="#9ca3af"
+                  y="135"
+                  fill="#6B7280"
+                  fontSize="8"
                   textAnchor="middle"
                 >
-                  ₹{v}k
+                  ₹{tick}k
                 </text>
               </g>
             );
           })}
 
           {/* BARS */}
-          {bars.map((bar, i) => {
-            const y = 40 + i * 55;
-            const width = (bar.value / max) * 440;
+          {bars.map((bar, index) => {
+            const y = 28 + index * 34;
+
+            const width = (bar.value / max) * 400;
 
             return (
-              <g key={`${key}-${i}`}>
+              <g key={`${animateKey}-${index}`}>
 
                 {/* LABEL */}
                 <text
-                  x="10"
-                  y={y + 15}
-                  className="text-[8px] sm:text-[11px]"
-                  fill="#9ca3af"
+                  x="18"
+                  y={y + 10}
+                  fill="#9CA3AF"
+                  fontSize="9"
+                  fontWeight="500"
                 >
                   {bar.label}
                 </text>
 
-                {/* BAR HEIGHT RESPONSIVE */}
+                {/* GLOW BAR */}
                 <motion.rect
-                  x="60"
+                  x="70"
                   y={y}
-                  height="20"
-                  className="sm:h-[26px]"
-                  fill="url(#barGradient)"
-                  filter="url(#glow)"
-                  opacity="0.5"
+                  rx="4"
+                  ry="4"
+                  height="16"
+                  fill="url(#premiumGreen)"
+                  filter="url(#premiumGlow)"
+                  opacity="0.45"
                   initial={{ width: 0 }}
                   animate={{ width }}
-                  transition={{
-                    duration: 1.4,
-                    delay: i * 0.25,
-                    ease: "easeOut",
-                  }}
-                />
-
-                <motion.rect
-                  x="60"
-                  y={y}
-                  height="20"
-                  className="sm:h-[26px]"
-                  fill="url(#barGradient)"
-                  initial={{ width: 0 }}
-                  animate={{ width }}
-                  transition={{
-                    duration: 1.2,
-                    delay: i * 0.25,
-                    ease: "easeOut",
-                  }}
-                />
-
-                <motion.rect
-                  x="60"
-                  y={y}
-                  height="20"
-                  className="sm:h-[26px]"
-                  fill="white"
-                  opacity="0.15"
-                  initial={{ x: 60 }}
-                  animate={{ x: 60 + width }}
                   transition={{
                     duration: 1.5,
-                    delay: i * 0.3,
-                    ease: "easeInOut",
+                    delay: index * 0.25,
+                    ease: "easeOut",
                   }}
                 />
+
+                {/* MAIN BAR */}
+                <motion.rect
+                  x="70"
+                  y={y}
+                  rx="4"
+                  ry="4"
+                  height="16"
+                  fill="url(#premiumGreen)"
+                  initial={{ width: 0 }}
+                  animate={{ width }}
+                  transition={{
+                    duration: 1.3,
+                    delay: index * 0.25,
+                    ease: "easeOut",
+                  }}
+                />
+
+                {/* SHINE SWEEP */}
+                
 
               </g>
             );
           })}
+
         </svg>
       </div>
 
-      {/* BOTTOM STATS */}
-      <div className="
-        flex flex-wrap justify-center sm:justify-between
-        gap-2 sm:gap-0
-        mt-2 sm:mt-3
-        text-[10px] sm:text-sm
-      ">
+      {/* FOOTER */}
+      <div
+        className="
+          flex justify-between items-center
 
-        <div className="flex-1 min-w-[30%] text-center">
-          <div className="text-gray-400">AWS</div>
-          <div className="text-[#84cc16] font-semibold">+12%</div>
+          px-2
+          mt-2
+
+          text-[9px]
+        "
+      >
+
+        {/* AWS */}
+        <div className="text-center">
+          <div className="text-[#6B7280] tracking-wide">
+            AWS
+          </div>
+
+          <motion.div
+            className="text-[#84cc16] font-semibold"
+            animate={{
+              opacity: [0.7, 1, 0.7],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+            }}
+          >
+            +12%
+          </motion.div>
         </div>
 
-        <div className="flex-1 min-w-[30%] text-center">
-          <div className="text-gray-400">AZURE</div>
-          <div className="text-red-500 font-semibold">-3%</div>
+        {/* AZURE */}
+        <div className="text-center">
+          <div className="text-[#6B7280] tracking-wide">
+            AZURE
+          </div>
+
+          <motion.div
+            className="text-[#ef4444] font-semibold"
+            animate={{
+              opacity: [0.7, 1, 0.7],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              delay: 0.4,
+            }}
+          >
+            -3%
+          </motion.div>
         </div>
 
-        <div className="flex-1 min-w-[30%] text-center">
-          <div className="text-gray-400">GCP</div>
-          <div className="text-[#84cc16] font-semibold">+8%</div>
+        {/* GCP */}
+        <div className="text-center">
+          <div className="text-[#6B7280] tracking-wide">
+            GCP
+          </div>
+
+          <motion.div
+            className="text-[#84cc16] font-semibold"
+            animate={{
+              opacity: [0.7, 1, 0.7],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              delay: 0.8,
+            }}
+          >
+            +8%
+          </motion.div>
         </div>
 
       </div>

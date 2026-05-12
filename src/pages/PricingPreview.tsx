@@ -1,5 +1,7 @@
+import { useState } from "react";
 import KoreValueSection from "../components/sections/KoreValueSection";
 export default function PricingPreview() {
+  const [isAnnual, setIsAnnual] = useState(false);
   return (
     <div className="min-h-screen text-white px-4 py-16">
 
@@ -29,21 +31,55 @@ export default function PricingPreview() {
 
         {/* TOGGLE */}
         <div className="mt-6 flex items-center justify-center gap-3">
-          <span className="text-[12px] text-gray-400">Monthly</span>
 
-          <div className="w-9 h-5 bg-gray-700 rounded-full relative">
-            <div className="w-4 h-4 bg-[#77B900] rounded-full absolute top-[2px] left-[2px]" />
-          </div>
+  <span
+    className={`text-[12px] transition ${
+      !isAnnual ? "text-white" : "text-gray-400"
+    }`}
+  >
+    Monthly
+  </span>
 
-          <span className="text-[12px] text-white">Annual</span>
+  {/* TOGGLE */}
+  <button
+    onClick={() => setIsAnnual(!isAnnual)}
+    className={`
+      relative
+      w-11 h-6
+      rounded-full
+      transition-all duration-300
+      ${isAnnual ? "bg-[#77B900]" : "bg-gray-700"}
+    `}
+  >
+    <div
+      className={`
+        absolute top-[2px]
+        w-5 h-5
+        rounded-full
+        bg-white
+        transition-all duration-300
 
-          <span className="ml-2 text-[10px] px-2 py-[3px] rounded-full bg-[#0f2a0f] text-[#77B900] border border-[#77B900]/30">
-            Save up to 20%
-          </span>
-        </div>
+        ${isAnnual ? "left-[22px]" : "left-[2px]"}
+      `}
+    />
+  </button>
+
+  <span
+    className={`text-[12px] transition ${
+      isAnnual ? "text-white" : "text-gray-400"
+    }`}
+  >
+    Annual
+  </span>
+
+  <span className="ml-2 text-[10px] px-2 py-[3px] rounded-full bg-[#0f2a0f] text-[#77B900] border border-[#77B900]/30">
+    Save up to 20%
+  </span>
+
+</div>
       </div>
 
-      {/* 👇 ADD CARDS HERE (OUTSIDE TOP DIV) */}
+      
       {/* PRICING CARDS */}
 <div className="mt-20 flex flex-col md:flex-row gap-6 justify-center items-start max-w-[1150px] mx-auto">
 
@@ -60,6 +96,22 @@ export default function PricingPreview() {
       </div>
 
       <h3 className="text-[18px] font-medium mb-2">Starter</h3>
+      {/* PRICE */}
+<div className="mb-3">
+  <h2 className="text-[34px] font-semibold text-white leading-none">
+    {isAnnual ? "$29" : "$39"}
+
+    <span className="text-[14px] text-gray-400 font-normal ml-1">
+      /month
+    </span>
+  </h2>
+
+  {isAnnual && (
+    <p className="text-[11px] text-[#77B900] mt-1">
+      billed annually
+    </p>
+  )}
+</div>
 
       <p className="text-[13px] text-gray-400 leading-[1.2] mb-3">
         Get full visibility into your AI spend with zero friction setup.
