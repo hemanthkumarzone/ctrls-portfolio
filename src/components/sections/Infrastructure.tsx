@@ -46,72 +46,163 @@ export default function Infrastructure() {
 
   return (
     <section
-      className="w-full flex items-center justify-center 
-      px-4 sm:px-6 lg:px-10 
-      min-h-[90vh] 
-      pt-6 sm:pt-8 
-      pb-8 sm:pb-10"
+      className="
+        w-full
+        flex items-center justify-center
+
+        px-4 sm:px-6 lg:px-10
+
+        pt-4 lg:pt-6
+        pb-6 lg:pb-8
+      "
     >
-      <div className="w-full max-w-[1200px]">
+      <div className="w-full max-w-[1180px]">
 
         {cards.map((card, index) => (
+
           <div
             key={card.id}
             className="
-              grid grid-cols-1 lg:grid-cols-2
+              grid
+              grid-cols-1
+              lg:grid-cols-[0.9fr_1fr]
+
               items-center
-              gap-6 sm:gap-8 lg:gap-12
-              mb-10 sm:mb-12 lg:mb-16 last:mb-0
+
+              gap-3 lg:gap-4
+
+              mb-8 lg:mb-15
+              last:mb-0
             "
           >
 
-            {/* LEFT */}
-            <div className="flex flex-col gap-4 sm:gap-5 lg:gap-6 text-center lg:text-left">
+            {/* LEFT CONTENT */}
+
+            <div
+              className="
+                flex flex-col
+
+                gap-2 lg:gap-2
+
+                text-center
+                lg:text-left
+
+                lg:pl-[110px]
+              "
+            >
 
               <h3
-                className="text-white 
-                text-[20px] sm:text-[26px] md:text-[34px] lg:text-[42px] 
-                font-semibold leading-tight"
-                dangerouslySetInnerHTML={{ __html: card.title as string }}
+                className="
+                  text-white
+
+                  text-[20px]
+                  sm:text-[28px]
+                  md:text-[34px]
+                  lg:text-[32px]
+
+                  font-semibold
+
+                  leading-[1.08]
+
+                  tracking-[-0.02em]
+                "
+                dangerouslySetInnerHTML={{
+                  __html: card.title as string
+                }}
               />
 
               <div
-                className="text-[#7E7E7E] 
-                text-[13px] sm:text-[15px] md:text-[18px] lg:text-[20px] 
-                leading-relaxed 
-                max-w-full lg:max-w-[500px] 
-                mx-auto lg:mx-0"
-                dangerouslySetInnerHTML={{ __html: card.description as string }}
+                className="
+                  text-[#6F6F6F]
+
+                  text-[13px]
+                  sm:text-[14px]
+                  md:text-[15px]
+                  lg:text-[16px]
+
+                  leading-[1.5]
+
+                  max-w-full
+                  lg:max-w-[420px]
+
+                  mx-auto
+                  lg:mx-0
+                "
+                dangerouslySetInnerHTML={{
+                  __html: card.description as string
+                }}
               />
 
             </div>
 
             {/* RIGHT CARD */}
-            <div className="flex justify-center lg:justify-end">
+
+            <div
+              className="
+                flex
+                justify-center
+                lg:justify-center
+                
+              "
+            >
 
               <div
                 className="
+                  relative
+
                   w-full
-                  max-w-[100%] sm:max-w-[450px] lg:max-w-[600px]
-                  min-h-[180px] sm:min-h-[220px] md:min-h-[250px] lg:min-h-[280px]
-                  rounded-[30px] lg:rounded-[50px]
-                  p-[2px]
+                  max-w-[480px]
+
+                  h-[165px]
+                  sm:h-[190px]
+                  md:h-[210px]
+                  lg:h-[230px]
+
+                  rounded-[20px]
+                  lg:rounded-[28px]
+
+                  p-[1.2px]
+
                   bg-[linear-gradient(135deg,#0F1800,#77B900)]
+
+                  overflow-hidden
+
+                  shadow-[0_0_18px_rgba(119,185,0,0.10)]
                 "
               >
 
+                {/* INNER CARD */}
+
                 <div
                   className="
-                    w-full h-auto
-                    rounded-[25px] lg:rounded-[50px]
+                    w-full
+                    h-full
+
                     bg-[#131814]
-                    p-3 sm:p-4 md:p-5
-                    flex flex-col justify-start
-                    overflow-visible
+
+                    rounded-[19px]
+                    lg:rounded-[27px]
+
+                    overflow-hidden
+
+                    flex
+                    items-center
+                    justify-center
                   "
                 >
 
-                  <div className="w-full h-auto">
+                  {/* CONTENT */}
+
+                  <div
+                    className="
+                      w-full
+                      h-full
+
+                      px-2 sm:px-3
+                      py-2
+                    "
+                  >
+
                     {index === 0 ? (
                       <FinOpsChart />
                     ) : index === 1 ? (
@@ -119,6 +210,7 @@ export default function Infrastructure() {
                     ) : index === 2 ? (
                       <Graph />
                     ) : null}
+
                   </div>
 
                 </div>
@@ -128,6 +220,7 @@ export default function Infrastructure() {
             </div>
 
           </div>
+
         ))}
 
       </div>

@@ -22,6 +22,7 @@ import BlogPage from "./pages/resources/BlogPage";
 import BlogDetails from "./pages/resources/BlogDetails";
 import BookDemo from "./pages/BookDemo";
 import PricingPage from "./pages/PricingPage";
+import KubernetesROITracking from "./pages/platform/KubernetesROITracking";
 
 import Contactpage from "./components/requirements/Contactpage";
 
@@ -46,10 +47,13 @@ function App() {
                 element={
                   <>
                     <Hero />
+                    <div className="w-full flex justify-center">
+                      <div className="w-full max-w-[1400px] h-[1px] bg-gradient-to-r from-transparent via-[#77B900]/40 to-transparent my-[30px]" />
+                    </div>
                     <Infrastructure />
 
                     <div className="w-full flex justify-center">
-                      <div className="w-full max-w-[1400px] h-[1px] bg-gradient-to-r from-transparent via-[#77B900]/40 to-transparent my-[100px]" />
+                      <div className="w-full max-w-[1400px] h-[1px] bg-gradient-to-r from-transparent via-[#77B900]/40 to-transparent my-[50px]" />
                     </div>
 
                     <VisibilitySection />
@@ -67,7 +71,7 @@ function App() {
                     <ServicesSection />
 
                     <div className="w-full flex justify-center">
-                      <div className="w-full max-w-[1400px] h-[1px] bg-gradient-to-r from-transparent via-[#77B900]/40 to-transparent my-[100px]" />
+                      <div className="w-full max-w-[1400px] h-[1px] bg-gradient-to-r from-transparent via-[#77B900]/40 to-transparent my-[10px]" />
                     </div>
 
                     <KoreValueSection />
@@ -104,6 +108,7 @@ function App() {
               
               <Route path="/book-demo" element={<BookDemo />} />
               <Route path="/pricing" element={<PricingPage />} />
+              <Route path="/platform/kubernetes-roi-tracking" element={<KubernetesROITracking />}/>
 
             </Routes>
           </main>

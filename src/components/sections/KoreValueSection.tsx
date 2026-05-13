@@ -50,8 +50,9 @@ export default function KoreValueSection() {
     if (name.includes("recommend")) return "/services/right-size-recommendations";
     if (name.includes("anomaly")) return "/services/anomaly-detection-circuit-breakers";
     if (name.includes("report")) return "/services/reporting";
+    if (name.includes("forecast")) return "/services/predictive-cost-forecasting";
+    if (name.includes("virtual")) return "/services/virtual-tags-smart-tagging";
 
-    // 🔥 IMPORTANT FALLBACK
     return `/services/${name.replace(/\s+/g, "-")}`;
   }
 
@@ -100,7 +101,7 @@ const supportedPlatforms = platformItems.slice(midPlatform);
       <div className="w-full px-4 py-10 lg:hidden">
 
         <img
-          src="/Footerctrls.png"
+          src="/Kore Value Logo.png"
           alt="logo"
           className="w-[147px] h-[64px] mb-8"
         />
@@ -246,16 +247,16 @@ const supportedPlatforms = platformItems.slice(midPlatform);
 
               {/* LOGO */}
               <img
-                src="/Footerctrls.png"
-                alt="logo"
-                className="absolute"
-                style={{
-                  width: "147px",
-                  height: "64px",
-                  top: "43px",
-                  left: "74px"
-                }}
-              />
+  src="/Kore Value Logo.png"
+  alt="logo"
+  className="absolute object-contain"
+  style={{
+    width: "90px",
+    height: "80px",
+    top: "38px",
+    left: "74px"
+  }}
+/>
 
               {/* SERVICES */}
               <div className="absolute" style={{ top: "133px", left: "74px" }}>
