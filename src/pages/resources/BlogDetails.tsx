@@ -1,10 +1,11 @@
 import { blogDetails } from "../../content/blogDetails";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import KoreValueSection from "../../components/sections/KoreValueSection";
 
 const BlogDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const blog = blogDetails.find((b) => b.id === id);
 
 if (!blog) {
@@ -31,6 +32,20 @@ if (!blog) {
 
   {/* CONTENT */}
   <div className="relative max-w-[1200px] mx-auto px-6 py-4">
+
+    <button
+  onClick={() => navigate(-1)}
+  className="
+    mb-6
+    flex items-center gap-2
+    text-[#77B900]
+    hover:text-white
+    transition-all duration-300
+    text-[14px]
+  "
+>
+  ← Back to Blogs
+</button>
 
     <h1 className="text-[#9FEF00] text-[30px] font-semibold leading-[1.3] mb-5 max-w-[450px]">
   {blog.title}

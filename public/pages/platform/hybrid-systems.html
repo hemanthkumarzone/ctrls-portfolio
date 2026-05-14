@@ -1,0 +1,552 @@
+
+
+  <style>
+
+:root{
+  --bg-primary:#0A0F0B;
+  --bg-secondary:rgba(10,15,11,0.82);
+
+  --card-bg:rgba(15,20,15,0.72);
+
+  --text-primary:#FFFFFF;
+  --text-secondary:rgba(255,255,255,0.72);
+
+  --green:#77B900;
+
+  --border:rgba(119,185,0,0.18);
+
+  --glow:
+    0 0 10px rgba(119,185,0,0.25),
+    0 0 20px rgba(119,185,0,0.12);
+
+  --radius:24px;
+
+  --border-radius-md:18px;
+  --border-radius-lg:28px;
+
+  --color-text-info:#77B900;
+  --color-background-info:rgba(119,185,0,0.12);
+
+  --color-text-success:#77B900;
+  --color-background-success:rgba(119,185,0,0.12);
+
+  --color-border-info:rgba(119,185,0,0.18);
+  --color-border-success:rgba(119,185,0,0.18);
+
+  --color-border-secondary:rgba(255,255,255,0.12);
+
+  --color-text-tertiary:rgba(255,255,255,0.42);
+}
+
+body{
+  background:transparent;
+  color:white;
+  font-family:Inter,sans-serif;
+  padding:40px;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.hero{
+  padding:120px 0 80px;
+  text-align:center;
+  border-bottom:none;
+}
+
+.hero h1{
+  font-size:clamp(42px,5vw,72px);
+  line-height:1.1;
+  font-weight:700;
+}
+
+.hero p{
+  font-size:20px;
+  line-height:1.8;
+  color:rgba(255,255,255,0.72);
+  max-width:920px;
+  margin:auto;
+}
+.badge{display:inline-block;font-size:10px;font-weight:500;padding:3px 9px;border-radius:20px;margin-right:5px;margin-top:6px}
+.section{margin-bottom:2rem}
+.st{font-size:15px;font-weight:500;margin-bottom:1rem;padding-bottom:6px;border-bottom:0.5px solid var(--border);color:var(--text-primary)}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;margin-bottom:1.5rem}
+.mc{background:rgba(255,255,255,0.04);border-radius:var(--border-radius-md);padding:0.85rem 1rem}
+.ml{font-size:11px;color:var(--text-secondary);margin-bottom:4px}
+.mv{font-size:21px;font-weight:500;color:var(--text-primary)}
+.ms{font-size:10px;color:var(--text-secondary);margin-top:2px}
+.up{color:#0F6E56}.dn{color:#993C1D}.am{color:#854F0B}.bl{color:#185FA5}
+.cr{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem}
+.cb{background:var(--card-bg);border:0.5px solid var(--border);border-radius:var(--border-radius-lg);padding:1rem}
+.cb h3{font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:8px}
+.leg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;font-size:11px;color:var(--text-secondary)}
+.leg span{display:flex;align-items:center;gap:4px}
+.ld{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.pipe{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:1.5rem}
+.ps{background:var(--card-bg);border:0.5px solid var(--border);border-radius:var(--border-radius-md);padding:0.6rem;text-align:center;position:relative}
+.ps:not(:last-child)::after{content:"→";position:absolute;right:-5px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--color-text-tertiary);z-index:1}
+.pn{font-size:15px;font-weight:500;color:var(--color-text-info);margin-bottom:2px}
+.pl{font-size:10px;color:var(--text-secondary);line-height:1.3}
+.ug{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:11px;margin-bottom:1.5rem}
+.uc{background:var(--card-bg);border:0.5px solid var(--border);border-radius:var(--border-radius-lg);padding:0.9rem}
+.uc h3{font-size:12px;font-weight:500;margin-bottom:4px;color:var(--text-primary)}
+.uc p{font-size:11px;color:var(--text-secondary);line-height:1.5}
+.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;margin-top:5px}
+.tm{background:#E6F1FB;color:#0C447C}
+.to{background:#E1F5EE;color:#085041}
+.tch{background:#EEEDFE;color:#3C3489}
+.tw{background:#FAECE7;color:#993C1D}
+.tt{background:#FAEEDA;color:#633806}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:11px;margin-bottom:1.5rem}
+.fc{background:var(--card-bg);border:0.5px solid var(--border);border-radius:var(--border-radius-lg);padding:0.9rem}
+.fc h3{font-size:12px;font-weight:500;margin-bottom:5px;color:var(--text-primary)}
+.fc ul{font-size:11px;color:var(--text-secondary);padding-left:13px;line-height:1.9}
+.tb{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+.tbt{font-size:11px;padding:4px 12px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--text-secondary);cursor:pointer}
+.tbt.active{background:var(--color-background-info);color:var(--color-text-info);border-color:transparent}
+.fi{border:0.5px solid var(--border);border-radius:var(--border-radius-md);margin-bottom:7px;overflow:hidden}
+.fq{padding:0.7rem 1rem;cursor:pointer;font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.04);color:var(--text-primary)}
+.fa{padding:0.7rem 1rem;font-size:12px;color:var(--text-secondary);line-height:1.7;display:none;border-top:0.5px solid var(--border)}
+.fa.open{display:block}
+.rt{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px;table-layout:fixed}
+.rt th{font-weight:500;padding:6px 8px;text-align:left;background:rgba(255,255,255,0.04);border-bottom:0.5px solid var(--border);color:var(--text-primary)}
+.rt td{padding:6px 8px;border-bottom:0.5px solid var(--border);color:var(--text-secondary)}
+.rt tr:last-child td{border-bottom:none}
+.hl td{color:#0F6E56;font-weight:500}
+.db{
+  background:rgba(10,15,11,0.85);
+  border:1px solid rgba(119,185,0,0.18);
+  backdrop-filter:blur(18px);
+  border-radius:32px;
+  box-shadow:0 0 30px rgba(119,185,0,0.15);
+}
+.df h3{font-size:14px;font-weight:500;margin-bottom:1rem;color:var(--text-primary)}
+.fg2{margin-bottom:9px}
+.fg2 label{font-size:11px;color:var(--text-secondary);display:block;margin-bottom:3px}
+.fg2 input,.fg2 select{width:100%;padding:6px 9px;font-size:12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:rgba(255,255,255,0.04);color:var(--text-primary)}
+.dbtn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:18px;
+  background:#77B900;
+  color:black;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s ease;
+}
+
+.dbtn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 20px rgba(119,185,0,0.45);
+}
+.di h3{font-size:14px;font-weight:500;margin-bottom:0.9rem;color:var(--text-primary)}
+.di ul{font-size:12px;color:var(--text-secondary);padding-left:14px;line-height:2}
+.sm{display:none;background:var(--color-background-success);border:0.5px solid var(--color-border-success);color:var(--color-text-success);padding:9px 12px;border-radius:var(--border-radius-md);font-size:12px;margin-top:7px}
+.mat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.5rem}
+.mc2{border:0.5px solid var(--border);border-radius:var(--border-radius-md);padding:0.8rem}
+.mc2 h3{font-size:11px;font-weight:500;margin-bottom:3px;color:var(--text-primary)}
+.mc2 p{font-size:10px;color:var(--text-secondary);line-height:1.4}
+.mn{font-size:18px;font-weight:500;margin-bottom:3px}
+.brr{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
+.brc{background:var(--card-bg);border:0.5px solid var(--border);border-radius:var(--border-radius-lg);padding:1rem}
+.brc h3{font-size:12px;font-weight:500;margin-bottom:6px;color:var(--text-primary)}
+.brc ul{font-size:11px;color:var(--text-secondary);padding-left:13px;line-height:1.9}
+.ai{background:var(--color-background-info);border:0.5px solid var(--color-border-info);border-radius:var(--border-radius-md);padding:0.75rem 1rem;font-size:12px;color:var(--color-text-info);margin-bottom:1rem;line-height:1.6}
+.hg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.hc{background:var(--card-bg);border:0.5px solid var(--border);border-radius:var(--border-radius-lg);padding:0.9rem;text-align:center}
+.hc .hv{font-size:20px;font-weight:500;margin-bottom:3px}
+.hc .hl2{font-size:10px;color:var(--text-secondary)}
+.hc .hs{font-size:11px;color:var(--text-secondary);margin-top:4px}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.slider-row label{font-size:12px;color:var(--text-secondary);min-width:130px}
+.slider-row input{flex:1}
+.slider-row span{font-size:12px;font-weight:500;color:var(--text-primary);min-width:60px;text-align:right}
+.calc-box{background:var(--card-bg);border:0.5px solid var(--border);border-radius:var(--border-radius-lg);padding:1.2rem;margin-bottom:1.5rem}
+.calc-box h3{font-size:13px;font-weight:500;margin-bottom:1rem;color:var(--text-primary)}
+.calc-out{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:1rem}
+.co{background:rgba(255,255,255,0.04);border-radius:var(--border-radius-md);padding:0.75rem;text-align:center}
+.co .cv{font-size:18px;font-weight:500}
+.co .cl{font-size:10px;color:var(--text-secondary);margin-top:3px}
+</style>
+
+<h2 class="sr-only">TCO for Hybrid Systems — AI FinOps platform business requirements and use case dashboard covering on-premise, cloud, and edge infrastructure total cost of ownership</h2>
+
+<div class="hero">
+  <h1>TCO for hybrid systems — AI FinOps platform</h1>
+  <p>Business requirements and use cases for a Total Cost of Ownership module that gives AI-intensive organizations a unified, apples-to-apples financial view across on-premise, public cloud, private cloud, and edge AI infrastructure.</p>
+  <div style="margin-top:6px">
+    <span class="badge" style="background:#E6F1FB;color:#0C447C">Hybrid TCO</span>
+    <span class="badge" style="background:#E1F5EE;color:#085041">On-premise</span>
+    <span class="badge" style="background:#EEEDFE;color:#3C3489">Multi-cloud</span>
+    <span class="badge" style="background:#FAEEDA;color:#633806">CapEx + OpEx</span>
+    <span class="badge" style="background:#FAECE7;color:#993C1D">Waste elimination</span>
+    <span class="badge" style="background:#EAF3DE;color:#27500A">Optimization</span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="st">Platform key metrics</div>
+  <div class="mg">
+    <div class="mc"><div class="ml">Hidden on-prem costs</div><div class="mv dn">47%</div><div class="ms">Untracked beyond hardware</div></div>
+    <div class="mc"><div class="ml">Cloud vs on-prem delta</div><div class="mv am">2.4x</div><div class="ms">Avg cloud premium at scale</div></div>
+    <div class="mc"><div class="ml">TCO visibility gain</div><div class="mv up">86%</div><div class="ms">After module adoption</div></div>
+    <div class="mc"><div class="ml">Avg hardware depreciation gap</div><div class="mv dn">$220K</div><div class="ms">Unmodelled per 100-GPU rack</div></div>
+    <div class="mc"><div class="ml">Cost saved via workload shift</div><div class="mv up">39%</div><div class="ms">Cloud-to-on-prem arbitrage</div></div>
+    <div class="mc"><div class="ml">Avg TCO breakeven point</div><div class="mv bl">18 mo</div><div class="ms">On-prem GPU vs cloud GPU</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="st">Interactive TCO calculator</div>
+  <div class="calc-box">
+    <h3>Estimate your hybrid TCO — adjust parameters below</h3>
+    <div class="slider-row"><label>On-prem GPU nodes</label><input type="range" min="1" max="200" value="50" step="1" id="s1" oninput="calcTCO()"/><span id="o1">50</span></div>
+    <div class="slider-row"><label>Cloud GPU nodes (equiv)</label><input type="range" min="1" max="200" value="50" step="1" id="s2" oninput="calcTCO()"/><span id="o2">50</span></div>
+    <div class="slider-row"><label>On-prem cost/node/mo ($)</label><input type="range" min="500" max="6000" value="2200" step="100" id="s3" oninput="calcTCO()"/><span id="o3">$2,200</span></div>
+    <div class="slider-row"><label>Cloud cost/node/mo ($)</label><input type="range" min="500" max="8000" value="4100" step="100" id="s4" oninput="calcTCO()"/><span id="o4">$4,100</span></div>
+    <div class="slider-row"><label>On-prem hidden cost factor</label><input type="range" min="1.0" max="2.0" value="1.47" step="0.01" id="s5" oninput="calcTCO()"/><span id="o5">1.47x</span></div>
+    <div class="calc-out">
+      <div class="co"><div class="cv dn" id="r1">$161K</div><div class="cl">On-prem true TCO/mo</div></div>
+      <div class="co"><div class="cv am" id="r2">$205K</div><div class="cl">Cloud equivalent/mo</div></div>
+      <div class="co"><div class="cv up" id="r3">$44K</div><div class="cl">Monthly saving (on-prem)</div></div>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--text-secondary)">On-prem true TCO includes hardware depreciation, power, cooling, networking, facilities, and staff. Adjust the hidden cost factor to model your environment.</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="st">Hybrid cost layer breakdown</div>
+  <div class="hg">
+    <div class="hc" style="border-color:#185FA5">
+      <div class="hv bl">On-premise</div>
+      <div class="hs">Hardware CapEx · Power · Cooling · Networking · Facilities · Staff · Depreciation · Maintenance</div>
+      <div style="margin-top:8px;font-size:11px;font-weight:500;color:#0C447C">Avg 47% costs hidden</div>
+    </div>
+    <div class="hc" style="border-color:#0F6E56">
+      <div class="hv up">Public cloud</div>
+      <div class="hs">On-demand · Reserved · Spot instances · Data egress · API calls · Managed services · Support tiers</div>
+      <div style="margin-top:8px;font-size:11px;font-weight:500;color:#085041">2.4x on-prem at scale</div>
+    </div>
+    <div class="hc" style="border-color:#854F0B">
+      <div class="hv am">Edge / private</div>
+      <div class="hs">Edge GPU nodes · Colocation fees · Private cloud licensing · Connectivity · SLA penalties</div>
+      <div style="margin-top:8px;font-size:11px;font-weight:500;color:#633806">Most undertracked layer</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="st">TCO pipeline</div>
+  <div class="pipe">
+    <div class="ps"><div class="pn">01</div><div class="pl">Ingest all cost sources</div></div>
+    <div class="ps"><div class="pn">02</div><div class="pl">Normalise CapEx & OpEx</div></div>
+    <div class="ps"><div class="pn">03</div><div class="pl">Model depreciation & PUE</div></div>
+    <div class="ps"><div class="pn">04</div><div class="pl">Compare layer by layer</div></div>
+    <div class="ps"><div class="pn">05</div><div class="pl">Recommend workload shift</div></div>
+    <div class="ps"><div class="pn">06</div><div class="pl">Govern & forecast</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="st">TCO intelligence — charts</div>
+  <div class="cr">
+    <div class="cb">
+      <h3>On-prem vs cloud TCO breakdown ($K/mo)</h3>
+      <div class="leg">
+        <span><span class="ld" style="background:#378ADD"></span>On-prem (visible)</span>
+        <span><span class="ld" style="background:#85B7EB"></span>On-prem (hidden)</span>
+        <span><span class="ld" style="background:#1D9E75"></span>Cloud</span>
+      </div>
+      <div style="position:relative;width:100%;height:210px"><canvas id="c1" role="img" aria-label="Stacked bar chart comparing on-premise visible costs, on-premise hidden costs, and cloud costs across six months. Hidden on-prem costs are significant and grow the true TCO substantially.">On-prem has significant hidden costs that inflate true TCO; cloud costs are higher per unit but all visible.</canvas></div>
+    </div>
+    <div class="cb">
+      <h3>TCO cost component split — on-premise (%)</h3>
+      <div class="leg">
+        <span><span class="ld" style="background:#378ADD"></span>Hardware 34%</span>
+        <span><span class="ld" style="background:#1D9E75"></span>Power/cooling 22%</span>
+        <span><span class="ld" style="background:#EF9F27"></span>Staff 18%</span>
+        <span><span class="ld" style="background:#534AB7"></span>Networking 12%</span>
+        <span><span class="ld" style="background:#D85A30"></span>Facilities 9%</span>
+        <span><span class="ld" style="background:#E24B4A"></span>Other 5%</span>
+      </div>
+      <div style="position:relative;width:100%;height:210px"><canvas id="c2" role="img" aria-label="Donut chart showing on-premise TCO component split: Hardware 34%, Power and cooling 22%, Staff 18%, Networking 12%, Facilities 9%, Other 5%.">On-prem TCO: hardware 34%, power/cooling 22%, staff 18%, networking 12%, facilities 9%, other 5%.</canvas></div>
+    </div>
+  </div>
+  <div class="cr">
+    <div class="cb">
+      <h3>Workload placement savings — cloud vs on-prem ($K)</h3>
+      <div class="leg">
+        <span><span class="ld" style="background:#534AB7"></span>Savings from optimal placement</span>
+      </div>
+      <div style="position:relative;width:100%;height:210px"><canvas id="c3" role="img" aria-label="Horizontal bar chart showing savings from optimal workload placement decisions for training, inference, batch processing, experimentation, and fine-tuning workloads.">Training and fine-tuning benefit most from on-prem placement; inference and experimentation suit cloud spot nodes.</canvas></div>
+    </div>
+    <div class="cb">
+      <h3>TCO trend — before vs after hybrid optimization</h3>
+      <div class="leg">
+        <span><span class="ld" style="background:#E24B4A"></span>Before</span>
+        <span><span class="ld" style="background:#1D9E75"></span>After</span>
+      </div>
+      <div style="position:relative;width:100%;height:210px"><canvas id="c4" role="img" aria-label="Line chart showing total monthly TCO before and after hybrid system optimization across six months. After optimization, costs decline steadily from month 2 onward.">TCO declines steadily after hybrid optimization begins from month 2 onward.</canvas></div>
+    </div>
+  </div>
+  <div class="cr">
+    <div class="cb">
+      <h3>On-prem breakeven vs cloud — by GPU model (months)</h3>
+      <div class="leg">
+        <span><span class="ld" style="background:#378ADD"></span>Breakeven month</span>
+      </div>
+      <div style="position:relative;width:100%;height:220px"><canvas id="c5" role="img" aria-label="Bar chart showing breakeven month for on-premise GPU ownership versus cloud rental for H100, A100, L40S, MI300X, and H200 GPU models. H100 and A100 break even earliest.">H100 and A100 break even earliest at 14 and 16 months respectively; newer models take longer due to higher CapEx.</canvas></div>
+    </div>
+    <div class="cb">
+      <h3>Cumulative TCO savings from hybrid module ($K)</h3>
+      <div class="leg">
+        <span><span class="ld" style="background:#1D9E75"></span>Cumulative savings</span>
+      </div>
+      <div style="position:relative;width:100%;height:220px"><canvas id="c6" role="img" aria-label="Area chart showing cumulative TCO savings growing month over month from Jan to Jun, reaching over 210K by June.">Cumulative savings compound month-on-month reaching $210K by June as workload placement and hidden cost elimination matures.</canvas></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="st">Business requirements</div>
+  <div class="brr">
+    <div class="brc">
+      <h3>Functional requirements</h3>
+      <ul>
+        <li>Ingest CapEx hardware invoices, depreciation schedules, and lease agreements</li>
+        <li>Model power consumption using datacenter PUE and kWh rate inputs</li>
+        <li>Calculate cooling, facilities, and colocation cost allocations per rack</li>
+        <li>Normalise on-prem and cloud costs to unified $/GPU-hour metric</li>
+        <li>Staff and operations cost attribution per AI infrastructure layer</li>
+        <li>Real-time cloud billing ingestion from AWS, GCP, Azure, and bare-metal</li>
+        <li>Workload placement recommendation engine (on-prem vs cloud vs edge)</li>
+        <li>Breakeven analysis with configurable depreciation curves</li>
+        <li>Multi-site and multi-datacenter cost consolidation</li>
+        <li>Carbon and energy footprint per infrastructure layer</li>
+      </ul>
+    </div>
+    <div class="brc">
+      <h3>Non-functional requirements</h3>
+      <ul>
+        <li>Support for 3-year, 5-year, and custom depreciation schedules</li>
+        <li>Integration with ServiceNow, Jira, and asset management systems</li>
+        <li>DCIM integration for real-time power draw telemetry</li>
+        <li>API-first with REST and GraphQL endpoints for ERP system push</li>
+        <li>Role-based access for finance, engineering, and infrastructure teams</li>
+        <li>Exportable TCO reports in PDF, XLSX, and PowerPoint formats</li>
+        <li>Scenario modelling: what-if analysis for procurement decisions</li>
+        <li>SOC 2 Type II compliance for all financial data ingestion</li>
+        <li>Historical cost replay up to 5 years for trend analysis</li>
+        <li>Configurable cost allocation rules per business unit and region</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="st">Core use cases</div>
+  <div class="tb">
+    <button class="tbt active" onclick="filterUC('all',event)">All</button>
+    <button class="tbt" onclick="filterUC('monitor',event)">Monitoring</button>
+    <button class="tbt" onclick="filterUC('opt',event)">Optimization</button>
+    <button class="tbt" onclick="filterUC('orch',event)">Orchestration</button>
+    <button class="tbt" onclick="filterUC('waste',event)">Waste elimination</button>
+    <button class="tbt" onclick="filterUC('tco',event)">TCO specific</button>
+  </div>
+  <div class="ug" id="ucGrid">
+    <div class="uc" data-tag="tco"><h3>True on-prem cost modelling</h3><p>Model the complete on-premise TCO including hardware depreciation, power draw, cooling, facilities, networking, and operations staff — not just server purchase price.</p><span class="tag tt">TCO specific</span></div>
+    <div class="uc" data-tag="tco"><h3>Cloud vs on-prem breakeven analysis</h3><p>Calculate the precise month at which on-premise GPU ownership becomes cheaper than cloud rental, factoring in real depreciation curves and utilization rates.</p><span class="tag tt">TCO specific</span></div>
+    <div class="uc" data-tag="monitor"><h3>Unified hybrid cost dashboard</h3><p>Single pane of glass for all infrastructure spend — on-prem CapEx, cloud OpEx, colocation fees, and edge nodes — normalised to comparable units.</p><span class="tag tm">Monitoring</span></div>
+    <div class="uc" data-tag="opt"><h3>Workload placement engine</h3><p>Continuously evaluate each AI workload and recommend optimal placement — on-prem for steady-state training, cloud spot for bursty inference, edge for latency-sensitive serving.</p><span class="tag to">Optimization</span></div>
+    <div class="uc" data-tag="waste"><h3>Stranded capacity detection</h3><p>Identify on-premise GPU racks running below the utilization threshold where cloud would be cheaper — the hidden cost of over-purchased hardware.</p><span class="tag tw">Waste elimination</span></div>
+    <div class="uc" data-tag="tco"><h3>Depreciation-aware cost accounting</h3><p>Apply straight-line, declining-balance, or custom depreciation models to all on-prem hardware assets and include depreciated cost in monthly TCO reports.</p><span class="tag tt">TCO specific</span></div>
+    <div class="uc" data-tag="orch"><h3>Procurement decision support</h3><p>Generate scenario-based TCO projections for new GPU purchase decisions — compare buying H100s outright vs reserved cloud instances vs co-location leasing.</p><span class="tag tch">Orchestration</span></div>
+    <div class="uc" data-tag="monitor"><h3>Power & PUE cost attribution</h3><p>Track real-time power draw per rack, apply datacenter PUE coefficients, and attribute energy costs to individual workloads and teams with kWh-level granularity.</p><span class="tag tm">Monitoring</span></div>
+    <div class="uc" data-tag="waste"><h3>Reserved instance waste detection</h3><p>Surface cloud reserved instances and savings plans that are underutilised relative to on-prem capacity — identify where commitments should be released or reassigned.</p><span class="tag tw">Waste elimination</span></div>
+    <div class="uc" data-tag="opt"><h3>Multi-year TCO forecasting</h3><p>Project 1-year, 3-year, and 5-year total cost of ownership across hybrid environments using ML-based growth modelling and configurable procurement scenarios.</p><span class="tag to">Optimization</span></div>
+    <div class="uc" data-tag="orch"><h3>Hybrid chargeback engine</h3><p>Allocate blended on-prem and cloud costs to internal teams using a unified chargeback rate — regardless of which infrastructure layer actually ran the workload.</p><span class="tag tch">Orchestration</span></div>
+    <div class="uc" data-tag="tco"><h3>Carbon-adjusted TCO reporting</h3><p>Append carbon emission cost estimates to on-prem, cloud, and edge infrastructure using regional grid intensity data — supporting ESG and sustainability reporting.</p><span class="tag tt">TCO specific</span></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="st">TCO maturity model</div>
+  <div class="mat">
+    <div class="mc2" style="border-color:#E24B4A"><div class="mn" style="color:#A32D2D">L1</div><h3>Invisible</h3><p style="font-size:10px;color:var(--text-secondary);margin-top:3px">Only hardware purchase price tracked; power, staff, and depreciation invisible</p></div>
+    <div class="mc2" style="border-color:#EF9F27"><div class="mn" style="color:#854F0B">L2</div><h3>Partial</h3><p style="font-size:10px;color:var(--text-secondary);margin-top:3px">Cloud OpEx tracked; on-prem CapEx in spreadsheets; no unified view</p></div>
+    <div class="mc2" style="border-color:#378ADD"><div class="mn" style="color:#185FA5">L3</div><h3>Unified</h3><p style="font-size:10px;color:var(--text-secondary);margin-top:3px">All cost layers modelled; hybrid dashboard live; breakeven analysis available</p></div>
+    <div class="mc2" style="border-color:#1D9E75"><div class="mn" style="color:#0F6E56">L4</div><h3>Optimized</h3><p style="font-size:10px;color:var(--text-secondary);margin-top:3px">AI-driven workload placement; zero stranded capacity; predictive procurement</p></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="st">Key factors driving hybrid TCO complexity</div>
+  <div class="fg">
+    <div class="fc"><h3>CapEx hidden costs</h3><ul><li>Hardware depreciation not modelled</li><li>Refresh cycles ignored in planning</li><li>Maintenance contracts untracked</li><li>End-of-life disposal costs excluded</li></ul></div>
+    <div class="fc"><h3>Operations overhead</h3><ul><li>Data centre staff cost unallocated</li><li>Network engineering time invisible</li><li>Security and compliance ops excluded</li><li>Downtime and SLA costs ignored</li></ul></div>
+    <div class="fc"><h3>Cloud cost complexity</h3><ul><li>Egress charges underestimated</li><li>Reserved instance under-utilisation</li><li>Multi-cloud pricing inconsistency</li><li>Managed service premium untracked</li></ul></div>
+    <div class="fc"><h3>Organisational gaps</h3><ul><li>Finance and engineering use different tools</li><li>No unified $/GPU-hour unit of measure</li><li>Procurement decisions made without TCO</li><li>No hybrid chargeback policy in place</li></ul></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="st">TCO savings model by organisation scale</div>
+  <div class="ai">Industry research shows that organisations running AI at scale overpay by 39% on average due to suboptimal hybrid placement decisions — training workloads run on expensive cloud when on-prem capacity exists idle, and on-prem racks sit underutilised while cloud bills grow unchecked.</div>
+  <table class="rt">
+    <thead><tr><th>Org scale</th><th>Monthly hybrid spend</th><th>Hidden cost %</th><th>Unoptimised waste</th><th>Savings after TCO module</th><th>Annual saving</th></tr></thead>
+    <tbody>
+      <tr><td>Startup (mixed)</td><td>$22,000</td><td>42%</td><td>$9,240</td><td>35%</td><td>$38,800</td></tr>
+      <tr><td>Growth (hybrid)</td><td>$110,000</td><td>45%</td><td>$49,500</td><td>38%</td><td>$225,600</td></tr>
+      <tr class="hl"><td>Enterprise (full hybrid)</td><td>$480,000</td><td>47%</td><td>$225,600</td><td>40%</td><td>$1.08M</td></tr>
+      <tr class="hl"><td>Hyperscale (multi-site)</td><td>$2.4M+</td><td>44%</td><td>$1.06M+</td><td>39%</td><td>$4.9M+</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="st">Frequently asked questions</div>
+  <div class="fi"><div class="fq" onclick="tf(this)">What costs does the TCO module capture that standard cloud billing tools miss? <span>+</span></div><div class="fa">Standard cloud billing tools only track OpEx — what you pay the cloud provider each month. The TCO module additionally models on-premise CapEx amortised over the hardware lifecycle, power consumption using real PUE coefficients, cooling and facilities allocation, network infrastructure depreciation, data centre staff costs, maintenance contracts, and end-of-life disposal. These hidden costs typically add 40–50% to the apparent on-prem hardware price and are invisible without a dedicated TCO model.</div></div>
+  <div class="fi"><div class="fq" onclick="tf(this)">How does the platform calculate the breakeven point between on-prem and cloud GPU? <span>+</span></div><div class="fa">The breakeven calculator compares the fully-loaded monthly on-premise TCO per GPU — including depreciation, power, cooling, and operations — against the equivalent cloud GPU cost at the same utilisation rate. It applies configurable depreciation curves (straight-line, declining balance, or custom) and adjusts for actual cluster utilisation. The output is a month-by-month crossover chart showing exactly when on-prem becomes cheaper, with sensitivity analysis for utilisation rate changes.</div></div>
+  <div class="fi"><div class="fq" onclick="tf(this)">Can the module support multi-site and international datacenter environments? <span>+</span></div><div class="fa">Yes. The module supports multiple datacenter sites with site-specific PUE values, local electricity tariffs in any currency, regional carbon intensity factors, and country-specific staffing cost models. Costs are normalised to a common currency for cross-site comparison and can be segmented by site, region, or business unit in all reports and dashboards.</div></div>
+  <div class="fi"><div class="fq" onclick="tf(this)">How does workload placement optimisation work in practice? <span>+</span></div><div class="fa">The placement engine continuously evaluates each active AI workload against a cost model for every available infrastructure tier. For each workload it considers: duration and recurrence pattern, GPU memory and compute requirements, data residency constraints, SLA priority class, and real-time cost per GPU-hour on each tier. It then surfaces a recommendation — move this training job to on-prem idle capacity, run this inference workload on cloud spot — with the projected monthly saving for each action.</div></div>
+  <div class="fi"><div class="fq" onclick="tf(this)">How is power usage effectiveness (PUE) factored into the cost model? <span>+</span></div><div class="fa">PUE is applied as a multiplier on raw server power draw to account for overhead energy consumed by cooling, lighting, and power distribution. The module accepts actual measured PUE values per site or uses industry benchmarks (1.2 for modern hyperscale, 1.5–1.8 for legacy facilities). Power cost is then calculated as: (server watt-hours × PUE × kWh rate) and attributed to each GPU rack and workload proportionally.</div></div>
+  <div class="fi"><div class="fq" onclick="tf(this)">Does the module support ESG and carbon reporting alongside financial TCO? <span>+</span></div><div class="fa">Yes. The module appends a carbon dimension to every TCO calculation by multiplying energy consumption (kWh) by the regional grid carbon intensity (gCO2/kWh) sourced from live emissions databases. Reports include total carbon cost in tonnes CO2e per infrastructure layer, allowing organisations to compare the carbon footprint of on-prem versus cloud workloads and satisfy ESG disclosure requirements including GHG Protocol Scope 2 and 3 reporting.</div></div>
+  <div class="fi"><div class="fq" onclick="tf(this)">Can finance teams use the module without deep Kubernetes or cloud knowledge? <span>+</span></div><div class="fa">This is a core design goal of the module. Finance users see costs expressed in familiar terms — monthly spend, depreciation schedules, cost centre allocations, and variance reports — without needing to understand Kubernetes namespaces or cloud SKU naming conventions. A separate engineering view provides the technical layer. Both views pull from the same underlying data model so reports are always consistent across teams.</div></div>
+  <div class="fi"><div class="fq" onclick="tf(this)">How does the platform handle hardware refresh cycles and procurement planning? <span>+</span></div><div class="fa">The module tracks the age and depreciation status of every on-prem hardware asset. When a GPU generation approaches end of productive life — typically year 3–4 for AI accelerators — the platform generates a procurement scenario comparing: full refresh with new hardware, extending the current asset with cloud burst capacity, migrating fully to cloud, or a hybrid lease arrangement. Each scenario includes a 3-year and 5-year TCO projection to support capital budget planning cycles.</div></div>
+</div>
+
+<div class="section">
+  <div class="st">Schedule a demo</div>
+  <div class="db">
+    <div class="df">
+      <h3>Book your hybrid TCO demo</h3>
+      <div class="fg2"><label>Full name</label><input type="text" placeholder="Your name" id="dName"/></div>
+      <div class="fg2"><label>Work email</label><input type="email" placeholder="you@company.com" id="dEmail"/></div>
+      <div class="fg2"><label>Company</label><input type="text" placeholder="Company name" id="dCo"/></div>
+      <div class="fg2"><label>Infrastructure environment</label>
+        <select id="dEnv">
+          <option>Fully cloud (AWS / GCP / Azure)</option>
+          <option>Mostly cloud with some on-prem</option>
+          <option>True hybrid (50/50 split)</option>
+          <option>Mostly on-prem with cloud burst</option>
+          <option>Multi-datacenter on-prem</option>
+        </select>
+      </div>
+      <div class="fg2"><label>Monthly AI infrastructure spend</label>
+        <select id="dSpend">
+          <option>Under $20K/mo</option>
+          <option>$20K–$100K/mo</option>
+          <option>$100K–$500K/mo</option>
+          <option>$500K–$2M/mo</option>
+          <option>$2M+/mo</option>
+        </select>
+      </div>
+      <div class="fg2"><label>Primary TCO challenge</label>
+        <select id="dGoal">
+          <option>Hidden on-prem cost visibility</option>
+          <option>Cloud vs on-prem breakeven analysis</option>
+          <option>Workload placement optimisation</option>
+          <option>Procurement decision support</option>
+          <option>ESG and carbon reporting</option>
+        </select>
+      </div>
+      <button class="dbtn" onclick="submitDemo()">Request demo ↗</button>
+      <div class="sm" id="sm">Demo request received. Our hybrid FinOps team will reach out within 1 business day.</div>
+    </div>
+    <div class="di">
+      <h3>What you will get</h3>
+      <ul>
+        <li>45-min live hybrid TCO walkthrough</li>
+        <li>Live hidden cost audit on your environment</li>
+        <li>On-prem vs cloud breakeven model</li>
+        <li>Workload placement recommendations</li>
+        <li>3-year TCO forecast for your org</li>
+        <li>Carbon footprint comparison</li>
+        <li>Free 14-day trial offer</li>
+      </ul>
+      <div style="margin-top:1rem;padding:0.8rem;background:rgba(255,255,255,0.04);border-radius:var(--border-radius-md)">
+        <div style="font-size:11px;font-weight:500;margin-bottom:3px;color:var(--text-primary)">Avg hidden cost surfaced per demo</div>
+        <div style="font-size:21px;font-weight:500;color:var(--color-text-success)">$67,000</div>
+        <div style="font-size:10px;color:var(--text-secondary)">in unmodelled on-prem and placement waste identified per session</div>
+      </div>
+      <div style="margin-top:0.75rem;padding:0.8rem;background:rgba(255,255,255,0.04);border-radius:var(--border-radius-md)">
+        <div style="font-size:11px;font-weight:500;margin-bottom:3px;color:var(--text-primary)">Typical time to first TCO model</div>
+        <div style="font-size:21px;font-weight:500;color:var(--color-text-info)">5 days</div>
+        <div style="font-size:10px;color:var(--text-secondary)">from data ingestion to full hybrid TCO dashboard going live</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const months=['Jan','Feb','Mar','Apr','May','Jun'];
+
+function calcTCO(){
+  const n1=parseInt(document.getElementById('s1').value);
+  const n2=parseInt(document.getElementById('s2').value);
+  const c1=parseInt(document.getElementById('s3').value);
+  const c2=parseInt(document.getElementById('s4').value);
+  const hf=parseFloat(document.getElementById('s5').value);
+  document.getElementById('o1').textContent=n1;
+  document.getElementById('o2').textContent=n2;
+  document.getElementById('o3').textContent='$'+c1.toLocaleString();
+  document.getElementById('o4').textContent='$'+c2.toLocaleString();
+  document.getElementById('o5').textContent=hf.toFixed(2)+'x';
+  const onprem=Math.round(n1*c1*hf/1000);
+  const cloud=Math.round(n2*c2/1000);
+  const saving=Math.max(0,cloud-onprem);
+  document.getElementById('r1').textContent='$'+onprem+'K';
+  document.getElementById('r2').textContent='$'+cloud+'K';
+  document.getElementById('r3').textContent=(saving>0?'$'+saving+'K saved':'-$'+Math.abs(saving)+'K diff');
+}
+calcTCO();
+
+new Chart(document.getElementById('c1'),{type:'bar',data:{labels:months,datasets:[
+  {label:'On-prem (visible)',data:[62,64,66,65,67,68],backgroundColor:'#378ADD',stack:'op'},
+  {label:'On-prem (hidden)',data:[44,46,47,46,48,49],backgroundColor:'#85B7EB',stack:'op'},
+  {label:'Cloud',data:[98,102,108,105,111,114],backgroundColor:'#1D9E75',stack:'cl'}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,ticks:{autoSkip:false}},y:{stacked:false,ticks:{callback:v=>'$'+v+'K'}}}}});
+
+new Chart(document.getElementById('c2'),{type:'doughnut',data:{labels:['Hardware','Power/cooling','Staff','Networking','Facilities','Other'],datasets:[{data:[34,22,18,12,9,5],backgroundColor:['#378ADD','#1D9E75','#EF9F27','#534AB7','#D85A30','#E24B4A'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'60%'}});
+
+new Chart(document.getElementById('c3'),{type:'bar',data:{labels:['LLM training','Fine-tuning','Batch inference','Real-time serving','Experimentation'],datasets:[{label:'Savings ($K)',data:[48,38,22,14,31],backgroundColor:'#534AB7',borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'$'+v+'K'}},y:{ticks:{autoSkip:false}}}}});
+
+new Chart(document.getElementById('c4'),{type:'line',data:{labels:months,datasets:[
+  {label:'Before',data:[248,254,261,258,264,268],borderColor:'#E24B4A',backgroundColor:'rgba(226,75,74,0.07)',tension:0.3,borderDash:[5,3],pointRadius:3},
+  {label:'After',data:[248,238,221,204,190,179],borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.07)',tension:0.3,pointRadius:3}
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+v+'K'}}}}});
+
+new Chart(document.getElementById('c5'),{type:'bar',data:{labels:['H100','A100','L40S','MI300X','H200'],datasets:[{label:'Breakeven (months)',data:[14,16,19,21,24],backgroundColor:['#1D9E75','#1D9E75','#378ADD','#EF9F27','#E24B4A'],borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{autoSkip:false}},y:{ticks:{callback:v=>v+' mo'},min:0,max:28}}}});
+
+new Chart(document.getElementById('c6'),{type:'line',data:{labels:months,datasets:[{label:'Cumulative savings',data:[18,44,88,136,176,212],borderColor:'#1D9E75',backgroundColor:'rgba(29,158,117,0.10)',fill:true,tension:0.4,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+v+'K'}}}}});
+
+function tf(el){
+  const a=el.nextElementSibling;
+  const open=a.classList.contains('open');
+  document.querySelectorAll('.fa').forEach(x=>x.classList.remove('open'));
+  document.querySelectorAll('.fq span').forEach(s=>s.textContent='+');
+  if(!open){a.classList.add('open');el.querySelector('span').textContent='−';}
+}
+
+function filterUC(tag,e){
+  document.querySelectorAll('.tbt').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  document.querySelectorAll('#ucGrid .uc').forEach(c=>{
+    c.style.display=(tag==='all'||c.dataset.tag===tag)?'block':'none';
+  });
+}
+
+function submitDemo(){
+  const n=document.getElementById('dName').value;
+  const em=document.getElementById('dEmail').value;
+  if(!n||!em){alert('Please enter your name and work email.');return;}
+  document.getElementById('sm').style.display='block';
+  sendPrompt('I just submitted a demo request for the TCO for Hybrid Systems module. What data and documentation should I prepare before the demo to get the most value from the session?');
+}
+</script>

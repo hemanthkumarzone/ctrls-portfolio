@@ -1,7 +1,8 @@
 import { useState } from "react";
 import KoreValueSection from "../components/sections/KoreValueSection";
+
 export default function PricingPreview() {
-  const [isAnnual, setIsAnnual] = useState(false);
+    const [isAnnual, setIsAnnual] = useState(true);
   return (
     <div className="min-h-screen text-white px-4 py-16">
 
@@ -30,10 +31,11 @@ export default function PricingPreview() {
         </p>
 
         {/* TOGGLE */}
-        <div className="mt-6 flex items-center justify-center gap-3">
+       <div className="mt-6 flex items-center justify-center gap-3">
 
+  {/* MONTHLY */}
   <span
-    className={`text-[12px] transition ${
+    className={`text-[12px] transition-colors duration-300 ${
       !isAnnual ? "text-white" : "text-gray-400"
     }`}
   >
@@ -43,35 +45,27 @@ export default function PricingPreview() {
   {/* TOGGLE */}
   <button
     onClick={() => setIsAnnual(!isAnnual)}
-    className={`
-      relative
-      w-11 h-6
-      rounded-full
-      transition-all duration-300
-      ${isAnnual ? "bg-[#77B900]" : "bg-gray-700"}
-    `}
+    className={`w-10 h-5 rounded-full relative transition-all duration-300 ${
+      isAnnual ? "bg-[#77B900]" : "bg-gray-700"
+    }`}
   >
     <div
-      className={`
-        absolute top-[2px]
-        w-5 h-5
-        rounded-full
-        bg-white
-        transition-all duration-300
-
-        ${isAnnual ? "left-[22px]" : "left-[2px]"}
-      `}
+      className={`w-4 h-4 bg-white rounded-full absolute top-[2px] transition-all duration-300 ${
+        isAnnual ? "left-[22px]" : "left-[2px]"
+      }`}
     />
   </button>
 
+  {/* ANNUAL */}
   <span
-    className={`text-[12px] transition ${
+    className={`text-[12px] transition-colors duration-300 ${
       isAnnual ? "text-white" : "text-gray-400"
     }`}
   >
     Annual
   </span>
 
+  {/* SAVE TAG */}
   <span className="ml-2 text-[10px] px-2 py-[3px] rounded-full bg-[#0f2a0f] text-[#77B900] border border-[#77B900]/30">
     Save up to 20%
   </span>
@@ -95,22 +89,12 @@ export default function PricingPreview() {
         🔭
       </div>
 
-      <h3 className="text-[18px] font-medium mb-2">Starter</h3>
-      {/* PRICE */}
-<div className="mb-3">
-  <h2 className="text-[34px] font-semibold text-white leading-none">
-    {isAnnual ? "$29" : "$39"}
+      <div className="mb-2">
+  <h3 className="text-[18px] font-medium">Starter</h3>
 
-    <span className="text-[14px] text-gray-400 font-normal ml-1">
-      /month
-    </span>
-  </h2>
-
-  {isAnnual && (
-    <p className="text-[11px] text-[#77B900] mt-1">
-      billed annually
-    </p>
-  )}
+  <p className="text-[12px] text-[#77B900] mt-1">
+    {isAnnual ? "Annual Plan" : "Monthly Plan"}
+  </p>
 </div>
 
       <p className="text-[13px] text-gray-400 leading-[1.2] mb-3">
@@ -166,7 +150,13 @@ export default function PricingPreview() {
     </div>
 
     {/* TITLE */}
-    <h3 className="text-[18px] font-medium mb-2 text-white">Growth</h3>
+    <div className="mb-2">
+  <h3 className="text-[18px] font-medium text-white">Growth</h3>
+
+  <p className="text-[12px] text-[#77B900] mt-1">
+    {isAnnual ? "Annual Plan" : "Monthly Plan"}
+  </p>
+</div>
 
     {/* DESCRIPTION */}
     <p className="text-[13px] text-gray-400 leading-[1.2] mb-3">
@@ -243,8 +233,13 @@ export default function PricingPreview() {
         🏛️
       </div>
 
-      <h3 className="text-[18px] font-medium mb-2">Enterprise</h3>
+      <div className="mb-2">
+  <h3 className="text-[18px] font-medium">Enterprise</h3>
 
+  <p className="text-[12px] text-[#77B900] mt-1">
+    {isAnnual ? "Annual Plan" : "Monthly Plan"}
+  </p>
+</div>
       <p className="text-[13px] text-gray-400 leading-[1.2] mb-3">
         Full governance, compliance, and executive-level AI financial control.
       </p>
@@ -313,7 +308,13 @@ export default function PricingPreview() {
     </div>
 
     {/* TITLE */}
-    <h3 className="text-[18px] font-medium mb-2">Platform</h3>
+    <div className="mb-2">
+  <h3 className="text-[18px] font-medium">Platform</h3>
+
+  <p className="text-[12px] text-[#77B900] mt-1">
+    {isAnnual ? "Annual Plan" : "Monthly Plan"}
+  </p>
+</div>
 
     {/* DESCRIPTION */}
     <p className="text-[14px] text-gray-400 leading-[1.2] mb-3">

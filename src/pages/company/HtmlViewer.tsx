@@ -1,4 +1,5 @@
 import { useParams, useLocation } from "react-router-dom";
+import GlobalBackground from "../../components/ui/GlobalBackground";
 
 const HtmlViewer = () => {
   const { type } = useParams();
@@ -8,44 +9,68 @@ const HtmlViewer = () => {
 
   let filePath = "";
 
-  // ✅ ONLY THESE HAVE HTML FILES (EDIT THIS LIST)
+  // ✅ ONLY THESE HAVE HTML FILES
   const validPlatformPages = [
     "ai-financial-management",
     "savings-acquisition-cost",
     "cost-per-result",
-    "tco-hybrid-systems",
+    "hybrid-systems",
     "gpu-cost-attribution",
-    "kubernetes-roi-tracking",
     "unified-billing",
-    "pricing"
+    "pricing",
+    "tco_hybrid_systems_finops"
   ];
 
+  // ✅ COMPANY PAGES
   if (location.pathname.startsWith("/company")) {
     filePath = `/pages/${safeType}.html`;
-  } else if (location.pathname.startsWith("/services")) {
+  }
+
+  // ✅ SERVICES PAGES
+  else if (location.pathname.startsWith("/services")) {
     filePath = `/pages/services/${safeType}.html`;
-  } else if (location.pathname.startsWith("/platform")) {
+  }
+
+  // ✅ PLATFORM PAGES
+  else if (location.pathname.startsWith("/platform")) {
     filePath = `/pages/platform/${safeType}.html`;
-  } else if (location.pathname.startsWith("/pricing")) {
+  }
+
+  // ✅ PRICING PAGE
+  else if (location.pathname.startsWith("/pricing")) {
     filePath = `/pages/platform/pricing.html`;
   }
 
-  // ✅ ONLY LOAD IFRAME IF PAGE EXISTS IN LIST
+  // ✅ ONLY LOAD PLATFORM IFRAME IF VALID
   const shouldRenderIframe =
     !location.pathname.startsWith("/platform") ||
     validPlatformPages.includes(safeType);
 
   return (
-    <div className="w-full h-screen">
-      {shouldRenderIframe ? (
-        <iframe
-          src={filePath}
-          className="w-full h-full border-none"
-          title="html-view"
-        />
-      ) : (
-        <div className="w-full h-full" /> // ✅ BLANK PAGE
-      )}
+    <div className="relative w-full min-h-screen overflow-hidden">
+
+      {/* ✅ REAL WEBSITE GLOBAL BACKGROUND */}
+      <GlobalBackground />
+
+      {/* ✅ PAGE CONTENT */}
+      <div className="relative z-10 w-full min-h-screen">
+
+        {shouldRenderIframe ? (
+          <iframe
+  src={filePath}
+  title="html-view"
+  
+  className="w-full min-h-screen border-none"
+  style={{
+    background: "transparent",
+    opacity: 1,
+  }}
+/>
+        ) : (
+          <div className="w-full min-h-screen" />
+        )}
+
+      </div>
     </div>
   );
 };

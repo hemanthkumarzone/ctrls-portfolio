@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 const dummyEbooks = [
   {
     id: 1,
@@ -18,15 +21,14 @@ const dummyEbooks = [
     file: "#",
   },
 ];
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
+
 
 const BASE_URL =
   import.meta.env.VITE_BASE_URL || "http://127.0.0.1:8000/api";
 
 const ResourcesPage = () => {
   const { type } = useParams();
+  const navigate = useNavigate();
 
   const [section, setSection] = useState<any>(null);
   const [cards, setCards] = useState<any[]>([]);
@@ -65,7 +67,7 @@ const ResourcesPage = () => {
 
         setCards(cardsRes.data);
       } catch (err) {
-        console.error("❌ Resource error:", err);
+        console.error("Resource error:", err);
       } finally {
         setLoading(false);
       }
@@ -105,7 +107,7 @@ const ResourcesPage = () => {
           />
         </div>
 
-        {/* 🔥 BLOG → KEEP EXACT (UNCHANGED) */}
+      
         {isBlog ? (
 
           <div className="mt-14 max-w-4xl mx-auto space-y-6">
@@ -198,7 +200,7 @@ const ResourcesPage = () => {
 
                 {/* TITLE */}
                 <h3
-                  className="text-xl font-semibold text-[#9fdc00]"
+                  className="text-lg font-semibold text-[#9fdc00]"
                   dangerouslySetInnerHTML={{ __html: card.title as string }}
                 />
 
@@ -216,33 +218,44 @@ const ResourcesPage = () => {
 
                 {type === "ebooks" && card.file && (
   <div className="mt-5">
-    <a
-      href={
-  card.file?.startsWith("http")
-    ? card.file
-    : `http://127.0.0.1:8000${card.file}`
-}
-      download
-      target="_blank"
-      rel="noopener noreferrer"
+    <button
+      onClick={() => {
+        const token = localStorage.getItem("token");
+
+        // ❌ USER NOT LOGGED IN
+        if (!token) {
+          alert(
+            "Please sign in to download this eBook."
+          );
+
+          window.location.href =
+  `https://business.ctrls.co/login?redirect=${encodeURIComponent(window.location.href)}`;
+
+          return;
+        }
+
+        // ✅ USER LOGGED IN
+        window.open(
+          card.file?.startsWith("http")
+            ? card.file
+            : `http://127.0.0.1:8000${card.file}`,
+          "_blank"
+        );
+      }}
+      className="
+        px-5 py-2
+        bg-[#77B900]
+        text-black
+        rounded-lg
+        font-medium
+        hover:scale-105
+        transition-all duration-200
+      "
     >
-      <button
-        className="
-          px-5 py-2
-          bg-[#77B900]
-          text-black
-          rounded-lg
-          font-medium
-          hover:scale-105
-          transition-all duration-200
-        "
-      >
-        Download
-      </button>
-    </a>
+      Download
+    </button>
   </div>
 )}
-
               </div>
             ))}
 

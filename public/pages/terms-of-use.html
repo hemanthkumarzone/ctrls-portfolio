@@ -7,17 +7,21 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f9f9f7;
-      color: #1a1a18;
-      line-height: 1.75;
-    }
+    html,
+body{
+  font-family:'Poppins',sans-serif;
+  background:transparent !important;
+  color:white;
+  line-height:1.75;
+}
 
     /* ── Top bar ── */
-    .topbar {
-      background: #ffffff;
-      border-bottom: 0.5px solid rgba(26,26,24,0.1);
+    .topbar{
+  background:rgba(5,10,5,0.55);
+  border-bottom:1px solid rgba(119,185,0,0.2);
+  backdrop-filter:blur(14px);
+   -webkit-backdrop-filter:blur(14px);
+      border-bottom: 0.5px solid rgba(119,185,0,0.18);
       padding: 1.25rem 2rem;
       display: flex;
       align-items: center;
@@ -25,13 +29,14 @@
       flex-wrap: wrap;
       gap: 12px;
     }
-    .topbar-brand { font-size: 15px; font-weight: 500; color: #1a1a18; text-decoration: none; }
-    .topbar-brand span { color: #185FA5; }
+    .topbar-brand { font-size: 15px; font-weight: 500; color: #ffffff; text-decoration: none; }
+    .topbar-brand span { color: #77B900; }
     .topbar-meta { font-size: 12px; color: #888780; }
 
     /* ── Layout ── */
     .page-wrap {
-      max-width: 980px;
+      width:100%;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 3rem 1.5rem 5rem;
       display: grid;
@@ -39,6 +44,14 @@
       gap: 3rem;
       align-items: start;
     }
+    .content{
+  background:rgba(5,10,5,0.45);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-radius:24px;
+  padding:24px;
+  border:1px solid rgba(119,185,0,0.12);
+}
     @media (max-width: 700px) {
       .page-wrap { grid-template-columns: 1fr; gap: 2rem; }
       .sidebar { display: none; }
@@ -52,33 +65,39 @@
     }
     .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
     .sidebar-nav a {
-      font-size: 13px; color: #5f5e5a; text-decoration: none;
+      font-size: 13px; color: rgba(255,255,255,0.72); text-decoration: none;
       padding: 5px 10px; border-radius: 6px;
       border-left: 2px solid transparent;
       transition: background 0.12s, color 0.12s;
     }
-    .sidebar-nav a:hover { background: rgba(26,26,24,0.05); color: #1a1a18; }
-    .sidebar-nav a.active { color: #185FA5; border-left-color: #185FA5; background: #E6F1FB; }
+    .sidebar-nav a:hover { background: rgba(26,26,24,0.05); color: #ffffff; }
+    .sidebar-nav a.active{
+  color:#77B900;
+  border-left-color:#77B900;
+  background:rgba(119,185,0,0.12);
+  box-shadow:0 0 20px rgba(119,185,0,0.12);
+}
     .sidebar-contact {
-      margin-top: 1.5rem; background: #ffffff;
-      border: 0.5px solid rgba(26,26,24,0.1); border-radius: 10px; padding: 1rem;
+      margin-top: 1.5rem; background: rgba(16,22,18,0.88);
+      border: 0.5px solid rgba(119,185,0,0.18); border-radius: 10px; padding: 1rem;
     }
-    .sidebar-contact p { font-size: 12px; color: #5f5e5a; line-height: 1.6; margin-bottom: 8px; }
-    .sidebar-contact a { font-size: 12px; color: #185FA5; text-decoration: none; font-weight: 500; }
+    .sidebar-contact p { font-size: 12px; color: rgba(255,255,255,0.72); line-height: 1.6; margin-bottom: 8px; }
+    .sidebar-contact a { font-size: 12px; color: #77B900; text-decoration: none; font-weight: 500; }
 
     /* ── Content ── */
-    .page-header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 0.5px solid rgba(26,26,24,0.1); }
+    .page-header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 0.5px solid rgba(119,185,0,0.18); }
     .page-header-eyebrow {
       display: inline-block; font-size: 11px; font-weight: 500;
       letter-spacing: 0.07em; text-transform: uppercase;
-      color: #185FA5; background: #E6F1FB;
+      color: #77B900; background: rgba(119,185,0,0.1); border:1px solid rgba(119,185,0,0.22);backdrop-filter:blur(10px);
       padding: 3px 12px; border-radius: 20px; margin-bottom: 1rem;
     }
-    .page-header h1 { font-size: 32px; font-weight: 500; color: #1a1a18; margin-bottom: 0.75rem; line-height: 1.2; }
-    .page-header p { font-size: 15px; color: #5f5e5a; line-height: 1.75; max-width: 580px; }
+    .page-header h1 { font-size: 32px; font-weight: 500; color: #ffffff; margin-bottom: 0.75rem; line-height: 1.2; }
+    .page-header p { font-size: 15px; color: rgba(255,255,255,0.72); line-height: 1.75; max-width: 580px; }
     .last-updated {
       display: inline-flex; align-items: center; gap: 6px;
-      font-size: 12px; color: #5f5e5a; background: #f1efe8;
+      font-size: 12px; color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.06);border:1px solid rgba(119,185,0,0.15);
+  backdrop-filter:blur(10px);
       padding: 4px 12px; border-radius: 20px; margin-top: 0.75rem;
     }
 
@@ -88,12 +107,12 @@
       gap: 12px; margin-bottom: 3rem;
     }
     .summary-card {
-      background: #ffffff; border: 0.5px solid rgba(26,26,24,0.1);
+      background: rgba(16,22,18,0.88); border: 0.5px solid rgba(119,185,0,0.18);
       border-radius: 10px; padding: 1rem;
     }
     .summary-card-icon { font-size: 18px; margin-bottom: 8px; }
-    .summary-card h4 { font-size: 13px; font-weight: 500; color: #1a1a18; margin-bottom: 4px; }
-    .summary-card p { font-size: 12px; color: #5f5e5a; line-height: 1.55; }
+    .summary-card h4 { font-size: 13px; font-weight: 500; color: #ffffff; margin-bottom: 4px; }
+    .summary-card p { font-size: 12px; color: rgba(255,255,255,0.72); line-height: 1.55; }
 
     /* Policy sections */
     .policy-section { margin-bottom: 3rem; scroll-margin-top: 2rem; }
@@ -108,9 +127,9 @@
       font-size: 12px; font-weight: 500;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
-    .policy-section h2 { font-size: 18px; font-weight: 500; color: #1a1a18; }
-    .policy-section h3 { font-size: 14px; font-weight: 500; color: #1a1a18; margin: 1.5rem 0 0.5rem; }
-    .policy-section p { font-size: 14px; color: #3a3a38; line-height: 1.8; margin-bottom: 1rem; }
+    .policy-section h2 { font-size: 18px; font-weight: 500; color: #ffffff; }
+    .policy-section h3 { font-size: 14px; font-weight: 500; color: #ffffff; margin: 1.5rem 0 0.5rem; }
+    .policy-section p { font-size: 14px; color: rgba(255,255,255,0.72); line-height: 1.8; margin-bottom: 1rem; }
     .policy-section p:last-child { margin-bottom: 0; }
 
     /* Lists */
@@ -119,12 +138,12 @@
       list-style: none; display: flex; flex-direction: column; gap: 6px;
     }
     .policy-list li {
-      font-size: 14px; color: #3a3a38; line-height: 1.65;
+      font-size: 14px; color:rgba(255,255,255,0.72); line-height: 1.65;
       display: flex; gap: 10px; align-items: flex-start;
     }
     .policy-list li::before {
       content: ''; width: 5px; height: 5px; border-radius: 50%;
-      background: #185FA5; flex-shrink: 0; margin-top: 8px;
+      background: #77B900; flex-shrink: 0; margin-top: 8px;
     }
     .policy-list.red li::before { background: #A32D2D; }
     .policy-list.amber li::before { background: #BA7517; }
@@ -135,20 +154,20 @@
       text-align: left; font-weight: 500; font-size: 11px;
       letter-spacing: 0.05em; text-transform: uppercase; color: #888780;
       padding: 8px 12px; background: #f1efe8;
-      border-bottom: 0.5px solid rgba(26,26,24,0.1);
+      border-bottom: 0.5px solid rgba(119,185,0,0.18);
     }
     .data-table th:first-child { border-radius: 6px 0 0 0; }
     .data-table th:last-child  { border-radius: 0 6px 0 0; }
     .data-table td {
       padding: 10px 12px; border-bottom: 0.5px solid rgba(26,26,24,0.07);
-      color: #3a3a38; vertical-align: top;
+      color: rgba(255,255,255,0.72); vertical-align: top;
     }
     .data-table tr:last-child td { border-bottom: none; }
     .data-table tr:nth-child(even) td { background: rgba(26,26,24,0.02); }
 
     /* Callouts */
     .callout {
-      border-left: 3px solid #185FA5; background: #E6F1FB;
+      border-left: 3px solid #77B900; background:rgba(119,185,0,0.08) ;
       border-radius: 0 8px 8px 0; padding: 0.875rem 1rem; margin: 1rem 0;
     }
     .callout p { font-size: 13px; color: #0C447C; margin: 0; line-height: 1.65; }
@@ -165,16 +184,16 @@
       gap: 14px; margin: 1rem 0 1.5rem;
     }
     .plan-card {
-      background: #ffffff; border: 0.5px solid rgba(26,26,24,0.1);
+      background: rgba(16,22,18,0.88); border: 0.5px solid rgba(119,185,0,0.18);
       border-radius: 12px; padding: 1.25rem;
     }
-    .plan-card.featured { border: 2px solid #185FA5; }
+    .plan-card.featured { border: 2px solid #77B900; }
     .plan-badge {
       font-size: 10px; font-weight: 500; padding: 3px 10px; border-radius: 20px;
       margin-bottom: 10px; display: inline-block;
     }
-    .plan-card h4 { font-size: 15px; font-weight: 500; color: #1a1a18; margin-bottom: 6px; }
-    .plan-card p { font-size: 12px; color: #5f5e5a; line-height: 1.6; }
+    .plan-card h4 { font-size: 15px; font-weight: 500; color: #ffffff; margin-bottom: 6px; }
+    .plan-card p { font-size: 12px; color: rgba(255,255,255,0.72); line-height: 1.6; }
 
     /* Rights grid */
     .rights-grid {
@@ -182,62 +201,27 @@
       gap: 12px; margin: 1rem 0 1.5rem;
     }
     .right-card {
-      background: #ffffff; border: 0.5px solid rgba(26,26,24,0.1);
+      background: rgba(16,22,18,0.88); border: 0.5px solid rgba(119,185,0,0.18);
       border-radius: 10px; padding: 1rem;
     }
-    .right-card h4 { font-size: 13px; font-weight: 500; color: #1a1a18; margin-bottom: 4px; }
-    .right-card p  { font-size: 12px; color: #5f5e5a; line-height: 1.55; }
+    .right-card h4 { font-size: 13px; font-weight: 500; color: #ffffff; margin-bottom: 4px; }
+    .right-card p  { font-size: 12px; color: rgba(255,255,255,0.72); line-height: 1.55; }
 
     .divider { border: none; border-top: 0.5px solid rgba(26,26,24,0.08); margin: 2rem 0; }
 
     /* ── Dark mode ── */
-    @media (prefers-color-scheme: dark) {
-      body { background: #1a1a18; color: #f1efe8; }
-      .topbar { background: #2c2c2a; border-bottom-color: rgba(241,239,232,0.08); }
-      .topbar-brand { color: #f1efe8; }
-      .page-header { border-bottom-color: rgba(241,239,232,0.08); }
-      .page-header h1 { color: #f1efe8; }
-      .page-header p { color: #b4b2a9; }
-      .page-header-eyebrow { background: #0C447C; color: #B5D4F4; }
-      .last-updated { background: #2c2c2a; color: #888780; }
-      .summary-card { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
-      .summary-card h4 { color: #f1efe8; }
-      .summary-card p { color: #b4b2a9; }
-      .policy-section h2 { color: #f1efe8; }
-      .policy-section h3 { color: #f1efe8; }
-      .policy-section p { color: #d3d1c7; }
-      .policy-section-header { border-bottom-color: rgba(241,239,232,0.08); }
-      .section-num { background: #f1efe8; color: #1a1a18; }
-      .data-table th { background: #2c2c2a; color: #888780; border-bottom-color: rgba(241,239,232,0.1); }
-      .data-table td { color: #d3d1c7; border-bottom-color: rgba(241,239,232,0.06); }
-      .data-table tr:nth-child(even) td { background: rgba(241,239,232,0.03); }
-      .policy-list li { color: #d3d1c7; }
-      .policy-list li::before { background: #85B7EB; }
-      .policy-list.red li::before { background: #F09595; }
-      .policy-list.amber li::before { background: #FAC775; }
-      .callout { background: #0C447C; border-left-color: #85B7EB; }
-      .callout p { color: #B5D4F4; }
-      .callout.amber { background: #633806; border-left-color: #FAC775; }
-      .callout.amber p { color: #FAC775; }
-      .callout.red { background: #791F1F; border-left-color: #F09595; }
-      .callout.red p { color: #F09595; }
-      .callout.green { background: #27500A; border-left-color: #C0DD97; }
-      .callout.green p { color: #C0DD97; }
-      .plan-card { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
-      .plan-card.featured { border-color: #85B7EB; }
-      .plan-card h4 { color: #f1efe8; }
-      .plan-card p { color: #b4b2a9; }
-      .right-card { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
-      .right-card h4 { color: #f1efe8; }
-      .right-card p { color: #b4b2a9; }
-      .divider { border-top-color: rgba(241,239,232,0.08); }
-      .sidebar-nav a { color: #888780; }
-      .sidebar-nav a:hover { background: rgba(241,239,232,0.06); color: #f1efe8; }
-      .sidebar-nav a.active { background: #0C447C; color: #B5D4F4; border-left-color: #85B7EB; }
-      .sidebar-contact { background: #2c2c2a; border-color: rgba(241,239,232,0.08); }
-      .sidebar-contact p { color: #b4b2a9; }
-      .sidebar-contact a { color: #85B7EB; }
-    }
+.summary-card,
+.plan-card,
+.right-card,
+.sidebar-contact,
+.callout{
+  box-shadow:
+    0 0 12px rgba(119,185,0,0.08),
+    inset 0 0 0 1px rgba(119,185,0,0.08);
+}
+
+
+    
   </style>
 </head>
 <body>
@@ -892,10 +876,10 @@
       </p>
       <table class="data-table">
         <tbody>
-          <tr><td style="font-weight:500; width:180px;">General legal enquiries</td><td><a href="mailto:legal@aifinops.com" style="color:#185FA5;">legal@aifinops.com</a></td></tr>
-          <tr><td style="font-weight:500;">Security concerns</td><td><a href="mailto:security@aifinops.com" style="color:#185FA5;">security@aifinops.com</a></td></tr>
-          <tr><td style="font-weight:500;">Privacy &amp; data requests</td><td><a href="mailto:privacy@aifinops.com" style="color:#185FA5;">privacy@aifinops.com</a></td></tr>
-          <tr><td style="font-weight:500;">Billing disputes</td><td><a href="mailto:billing@aifinops.com" style="color:#185FA5;">billing@aifinops.com</a></td></tr>
+          <tr><td style="font-weight:500; width:180px;">General legal enquiries</td><td><a href="mailto:legal@aifinops.com" style="color:#77B900;">legal@aifinops.com</a></td></tr>
+          <tr><td style="font-weight:500;">Security concerns</td><td><a href="mailto:security@aifinops.com" style="color:#77B900;">security@aifinops.com</a></td></tr>
+          <tr><td style="font-weight:500;">Privacy &amp; data requests</td><td><a href="mailto:privacy@aifinops.com" style="color:#77B900;">privacy@aifinops.com</a></td></tr>
+          <tr><td style="font-weight:500;">Billing disputes</td><td><a href="mailto:billing@aifinops.com" style="color:#77B900;">billing@aifinops.com</a></td></tr>
           <tr><td style="font-weight:500;">Registered address</td><td>AIFinOps, Inc., 100 Technology Drive, Suite 400, San Francisco, CA 94105, USA</td></tr>
           <tr><td style="font-weight:500;">EU representative</td><td>AIFinOps EU Ltd., 1 Grand Canal Square, Dublin 2, Ireland</td></tr>
         </tbody>

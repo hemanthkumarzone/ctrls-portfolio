@@ -60,14 +60,11 @@ const BlogPage = () => {
 
                 <div className="max-w-[320px]">
                   <h2 className="text-white text-[22px] font-medium leading-[1.3] mb-4">
-                    It’s Here : Meet the New IBM CtrlS Report Studio - A Faster,
-                    More Intuitive Approach to Reporting
+                    It’s Here: Meet the Future of AI FinOps Reporting — Intelligent Insights, Real-Time Visibility, and Smarter Cloud Operations
                   </h2>
 
                   <p className="text-[#7E7E7E] text-[13px] leading-[1.6] mb-6">
-                    A fully modernized reporting experience that makes report creation
-                    faster,simpler, and more flexible, enabling teams to clearly
-                    communicate and demonstrate IT value.
+                    Transform cloud financial operations with AI-powered reporting, intelligent forecasting, real-time visibility, and advanced infrastructure analytics built for modern FinOps teams.
                   </p>
 
                   <button className="bg-[#77B900] text-black px-6 py-2 rounded-[8px] text-[14px] font-medium">
@@ -99,20 +96,19 @@ const BlogPage = () => {
               <div className="text-[#BFBFBF] text-[13px] space-y-5">
 
                 <div>
-                  It’s Here: Meet the New IBM CtrlS Report studio - A Faster,
-                  More Intuitive Approach to Reporting
+                  AI-Powered Financial Reporting for Smarter Cloud and Infrastructure Decisions
                 </div>
 
                 <div className="h-[1px] bg-[#77B900]/15 w-[70%] mx-auto" />
 
                 <div>
-                  New Tech, Same Rules: Cloud Lessons for an AI Advantages
+                  Building Intelligent FinOps Strategies for Modern AI Infrastructure
                 </div>
 
                 <div className="h-[1px] bg-[#77B900]/15 w-[70%] mx-auto" />
 
                 <div>
-                  IBM Cloudability Advanced Containers for Kubernetes Finops
+                  Advanced Kubernetes Cost Visibility and AI Resource Optimization
                 </div>
 
               </div>

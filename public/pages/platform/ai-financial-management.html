@@ -178,15 +178,15 @@
   </div>
 
   <div class="nav" id="nav">
-    <button class="nav-btn active" onclick="scrollTo('use-cases')">Use Cases</button>
-    <button class="nav-btn" onclick="scrollTo('brd')">Business Requirements</button>
-    <button class="nav-btn" onclick="scrollTo('pillars')">Platform Pillars</button>
-    <button class="nav-btn" onclick="scrollTo('waste')">Waste Analysis</button>
-    <button class="nav-btn" onclick="scrollTo('charts')">Key Metrics</button>
-    <button class="nav-btn" onclick="scrollTo('roi')">ROI Model</button>
-    <button class="nav-btn" onclick="scrollTo('roadmap')">Roadmap</button>
-    <button class="nav-btn" onclick="scrollTo('faq')">FAQs</button>
-    <button class="nav-btn" onclick="scrollTo('demo')">Schedule Demo</button>
+    <button class="nav-btn active" onclick="scrollToSection('use-cases')">Use Cases</button>
+    <button class="nav-btn" onclick="scrollToSection('brd')">Business Requirements</button>
+    <button class="nav-btn" onclick="scrollToSection('pillars')">Platform Pillars</button>
+    <button class="nav-btn" onclick="scrollToSection('waste')">Waste Analysis</button>
+    <button class="nav-btn" onclick="scrollToSection('charts')">Key Metrics</button>
+    <button class="nav-btn" onclick="scrollToSection('roi')">ROI Model</button>
+    <button class="nav-btn" onclick="scrollToSection('roadmap')">Roadmap</button>
+    <button class="nav-btn" onclick="scrollToSection('faq')">FAQs</button>
+    <button class="nav-btn" onclick="scrollToSection('demo')">Schedule Demo</button>
   </div>
 
   <div class="section" id="use-cases">
@@ -474,8 +474,11 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-function scrollTo(id) {
-  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
 }
 
 function toggleFaq(el) {

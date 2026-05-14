@@ -372,45 +372,44 @@ const companyItems =
                       ?.toLowerCase();
 
                     return (
-                      <Link key={i} to={`/platform/${slug}`}>
-                        <div
-                          className={`
-                            group cursor-pointer p-2 rounded-xl
-                            transition-all duration-[1400ms] ease-out
-                            hover:bg-gradient-to-br
-                            hover:from-[#77B900]/10
-                            hover:shadow-[0_0_20px_rgba(119,185,0,0.15)]
+  <div
+    key={i}
+    className={`
+      group p-2 rounded-xl
+      transition-all duration-[1400ms] ease-out
+      hover:bg-gradient-to-br
+      hover:from-[#77B900]/10
+      hover:shadow-[0_0_20px_rgba(119,185,0,0.15)]
 
-                            ${
-                              showPlatform
-                                ? "opacity-100 translate-x-0"
-                                : "opacity-0 translate-x-10"
-                            }
-                          `}
-                          style={{
-                            transitionDelay: `${i * 250}ms`
-                          }}
-                        >
-                          <p
-                            className="
-                              text-white/70
-                              group-hover:text-[#9fdc00]
-                              font-medium
-                              text-[14px]
-                              transition-all duration-300
-                            "
-                          >
-                            {item.title}
-                          </p>
+      ${
+        showPlatform
+          ? "opacity-100 translate-x-0"
+          : "opacity-0 translate-x-10"
+      }
+    `}
+    style={{
+      transitionDelay: `${i * 250}ms`
+    }}
+  >
+    <p
+      className="
+        text-white/70
+        group-hover:text-[#9fdc00]
+        font-medium
+        text-[14px]
+        transition-all duration-300
+      "
+    >
+      {item.title}
+    </p>
 
-                          {item.description && (
-                            <p className="text-[12px] text-white/40 mt-1 group-hover:text-white/70">
-                              {item.description}
-                            </p>
-                          )}
-                        </div>
-                      </Link>
-                    );
+    {item.description && (
+      <p className="text-[12px] text-white/40 mt-1 group-hover:text-white/70">
+        {item.description}
+      </p>
+    )}
+  </div>
+);
                   })}
                 </div>
 
@@ -588,8 +587,7 @@ const companyItems =
 
             <div
   onClick={() => {
-  const section = document.getElementById("demo");
-  section?.scrollIntoView({ behavior: "smooth" });
+  navigate("/?scroll=demo");
 }}
   className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition cursor-pointer"
 >
@@ -604,18 +602,7 @@ const companyItems =
 </div>
 <div
   onClick={() => {
-  const section = document.getElementById("video-section");
-    
-
-if (section) {
-  const yOffset = -110; // adjust if needed
-  const y =
-    section.getBoundingClientRect().top +
-    window.pageYOffset +
-    yOffset;
-
-  window.scrollTo({ top: y, behavior: "smooth" });
-}
+    navigate("/?scroll=video");
   }}
   className="mx-3 border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition cursor-pointer"
 >
@@ -843,8 +830,7 @@ if (section) {
 
          <div
   onClick={() => {
-  const section = document.getElementById("demo");
-  section?.scrollIntoView({ behavior: "smooth" });
+  navigate("/?scroll=demo");
   setMenuOpen(false);
 }}
   className="border border-[#436900] text-[#77B900] text-center py-2 rounded-[10px] hover:bg-[#77B900]/10 transition cursor-pointer"

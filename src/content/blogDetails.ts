@@ -2,11 +2,9 @@ export const blogDetails = [
   {
     id: "finance",
 
-    title:
-      "It’s Here: Meet the New IBM CtrlS Report Studio – A Faster, More Intuitive Approach to Reporting",
-
+    title: "AI-Powered Reporting and Financial Intelligence for FinOps Teams",
     subtitle:
-      "A fully modernized reporting experience that makes report creation faster, simpler, and more flexible, enabling teams to clearly communicate and demonstrate IT value.",
+"AI-powered reporting and financial visibility for modern FinOps teams managing cloud and infrastructure spend.",
 
 
     content: [
@@ -100,13 +98,13 @@ That is a different kind of organization. And it is a more competitive one.`
     ],
      sidebar: {
       articles: [
-        "A Faster, More Streamlined Reporting Experience",
-        "Built for Broader Adoption and Scale",
-        "Richer Visualizations and More Interactive Insight",
-        "A Foundation for What’s Next",
-        "Getting Started and Migrating to the New Report Studio",
-        "Looking Ahead"
-      ],
+"Forecasting AI Spend with Confidence",
+"Building Smarter Cost Governance",
+"Modern Financial Visibility for Enterprises",
+"Tracking Infrastructure ROI",
+"Improving Budget Transparency",
+"Operational FinOps Reporting"
+],
       category: "IT Finance",
       tags: "Product Updates"
     }
@@ -116,11 +114,10 @@ That is a different kind of organization. And it is a more competitive one.`
    {
     id: "cloud",
 
-    title:
-      "IBM Cloudability Advanced Containers for Kubernetes FinOps",
+    title: "Real-Time Kubernetes Analytics",
 
     subtitle:
-      "Extend IBM Cloudability with real-time Kubernetes analytics, optimization, and automation.",
+"Monitor Kubernetes infrastructure costs, optimize container workloads, and improve multi-cloud efficiency with real-time analytics.",
 
     content: [
       {
@@ -193,9 +190,12 @@ Cloud spending is now a material cost for virtually every technology-enabled bus
 
     sidebar: {
       articles: [
-        "IBM Cloudability Advanced Containers",
-        "Built Into IBM Cloudability"
-      ],
+"Advanced Kubernetes Cost Analytics",
+"Multi-Cloud Infrastructure Visibility",
+"Kubernetes Resource Optimization",
+"Container Cost Monitoring",
+"Real-Time Cluster Intelligence"
+],
       category: "FinOps",
       tags: "Announcements, Product Updates"
     }
@@ -204,8 +204,7 @@ Cloud spending is now a material cost for virtually every technology-enabled bus
    {
     id: "devops",
 
-    title:
-      "IBM Kubecost 3.1: Kubernetes Resource Quota Rightsizing",
+    title: "Resource Rightsizing at Scale",
 
     subtitle:
       "Explore new Savings Insights for Resource Quotas, with recommendations to right-size and actions to create or update quotas.",
@@ -286,12 +285,12 @@ Cloud waste reduction, done well, is not a cost-cutting initiative. It is a meas
 
     sidebar: {
       articles: [
-        "IBM Kubecost 3.1: Kubernetes Resource Quota Rightsizing",
-        "What’s New in 3.1: Kubernetes Resource Quota Rightsizing",
-        "Quick Refresher: What Resource Quotas Do",
-        "Walkthrough: Right-Size Quotas from Insights Card to Apply",
-        "Getting Started with 3.1"
-      ],
+"Reducing Kubernetes Waste",
+"Infrastructure Ownership Models",
+"Automation for Modern DevOps Teams",
+"Rightsizing Compute Resources",
+"Automated Infrastructure Optimization"
+],
       category: "FinOps",
       tags: "Announcements, Product Updates"
     }
