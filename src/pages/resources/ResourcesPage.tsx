@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 const dummyEbooks = [
   {
@@ -28,7 +28,7 @@ const BASE_URL =
 
 const ResourcesPage = () => {
   const { type } = useParams();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const [section, setSection] = useState<any>(null);
   const [cards, setCards] = useState<any[]>([]);

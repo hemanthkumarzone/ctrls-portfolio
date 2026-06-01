@@ -397,6 +397,37 @@
       .callout.orange { background: rgba(196,92,0,.12); }
       .policy-example { background: var(--surf); }
     }
+    /* ── BACK BUTTON ── */
+.back-btn{
+  position:absolute;
+  top:20px;
+  left:20px;
+  z-index:9999;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  padding:10px 18px;
+
+  background: rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+
+  color:#ffffff;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:500;
+
+  border-radius:10px;
+  backdrop-filter: blur(10px);
+
+  transition:all 0.2s ease;
+}
+
+.back-btn:hover{
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
   </style>
 </head>
 <body>
@@ -414,8 +445,12 @@
 
 <!-- ── HERO ── -->
 <section class="hero">
+  <a href="../platform/platform.html" class="back-btn">
+  ← Back
+</a>
   <div class="hero-hatch"></div>
   <div class="hero-inner">
+    
     <div>
       <div class="hero-tag">Service — K8s Cost Observability &amp; Attribution</div>
       <h1>See <span class="hi">every rupee</span><br>inside every cluster.<br>Know exactly who owns it.</h1>

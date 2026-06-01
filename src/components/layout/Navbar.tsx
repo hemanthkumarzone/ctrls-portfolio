@@ -34,6 +34,14 @@ const Navbar = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const closeMobileMenu = () => {
+  setMenuOpen(false);
+  setMobileResourcesOpen(false);
+  setMobilePlatformOpen(false);
+  setMobileCompanyOpen(false);
+  setMobileGetStartedOpen(false);
+};
   
    const handleLogout = () => {
     localStorage.removeItem("token");
@@ -365,11 +373,11 @@ const companyItems =
                 {/* ANIMATED ITEMS */}
                 <div className="flex flex-col gap-2">
                   {platformList.map((item: any, i: number) => {
-                    const slug = item.path
-                      ?.split("/")
-                      .pop()
-                      ?.replace(".html", "")
-                      ?.toLowerCase();
+                   // const slug = item.path
+                    //  ?.split("/")
+                     // .pop()
+                     // ?.replace(".html", "")
+                     // ?.toLowerCase();
 
                     return (
   <div
@@ -657,7 +665,8 @@ const companyItems =
     ?.toLowerCase();
 
   return (
-    <Link key={i} to={`/resources/${slug}`}>
+    <Link key={i} to={`/resources/${slug}`}
+      onClick={closeMobileMenu}>
       <div className="group cursor-pointer p-2 rounded-lg transition-all duration-300 hover:bg-gradient-to-br hover:from-[#77B900]/10">
         <p className="text-[#9fdc00] text-sm group-hover:text-[#baff2a]">
           {res.title}
@@ -696,7 +705,8 @@ const companyItems =
     ?.toLowerCase();
 
   return (
-    <Link key={i} to={`/platform/${slug}`}>
+    <Link key={i} to={`/platform/${slug}`}
+      onClick={closeMobileMenu}>
       <div className="px-3 py-2 text-white/80">
         {p.title}
       </div>
@@ -730,7 +740,7 @@ const companyItems =
     ?.toLowerCase();
 
   return (
-    <Link key={i} to={`/company/${slug}`}>
+    <Link key={i} to={`/company/${slug}`}  onClick={closeMobileMenu}>
       <div className="px-3 py-2 text-white/80">
         {c.title}
       </div>
@@ -744,7 +754,7 @@ const companyItems =
               }
 
               return (
-                <Link key={index} to={path} className="text-[#77B900]">
+                <Link key={index} to={path} className="text-[#77B900]"  onClick={closeMobileMenu}>
                   {item}
                 </Link>
               );

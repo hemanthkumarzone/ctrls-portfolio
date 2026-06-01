@@ -214,6 +214,11 @@ function AppContent() {
               element={<BookDemo />}
             />
 
+            <Route
+              path="/reschedule/:bookingId"
+              element={<BookDemo />}
+            />
+
             {/* PRICING */}
             <Route
               path="/pricing"

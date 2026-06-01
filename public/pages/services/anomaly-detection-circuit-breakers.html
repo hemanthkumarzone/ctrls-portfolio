@@ -386,6 +386,62 @@
     /* scroll entrance animations */
     .fade-up { opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
+    /* ── BACK BUTTON ── */
+
+.back-btn{
+  position:absolute;
+  top:-55px;
+  left:0;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  background:rgba(255,255,255,.04);
+
+  border:1px solid rgba(255,255,255,.08);
+
+  color:var(--ink2);
+
+  padding:10px 16px;
+
+  border-radius:8px;
+
+  font-family:var(--mono);
+
+  font-size:11px;
+
+  cursor:pointer;
+
+  transition:all .2s ease;
+
+  backdrop-filter:blur(10px);
+
+  z-index:20;
+}
+
+.back-btn:hover{
+  color:white;
+  border-color:rgba(255,59,48,.35);
+  background:rgba(255,59,48,.08);
+
+  transform:translateX(-2px);
+}
+
+/* MOBILE */
+
+@media (max-width:900px){
+
+  .back-btn{
+    top:-45px;
+    left:0;
+
+    padding:8px 14px;
+
+    font-size:10px;
+  }
+
+}
   </style>
 </head>
 <body>
@@ -405,6 +461,10 @@
   <div class="hero-glow-r"></div>
   <div class="hero-glow-a"></div>
   <div class="hero-inner">
+    <!-- BACK BUTTON -->
+<button class="back-btn" onclick="history.back()">
+  ← Back
+</button>
     <div>
       <div class="hero-kicker">Service — Anomaly Detection &amp; Circuit Breakers</div>
       <h1>Catch the spike.<br><span class="hi-r">Break the circuit.</span><br>Save the <span class="hi-a">budget.</span></h1>

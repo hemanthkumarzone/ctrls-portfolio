@@ -183,3 +183,63 @@ body {
 .animate-fadeInUp {
   animation: fadeInUp 0.8s ease forwards;
 }
+/* ========================= */
+/* DEMO CALENDAR */
+/* ========================= */
+
+.react-calendar{
+  width:100%;
+  background:#0A0F0B !important;
+  border:none !important;
+  color:white;
+  font-family:'Poppins',sans-serif;
+}
+
+.react-calendar__navigation button{
+  color:#77B900;
+  font-size:18px;
+  background:none !important;
+}
+
+.react-calendar__month-view__weekdays{
+  color:#77B900;
+  text-transform:uppercase;
+  font-size:12px;
+}
+
+.react-calendar__tile{
+  background:transparent !important;
+  color:white;
+  border-radius:12px;
+  padding:16px 0;
+  transition:0.3s;
+}
+
+.react-calendar__tile:hover{
+  background:#1A250F !important;
+}
+
+.react-calendar__tile--active{
+  background:#77B900 !important;
+  color:black !important;
+}
+
+.react-calendar__tile:disabled{
+  color:#444 !important;
+  opacity:0.5;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth{
+  color:#333;
+}
+
+.react-calendar__tile--now{
+  background:#1A250F !important;
+  color:#77B900 !important;
+}
+/* PAST DATES */
+
+.past-date{
+  opacity:0.78 !important;
+  color:#A1A1AA !important;
+}
