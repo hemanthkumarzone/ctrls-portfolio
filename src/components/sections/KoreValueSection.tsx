@@ -55,9 +55,57 @@ export default function KoreValueSection() {
 
     return `/services/${name.replace(/\s+/g, "-")}`;
   }
+  if (section === "platform") {
+
+  if (name.includes("ai financial")) {
+    return "/platform/ai-financial-management";
+  }
+
+  if (name.includes("savings")) {
+    return "/platform/savings-acquisition-cost";
+  }
+
+  if (name.includes("cost-per-result")) {
+    return "/platform/cost-per-result";
+  }
+
+  if (name.includes("tco") || name.includes("hybrid")) {
+    return "/platform/hybrid-systems";
+  }
+
+  if (name.includes("gpu")) {
+    return "/platform/gpu-cost-attribution";
+  }
+
+  if (name.includes("kubernetes")) {
+    return "/platform/kubernetes-roi-tracking";
+  }
+
+  if (name.includes("unified")) {
+    return "/platform/unified-billing";
+  }
+
+  return "/";
+}
+if (section === "resource") {
+  if (name.includes("blog")) {
+    return "/resources/blog";
+  }
+
+  if (name.includes("e-book") || name.includes("ebook")) {
+    return "/resources/ebooks";
+  }
+
+  if (name.includes("release")) {
+    return "/resources/release-notes";
+  }
+
+  return "/resources";
+}
 
   return "/";
 };
+
   const getSection = (name: string) => {
     
     return (
@@ -117,14 +165,22 @@ const supportedPlatforms = platformItems.slice(midPlatform);
             <div className="flex gap-6 text-[#7E7E7E] text-[14px] leading-[24px]">
               <div>
                 {safeData.services.left.map((item: any, i: number) => (
-                  <div key={i}>{item.name}</div>
-                ))}
+  <Link key={i} to={getCorrectPath("services", item)}>
+    <div className="hover:text-[#9fdc00] transition cursor-pointer">
+      {item.name}
+    </div>
+  </Link>
+))}
               </div>
 
               <div className="whitespace-nowrap">
                 {safeData.services.right.map((item: any, i: number) => (
-                  <div key={i}>{item.name}</div>
-                ))}
+  <Link key={i} to={getCorrectPath("services", item)}>
+    <div className="hover:text-[#9fdc00] transition cursor-pointer">
+      {item.name}
+    </div>
+  </Link>
+))}
               </div>
             </div>
           </div>
@@ -137,8 +193,12 @@ const supportedPlatforms = platformItems.slice(midPlatform);
 
             <div className="text-[#7E7E7E] text-[14px] leading-[24px]">
               {safeData.resource.items?.map((item: any, i: number) => (
-                <div key={i}>{item.name}</div>
-              ))}
+  <Link key={i} to={getCorrectPath("resource", item)}>
+    <div className="hover:text-[#9fdc00] transition cursor-pointer">
+      {item.name}
+    </div>
+  </Link>
+))}
             </div>
           </div>
 
@@ -150,32 +210,35 @@ const supportedPlatforms = platformItems.slice(midPlatform);
 
             <div className="text-[#7E7E7E] text-[14px] leading-[24px]">
               {safeData.company.items?.map((item: any, i: number) => (
-                <div key={i}>{item.name}</div>
-              ))}
+  <Link key={i} to={getCorrectPath("company", item)}>
+    <div className="hover:text-[#9fdc00] transition cursor-pointer">
+      {item.name}
+    </div>
+  </Link>
+))}
             </div>
           </div>
 
           
           {/* PLATFORM */}
-<div className="absolute" style={{ top: "125px", left: "1016px" }}>
-
-  {/* TITLE */}
-  <h3 className="text-[#77B900] text-[32px] font-medium mb-4">
+        {/* PLATFORM */}
+<div>
+  <h3 className="text-[#77B900] text-[18px] font-medium mb-2">
     {safeData.platform.title}
   </h3>
 
-  <div className="flex gap-16">
+  <div className="grid grid-cols-2 gap-6">
 
-    {/* LEFT COLUMN */}
+    {/* LEFT */}
     <div>
-      <h4 className="text-white text-[20px] mb-3">
+      <h4 className="text-white text-[14px] mb-2">
         Business Requirement
       </h4>
 
-      <div className="text-[#7E7E7E] text-[18px] leading-[32px]">
+      <div className="text-[#7E7E7E] text-[13px] leading-[22px]">
         {businessRequirements.map((item: any, i: number) => (
-          <Link key={i} to={item.path || "/"}>
-            <div className="hover:text-[#9fdc00] cursor-pointer transition">
+          <Link key={i} to={getCorrectPath("platform", item)}>
+            <div className="hover:text-[#9fdc00] transition">
               {item.name}
             </div>
           </Link>
@@ -183,26 +246,23 @@ const supportedPlatforms = platformItems.slice(midPlatform);
       </div>
     </div>
 
-    {/* RIGHT COLUMN */}
+    {/* RIGHT */}
     <div>
-      <h4 className="text-white text-[20px] mb-3">
+      <h4 className="text-white text-[14px] mb-2">
         Supported Platforms
       </h4>
 
-      <div className="text-[#7E7E7E] text-[18px] leading-[32px]">
+      <div className="text-[#7E7E7E] text-[13px] leading-[22px]">
         {supportedPlatforms.map((item: any, i: number) => (
-          <Link key={i} to={item.path || "/"}>
-            <div className="hover:text-[#9fdc00] cursor-pointer transition">
-              {item.name}
-            </div>
-          </Link>
+          <div key={i}>
+            {item.name}
+          </div>
         ))}
       </div>
     </div>
 
   </div>
 </div>
-
         </div>
 
         <div className="w-full h-[1px] bg-[#77B900] my-8" />
@@ -296,7 +356,7 @@ const supportedPlatforms = platformItems.slice(midPlatform);
 
                 <div className="text-[#7E7E7E] text-[18px] mt-4 leading-[32px]">
                   {safeData.resource.items?.map((item: any, i: number) => (
-                    <Link key={i} to={item.path || "/"}>
+                    <Link key={i} to={getCorrectPath("resource", item)}>
   <div className="hover:text-[#9fdc00] cursor-pointer transition">
     {item.name}
   </div>
@@ -339,7 +399,7 @@ const supportedPlatforms = platformItems.slice(midPlatform);
 
       <div className="text-[#7E7E7E] text-[18px] leading-[32px]">
         {businessRequirements.map((item: any, i: number) => (
-          <Link key={i} to={item.path || "/"}>
+          <Link key={i} to={getCorrectPath("platform", item)}>
             <div className="hover:text-[#9fdc00] cursor-pointer transition">
               {item.name}
             </div>
@@ -356,12 +416,13 @@ const supportedPlatforms = platformItems.slice(midPlatform);
 
       <div className="text-[#7E7E7E] text-[18px] leading-[32px]">
         {supportedPlatforms.map((item: any, i: number) => (
-          <Link key={i} to={item.path || "/"}>
-            <div className="hover:text-[#9fdc00] cursor-pointer transition">
-              {item.name}
-            </div>
-          </Link>
-        ))}
+  <div
+    key={i}
+    className="text-[#7E7E7E] hover:text-[#9fdc00] transition"
+  >
+    {item.name}
+  </div>
+))}
       </div>
     </div>
 

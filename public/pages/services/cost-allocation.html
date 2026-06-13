@@ -419,6 +419,60 @@
 
     .fade-up { opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
+    /* ── BACK BUTTON ── */
+.back-btn{
+  position:absolute;
+  top:20px;
+  left:20px;
+
+  z-index:9999;
+
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+
+  padding:10px 18px;
+
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+
+  border-radius:10px;
+
+  color:var(--parchment);
+  text-decoration:none;
+
+  font-size:13px;
+  font-weight:600;
+
+  backdrop-filter:blur(10px);
+
+  transition:.2s ease;
+}
+
+.back-btn:hover{
+  background:rgba(255,255,255,.14);
+  transform:translateY(-1px);
+}
+
+/* MOBILE */
+@media (max-width:768px){
+
+  .hero{
+    overflow:visible;
+  }
+
+  .hero-inner{
+    padding-top:7rem;
+  }
+
+  .back-btn{
+    top:14px;
+    left:14px;
+
+    padding:8px 14px;
+    font-size:11px;
+  }
+}
   </style>
 </head>
 <body>
@@ -435,6 +489,9 @@
 
 <!-- ── HERO ── -->
 <section class="hero">
+  <a href="javascript:history.back()" class="back-btn">
+  ← Back
+</a>
   <div class="hero-blueprint"></div>
   <div class="hero-glow"></div>
   <div class="hero-wm">ALLOC</div>

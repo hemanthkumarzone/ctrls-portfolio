@@ -73,7 +73,7 @@
     /* ── HERO ── */
     .hero {
       background: var(--ink);
-      overflow: hidden; position: relative;
+      overflow: visible; position: relative;
     }
     /* Ledger lines texture */
     .hero-ledger {
@@ -105,7 +105,7 @@
 
     .hero-inner {
       max-width: 1080px; margin: 0 auto;
-      padding: 5.5rem 2.5rem 0;
+      padding: 7rem 2.5rem 0;
       display: grid; grid-template-columns: 1fr 460px;
       gap: 4rem; align-items: end;
       position: relative; z-index: 1;
@@ -431,6 +431,50 @@
 
     .fade-up { opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
+    /* ── BACK BUTTON ── */
+    .back-btn{
+  position:absolute;
+  top:20px;
+  left:20px;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+
+  color:var(--bone);
+
+  padding:10px 16px;
+
+  border-radius:8px;
+
+  font-family:var(--man);
+
+  font-size:11px;
+  font-weight:600;
+
+  cursor:pointer;
+  transition:all .2s ease;
+
+  backdrop-filter:blur(10px);
+
+  z-index:20;
+}
+.back-btn:hover{
+  background:rgba(255,255,255,.12);
+  transform:translateY(-1px);
+}
+@media (max-width:768px){
+  .back-btn{
+    top:16px;
+    left:16px;
+    padding:8px 14px;
+    font-size:10px;
+     z-index:9999;
+  }
+}
   </style>
 </head>
 <body>
@@ -452,6 +496,9 @@
   <div class="hero-glow"></div>
   <div class="hero-wm">$</div>
   <div class="hero-inner">
+     <button class="back-btn" onclick="history.back()">
+    ← Back
+  </button>
     <div class="hero-text">
       <div class="hero-kicker">Service — Budgeting</div>
       <h1>

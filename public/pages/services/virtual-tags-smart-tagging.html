@@ -356,11 +356,29 @@
 
     .fade-up { opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .back-btn{
+  position: fixed;
+  top: 70px;
+  left: 20px;
+  background: var(--indigo);
+  color: var(--white);
+  padding: 10px 18px;
+  border-radius: var(--r);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  z-index: 999;
+  transition: all .2s ease;
+}
+
+.back-btn:hover{
+  background: var(--moss);
+}
   </style>
 </head>
 <body>
-
 <!-- ── NAV ── -->
+ <!--
 <nav class="nav">
   <a href="#" class="nav-brand">AI<em>FinOps</em></a>
   <div class="nav-bc">
@@ -369,15 +387,18 @@
   </div>
   <a href="#" class="nav-cta">Start tagging free</a>
 </nav>
+-->
 
 <!-- ── HERO ── -->
 <section class="hero">
+  <a href="index.html" class="back-btn">← Back</a>
   <div class="hero-geo">
     <div class="geo-circle geo-c1"></div>
     <div class="geo-circle geo-c2"></div>
     <div class="geo-rect"></div>
   </div>
   <div class="hero-inner">
+    
     <div class="hero-text">
       <div class="hero-kicker">Service — Virtual Tags &amp; Smart Tagging</div>
       <h1>

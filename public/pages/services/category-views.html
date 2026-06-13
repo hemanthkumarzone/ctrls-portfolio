@@ -65,7 +65,7 @@
     /* ── HERO ── */
     .hero {
       background: var(--ink);
-      overflow: hidden;
+      overflow: visible;
       position: relative;
     }
     /* Large typographic "X" decoration */
@@ -344,6 +344,66 @@
     /* scroll animation */
     .fade-up { opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
+    /* ── BACK BUTTON ── */
+
+.back-btn{
+  position:absolute;
+  top:30px;
+  left:30px;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  background:rgba(255,255,255,.06);
+
+  border:1px solid rgba(255,255,255,.12);
+
+  color:var(--white);
+
+  padding:10px 16px;
+
+  border-radius:8px;
+
+  font-family:var(--clash);
+
+  font-size:11px;
+
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:all .2s ease;
+
+  backdrop-filter:blur(10px);
+
+  z-index:20;
+}
+
+.back-btn:hover{
+  background:rgba(122,28,46,.25);
+
+  border-color:rgba(212,169,138,.35);
+
+  color:white;
+
+  transform:translateX(-2px);
+}
+
+/* MOBILE */
+
+@media (max-width:900px){
+
+  .back-btn{
+    top:20px;
+    left:20px;
+
+    padding:8px 14px;
+
+    font-size:10px;
+  }
+
+}
   </style>
 </head>
 <body>
@@ -362,6 +422,10 @@
 <section class="hero">
   <div class="hero-deco">⋈</div>
   <div class="hero-inner">
+    <!-- BACK BUTTON -->
+<button class="back-btn" onclick="history.back()">
+  ← Back
+</button>
     <div class="hero-text">
       <div class="hero-kicker">Service — Category Views</div>
       <h1>See AI costs<br>the way your<br><em>business thinks.</em></h1>
