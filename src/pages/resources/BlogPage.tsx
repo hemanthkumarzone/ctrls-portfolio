@@ -54,11 +54,27 @@ const BlogPage = () => {
 
           {/* LEFT BIG CARD */}
           <Link to="/blog/1">
-            <NeonCard className="w-[720px] h-[360px] cursor-pointer">
+            <NeonCard className="
+  w-full
+  lg:w-[720px]
+  min-h-[360px]
+  cursor-pointer
+">
 
-              <div className="flex items-center justify-between h-full px-8 py-6">
+              <div className="
+  flex
+  flex-col
+  lg:flex-row
+  items-center
+  justify-between
+  h-full
+  px-4
+  lg:px-8
+  py-6
+  gap-6
+">
 
-                <div className="max-w-[320px]">
+                <div className="w-full lg:max-w-[320px]">
                   <h2 className="text-white text-[22px] font-medium leading-[1.3] mb-4">
                     It’s Here: Meet the Future of AI FinOps Reporting — Intelligent Insights, Real-Time Visibility, and Smarter Cloud Operations
                   </h2>
@@ -72,7 +88,7 @@ const BlogPage = () => {
                   </button>
                 </div>
 
-                <div className="w-[300px] h-[240px] rounded-[10px] overflow-hidden">
+                <div className="w-fulll max-w-[300px] h-[220px] lg:h-[240px] rounded-[10px] overflow-hidden">
                   <img
                     src="/Background.png"
                     className="w-full h-full object-cover"
@@ -85,7 +101,7 @@ const BlogPage = () => {
           </Link>
 
           {/* RIGHT SMALL CARD */}
-          <NeonCard className="w-[300px] h-[360px]">
+          <NeonCard className="w-full lg:w-[300px] h-[360px]">
 
             <div className="flex flex-col justify-between h-full px-6 py-6">
 
@@ -208,7 +224,8 @@ const BlogPage = () => {
                       className="
                         bg-[#10150D]
                         border border-[#77B900]/30
-                        w-[320px]
+                        w-full
+                        sm:w-[320px]
                         h-[560px]
                         rounded-[14px]
                         p-5
@@ -312,7 +329,15 @@ const BlogPage = () => {
         {/* ===== INNER CONTAINER ===== */}
         <div className="relative max-w-[1000px] mx-auto px-6">
 
-          <div className="flex justify-between items-start gap-16">
+          <div className="
+ flex-col
+ lg:flex-row
+ flex
+ justify-between
+ items-start
+ gap-8
+ lg:gap-16
+">
 
             {/* LEFT */}
             <div className="max-w-[480px]">
@@ -344,9 +369,9 @@ const BlogPage = () => {
             </div>
 
             {/* RIGHT */}
-            <div className="w-[380px]">
+            <div className="w-full lg:w-[380px]">
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                 <input
                   className="bg-black border border-[#436900] text-white px-4 py-3 rounded-[10px]"

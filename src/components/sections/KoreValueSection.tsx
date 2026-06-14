@@ -149,10 +149,10 @@ const supportedPlatforms = platformItems.slice(midPlatform);
       <div className="w-full px-4 py-10 lg:hidden">
 
         <img
-          src="/Kore Value Logo.png"
-          alt="logo"
-          className="w-[147px] h-[64px] mb-8"
-        />
+  src="/Kore Value Logo.png"
+  alt="logo"
+  className="w-[100px] h-auto mb-6"
+/>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
 

@@ -47,11 +47,10 @@ if (!blog) {
   ← Back to Blogs
 </button>
 
-    <h1 className="text-[#9FEF00] text-[30px] font-semibold leading-[1.3] mb-5 max-w-[450px]">
+    <h1 className="text-[#9FEF00] text-[24px] md:text-[30px] font-semibold leading-[1.3] mb-5 max-w-[450px]">
   {blog.title}
 </h1>
-
-<p className="text-[#D9D9D9] text-[18px] leading-[1.6] max-w-[800px]">
+<p className="text-[#D9D9D9] text-[15px] md:text-[18px] leading-[1.6] max-w-[800px]">
   {blog.subtitle}
 </p>
 
@@ -61,7 +60,7 @@ if (!blog) {
 
 
       <div className="w-full mt-4">
-  <div className="max-w-[1400px] mx-auto px-6 flex gap-6 items-start">
+  <div className="max-w-[1400px] mx-auto px-4 md:px-6 flex flex-col lg:flex-row gap-6 items-start">
     
     {/* LEFT CONTENT */}
     <div className="flex-1">
@@ -73,7 +72,7 @@ if (!blog) {
   
 
  {/* ===== BLOG CONTENT ===== */}
-<div className="relative z-10 p-8 space-y-4">
+<div className="relative z-10 p-4 md:p-8 space-y-4">
 
   {blog.content.map((section, index) => (
     <div key={index}>
@@ -109,7 +108,7 @@ if (!blog) {
     
 
     {/* RIGHT SIDEBAR */}
-    <div className="w-[330px]">
+    <div className="w-full lg:w-[330px]">
       <div className="rounded-[10px] border border-[#77B900] p-5  relative overflow-hidden">
 
   {/* GLOW */}
@@ -169,7 +168,7 @@ if (!blog) {
   {/* ===== INNER CONTAINER (IMPORTANT FIX) ===== */}
   <div className="relative max-w-[1000px] mx-auto px-6">
 
-    <div className="flex justify-between items-start gap-16">
+    <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-16">
 
       {/* LEFT */}
       <div className="max-w-[480px]">
@@ -199,9 +198,9 @@ if (!blog) {
       </div>
 
       {/* RIGHT */}
-      <div className="w-[380px]">
+      <div className="w-full lg:w-[380px]">
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           <input className="bg-black border border-[#436900] text-white px-4 py-3 rounded-[10px]" placeholder="First Name" />
           <input className="bg-black border border-[#436900] text-white px-4 py-3 rounded-[10px]" placeholder="Last Name" />

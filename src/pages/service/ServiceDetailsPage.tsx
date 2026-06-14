@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getServiceDetails } from "../../services/serviceApi";
 import CostBreakdownCard from "../../components/ui/CostBreakdownCard";
+
 import API from "../../api/api";
 import { Cloud,Database,BarChart3,Bell,MessageSquare,Mail,Activity,Layers,Plug,LineChart,BrainCircuit} from "lucide-react";
 type TagColor = "blue" | "green" | "yellow" | "red" | "pink" | "purple" | "teal";
