@@ -291,13 +291,33 @@
 
     /* ── DEPLOY STEPS ── */
     .deploy-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0; border: 1px solid var(--rule); border-radius: var(--r-lg); overflow: hidden; }
-    .ds { padding: 1.75rem; border-right: 1px solid var(--rule); background: var(--white); position: relative; transition: background .15s; }
+    .ds {
+    padding: 1.75rem;
+    border-right: 1px solid var(--rule);
+    background: var(--white);
+    position: relative;
+    transition: background .15s;
+
+    display: flex;
+    flex-direction: column;
+}
     .ds:hover { background: var(--surf); }
     .ds:last-child { border-right: none; }
     .ds-num { font-family: var(--mono); font-size: 32px; font-weight: 300; color: var(--surf2); line-height: 1; margin-bottom: 12px; }
     .ds h4 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 6px; letter-spacing: -.01em; }
     .ds p { font-size: 11px; color: var(--ink3); line-height: 1.6; }
-    .ds-cmd { font-family: var(--mono); font-size: 9px; color: var(--teal); background: var(--teal-lt); padding: 4px 8px; border-radius: 4px; margin-top: 10px; display: inline-block; }
+    .ds-cmd {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--teal);
+    background: var(--teal-lt);
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+
+    margin-top: auto;
+    align-self: flex-start;
+}
     @media (max-width: 640px) { .deploy-steps { grid-template-columns: 1fr; } .ds { border-right: none; border-bottom: 1px solid var(--rule); } .ds:last-child { border-bottom: none; } }
 
     /* ── INTEGRATIONS ── */
@@ -432,20 +452,9 @@
 </head>
 <body>
 
-<!-- ── NAV ── -->
-<nav class="nav">
-  <a href="#" class="nav-brand">AI<em>FinOps</em></a>
-  <div class="nav-center">
-    <span>Services</span>
-    <span class="sep">/</span>
-    <span>K8s Cost Observability &amp; Attribution</span>
-  </div>
-  <a href="#" class="nav-cta">Get started free</a>
-</nav>
-
 <!-- ── HERO ── -->
 <section class="hero">
-  <a href="../platform/platform.html" class="back-btn">
+  <a href="javascript:history.back()" class="back-btn">
   ← Back
 </a>
   <div class="hero-hatch"></div>
@@ -972,31 +981,31 @@
   <p class="sl">A single Helm chart deploys everything. No sidecars, no mutating webhooks, no workload changes. The collector operates read-only against the Kubernetes metrics API.</p>
   <div class="deploy-steps">
     <div class="ds">
-      <div class="ds-num">01</div>
+      <!---<div class="ds-num">01</div>-->
       <h4>Add Helm repo</h4>
       <p>Add the AIFinOps Helm repository to your local chart sources and update.</p>
       <span class="ds-cmd">helm repo add aifinops</span>
     </div>
     <div class="ds">
-      <div class="ds-num">02</div>
+      <!---<div class="ds-num">02</div>-->
       <h4>Configure values</h4>
       <p>Set your cluster name, cloud provider, billing account ID, and team-to-namespace mapping in a single values.yaml file.</p>
       <span class="ds-cmd">values.yaml</span>
     </div>
     <div class="ds">
-      <div class="ds-num">03</div>
+      <!---<div class="ds-num">03</div>-->
       <h4>Install collector</h4>
       <p>One command deploys the DaemonSet collector, aggregator, and attribution engine to the aifinops namespace.</p>
       <span class="ds-cmd">helm install aifinops .</span>
     </div>
     <div class="ds">
-      <div class="ds-num">04</div>
+      <!--<div class="ds-num">04</div>-->
       <h4>Connect billing</h4>
       <p>Link your AWS CUR, Azure Cost Export, or GCP Billing Export. We match K8s resource usage to real billed amounts — not estimates.</p>
       <span class="ds-cmd">OAuth / IAM role</span>
     </div>
     <div class="ds">
-      <div class="ds-num">05</div>
+      <!--<div class="ds-num">05</div>-->
       <h4>View attribution</h4>
       <p>Full pod-level cost breakdown visible in your dashboard within 15 minutes. Anomaly detection and chargeback reports active from day one.</p>
       <span class="ds-cmd">dashboard.aifinops.com</span>

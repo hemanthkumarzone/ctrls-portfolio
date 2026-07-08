@@ -696,25 +696,53 @@ const companyItems =
                     </button>
 
                     {mobilePlatformOpen && (
-                      <div className="mt-3 ml-3 border-l border-[#436900] pl-3 flex flex-col gap-2">
-                       {platformItems.map((p: any, i: number) => {
-  const slug = p.path
-    ?.split("/")
-    .pop()
-    ?.replace(".html", "")
-    ?.toLowerCase();
+  <div className="mt-3 ml-3 border-l border-[#436900] pl-3">
 
-  return (
-    <Link key={i} to={`/platform/${slug}`}
-      onClick={closeMobileMenu}>
-      <div className="px-3 py-2 text-white/80">
-        {p.title}
-      </div>
-    </Link>
-  );
-})}
-                      </div>
-                    )}
+    {/* BUSINESS REQUIREMENTS */}
+    <div className="mb-4">
+      <h3 className="text-[#9fdc00] text-sm font-semibold mb-2">
+        Business Requirements
+      </h3>
+
+      {businessItems.map((p: any, i: number) => {
+        const slug = p.path
+          ?.split("/")
+          .pop()
+          ?.replace(".html", "")
+          ?.toLowerCase();
+
+        return (
+          <Link
+            key={i}
+            to={`/platform/${slug}`}
+            onClick={closeMobileMenu}
+          >
+            <div className="px-3 py-2 text-white/80 text-sm">
+              {p.title}
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+
+    {/* SUPPORTED PLATFORMS */}
+    <div>
+      <h3 className="text-[#9fdc00] text-sm font-semibold mb-2">
+        Supported Platforms
+      </h3>
+
+      {platformList.map((p: any, i: number) => (
+        <div
+          key={i}
+          className="px-3 py-2 text-white/80 text-sm"
+        >
+          {p.title}
+        </div>
+      ))}
+    </div>
+
+  </div>
+)}
                   </div>
                 );
               }

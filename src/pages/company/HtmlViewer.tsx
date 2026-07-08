@@ -45,7 +45,8 @@ const HtmlViewer = () => {
   const shouldRenderIframe =
     !location.pathname.startsWith("/platform") ||
     validPlatformPages.includes(safeType);
-
+  console.log("PATH =", filePath);
+console.log("TYPE =", safeType);
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
 
