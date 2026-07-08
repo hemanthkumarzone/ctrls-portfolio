@@ -55,7 +55,7 @@
     body { font-family: var(--man); background: var(--bone); color: var(--ink); line-height: 1.65; overflow-x: hidden; }
 
     /* ── NAV ── */
-    .nav {
+    /*__.nav {
       position: sticky; top: 0; z-index: 200;
       background: rgba(246,243,238,.95); backdrop-filter: blur(14px);
       border-bottom: 2px solid var(--wine);
@@ -68,7 +68,7 @@
     .nav-bc strong { color: var(--ink2); font-weight: 600; }
     .nav-bc .sep { color: var(--ink5); }
     .nav-cta { font-size: 13px; font-weight: 700; color: var(--white); background: var(--wine); padding: 8px 22px; border-radius: var(--r); text-decoration: none; transition: background .15s; }
-    .nav-cta:hover { background: var(--wine2); }
+    .nav-cta:hover { background: var(--wine2); }__*/
 
     /* ── HERO ── */
     .hero {
@@ -480,6 +480,7 @@
 <body>
 
 <!-- ── NAV ── -->
+ <!--
 <nav class="nav">
   <a href="#" class="nav-brand">AI<em>FinOps</em></a>
   <div class="nav-bc">
@@ -487,7 +488,7 @@
     <strong>Budgeting</strong>
   </div>
   <a href="#" class="nav-cta">Set up your AI budget</a>
-</nav>
+</nav>-->
 
 <!-- ── HERO ── -->
 <section class="hero">
@@ -683,7 +684,7 @@
   <p class="sl">AI infrastructure doesn't have one budget — it has overlapping budgets by team, product, category, environment, and project. All managed in one place, without conflict or double-counting.</p>
   <div class="btype-grid">
     <div class="btype bt-wine">
-      <div class="btype-num">01</div>
+      <!--<div class="btype-num">01</div>-->
       <h4>Team budgets</h4>
       <div class="btype-who" style="color:var(--wine)">Engineering leads · FinOps</div>
       <p>A monthly or quarterly spend limit per engineering team, covering all workloads, APIs, and infrastructure they own. The primary accountability unit for engineering cost governance.</p>
@@ -695,7 +696,7 @@
       <span class="btype-badge" style="background:var(--wine-lt);color:var(--wine)">Engineering governance</span>
     </div>
     <div class="btype bt-copper">
-      <div class="btype-num">02</div>
+      <!--<div class="btype-num">02</div>-->
       <h4>Product budgets</h4>
       <div class="btype-who" style="color:var(--copper)">Product leads · Finance</div>
       <p>A cost ceiling per product feature or product line — connecting AI infrastructure spend directly to product P&amp;L. Makes product teams accountable for the AI cost their features generate.</p>
@@ -707,7 +708,7 @@
       <span class="btype-badge" style="background:var(--cop-lt);color:var(--copper)">Product P&amp;L</span>
     </div>
     <div class="btype bt-teal">
-      <div class="btype-num">03</div>
+      <!---<div class="btype-num">03</div>-->
       <h4>Category budgets</h4>
       <div class="btype-who" style="color:var(--teal)">FinOps · Finance</div>
       <p>Separate budgets per cost category — model API spend, compute infrastructure, GPU resources, storage. Prevents undifferentiated growth in any single cost dimension.</p>
@@ -719,7 +720,7 @@
       <span class="btype-badge" style="background:var(--teal-lt);color:var(--teal)">Category governance</span>
     </div>
     <div class="btype bt-slate">
-      <div class="btype-num">04</div>
+      <!--<div class="btype-num">04</div>-->
       <h4>Environment budgets</h4>
       <div class="btype-who" style="color:var(--slate)">Platform teams</div>
       <p>Separate budget envelopes for production, staging, development, and experiment environments — ensuring development spending doesn't consume production budget and experiment costs are explicitly allocated.</p>
@@ -731,7 +732,7 @@
       <span class="btype-badge" style="background:var(--slate-lt);color:var(--slate)">Environment control</span>
     </div>
     <div class="btype bt-sage">
-      <div class="btype-num">05</div>
+      <!--<div class="btype-num">05</div>-->
       <h4>Project budgets</h4>
       <div class="btype-who" style="color:var(--sage)">Project leads · Finance</div>
       <p>Time-bound budgets for specific AI initiatives — a training run, a model evaluation project, a proof-of-concept, or a migration. Closes automatically at project end date.</p>
@@ -743,7 +744,7 @@
       <span class="btype-badge" style="background:var(--sage-lt);color:var(--sage)">Time-bound initiative</span>
     </div>
     <div class="btype bt-rose">
-      <div class="btype-num">06</div>
+      <!----<div class="btype-num">06</div>-->
       <h4>Contingency reserves</h4>
       <div class="btype-who" style="color:var(--rose)">Finance · CTO</div>
       <p>An unallocated budget reserve that can be drawn on when a team or category legitimately exceeds its original allocation — with a formal approval workflow before funds are released.</p>
