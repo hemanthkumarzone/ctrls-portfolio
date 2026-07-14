@@ -10,6 +10,6 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: ['ctrls.co', 'www.ctrls.co','seynova.ai','www.seynova.ai],
+    allowedHosts: ['ctrls.co', 'www.ctrls.co','seynova.ai','www.seynova.ai'],
   },
 })
